@@ -1,8 +1,8 @@
 import Phaser from 'phaser'
 
 export default class Tile {
-  static readonly WIDTH : number = 200;
-  static readonly HEIGHT : number = this.WIDTH * Math.sin(0.5);
+  static readonly WIDTH : number = 150;
+  static readonly HEIGHT : number = this.WIDTH / 2;
   static readonly HALF_WIDTH : number = this.WIDTH / 2;
   static readonly HALF_HEIGHT : number = this.HEIGHT / 2;
 
@@ -22,5 +22,9 @@ export default class Tile {
       new Phaser.Geom.Point(pixelX, pixelY + Tile.HALF_HEIGHT),
       new Phaser.Geom.Point(pixelX - Tile.HALF_WIDTH, pixelY),
     ];
+  }
+
+  public static getHash(tilePos: Phaser.Geom.Point) : String {
+    return tilePos.x.toString() + "," + tilePos.y.toString();
   }
 }

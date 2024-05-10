@@ -9,6 +9,7 @@ export default class MainScene extends Phaser.Scene {
   graphics : Phaser.GameObjects.Graphics
   playerPosTest : Phaser.Geom.Point
   pointer : Phaser.Input.Pointer
+  centerPoint : Phaser.Geom.Point
 
   constructor() {
     super({ key: 'MainScene' });
@@ -19,8 +20,12 @@ export default class MainScene extends Phaser.Scene {
     this.fpsText = new FpsText(this);
     this.tileSet = new TileSet();
     this.graphics = this.add.graphics();
-    this.playerPosTest = new Phaser.Geom.Point(100, 50);
+    this.playerPosTest = new Phaser.Geom.Point;
     this.pointer = this.input.activePointer;
+    this.centerPoint = new Phaser.Geom.Point(
+      this.cameras.main.width / 2,
+      this.cameras.main.height / 2
+    );
 
     // display the Phaser.VERSION
     this.add
@@ -43,19 +48,14 @@ export default class MainScene extends Phaser.Scene {
   }
 
   drawTileSet() {
-    const center = new Phaser.Geom.Point(
-      this.cameras.main.width / 2,
-      this.cameras.main.height / 2
-    );
-
     const playerCenter = new Phaser.Geom.Point(
-      center.x - this.playerPosTest.x,
-      center.y - this.playerPosTest.y
+      this.centerPoint.x - this.playerPosTest.x,
+      this.centerPoint.y - this.playerPosTest.y
     );
 
     const cursor = new Phaser.Geom.Point(
-      this.pointer.x - center.x + this.playerPosTest.x,
-      this.pointer.y - center.y + this.playerPosTest.y
+      this.pointer.x - this.centerPoint.x + this.playerPosTest.x,
+      this.pointer.y - this.centerPoint.y + this.playerPosTest.y
     );
 
     // Clear previous drawn lines
@@ -63,21 +63,23 @@ export default class MainScene extends Phaser.Scene {
 
     // Center point
     this.graphics.fillStyle(0xFF0000, 1);
-    this.graphics.fillCircle(center.x, center.y, 4);
+    this.graphics.fillCircle(this.centerPoint.x, this.centerPoint.y, 4);
 
     // Draw tiles
-    this.tileSet.tiles.forEach((tile) => {
+    const playerTilePos = TileSet.getTilePosFromUnitPos(this.playerPosTest);
+    const proximityTiles = this.tileSet.getProximityTileList(playerTilePos, 2);
+
+    proximityTiles.forEach((tile) => {
       const points = Tile.getPoints(tile.pos, playerCenter);
       this.drawDebugTile(points, 2, 0x0000FF);
     });
 
     // Draw player tile
-    const playerTilePos = this.tileSet.getTilePosFromUnitPos(this.playerPosTest);
     const points = Tile.getPoints(playerTilePos, playerCenter);
     this.drawDebugTile(points, 3, 0xFF0000);
 
     // Draw cursor tile
-    const cursorTilePos = this.tileSet.getTilePosFromUnitPos(cursor)
+    const cursorTilePos = TileSet.getTilePosFromUnitPos(cursor)
     const cursorTilePoints = Tile.getPoints(cursorTilePos, playerCenter);
     this.drawDebugTile(cursorTilePoints, 3, 0xFFFF00);
   }
