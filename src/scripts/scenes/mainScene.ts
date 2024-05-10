@@ -1,23 +1,26 @@
 import GameLogo from '../objects/gameLogo'
 import FpsText from '../objects/fpsText'
 import TileSet from '../objects/tileset'
+import Tile from '../objects/tile'
 
 export default class MainScene extends Phaser.Scene {
   fpsText
   tileSet : TileSet
   graphics : Phaser.GameObjects.Graphics
   playerPosTest : Phaser.Geom.Point
+  pointer : Phaser.Input.Pointer
 
   constructor() {
     super({ key: 'MainScene' });
   }
 
   create() {
-    new GameLogo(this, this.cameras.main.width / 2, this.cameras.main.height / 2);
+    // new GameLogo(this, this.cameras.main.width / 2, this.cameras.main.height / 2);
     this.fpsText = new FpsText(this);
     this.tileSet = new TileSet();
     this.graphics = this.add.graphics();
-    this.playerPosTest = new Phaser.Geom.Point(0, 0);
+    this.playerPosTest = new Phaser.Geom.Point(100, 50);
+    this.pointer = this.input.activePointer;
 
     // display the Phaser.VERSION
     this.add
@@ -50,6 +53,11 @@ export default class MainScene extends Phaser.Scene {
       center.y - this.playerPosTest.y
     );
 
+    const cursor = new Phaser.Geom.Point(
+      this.pointer.x - center.x + this.playerPosTest.x,
+      this.pointer.y - center.y + this.playerPosTest.y
+    );
+
     // Clear previous drawn lines
     this.graphics.clear();
 
@@ -59,25 +67,23 @@ export default class MainScene extends Phaser.Scene {
 
     // Draw tiles
     this.tileSet.tiles.forEach((tile) => {
-      const points = tile.getPoints(playerCenter);
-
-      this.graphics.lineStyle(2, 0x0000FF);
-      this.graphics.beginPath();
-      this.graphics.moveTo(points[0].x, points[0].y);
-
-      for (let i = 1; i < points.length; i++)
-        this.graphics.lineTo(points[i].x, points[i].y);
-
-      this.graphics.lineTo(points[0].x, points[0].y);
-      this.graphics.closePath();
-      this.graphics.strokePath();
+      const points = Tile.getPoints(tile.pos, playerCenter);
+      this.drawDebugTile(points, 2, 0x0000FF);
     });
 
     // Draw player tile
-    const playerTile = this.tileSet.getTileFromUnitPos(this.playerPosTest);
-    const points = playerTile.getPoints(playerCenter);
+    const playerTilePos = this.tileSet.getTilePosFromUnitPos(this.playerPosTest);
+    const points = Tile.getPoints(playerTilePos, playerCenter);
+    this.drawDebugTile(points, 3, 0xFF0000);
 
-    this.graphics.lineStyle(3, 0xFF0000);
+    // Draw cursor tile
+    const cursorTilePos = this.tileSet.getTilePosFromUnitPos(cursor)
+    const cursorTilePoints = Tile.getPoints(cursorTilePos, playerCenter);
+    this.drawDebugTile(cursorTilePoints, 3, 0xFFFF00);
+  }
+
+  drawDebugTile(points: Phaser.Geom.Point[], lineWidth: number, lineColor: number) {
+    this.graphics.lineStyle(lineWidth, lineColor);
     this.graphics.beginPath();
     this.graphics.moveTo(points[0].x, points[0].y);
 

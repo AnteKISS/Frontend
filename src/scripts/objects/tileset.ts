@@ -13,13 +13,13 @@ export default class TileSet {
         this.tiles.push(new Tile(i, j));
   }
 
-  getTileFromUnitPos(unitPos: Phaser.Geom.Point) : Tile {
-    const adjustedX = unitPos.x; + Tile.HALF_WIDTH;
-    const adjustedY = -unitPos.y + Tile.HALF_HEIGHT;
+  getTilePosFromUnitPos(unitPos: Phaser.Geom.Point) : Phaser.Geom.Point {
+    const adjustedX = unitPos.x;
+    const adjustedY = unitPos.y - Tile.HALF_HEIGHT;
 
-    const tileX = Math.ceil(adjustedX / Tile.WIDTH - adjustedY / Tile.HEIGHT);
-    const tileY = Math.floor(adjustedX / Tile.WIDTH + adjustedY / Tile.HEIGHT);
-
-    return new Tile(tileX, tileY);
+    return new Phaser.Geom.Point(
+      Math.ceil(adjustedX / Tile.WIDTH + adjustedY / Tile.HEIGHT),
+      Math.floor(adjustedX / Tile.WIDTH - adjustedY / Tile.HEIGHT)
+    );
   }
 }
