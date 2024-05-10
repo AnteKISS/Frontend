@@ -4,20 +4,22 @@ export default class TileSet {
   tiles : Tile[]
 
   constructor() {
-    this.tiles = [
-      new Tile(5, 0),
-      new Tile(6, 0),
-      new Tile(7, 0),
-      new Tile(10, 0),
-      new Tile(6, 1),
-      new Tile(7, 1),
-      new Tile(8, 1),
-      new Tile(9, 1),
-      new Tile(17, 5),
-      new Tile(19, -4),
-      new Tile(21, -4),
-      new Tile(21, -4),
-      new Tile(20, -3),
-    ];
+    this.tiles = [];
+
+    const TILESET_SIZE = 30;
+
+    for (let i = -TILESET_SIZE; i <= TILESET_SIZE; i++)
+      for (let j = -TILESET_SIZE; j <= TILESET_SIZE; j++)
+        this.tiles.push(new Tile(i, j));
+  }
+
+  getTileFromUnitPos(unitPos: Phaser.Geom.Point) : Tile {
+    const adjustedX = unitPos.x; + Tile.HALF_WIDTH;
+    const adjustedY = -unitPos.y + Tile.HALF_HEIGHT;
+
+    const tileX = Math.ceil(adjustedX / Tile.WIDTH - adjustedY / Tile.HEIGHT);
+    const tileY = Math.floor(adjustedX / Tile.WIDTH + adjustedY / Tile.HEIGHT);
+
+    return new Tile(tileX, tileY);
   }
 }
