@@ -67,7 +67,7 @@ export default class MainScene extends Phaser.Scene {
 
     // Draw tiles
     const playerTilePos = TileSet.getTilePosFromUnitPos(this.playerPosTest);
-    const proximityTiles = this.tileSet.getProximityTileList(playerTilePos, 2);
+    const proximityTiles = this.tileSet.getProximityTileList(playerTilePos, 8);
 
     proximityTiles.forEach((tile) => {
       const points = Tile.getPoints(tile.pos, playerCenter);

@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 
 export default class Tile {
-  static readonly WIDTH : number = 150;
+  static readonly WIDTH : number = 100;
   static readonly HEIGHT : number = this.WIDTH / 2;
   static readonly HALF_WIDTH : number = this.WIDTH / 2;
   static readonly HALF_HEIGHT : number = this.HEIGHT / 2;

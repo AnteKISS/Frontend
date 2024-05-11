@@ -6,7 +6,7 @@ export default class TileSet {
   constructor() {
     this.tiles = new Map();
 
-    const TILESET_SIZE = 100;
+    const TILESET_SIZE = 30;
 
     for (let i = -TILESET_SIZE; i <= TILESET_SIZE; i++) {
       for (let j = -TILESET_SIZE; j <= TILESET_SIZE; j++) {
@@ -30,41 +30,16 @@ export default class TileSet {
     const tileList : Tile[] = [];
     const point : Phaser.Geom.Point = new Phaser.Geom.Point;
     let tile : Tile | undefined;
+    const P2 : number = proximity * proximity;
 
-    // Add center tile
-    tile = this.tiles.get(Tile.getHash(tilePos));
-    if (tile) tileList.push(tile);
-
-    // Add each layer of tiles around tilePos
-    for (let p = 1; p <= proximity; p++) {
-      // Upper row
-      point.y = p + tilePos.y;
-      for (let x = -p; x <= p; x++) {
-        point.x = x + tilePos.x;
-        tile = this.tiles.get(Tile.getHash(point));
-        if (tile) tileList.push(tile);
-      }
-
-      // Lower row
-      point.y = -p + tilePos.y;
-      for (let x = -p; x <= p; x++) {
-        point.x = x + tilePos.x;
-        tile = this.tiles.get(Tile.getHash(point));
-        if (tile) tileList.push(tile);
-      }
-
-      // Right column
-      point.x = p + tilePos.x;
-      for (let y = -p + 1; y <= p - 1; y++) {
-        point.y = y + tilePos.y;
-        tile = this.tiles.get(Tile.getHash(point));
-        if (tile) tileList.push(tile);
-      }
-
-      // Left column
-      point.x = -p + tilePos.x;
-      for (let y = -p + 1; y <= p - 1; y++) {
-        point.y = y + tilePos.y;
+    // Select in a circle, column by column
+    // Algorithm used: https://stackoverflow.com/a/14036626
+    for (let x = tilePos.x - proximity; x <= tilePos.x + proximity; x++) {
+      point.x = x;
+      const X2 : number = Math.pow((tilePos.x - x), 2);
+      const Y_DIST : number = Math.floor(Math.sqrt( P2 - X2 ));
+      for (let y = tilePos.y - Y_DIST; y <= tilePos.y + Y_DIST; y++) {
+        point.y = y;
         tile = this.tiles.get(Tile.getHash(point));
         if (tile) tileList.push(tile);
       }
