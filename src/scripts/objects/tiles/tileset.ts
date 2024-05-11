@@ -32,7 +32,7 @@ export default class TileSet {
     let tile : Tile | undefined;
     const P2 : number = proximity * proximity;
 
-    // Select in a circle, column by column
+    // Select tiles in a circle, column by column
     // Algorithm used: https://stackoverflow.com/a/14036626
     for (let x = tilePos.x - proximity; x <= tilePos.x + proximity; x++) {
       point.x = x;

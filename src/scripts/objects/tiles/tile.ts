@@ -1,4 +1,4 @@
-import Phaser from 'phaser'
+import 'phaser'
 
 export default class Tile {
   static readonly WIDTH : number = 100;
@@ -12,9 +12,9 @@ export default class Tile {
     this.pos = new Phaser.Geom.Point(tx, ty);
   }
 
-  public static getPoints(tilePos: Phaser.Geom.Point, screenCenterPos: Phaser.Geom.Point) : Phaser.Geom.Point[] {
-    let pixelX = (tilePos.x * Tile.HALF_WIDTH + tilePos.y * Tile.HALF_WIDTH) + screenCenterPos.x;
-    let pixelY = (tilePos.x * Tile.HALF_HEIGHT - tilePos.y * Tile.HALF_HEIGHT) + screenCenterPos.y;
+  public static getPoints(tilePos: Phaser.Geom.Point, cameraUnitPos: Phaser.Geom.Point) : Phaser.Geom.Point[] {
+    let pixelX = (tilePos.x * Tile.HALF_WIDTH + tilePos.y * Tile.HALF_WIDTH) + cameraUnitPos.x;
+    let pixelY = (tilePos.x * Tile.HALF_HEIGHT - tilePos.y * Tile.HALF_HEIGHT) + cameraUnitPos.y;
 
     return [
       new Phaser.Geom.Point(pixelX, pixelY - Tile.HALF_HEIGHT),
