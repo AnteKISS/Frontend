@@ -1,7 +1,10 @@
 interface IFightable {
     attack(target: IFightable): void;
+    damage(amount: number): void;
     getBasePhysicalDamage(): number;
+    setBasePhysicalDamage(damage: number): void;
     getBaseMagicalDamage(): number;
+    setBaseMagicalDamage(damage: number): void;
     getHealth(): number;
     setHealth(health: number): void;
     getMaxHealth(): number;

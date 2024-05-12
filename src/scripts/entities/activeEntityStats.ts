@@ -8,7 +8,9 @@ class ActiveEntityStats {
   maxHealth: number;
   healthRegeneration: number;
 
-  attack: number;
+  basePhysicalDamage: number;
+  baseMagicalDamage: number;
+  attackAccuracy: number;
   criticalChance: number;
   criticalMultiplier: number;
   attackSpeed: number;
@@ -27,7 +29,8 @@ class ActiveEntityStats {
   lightningAbsorption: number;
   poisonAbsorption: number;
 
-  speed: number;
+  baseMovementSpeed: number;
+  movementSpeed: number;
 
   level: number;
   experience: number;

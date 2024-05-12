@@ -4,6 +4,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
   protected _stats: ActiveEntityStats;
   protected _species: EntitySpecies;
+  protected _destination: MapCoordinateEntity;
   
   constructor(scene) {
     super(scene);
@@ -34,30 +35,41 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   }
 
   setDestination(coordinate: MapCoordinateEntity): void {
-    throw new NotImplementedError();
+    this._destination = coordinate;
   }
 
   getDestination(): MapCoordinateEntity {
-    throw new NotImplementedError();
+    return this._destination;
+  }
+
+  getBaseMovementSpeed(): number {
+    return this.stats.baseMovementSpeed;
+  }
+
+  setBaseMovementSpeed(speed: number): void {
+    this.stats.baseMovementSpeed = speed;
   }
 
   getMovementSpeed(): number {
-    throw new NotImplementedError();
+    return this.stats.movementSpeed;
   }
 
   setMovementSpeed(speed: number): void {
-    throw new NotImplementedError();
+    this.stats.movementSpeed = speed;
   }
 
   getSpeed(): number {
+    // TODO: Check if needed, would return the velocity of the entity
     throw new NotImplementedError();
   }
 
   getGravity(): number {
+    // TODO: Check if needed, would be used if the entity could jump
     throw new NotImplementedError();
   }
 
   setGravity(gravity: number): void {
+    // TODO: Check if needed, would be used if the entity could jump
     throw new NotImplementedError();
   }
 
