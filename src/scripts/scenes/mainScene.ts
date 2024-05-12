@@ -83,12 +83,12 @@ export default class MainScene extends Phaser.Scene {
     this.tileDrawer.drawDebugTileList(proximityTiles, cameraUnitPos, 2, 0x0000FF);
 
     // Draw player tile
-    const points = Tile.getPoints(playerTilePos, cameraUnitPos);
+    const points = Tile.getPointsFromTilePos(playerTilePos, cameraUnitPos);
     this.tileDrawer.drawDebugTilePos(points, 3, 0xFF0000);
 
     // Draw cursor tile
     const cursorTilePos = TileSet.getTilePosFromUnitPos(cursorPos)
-    const cursorTilePoints = Tile.getPoints(cursorTilePos, cameraUnitPos);
+    const cursorTilePoints = Tile.getPointsFromTilePos(cursorTilePos, cameraUnitPos);
     this.tileDrawer.drawDebugTilePos(cursorTilePoints, 3, 0xFFFF00);
   }
 }

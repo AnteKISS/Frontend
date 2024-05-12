@@ -10,7 +10,7 @@ export default class TileDrawer {
 
   public drawDebugTileList(tiles: Tile[], cameraUnitPos: Phaser.Geom.Point, lineWidth: number, lineColor: number) {
     tiles.forEach((tile) => {
-      const points = Tile.getPoints(tile.pos, cameraUnitPos);
+      const points = Tile.getPointsFromTilePos(tile.pos, cameraUnitPos);
       this.drawDebugTilePos(points, lineWidth, lineColor);
     });
   }
