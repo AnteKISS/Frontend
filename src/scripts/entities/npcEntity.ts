@@ -11,4 +11,5 @@ abstract class NpcEntity extends ActiveEntity {
 
   // Methods
   abstract update(deltaTime: number): void;
+  abstract reset(): void;
 }

@@ -1,6 +1,6 @@
 import NotImplementedError from '../errors/notImplementedError';
 
-class PlayerEntity extends ActiveEntity {
+export class PlayerEntity extends ActiveEntity {
 
   constructor(scene) {
     super(scene);
@@ -12,7 +12,11 @@ class PlayerEntity extends ActiveEntity {
 
 
   // Methods
-  update(deltaTime: number): void {
+  public update(deltaTime: number): void {
+    throw new NotImplementedError();
+  }
+
+  public reset(): void {
     throw new NotImplementedError();
   }
 }

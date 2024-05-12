@@ -1,9 +1,11 @@
 abstract class BaseEntity extends Phaser.GameObjects.Sprite {
 
-  private _id: string;
+  private _id: number;
+  private _code: string;
   private _sprite: string;
   private _position: MapCoordinateEntity; 
   private _orientation: EntityOrientation;
+  private _isResetReady: boolean = false;
    
   constructor(scene) {
     super(scene, 0, 0, '');
@@ -12,12 +14,20 @@ abstract class BaseEntity extends Phaser.GameObjects.Sprite {
   }
 
   // Properties
-  public get id(): string {
+  public get id(): number {
     return this._id;
   }
 
-  public set id(v: string) {
+  public set id(v: number) {
     this._id = v;
+  }
+
+  public get code(): string {
+    return this._code;
+  }
+
+  public set code(v: string) {
+    this._code = v;
   }
 
   public get sprite() : string {
@@ -45,10 +55,15 @@ abstract class BaseEntity extends Phaser.GameObjects.Sprite {
     this._orientation = v;
   }
 
+  public get isResetReady(): boolean {
+    return this._isResetReady;
+  }
+
   // Methods
   getType(): string {
     return this.type;
   }
 
   abstract update(deltaTime: number): void;
+  abstract reset(): void;
 }

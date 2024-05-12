@@ -1,6 +1,6 @@
 import NotImplementedError from '../errors/notImplementedError';
 
-class ShrineEntity extends InactiveEntity {
+export class ShrineEntity extends InactiveEntity {
 
   constructor(scene) {
     super(scene);
@@ -12,7 +12,11 @@ class ShrineEntity extends InactiveEntity {
 
 
   // Methods
-  update(deltaTime: number): void {
+  public update(deltaTime: number): void {
+    throw new NotImplementedError();
+  }
+
+  public reset(): void {
     throw new NotImplementedError();
   }
 }

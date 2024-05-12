@@ -19,4 +19,5 @@ abstract class InactiveEntity extends BaseEntity {
 
   // Methods
   abstract update(deltaTime: number): void;
+  abstract reset(): void;
 }

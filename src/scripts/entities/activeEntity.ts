@@ -28,4 +28,5 @@ abstract class ActiveEntity extends BaseEntity {
 
   // Methods
   abstract update(deltaTime: number): void;
+  abstract reset(): void;
 }
