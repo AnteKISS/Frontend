@@ -1,5 +1,5 @@
 interface IMovable {
-    teleport(coordinate: MapCoordinateEntity): void;
+    move(coordinate: MapCoordinateEntity): void;
     setDestination(coordinate: MapCoordinateEntity): void;
     getDestination(): MapCoordinateEntity;
     getMovementSpeed(): number;

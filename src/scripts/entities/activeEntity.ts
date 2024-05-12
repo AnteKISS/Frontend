@@ -29,7 +29,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   }
 
   // Methods
-  teleport(coordinate: MapCoordinateEntity): void {
+  move(coordinate: MapCoordinateEntity): void {
     throw new NotImplementedError();
   }
 
