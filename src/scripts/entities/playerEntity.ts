@@ -1,4 +1,4 @@
-import NotImplementedError from '../../errors/notImplementedError';
+import NotImplementedError from '../errors/notImplementedError';
 
 class PlayerEntity extends ActiveEntity {
 
@@ -12,11 +12,7 @@ class PlayerEntity extends ActiveEntity {
 
 
   // Methods
-  update(): void {
-    throw new NotImplementedError();
-  }
-
-  getType(): string {
+  update(deltaTime: number): void {
     throw new NotImplementedError();
   }
 }

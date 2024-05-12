@@ -10,6 +10,5 @@ abstract class NpcEntity extends ActiveEntity {
 
 
   // Methods
-  abstract update(): void;
-  abstract getType(): string;
+  abstract update(deltaTime: number): void;
 }

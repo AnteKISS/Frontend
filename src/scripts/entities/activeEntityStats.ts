@@ -1,4 +1,4 @@
-class EntityStats {
+class ActiveEntityStats {
   strength: number;
   dexterity: number;
   vitality: number;

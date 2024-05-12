@@ -1,4 +1,4 @@
-import NotImplementedError from '../../errors/notImplementedError';
+import NotImplementedError from '../errors/notImplementedError';
 
 class ShrineEntity extends InactiveEntity {
 
@@ -12,11 +12,7 @@ class ShrineEntity extends InactiveEntity {
 
 
   // Methods
-  update(): void {
-    throw new NotImplementedError();
-  }
-
-  getType(): string {
+  update(deltaTime: number): void {
     throw new NotImplementedError();
   }
 }
