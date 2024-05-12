@@ -1,3 +1,4 @@
+import { ActiveEntity } from './activeEntity';
 import NotImplementedError from '../errors/notImplementedError';
 
 export class MonsterEntity extends ActiveEntity {

@@ -1,7 +1,9 @@
-abstract class ActiveEntity extends BaseEntity {
+import NotImplementedError from '../errors/notImplementedError';
+
+export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
   private _stats: ActiveEntityStats;
-  private _species : EntitySpecies;
+  private _species: EntitySpecies;
   
   constructor(scene) {
     super(scene);
@@ -27,6 +29,38 @@ abstract class ActiveEntity extends BaseEntity {
   }
 
   // Methods
+  teleport(coordinate: MapCoordinateEntity): void {
+    throw new NotImplementedError();
+  }
+
+  setDestination(coordinate: MapCoordinateEntity): void {
+    throw new NotImplementedError();
+  }
+
+  getDestination(): MapCoordinateEntity {
+    throw new NotImplementedError();
+  }
+
+  getMovementSpeed(): number {
+    throw new NotImplementedError();
+  }
+
+  setMovementSpeed(speed: number): void {
+    throw new NotImplementedError();
+  }
+
+  getSpeed(): number {
+    throw new NotImplementedError();
+  }
+
+  getGravity(): number {
+    throw new NotImplementedError();
+  }
+
+  setGravity(gravity: number): void {
+    throw new NotImplementedError();
+  }
+
   abstract update(deltaTime: number): void;
   abstract reset(): void;
 }

@@ -1,3 +1,5 @@
+import { ActiveEntity } from './activeEntity';
+
 abstract class NpcEntity extends ActiveEntity {
 
   constructor(scene) {
