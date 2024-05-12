@@ -5,8 +5,16 @@ export default class PreloadScene extends Phaser.Scene {
 
   preload() {
     this.load.image('game-logo', 'assets/img/rat_474x278.png');
-	this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
-	this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');
+	  this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
+	  this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');
+    // this.load.image('sky', 'assets/sky.png');
+    // this.load.image('ground', 'assets/platform.png');
+    // this.load.image('star', 'assets/star.png');
+    // this.load.image('bomb', 'assets/bomb.png');
+    // this.load.spritesheet('dude',
+    //     'assets/dude.png',
+    //     { frameWidth: 32, frameHeight: 48 }
+    // );
   }
 
   create() {
