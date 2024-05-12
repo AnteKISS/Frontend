@@ -1,11 +1,11 @@
 abstract class BaseEntity extends Phaser.GameObjects.Sprite {
 
-  private _id: number;
-  private _code: string;
-  private _sprite: string;
-  private _position: MapCoordinateEntity; 
-  private _orientation: EntityOrientation;
-  private _isResetReady: boolean = false;
+  protected _id: number;
+  protected _code: string;
+  protected _sprite: string;
+  protected _position: MapCoordinateEntity; 
+  protected _orientation: EntityOrientation;
+  protected _isResetReady: boolean = false;
    
   constructor(scene) {
     super(scene, 0, 0, '');

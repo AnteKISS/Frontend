@@ -2,8 +2,8 @@ import NotImplementedError from '../errors/notImplementedError';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
-  private _stats: ActiveEntityStats;
-  private _species: EntitySpecies;
+  protected _stats: ActiveEntityStats;
+  protected _species: EntitySpecies;
   
   constructor(scene) {
     super(scene);

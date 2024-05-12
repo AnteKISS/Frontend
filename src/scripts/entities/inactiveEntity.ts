@@ -1,6 +1,6 @@
 abstract class InactiveEntity extends BaseEntity {
 
-  private _stats: InactiveEntityStats;
+  protected _stats: InactiveEntityStats;
 
   constructor(scene) {
     super(scene);
