@@ -8,10 +8,11 @@ export default class MainScene extends Phaser.Scene {
   fpsText : FpsText;
   tileSet : TileSet;
   graphics : Phaser.GameObjects.Graphics;
-  tileDrawer : TileDrawer
+  tileDrawer : TileDrawer;
   playerPosTest : Phaser.Geom.Point;
   pointer : Phaser.Input.Pointer;
   centerPoint : Phaser.Geom.Point;
+  mapEditorButton : Phaser.GameObjects.Text;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -29,6 +30,13 @@ export default class MainScene extends Phaser.Scene {
       this.cameras.main.width / 2,
       this.cameras.main.height / 2
     );
+    this.mapEditorButton = this.add
+      .text(50, this.cameras.main.height - 50, 'Map Editor', {
+        color: '#000000',
+        fontSize: '24px'
+      })
+      .setInteractive()
+      .on('pointerdown', () => {this.scene.start('MapEditor')});
 
     // display the Phaser.VERSION
     this.add
