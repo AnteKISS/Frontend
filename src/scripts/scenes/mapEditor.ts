@@ -20,7 +20,7 @@ export default class MapEditor extends Phaser.Scene {
   }
 
   create() {
-    this.tileSet = new TileSet();
+    this.tileSet = new TileSet(3);
     this.graphics = this.add.graphics();
     this.tileDrawer = new TileDrawer(this.graphics);
     this.pointer = this.input.activePointer;
@@ -34,16 +34,20 @@ export default class MapEditor extends Phaser.Scene {
 
   update() {
     this.cursorMoveCamera();
-
+    
     this.cameras.main.setScroll(
       this.playerPos.x + this.cameraOffsetPos.x - this.cameras.main.width / 2,
       this.playerPos.y + this.cameraOffsetPos.y - this.cameras.main.height / 2
     );
 
+    if (this.pointer.isDown === true) {
+      this.handlePointerIsDown();
+    }
+
     this.drawTileSet();
   }
 
-  cursorMoveCamera() {
+  private cursorMoveCamera() {
     // Move camera left
     if (this.pointer.x < MapEditor.CURSOR_MOVE_CAMERA_AREA_WIDTH) {
       this.cameraOffsetPos.x -= MapEditor.MOVE_CAMERA_SPEED;
@@ -65,30 +69,38 @@ export default class MapEditor extends Phaser.Scene {
     }
   }
 
-  drawTileSet() {
-    const playerTilePos = TileSet.getTilePosFromUnitPos(this.playerPos);
+  private handlePointerIsDown() {
+    const cursorTilePos = TileSet.getTilePosFromUnitPos(this.getCursorUnitPos());
+    this.tileSet.addTile(cursorTilePos);
+  }
 
+  private drawTileSet() {
+    const playerTilePos = TileSet.getTilePosFromUnitPos(this.playerPos);
+    
     // Clear previous drawn lines
     this.graphics.clear();
-
+    
     // Center point
     this.graphics.fillStyle(0xFF0000, 1);
     this.graphics.fillCircle(this.playerPos.x, this.playerPos.y, 4);
-
+    
     // Draw tiles
     this.tileDrawer.drawDebugTileList(this.tileSet.tiles.values(), 2, 0x0000FF);
-
+    
     // Draw player tile
     const points = Tile.getPointsFromTilePos(playerTilePos);
     this.tileDrawer.drawDebugTilePos(points, 3, 0xFF0000);
-
+    
     // Draw cursor tile
-    const cursorPos = new Phaser.Geom.Point(
+    const cursorTilePos = TileSet.getTilePosFromUnitPos(this.getCursorUnitPos());
+    const cursorTilePoints = Tile.getPointsFromTilePos(cursorTilePos);
+    this.tileDrawer.drawDebugTilePos(cursorTilePoints, 3, 0xFFFF00);
+  }
+  
+  private getCursorUnitPos() : Phaser.Geom.Point {
+    return new Phaser.Geom.Point(
       this.pointer.x - this.centerPoint.x + this.playerPos.x + this.cameraOffsetPos.x,
       this.pointer.y - this.centerPoint.y + this.playerPos.y + this.cameraOffsetPos.y
     );
-    const cursorTilePos = TileSet.getTilePosFromUnitPos(cursorPos);
-    const cursorTilePoints = Tile.getPointsFromTilePos(cursorTilePos);
-    this.tileDrawer.drawDebugTilePos(cursorTilePoints, 3, 0xFFFF00);
   }
 }

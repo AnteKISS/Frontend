@@ -17,6 +17,7 @@ export default class TileDrawer {
 
   public drawDebugTilePos(points: Phaser.Geom.Point[], lineWidth: number, lineColor: number) {
     this.graphics.lineStyle(lineWidth, lineColor);
+    this.graphics.fillStyle(lineColor, 0.2);
     this.graphics.beginPath();
     this.graphics.moveTo(points[0].x, points[0].y);
 
@@ -26,5 +27,6 @@ export default class TileDrawer {
     this.graphics.lineTo(points[0].x, points[0].y);
     this.graphics.closePath();
     this.graphics.strokePath();
+    this.graphics.fillPath();
   }
 }

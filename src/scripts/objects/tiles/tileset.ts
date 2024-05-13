@@ -3,27 +3,21 @@ import Tile from './tile'
 export default class TileSet {
   tiles : Map<String, Tile>
 
-  constructor() {
+  constructor(size: number = 30) {
     this.tiles = new Map();
 
-    const TILESET_SIZE = 30;
-
-    for (let i = -TILESET_SIZE; i <= TILESET_SIZE; i++) {
-      for (let j = -TILESET_SIZE; j <= TILESET_SIZE; j++) {
+    for (let i = -size; i <= size; i++) {
+      for (let j = -size; j <= size; j++) {
         let tile = new Tile(i, j);
         this.tiles.set(Tile.getHash(tile.pos), tile);
       }
     }
   }
 
-  public static getTilePosFromUnitPos(unitPos: Phaser.Geom.Point) : Phaser.Geom.Point {
-    const adjustedX = unitPos.x;
-    const adjustedY = unitPos.y - Tile.HALF_HEIGHT;
-
-    return new Phaser.Geom.Point(
-      Math.ceil(adjustedX / Tile.WIDTH + adjustedY / Tile.HEIGHT),
-      Math.floor(adjustedX / Tile.WIDTH - adjustedY / Tile.HEIGHT)
-    );
+  public addTile(tilePos: Phaser.Geom.Point) {
+    const HASH : String = Tile.getHash(tilePos);
+    if (this.tiles.get(HASH) === undefined)
+      this.tiles.set(HASH, new Tile(tilePos.x, tilePos.y))
   }
 
   public getProximityTileList(tilePos: Phaser.Geom.Point, proximity: number) : Tile[] {
@@ -46,5 +40,15 @@ export default class TileSet {
     }
 
     return tileList;
+  }
+
+  public static getTilePosFromUnitPos(unitPos: Phaser.Geom.Point) : Phaser.Geom.Point {
+    const adjustedX = unitPos.x;
+    const adjustedY = unitPos.y - Tile.HALF_HEIGHT;
+  
+    return new Phaser.Geom.Point(
+      Math.ceil(adjustedX / Tile.WIDTH + adjustedY / Tile.HEIGHT),
+      Math.floor(adjustedX / Tile.WIDTH - adjustedY / Tile.HEIGHT)
+    );
   }
 }
