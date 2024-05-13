@@ -8,11 +8,11 @@ export default class TileDrawer {
     this.graphics = graphics;
   }
 
-  public drawDebugTileList(tiles: Tile[], cameraUnitPos: Phaser.Geom.Point, lineWidth: number, lineColor: number) {
-    tiles.forEach((tile) => {
-      const points = Tile.getPointsFromTilePos(tile.pos, cameraUnitPos);
+  public drawDebugTileList(tiles: Iterable<Tile>, lineWidth: number, lineColor: number) {
+    for (const tile of tiles) {
+      const points = Tile.getPointsFromTilePos(tile.pos);
       this.drawDebugTilePos(points, lineWidth, lineColor);
-    });
+    }
   }
 
   public drawDebugTilePos(points: Phaser.Geom.Point[], lineWidth: number, lineColor: number) {

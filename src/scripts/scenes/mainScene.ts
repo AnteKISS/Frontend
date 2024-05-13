@@ -6,6 +6,7 @@ import TileSet from '../objects/tiles/tileset'
 
 export default class MainScene extends Phaser.Scene {
   fpsText : FpsText;
+  versionText : Phaser.GameObjects.Text
   tileSet : TileSet;
   graphics : Phaser.GameObjects.Graphics;
   tileDrawer : TileDrawer;
@@ -31,7 +32,7 @@ export default class MainScene extends Phaser.Scene {
       this.cameras.main.height / 2
     );
     this.mapEditorButton = this.add
-      .text(50, this.cameras.main.height - 50, 'Map Editor', {
+      .text(0, 0, 'Map Editor (Click me!)', {
         color: '#000000',
         fontSize: '24px'
       })
@@ -39,8 +40,8 @@ export default class MainScene extends Phaser.Scene {
       .on('pointerdown', () => {this.scene.start('MapEditor')});
 
     // display the Phaser.VERSION
-    this.add
-      .text(this.cameras.main.width - 15, 15, `Phaser v${Phaser.VERSION}`, {
+    this.versionText = this.add
+      .text(0, 0, `Phaser v${Phaser.VERSION}`, {
         color: '#000000',
         fontSize: '24px'
       })
@@ -52,6 +53,15 @@ export default class MainScene extends Phaser.Scene {
   }
 
   update() {
+    this.cameras.main.setScroll(
+      this.playerPosTest.x - this.cameras.main.width / 2,
+      this.playerPosTest.y - this.cameras.main.height / 2
+    );
+
+    this.fpsText.setPosition(this.cameras.main.scrollX + 30, this.cameras.main.scrollY + 20);
+    this.versionText.setPosition(this.cameras.main.scrollX + 1250, this.cameras.main.scrollY + 20);
+    this.mapEditorButton.setPosition(this.cameras.main.scrollX + 30, this.cameras.main.scrollY + this.cameras.main.height - 50);
+
     this.fpsText.update();
     this.drawTileSet();
     this.playerPosTest.x += 2;
@@ -59,16 +69,6 @@ export default class MainScene extends Phaser.Scene {
   }
 
   drawTileSet() {
-    const cameraUnitPos = new Phaser.Geom.Point(
-      this.centerPoint.x - this.playerPosTest.x,
-      this.centerPoint.y - this.playerPosTest.y
-    );
-
-    const cursorPos = new Phaser.Geom.Point(
-      this.pointer.x - this.centerPoint.x + this.playerPosTest.x,
-      this.pointer.y - this.centerPoint.y + this.playerPosTest.y
-    );
-
     const playerTilePos = TileSet.getTilePosFromUnitPos(this.playerPosTest);
 
     // Clear previous drawn lines
@@ -76,19 +76,23 @@ export default class MainScene extends Phaser.Scene {
 
     // Center point
     this.graphics.fillStyle(0xFF0000, 1);
-    this.graphics.fillCircle(this.centerPoint.x, this.centerPoint.y, 4);
+    this.graphics.fillCircle(this.playerPosTest.x, this.playerPosTest.y, 4);
 
     // Draw tiles
     const proximityTiles = this.tileSet.getProximityTileList(playerTilePos, 8);
-    this.tileDrawer.drawDebugTileList(proximityTiles, cameraUnitPos, 2, 0x0000FF);
+    this.tileDrawer.drawDebugTileList(proximityTiles, 2, 0x0000FF);
 
     // Draw player tile
-    const points = Tile.getPointsFromTilePos(playerTilePos, cameraUnitPos);
+    const points = Tile.getPointsFromTilePos(playerTilePos);
     this.tileDrawer.drawDebugTilePos(points, 3, 0xFF0000);
 
     // Draw cursor tile
+    const cursorPos = new Phaser.Geom.Point(
+      this.pointer.x - this.centerPoint.x + this.playerPosTest.x,
+      this.pointer.y - this.centerPoint.y + this.playerPosTest.y
+    );
     const cursorTilePos = TileSet.getTilePosFromUnitPos(cursorPos)
-    const cursorTilePoints = Tile.getPointsFromTilePos(cursorTilePos, cameraUnitPos);
+    const cursorTilePoints = Tile.getPointsFromTilePos(cursorTilePos);
     this.tileDrawer.drawDebugTilePos(cursorTilePoints, 3, 0xFFFF00);
   }
 }
