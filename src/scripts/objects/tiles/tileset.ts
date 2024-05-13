@@ -20,6 +20,12 @@ export default class TileSet {
       this.tiles.set(HASH, new Tile(tilePos.x, tilePos.y))
   }
 
+  public deleteTile(tilePos: Phaser.Geom.Point) {
+    const HASH : String = Tile.getHash(tilePos);
+    if (this.tiles.get(HASH) !== undefined)
+      this.tiles.delete(HASH);
+  }
+
   public getProximityTileList(tilePos: Phaser.Geom.Point, proximity: number) : Tile[] {
     const tileList : Tile[] = [];
     const point : Phaser.Geom.Point = new Phaser.Geom.Point;

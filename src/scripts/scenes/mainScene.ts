@@ -37,7 +37,7 @@ export default class MainScene extends Phaser.Scene {
         fontSize: '24px'
       })
       .setInteractive()
-      .on('pointerdown', () => {this.scene.start('MapEditor')});
+      .on('pointerdown', () => {this.scene.start('MapEditor');});
 
     // display the Phaser.VERSION
     this.versionText = this.add

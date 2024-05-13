@@ -3,8 +3,13 @@ import Tile from '../objects/tiles/tile'
 import TileDrawer from '../objects/tiles/tiledrawer'
 import TileSet from '../objects/tiles/tileset'
 
+enum TileMode {
+  Add,
+  Delete
+}
+
 export default class MapEditor extends Phaser.Scene {
-  static readonly CURSOR_MOVE_CAMERA_AREA_WIDTH = 100;
+  static readonly MOVE_AREA_WIDTH = 100; // Cursor area width to make camera move
   static readonly MOVE_CAMERA_SPEED = 10;
 
   tileSet : TileSet;
@@ -15,6 +20,12 @@ export default class MapEditor extends Phaser.Scene {
   cameraOffsetPos : Phaser.Geom.Point;
   centerPoint : Phaser.Geom.Point;
 
+  moveToggled : boolean;
+  moveToggledText : Phaser.GameObjects.Text;
+
+  tileMode : TileMode;
+  tileModeText : Phaser.GameObjects.Text;
+
   constructor() {
     super({key: 'MapEditor'});
   }
@@ -24,17 +35,43 @@ export default class MapEditor extends Phaser.Scene {
     this.graphics = this.add.graphics();
     this.tileDrawer = new TileDrawer(this.graphics);
     this.pointer = this.input.activePointer;
-    this.playerPos = new Phaser.Geom.Point(0, 0);
-    this.cameraOffsetPos = new Phaser.Geom.Point(0, 0);
+    this.playerPos = new Phaser.Geom.Point;
+    this.cameraOffsetPos = new Phaser.Geom.Point;
     this.centerPoint = new Phaser.Geom.Point(
       this.cameras.main.width / 2,
       this.cameras.main.height / 2
     );
+
+    // Move toggled
+    this.moveToggled = false;
+    this.moveToggledText = this.add
+      .text(0, 0, "Move (M) : Disabled", {
+        color: '#000000',
+        fontSize: '24px'
+      })
+      .setInteractive()
+      .on('pointerdown', () => {this.toggleMove();});
+    this.input.keyboard
+      .addKey(Phaser.Input.Keyboard.KeyCodes.M)
+      .on('down', () => {this.toggleMove();});
+
+    // TileMode
+    this.tileMode = TileMode.Delete;
+    this.tileModeText = this.add
+      .text(0, 0, "TileMode (T) : Delete", {
+        color: '#000000',
+        fontSize: '24px'
+      })
+      .setInteractive()
+      .on('pointerdown', () => {this.changeTileMode();});
+    this.input.keyboard
+      .addKey(Phaser.Input.Keyboard.KeyCodes.T)
+      .on('down', () => {this.changeTileMode();});
   }
 
   update() {
     this.cursorMoveCamera();
-    
+
     this.cameras.main.setScroll(
       this.playerPos.x + this.cameraOffsetPos.x - this.cameras.main.width / 2,
       this.playerPos.y + this.cameraOffsetPos.y - this.cameras.main.height / 2
@@ -44,34 +81,41 @@ export default class MapEditor extends Phaser.Scene {
       this.handlePointerIsDown();
     }
 
+    this.moveToggledText.setPosition(this.cameras.main.scrollX + 30, this.cameras.main.scrollY + 30);
+    this.tileModeText.setPosition(this.cameras.main.scrollX + 30, this.cameras.main.scrollY + 80);
+
     this.drawTileSet();
   }
 
   private cursorMoveCamera() {
+    if (this.moveToggled === false) return;
+
     // Move camera left
-    if (this.pointer.x < MapEditor.CURSOR_MOVE_CAMERA_AREA_WIDTH) {
+    if (this.pointer.x < MapEditor.MOVE_AREA_WIDTH) {
       this.cameraOffsetPos.x -= MapEditor.MOVE_CAMERA_SPEED;
     }
 
     // Move camera right
-    if (this.pointer.x > this.cameras.main.width - MapEditor.CURSOR_MOVE_CAMERA_AREA_WIDTH) {
+    if (this.pointer.x > this.cameras.main.width - MapEditor.MOVE_AREA_WIDTH) {
       this.cameraOffsetPos.x += MapEditor.MOVE_CAMERA_SPEED;
     }
 
     // Move camera up
-    if (this.pointer.y < MapEditor.CURSOR_MOVE_CAMERA_AREA_WIDTH) {
+    if (this.pointer.y < MapEditor.MOVE_AREA_WIDTH) {
       this.cameraOffsetPos.y -= MapEditor.MOVE_CAMERA_SPEED;
     }
 
     // Move camera down
-    if (this.pointer.y > this.cameras.main.height - MapEditor.CURSOR_MOVE_CAMERA_AREA_WIDTH) {
+    if (this.pointer.y > this.cameras.main.height - MapEditor.MOVE_AREA_WIDTH) {
       this.cameraOffsetPos.y += MapEditor.MOVE_CAMERA_SPEED;
     }
   }
 
   private handlePointerIsDown() {
     const cursorTilePos = TileSet.getTilePosFromUnitPos(this.getCursorUnitPos());
-    this.tileSet.addTile(cursorTilePos);
+
+    if      (this.tileMode === TileMode.Add)      this.tileSet.addTile(cursorTilePos);
+    else if (this.tileMode === TileMode.Delete)   this.tileSet.deleteTile(cursorTilePos);
   }
 
   private drawTileSet() {
@@ -102,5 +146,21 @@ export default class MapEditor extends Phaser.Scene {
       this.pointer.x - this.centerPoint.x + this.playerPos.x + this.cameraOffsetPos.x,
       this.pointer.y - this.centerPoint.y + this.playerPos.y + this.cameraOffsetPos.y
     );
+  }
+
+  private toggleMove() {
+    this.moveToggled = !this.moveToggled;
+    this.moveToggledText.setText(this.moveToggled === true ? "Move (M) : Enabled" : "Move (M) : Disabled");
+  }
+
+  private changeTileMode() {
+    if (this.tileMode === TileMode.Add) {
+      this.tileMode = TileMode.Delete;
+      this.tileModeText.setText("TileMode (T) : Delete");
+    }
+    else if (this.tileMode === TileMode.Delete) {
+      this.tileMode = TileMode.Add;
+      this.tileModeText.setText("TileMode (T) : Add");
+    }
   }
 }
