@@ -4,6 +4,9 @@ import TileDrawer from '../objects/tiles/tiledrawer'
 import TileSet from '../objects/tiles/tileset'
 
 export default class MapEditor extends Phaser.Scene {
+  static readonly CURSOR_MOVE_CAMERA_AREA_WIDTH = 100;
+  static readonly MOVE_CAMERA_SPEED = 10;
+
   tileSet : TileSet;
   graphics : Phaser.GameObjects.Graphics;
   tileDrawer : TileDrawer;
@@ -30,8 +33,7 @@ export default class MapEditor extends Phaser.Scene {
   }
 
   update() {
-    this.cameraOffsetPos.x -= 0.5;
-    this.playerPos.y += -0.2;
+    this.cursorMoveCamera();
 
     this.cameras.main.setScroll(
       this.playerPos.x + this.cameraOffsetPos.x - this.cameras.main.width / 2,
@@ -39,6 +41,28 @@ export default class MapEditor extends Phaser.Scene {
     );
 
     this.drawTileSet();
+  }
+
+  cursorMoveCamera() {
+    // Move camera left
+    if (this.pointer.x < MapEditor.CURSOR_MOVE_CAMERA_AREA_WIDTH) {
+      this.cameraOffsetPos.x -= MapEditor.MOVE_CAMERA_SPEED;
+    }
+
+    // Move camera right
+    if (this.pointer.x > this.cameras.main.width - MapEditor.CURSOR_MOVE_CAMERA_AREA_WIDTH) {
+      this.cameraOffsetPos.x += MapEditor.MOVE_CAMERA_SPEED;
+    }
+
+    // Move camera up
+    if (this.pointer.y < MapEditor.CURSOR_MOVE_CAMERA_AREA_WIDTH) {
+      this.cameraOffsetPos.y -= MapEditor.MOVE_CAMERA_SPEED;
+    }
+
+    // Move camera down
+    if (this.pointer.y > this.cameras.main.height - MapEditor.CURSOR_MOVE_CAMERA_AREA_WIDTH) {
+      this.cameraOffsetPos.y += MapEditor.MOVE_CAMERA_SPEED;
+    }
   }
 
   drawTileSet() {
