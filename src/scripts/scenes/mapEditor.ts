@@ -4,114 +4,158 @@ import TileDrawer from '../objects/tiles/tiledrawer'
 import TileSet from '../objects/tiles/tileset'
 
 enum TileMode {
-  Add,
-  Delete
+  Add = "Add",
+  Delete = "Delete"
+}
+
+enum SwipeMode {
+  On = "On",
+  Off = "Off"
 }
 
 export default class MapEditor extends Phaser.Scene {
-  static readonly MOVE_AREA_WIDTH = 100; // Cursor area width to make camera move
   static readonly MOVE_CAMERA_SPEED = 10;
 
-  tileSet : TileSet;
+  // Phaser refs/objects
   graphics : Phaser.GameObjects.Graphics;
-  tileDrawer : TileDrawer;
   pointer : Phaser.Input.Pointer;
-  playerPos : Phaser.Geom.Point;
-  cameraOffsetPos : Phaser.Geom.Point;
   centerPoint : Phaser.Geom.Point;
 
-  moveToggled : boolean;
-  moveToggledText : Phaser.GameObjects.Text;
+  // Editor data / helpers
+  tileSet : TileSet;
+  tileDrawer : TileDrawer;
+  playerPos : Phaser.Geom.Point;
+  cameraOffsetPos : Phaser.Geom.Point;
 
+  // Editor states
   tileMode : TileMode;
+  swipeMode : SwipeMode;
+
+  // Texts
+  moveText : Phaser.GameObjects.Text;
   tileModeText : Phaser.GameObjects.Text;
+  addText : Phaser.GameObjects.Text;
+  deleteText : Phaser.GameObjects.Text;
+  swipeText : Phaser.GameObjects.Text;
+
+  // Input keys
+  aKey : Phaser.Input.Keyboard.Key; // Move left
+  dKey : Phaser.Input.Keyboard.Key; // Move right
+  sKey : Phaser.Input.Keyboard.Key; // Move down
+  wKey : Phaser.Input.Keyboard.Key; // Move up
+
+  zKey : Phaser.Input.Keyboard.Key; // TileMode Add
+  xKey : Phaser.Input.Keyboard.Key; // TileMode Delete
+  shiftKey : Phaser.Input.Keyboard.Key; // Swipe
 
   constructor() {
     super({key: 'MapEditor'});
   }
 
   create() {
-    this.tileSet = new TileSet(3);
+    this.input.enabled = false;
+
     this.graphics = this.add.graphics();
-    this.tileDrawer = new TileDrawer(this.graphics);
     this.pointer = this.input.activePointer;
-    this.playerPos = new Phaser.Geom.Point;
-    this.cameraOffsetPos = new Phaser.Geom.Point;
     this.centerPoint = new Phaser.Geom.Point(
       this.cameras.main.width / 2,
       this.cameras.main.height / 2
     );
 
-    // Move toggled
-    this.moveToggled = false;
-    this.moveToggledText = this.add
-      .text(0, 0, "Move (M) : Disabled", {
-        color: '#000000',
-        fontSize: '24px'
-      })
-      .setInteractive()
-      .on('pointerdown', () => {this.toggleMove();});
-    this.input.keyboard
-      .addKey(Phaser.Input.Keyboard.KeyCodes.M)
-      .on('down', () => {this.toggleMove();});
+    this.tileSet = new TileSet(3);
+    this.tileDrawer = new TileDrawer(this.graphics);
+    this.playerPos = new Phaser.Geom.Point;
+    this.cameraOffsetPos = new Phaser.Geom.Point;
+
+    // Move
+    this.moveText = this.add.text(0, 0, "Move (WASD)", {color: '#000000', fontSize: '24px'});
+
+    this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+    this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+    this.sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+    this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 
     // TileMode
-    this.tileMode = TileMode.Delete;
-    this.tileModeText = this.add
-      .text(0, 0, "TileMode (T) : Delete", {
-        color: '#000000',
-        fontSize: '24px'
-      })
-      .setInteractive()
-      .on('pointerdown', () => {this.changeTileMode();});
-    this.input.keyboard
-      .addKey(Phaser.Input.Keyboard.KeyCodes.T)
-      .on('down', () => {this.changeTileMode();});
+    this.tileMode = TileMode.Add;
+    this.swipeMode = SwipeMode.Off;
+
+    this.tileModeText = this.add.text(0, 0, "TileMode : " + this.tileMode, {color: '#000000', fontSize: '24px'});
+    this.addText = this.add.text(0, 0, "Add (Z)", {color: '#000000', fontSize: '24px'});
+    this.deleteText = this.add.text(0, 0, "Delete (X)", {color: '#000000', fontSize: '24px'});
+    this.swipeText = this.add.text(0, 0, "Swipe (Shift) : " + this.swipeMode, {color: '#000000', fontSize: '24px'});
+
+    this.zKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
+    this.xKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
+    this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+
+    this.input.on('pointerdown', () => {
+      this.tileModeClick();
+    });
+
+    this.input.enabled = true;
   }
 
   update() {
     this.cursorMoveCamera();
+    this.checkTileModeUpdate();
 
     this.cameras.main.setScroll(
       this.playerPos.x + this.cameraOffsetPos.x - this.cameras.main.width / 2,
       this.playerPos.y + this.cameraOffsetPos.y - this.cameras.main.height / 2
     );
 
-    if (this.pointer.isDown === true) {
-      this.handlePointerIsDown();
+    // Detect swipe + hold click (tilemode)
+    if (this.swipeMode === SwipeMode.On && this.pointer.leftButtonDown()) {
+      this.tileModeClick();
     }
 
-    this.moveToggledText.setPosition(this.cameras.main.scrollX + 30, this.cameras.main.scrollY + 30);
+    this.moveText.setPosition(this.cameras.main.scrollX + 30, this.cameras.main.scrollY + 30);
     this.tileModeText.setPosition(this.cameras.main.scrollX + 30, this.cameras.main.scrollY + 80);
+    this.addText.setPosition(this.cameras.main.scrollX + 60, this.cameras.main.scrollY + 110);
+    this.deleteText.setPosition(this.cameras.main.scrollX + 60, this.cameras.main.scrollY + 140);
+    this.swipeText.setPosition(this.cameras.main.scrollX + 60, this.cameras.main.scrollY + 170);
 
     this.drawTileSet();
   }
 
   private cursorMoveCamera() {
-    if (this.moveToggled === false) return;
-
-    // Move camera left
-    if (this.pointer.x < MapEditor.MOVE_AREA_WIDTH) {
+    // // Move camera left
+    if (this.aKey.isDown) {
       this.cameraOffsetPos.x -= MapEditor.MOVE_CAMERA_SPEED;
     }
 
     // Move camera right
-    if (this.pointer.x > this.cameras.main.width - MapEditor.MOVE_AREA_WIDTH) {
+    if (this.dKey.isDown) {
       this.cameraOffsetPos.x += MapEditor.MOVE_CAMERA_SPEED;
     }
 
     // Move camera up
-    if (this.pointer.y < MapEditor.MOVE_AREA_WIDTH) {
+    if (this.wKey.isDown) {
       this.cameraOffsetPos.y -= MapEditor.MOVE_CAMERA_SPEED;
     }
 
     // Move camera down
-    if (this.pointer.y > this.cameras.main.height - MapEditor.MOVE_AREA_WIDTH) {
+    if (this.sKey.isDown) {
       this.cameraOffsetPos.y += MapEditor.MOVE_CAMERA_SPEED;
     }
   }
 
-  private handlePointerIsDown() {
+  private checkTileModeUpdate() {
+    if (Phaser.Input.Keyboard.JustDown(this.zKey)) {
+      this.changeTileMode(TileMode.Add);
+    }
+    
+    if (Phaser.Input.Keyboard.JustDown(this.xKey)) {
+      this.changeTileMode(TileMode.Delete);
+    }
+
+    if (Phaser.Input.Keyboard.JustDown(this.shiftKey)) {
+      this.swipeMode = (this.swipeMode === SwipeMode.Off ? SwipeMode.On : SwipeMode.Off);
+      this.swipeText.setText("Swipe (Shift) : " + this.swipeMode);
+    }
+  }
+
+  private tileModeClick() {
     const cursorTilePos = TileSet.getTilePosFromUnitPos(this.getCursorUnitPos());
 
     if      (this.tileMode === TileMode.Add)      this.tileSet.addTile(cursorTilePos);
@@ -148,19 +192,8 @@ export default class MapEditor extends Phaser.Scene {
     );
   }
 
-  private toggleMove() {
-    this.moveToggled = !this.moveToggled;
-    this.moveToggledText.setText(this.moveToggled === true ? "Move (M) : Enabled" : "Move (M) : Disabled");
-  }
-
-  private changeTileMode() {
-    if (this.tileMode === TileMode.Add) {
-      this.tileMode = TileMode.Delete;
-      this.tileModeText.setText("TileMode (T) : Delete");
-    }
-    else if (this.tileMode === TileMode.Delete) {
-      this.tileMode = TileMode.Add;
-      this.tileModeText.setText("TileMode (T) : Add");
-    }
+  private changeTileMode(mode : TileMode) {
+    this.tileMode = mode;
+    this.tileModeText.setText("TileMode : " + mode);
   }
 }
