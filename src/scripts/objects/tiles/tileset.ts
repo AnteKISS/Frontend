@@ -51,7 +51,7 @@ export default class TileSet {
   public static getTilePosFromUnitPos(unitPos: Phaser.Geom.Point) : Phaser.Geom.Point {
     const adjustedX = unitPos.x;
     const adjustedY = unitPos.y - Tile.HALF_HEIGHT;
-  
+
     return new Phaser.Geom.Point(
       Math.ceil(adjustedX / Tile.WIDTH + adjustedY / Tile.HEIGHT),
       Math.floor(adjustedX / Tile.WIDTH - adjustedY / Tile.HEIGHT)
