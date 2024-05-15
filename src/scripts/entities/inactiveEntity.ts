@@ -1,4 +1,6 @@
-abstract class InactiveEntity extends BaseEntity {
+import { BaseEntity } from './baseEntity';
+
+export abstract class InactiveEntity extends BaseEntity {
 
   protected _stats: InactiveEntityStats;
 
@@ -20,4 +22,5 @@ abstract class InactiveEntity extends BaseEntity {
   // Methods
   abstract update(deltaTime: number): void;
   abstract reset(): void;
+  abstract initializeAnimations(): void;
 }

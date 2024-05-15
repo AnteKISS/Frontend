@@ -1,5 +1,8 @@
 import GameLogo from '../objects/gameLogo'
 import FpsText from '../objects/fpsText'
+import { BaseEntity } from '../entities/baseEntity';
+import { ActiveEntity } from '../entities/activeEntity';
+import { PlayerEntity } from '../entities/playerEntity';
 
 export default class MainScene extends Phaser.Scene {
   fpsText
@@ -19,9 +22,24 @@ export default class MainScene extends Phaser.Scene {
         fontSize: '24px'
       })
       .setOrigin(1, 0);
-	let music: Phaser.Sound.BaseSound;
-	music = this.sound.add('spinning_rat_power', { loop: true});
-	//music.play();
+	  let music: Phaser.Sound.BaseSound;
+	  music = this.sound.add('spinning_rat_power', { loop: true});
+	  //music.play();
+    var player = this.add.sprite(300, 300, 'player_body');
+    this.anims.create({
+      key: 'player_body_idle_top',
+      frames: this.anims.generateFrameNumbers('player_body', { start: 64, end: 67 }),
+      frameRate: 4,
+      repeat: -1
+    });
+    this.anims.create({
+      key: 'player_body_run_top',
+      frames: this.anims.generateFrameNumbers('player_body', { start: 0, end: 3 }),
+      frameRate: 4,
+      repeat: -1
+    });
+    player.play('player_body_idle_top');
+    // let playerTest: PlayerEntity = new PlayerEntity(this);
   }
 
   update() {

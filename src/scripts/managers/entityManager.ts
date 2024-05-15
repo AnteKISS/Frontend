@@ -1,5 +1,8 @@
+import { ActiveEntity } from "../entities/activeEntity";
+import { InactiveEntity } from "../entities/inactiveEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import { MonsterEntity } from "../entities/monsterEntity";
+import { BaseEntity } from "../entities/baseEntity";
 import { MonsterFactory } from "../factories/monsterFactory";
 import NotImplementedError from "../errors/notImplementedError";
 

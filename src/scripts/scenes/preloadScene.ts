@@ -15,20 +15,32 @@ export default class PreloadScene extends Phaser.Scene {
     // this.load.spritesheet('player_body_bottom_right_idle', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128, startFrame: 1, endFrame: 4 });
     // this.load.spritesheet('player_body_bottom_idle', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128, startFrame: 1, endFrame: 4 });
     // this.load.spritesheet('player_body_bottom_left_idle', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128, startFrame: 1, endFrame: 4 });
+    
+    this.load.spritesheet('player_body', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128 });
+    let leftOrientationRow: number = 0;
+    let topLeftOrientationRow: number = 1;
+    let topOrientationRow: number = 2;
+    let topRightOrientationRow: number = 3;
+    let rightOrientationRow: number = 4;
+    let bottomRightOrientationRow: number = 5;
+    let bottomOrientationRow: number = 6;
+    let bottomLeftOrientationRow: number = 7;
 
-    this.load.spritesheet('character', 'assets/character_spritesheet.png', { frameWidth: 32, frameHeight: 48 });
+    // player.play('player_body_idle_top');
+    // player.anims.play('player_body_idle_top');
+    // this.load.spritesheet('character', 'assets/character_spritesheet.png', { frameWidth: 32, frameHeight: 48 });
 
     // Checker comment loader la 2e ligne de la spritesheet pour le mouvement top left
     // Loader le blender file pis checker la duree de chaque anim pour la setter
-    this.anims.create({
-      key: 'walk',
-      frames: this.anims.generateFrameNumbers('character', { start: 0, end: 5 }),
-      frameRate: 10,
-      repeat: -1
-    });
+    // this.anims.create({
+    //   key: 'walk',
+    //   frames: this.anims.generateFrameNumbers('character', { start: 0, end: 5 }),
+    //   frameRate: 10,
+    //   repeat: -1
+    // });
 
-    var character = this.add.sprite(400, 300, 'character');
-    character.play('walk');
+    // var character = this.add.sprite(400, 300, 'character');
+    // character.play('walk');
 
     // this.load.image('sky', 'assets/sky.png');
     // this.load.image('ground', 'assets/platform.png');

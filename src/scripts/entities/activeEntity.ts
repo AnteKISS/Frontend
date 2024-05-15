@@ -1,3 +1,4 @@
+import { BaseEntity } from './baseEntity';
 import NotImplementedError from '../errors/notImplementedError';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
@@ -75,4 +76,5 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
   abstract update(deltaTime: number): void;
   abstract reset(): void;
+  abstract initializeAnimations(): void;
 }

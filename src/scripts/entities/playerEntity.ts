@@ -7,6 +7,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     super(scene);
     scene.add.existing(this);
     this.type = 'PlayerEntity';
+    // this.sprite = scene.get('player_body');
   }
 
   // Getters/Setters
@@ -19,6 +20,10 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
   public reset(): void {
     throw new NotImplementedError();
+  }
+
+  public initializeAnimations(): void {
+
   }
 
   attack(target: IFightable): void {

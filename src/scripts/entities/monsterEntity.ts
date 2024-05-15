@@ -23,6 +23,10 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     throw new NotImplementedError();
   }
 
+  public initializeAnimations(): void {
+
+  }
+
   attack(target: IFightable): void {
     throw new NotImplementedError();
   }

@@ -1,4 +1,4 @@
-abstract class BaseEntity extends Phaser.GameObjects.Sprite {
+export abstract class BaseEntity extends Phaser.GameObjects.Sprite {
 
   protected _id: number;
   protected _code: string;
@@ -66,4 +66,5 @@ abstract class BaseEntity extends Phaser.GameObjects.Sprite {
 
   abstract update(deltaTime: number): void;
   abstract reset(): void;
+  abstract initializeAnimations(): void;
 }

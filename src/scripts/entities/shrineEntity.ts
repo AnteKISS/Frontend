@@ -1,3 +1,4 @@
+import { InactiveEntity } from './inactiveEntity';
 import NotImplementedError from '../errors/notImplementedError';
 
 export class ShrineEntity extends InactiveEntity {
@@ -18,5 +19,9 @@ export class ShrineEntity extends InactiveEntity {
 
   public reset(): void {
     throw new NotImplementedError();
+  }
+
+  initializeAnimations(): void {
+    
   }
 }
