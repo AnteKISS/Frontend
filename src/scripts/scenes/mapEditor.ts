@@ -30,6 +30,8 @@ export default class MapEditor extends Phaser.Scene {
   tileDrawer : TileDrawer;
   playerPos : Phaser.Geom.Point;
   cameraOffsetPos : Phaser.Geom.Point;
+  cursorUnitPos : Phaser.Geom.Point;
+  cursorTilePos : Phaser.Geom.Point;
 
   // Editor states
   tileMode : TileMode;
@@ -42,6 +44,8 @@ export default class MapEditor extends Phaser.Scene {
   deleteText : Phaser.GameObjects.Text;
   swipeText : Phaser.GameObjects.Text;
   zoomText : Phaser.GameObjects.Text;
+  unitPosText : Phaser.GameObjects.Text;
+  tilePosText : Phaser.GameObjects.Text;
 
   // Input keys
   aKey : Phaser.Input.Keyboard.Key; // Move left
@@ -58,8 +62,6 @@ export default class MapEditor extends Phaser.Scene {
   }
 
   create() {
-    this.input.enabled = false;
-
     this.graphics = this.add.graphics();
     this.pointer = this.input.activePointer;
     this.centerPoint = new Phaser.Geom.Point(
@@ -83,6 +85,11 @@ export default class MapEditor extends Phaser.Scene {
     this.deleteText = this.add.text(60-HW, 140-HH, "Delete (X)", {color: '#000000', fontSize: '24px'});
     this.swipeText = this.add.text(60-HW, 170-HH, "Swipe (Space) : " + this.swipeMode, {color: '#000000', fontSize: '24px'});
     this.zoomText = this.add.text(30-HW, 220-HH, "Zoom In/Out (Scroll)", {color: '#000000', fontSize: '24px'});
+    this.unitPosText = this.add.text(HW-30, 30-HH, "Unit Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
+    this.tilePosText = this.add.text(HW-30, 60-HH, "Tile Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
+
+    this.unitPosText.setOrigin(1, 0);
+    this.tilePosText.setOrigin(1, 0);
 
     this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -97,22 +104,36 @@ export default class MapEditor extends Phaser.Scene {
     });
 
     this.input.on('wheel', (pointer, currentlyOver, dx, dy, dz, event) => {
-      console.log(dx, dy, dz);
       this.zoom(dy);
     });
 
     // Handle cameras to make only specific elements affected by zoom
-    this.cameras.main.ignore([this.moveText, this.tileModeText, this.addText, this.deleteText, this.swipeText, this.zoomText]);
+    this.cameras.main.ignore(
+      [
+        this.moveText,
+        this.tileModeText,
+        this.addText,
+        this.deleteText,
+        this.swipeText,
+        this.zoomText,
+        this.unitPosText,
+        this.tilePosText
+      ]
+    );
     this.uiCamera = this.cameras.add(0, 0, 1280, 720);
     this.uiCamera.ignore([this.graphics]);
     this.uiCamera.setScroll(-this.cameras.main.width / 2, -this.cameras.main.height / 2);
-
-    this.input.enabled = true;
   }
 
   update() {
     this.handleCameraMovement();
     this.checkTileModeUpdate();
+
+    this.cursorUnitPos = this.getCursorUnitPos();
+    this.cursorTilePos = TileSet.getTilePosFromUnitPos(this.cursorUnitPos);
+
+    this.unitPosText.setText("Unit Pos : " + Math.round(this.cursorUnitPos.x) + ", " + Math.round(this.cursorUnitPos.y));
+    this.tilePosText.setText("Tile Pos : " + this.cursorTilePos.x + ", " + this.cursorTilePos.y);
 
     this.cameras.main.setScroll(
       this.playerPos.x + this.cameraOffsetPos.x - this.cameras.main.width / 2,
@@ -196,8 +217,7 @@ export default class MapEditor extends Phaser.Scene {
 
     // Draw cursor tile
     const cursorColor = (this.tileMode === TileMode.Add ? 0x00FFFF : 0xFF0000);
-    const cursorTilePos = TileSet.getTilePosFromUnitPos(this.getCursorUnitPos());
-    const cursorTilePoints = Tile.getPointsFromTilePos(cursorTilePos);
+    const cursorTilePoints = Tile.getPointsFromTilePos(this.cursorTilePos);
     this.tileDrawer.drawDebugTilePos(cursorTilePoints, 3, cursorColor);
   }
 
