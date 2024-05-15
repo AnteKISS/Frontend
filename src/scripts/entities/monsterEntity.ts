@@ -27,6 +27,10 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
   }
 
+  updateOrientation(): void {
+    
+  }
+
   attack(target: IFightable): void {
     throw new NotImplementedError();
   }

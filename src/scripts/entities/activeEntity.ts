@@ -77,4 +77,5 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   abstract update(deltaTime: number): void;
   abstract reset(): void;
   abstract initializeAnimations(): void;
+  abstract updateOrientation(): void;
 }

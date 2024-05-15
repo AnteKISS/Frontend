@@ -6,13 +6,14 @@ import { PlayerEntity } from '../entities/playerEntity';
 
 export default class MainScene extends Phaser.Scene {
   fpsText
+  private playerTest: PlayerEntity;
 
   constructor() {
     super({ key: 'MainScene' });
   }
 
   create() {
-    new GameLogo(this, this.cameras.main.width / 2, this.cameras.main.height / 2);
+    new GameLogo(this, this.cameras.main.width / 2, this.cameras.main.height / 16);
     this.fpsText = new FpsText(this);
 
     // display the Phaser.VERSION
@@ -25,24 +26,26 @@ export default class MainScene extends Phaser.Scene {
 	  let music: Phaser.Sound.BaseSound;
 	  music = this.sound.add('spinning_rat_power', { loop: true});
 	  //music.play();
-    var player = this.add.sprite(300, 300, 'player_body');
-    this.anims.create({
-      key: 'player_body_idle_top',
-      frames: this.anims.generateFrameNumbers('player_body', { start: 64, end: 67 }),
-      frameRate: 4,
-      repeat: -1
-    });
-    this.anims.create({
-      key: 'player_body_run_top',
-      frames: this.anims.generateFrameNumbers('player_body', { start: 0, end: 3 }),
-      frameRate: 4,
-      repeat: -1
-    });
-    player.play('player_body_idle_top');
-    let playerTest: PlayerEntity = new PlayerEntity(this);
+    // var player = this.add.sprite(300, 300, 'player_body');
+    // this.anims.create({
+    //   key: 'player_body_idle_top',
+    //   frames: this.anims.generateFrameNumbers('player_body', { start: 64, end: 67 }),
+    //   frameRate: 4,
+    //   repeat: -1
+    // });
+    // this.anims.create({
+    //   key: 'player_body_run_top',
+    //   frames: this.anims.generateFrameNumbers('player_body', { start: 0, end: 3 }),
+    //   frameRate: 4,
+    //   repeat: -1
+    // });
+    // player.play('player_body_idle_top');
+    this.playerTest = new PlayerEntity(this);
+    this.playerTest.setPosition(this.cameras.main.width / 2, this.cameras.main.height / 2);
   }
 
-  update() {
+  update(time, deltaTime) {
     this.fpsText.update();
+    this.playerTest.update(deltaTime);
   }
 }

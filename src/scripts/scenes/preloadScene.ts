@@ -10,15 +10,6 @@ export default class PreloadScene extends Phaser.Scene {
     
     this.initializeSpritesheets();
 
-    // let leftOrientationRow: number = 0;
-    // let topLeftOrientationRow: number = 1;
-    // let topOrientationRow: number = 2;
-    // let topRightOrientationRow: number = 3;
-    // let rightOrientationRow: number = 4;
-    // let bottomRightOrientationRow: number = 5;
-    // let bottomOrientationRow: number = 6;
-    // let bottomLeftOrientationRow: number = 7;
-
     // player.play('player_body_idle_top');
     // player.anims.play('player_body_idle_top');
     // this.load.spritesheet('character', 'assets/character_spritesheet.png', { frameWidth: 32, frameHeight: 48 });
