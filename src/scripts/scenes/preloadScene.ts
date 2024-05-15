@@ -7,24 +7,17 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('game-logo', 'assets/img/rat_474x278.png');
 	  this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
 	  this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');
-    // this.load.spritesheet('player_body_left_idle', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128, startFrame: 1, endFrame: 4 });
-    // this.load.spritesheet('player_body_top_left_idle', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128, startFrame: 1, endFrame: 4 });
-    // this.load.spritesheet('player_body_top_idle', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128, startFrame: 1, endFrame: 4 });
-    // this.load.spritesheet('player_body_top_right_idle', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128, startFrame: 1, endFrame: 4 });
-    // this.load.spritesheet('player_body_right_idle', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128, startFrame: 1, endFrame: 4 });
-    // this.load.spritesheet('player_body_bottom_right_idle', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128, startFrame: 1, endFrame: 4 });
-    // this.load.spritesheet('player_body_bottom_idle', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128, startFrame: 1, endFrame: 4 });
-    // this.load.spritesheet('player_body_bottom_left_idle', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128, startFrame: 1, endFrame: 4 });
     
-    this.load.spritesheet('player_body', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128 });
-    let leftOrientationRow: number = 0;
-    let topLeftOrientationRow: number = 1;
-    let topOrientationRow: number = 2;
-    let topRightOrientationRow: number = 3;
-    let rightOrientationRow: number = 4;
-    let bottomRightOrientationRow: number = 5;
-    let bottomOrientationRow: number = 6;
-    let bottomLeftOrientationRow: number = 7;
+    this.initializeSpritesheets();
+
+    // let leftOrientationRow: number = 0;
+    // let topLeftOrientationRow: number = 1;
+    // let topOrientationRow: number = 2;
+    // let topRightOrientationRow: number = 3;
+    // let rightOrientationRow: number = 4;
+    // let bottomRightOrientationRow: number = 5;
+    // let bottomOrientationRow: number = 6;
+    // let bottomLeftOrientationRow: number = 7;
 
     // player.play('player_body_idle_top');
     // player.anims.play('player_body_idle_top');
@@ -68,5 +61,28 @@ export default class PreloadScene extends Phaser.Scene {
     //     this.scene.add('MainScene', mainScene.default, true)
     //   })
     // else console.log('The mainScene class will not even be loaded by the browser')
+  }
+
+  initializeSpritesheets(): void {
+    // TODO: Load all spritesheets dynamically within the sprites folder?
+    this.load.spritesheet('player_body', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_buckler', 'assets/sprites/player/buckler.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_clothes', 'assets/sprites/player/clothes.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_dagger', 'assets/sprites/player/dagger.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_greatbow', 'assets/sprites/player/greatbow.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_greatstaff', 'assets/sprites/player/greatstaff.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_greatsword', 'assets/sprites/player/greatsword.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_leather_armor', 'assets/sprites/player/leather_armor.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_longbow', 'assets/sprites/player/longbow.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_male_head1', 'assets/sprites/player/male_head1.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_male_head2', 'assets/sprites/player/male_head2.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_male_head3', 'assets/sprites/player/male_head3.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_rod', 'assets/sprites/player/rod.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_shield', 'assets/sprites/player/shield.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_shortbow', 'assets/sprites/player/shortbow.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_shortsword', 'assets/sprites/player/shortsword.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_slingshot', 'assets/sprites/player/slingshot.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_staff', 'assets/sprites/player/staff.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('player_wand', 'assets/sprites/player/wand.png', { frameWidth: 128, frameHeight: 128 });
   }
 }

@@ -7,7 +7,9 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     super(scene);
     scene.add.existing(this);
     this.type = 'PlayerEntity';
+    // scene.load.spritesheet('player_body', 'assets/sprites/player_body.png', { frameWidth: 32, frameHeight: 32 });
     // this.sprite = scene.get('player_body');
+    this.sprite = scene.game.textures.get('player_body');
   }
 
   // Getters/Setters

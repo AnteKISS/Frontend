@@ -39,7 +39,7 @@ export default class MainScene extends Phaser.Scene {
       repeat: -1
     });
     player.play('player_body_idle_top');
-    // let playerTest: PlayerEntity = new PlayerEntity(this);
+    let playerTest: PlayerEntity = new PlayerEntity(this);
   }
 
   update() {
