@@ -5,6 +5,21 @@ export default class PreloadScene extends Phaser.Scene {
 
   preload() {
     this.load.image('game-logo', 'assets/img/rat_474x278.png');
+    this.load.image('sphereTexture', 'assets/gui/infobars/itsmars_orb_fill.png');
+    this.load.image('bigContour', 'assets/gui/infobars/itsmars_orb_back1.png');
+    this.load.image('fillTexture', 'assets/gui/infobars/itsmars_scroll_fill.png' );
+    this.load.image('contour', 'assets/gui/infobars/itsmars_orb_border.png');
+    this.load.image('shadow', 'assets/gui/infobars/itsmars_orb_shadow.png');
+    this.load.image('highlight', 'assets/gui/infobars/itsmars_orb_highlight.png');
+    this.load.image('spellBar', 'assets/gui/infobars/ManaPanel.png');
+    this.load.image('spellSlot', 'assets/gui/infobars/52x52 SpellSlotBorder.png');
+    this.load.image('attack', 'assets/gui/icons/28.png');
+    this.load.image('expFill', 'assets/gui/infobars/itsmars_exp_fill.png');
+    this.load.image('expBack', 'assets/gui/infobars/itsmars_exp_back.png');
+    this.load.image('expHighlight', 'assets/gui/infobars/itsmars_exp_highlight.png');
+    this.load.image('expShadow', 'assets/gui/infobars/itsmars_exp_shadow.png');
+    this.load.image('leftInfoBar', 'assets/gui/infobars/HealthPanel.png');
+
 	this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
 	this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');
   }
