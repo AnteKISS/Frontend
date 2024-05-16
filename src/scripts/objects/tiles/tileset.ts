@@ -1,5 +1,14 @@
 import Tile from './tile'
 
+interface TileJson {
+  x: number
+  y: number
+}
+
+interface TileSetJson {
+  tiles: TileJson[]
+}
+
 export default class TileSet {
   tiles : Map<String, Tile>
 
@@ -46,6 +55,31 @@ export default class TileSet {
     }
 
     return tileList;
+  }
+
+  public exportToJson() : TileSetJson {
+    let tileSetJson : TileSetJson = {
+      tiles: []
+    };
+
+    for (const tile of this.tiles.values()) {
+      tileSetJson.tiles.push({
+        x: tile.pos.x,
+        y: tile.pos.y
+      });
+    }
+
+    return tileSetJson;
+  }
+
+  public importJson(tileSetJson: TileSetJson) {
+    this.tiles.clear();
+
+    for (const tileJson of tileSetJson.tiles) {
+      const TILE = new Tile(tileJson.x, tileJson.y);
+      const TILE_HASH = Tile.getHash(TILE.pos);
+      this.tiles.set(TILE_HASH, TILE);
+    }
   }
 
   public static getTilePosFromUnitPos(unitPos: Phaser.Geom.Point) : Phaser.Geom.Point {
