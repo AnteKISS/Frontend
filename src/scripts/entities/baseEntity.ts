@@ -1,17 +1,16 @@
 import { EntityOrientation } from '../enums/entityOrientation';
 
-export abstract class BaseEntity extends Phaser.GameObjects.Sprite {
+export abstract class BaseEntity extends Phaser.GameObjects.Container {
 
   protected _id: number;
   protected _code: string;
-  protected _sprite: string;
-  protected _position: MapCoordinateEntity;
+  // protected _position: MapCoordinateEntity;
   protected _orientationOld: EntityOrientation = EntityOrientation.DOWN;
   protected _orientationNew: EntityOrientation = EntityOrientation.DOWN;
   protected _isResetReady: boolean = false;
    
   constructor(scene) {
-    super(scene, 0, 0, '');
+    super(scene, 0, 0);
     scene.add.existing(this);
     this.type = 'BaseEntity';
   }
@@ -33,22 +32,13 @@ export abstract class BaseEntity extends Phaser.GameObjects.Sprite {
     this._code = v;
   }
 
-  public get sprite() : string {
-    return this._sprite;
-  }
+  // public get position(): MapCoordinateEntity {
+  //   return this._position;
+  // }
 
-  public set sprite(v: string) {
-    this._sprite = v;
-    this.setTexture(this._sprite);
-  }
-
-  public get position(): MapCoordinateEntity {
-    return this._position;
-  }
-
-  public set position(v: MapCoordinateEntity) {
-    this._position = v;
-  }
+  // public set position(v: MapCoordinateEntity) {
+  //   this._position = v;
+  // }
 
   public get orientation(): EntityOrientation {
     return this._orientationNew;

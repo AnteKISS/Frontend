@@ -26,10 +26,10 @@ export class AnimationManager {
 
   }
 
-  public static createAnimations(entity: Phaser.GameObjects.Sprite, animationConfig: any): void {
+  public static createAnimations(container: Phaser.GameObjects.Container, animationConfig: any): void {
     // assert(entity, 'Entity is not set for AnimationManager');
     // assert(entity.scene, 'Scene is not set for Entity');
-    console.log('Creating animations for entity:', entity);
+    console.log('Creating animations for container:', container);
     console.log('Animation config:', animationConfig);
     for (const action in animationConfig) {
       const frames: any = animationConfig[action].frames;
@@ -41,9 +41,9 @@ export class AnimationManager {
           console.log('Creating animation:', frameKey);
           // const frameKey = `${entity.type}-${action}-${sheet}`;
 
-          entity.anims.create({
+          container.scene.anims.create({
               key: frameKey,
-              frames: entity.scene.anims.generateFrameNumbers(sheet, { start, end }),
+              frames: container.scene.anims.generateFrameNumbers(sheet, { start, end }),
               frameRate: frameRate,
               repeat: -1
           });

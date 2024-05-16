@@ -33,15 +33,30 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   readonly bowAttackAnimationEndFrame = 31;
 
   private _pointerDown: boolean = false;
+  headSprite: any;
+  bodySprite: any;
+  bowSprite: any;
 
   constructor(scene) {
     super(scene);
     scene.add.existing(this);
     this.type = 'PlayerEntity';
-    this.sprite = scene.game.textures.get('player_body');
+    // this.sprite = scene.game.textures.get('player_body');
+    this.headSprite = scene.add.sprite(0, 0, 'headTexture');
+    this.bodySprite = scene.add.sprite(0, 0, 'bodyTexture');
+    this.bowSprite = scene.add.sprite(0, 0, 'bowTexture');
+    this.add(this.headSprite);
+    this.add(this.bodySprite);
+    this.add(this.bowSprite);
     this.initializeAnimations();
-    this.anims.play('BOWATTACK_RIGHT_LONGBOW');
-    this.anims.play('BOWATTACK_RIGHT_STEEL_ARMOR');
+
+    this.headSprite.play('BOWATTACK_RIGHT_MALE_HEAD2');
+    this.bodySprite.play('BOWATTACK_RIGHT_STEEL_ARMOR');
+    this.bowSprite.play('BOWATTACK_RIGHT_LONGBOW');
+    // Add the container to the scene
+    scene.add.existing(this);
+    // this.anims.play('BOWATTACK_RIGHT_LONGBOW');
+    // this.anims.play('BOWATTACK_RIGHT_STEEL_ARMOR');
     //`${action}-${getOrientationString(orientation)}-${sheet}`;
     // this.play('idle-DOWN-steel_armor');
     // this.play('player_steel_armor_idle_down');
