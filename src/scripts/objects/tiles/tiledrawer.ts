@@ -10,7 +10,7 @@ export default class TileDrawer {
 
   public drawDebugTileList(tiles: Iterable<Tile>, lineWidth: number, lineColor: number) {
     for (const tile of tiles) {
-      const points = Tile.getPointsFromTilePos(tile.pos);
+      const points = Tile.getPointsFromTilePos(tile.x, tile.y);
       this.drawDebugTilePos(points, lineWidth, lineColor);
     }
   }

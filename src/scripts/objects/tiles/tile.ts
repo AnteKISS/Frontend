@@ -6,27 +6,27 @@ export default class Tile {
   static readonly HALF_WIDTH : number = this.WIDTH / 2;
   static readonly HALF_HEIGHT : number = this.HEIGHT / 2;
 
-  pos: Phaser.Geom.Point;
+  x: number;
+  y: number;
 
-  constructor(tx: number, ty: number) {
-    this.pos = new Phaser.Geom.Point(tx, ty);
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
   }
 
-  public static getPointsFromTilePos(tilePos: Phaser.Geom.Point) : Phaser.Geom.Point[] {
-    const unitPos = new Phaser.Geom.Point(
-      (tilePos.x * Tile.HALF_WIDTH + tilePos.y * Tile.HALF_WIDTH),
-      (tilePos.x * Tile.HALF_HEIGHT - tilePos.y * Tile.HALF_HEIGHT)
-    );
+  public static getPointsFromTilePos(x: number, y: number) : Phaser.Geom.Point[] {
+    const UNIT_X = x * Tile.HALF_WIDTH + y * Tile.HALF_WIDTH;
+    const UNIT_Y = x * Tile.HALF_HEIGHT - y * Tile.HALF_HEIGHT;
 
     return [
-      new Phaser.Geom.Point(unitPos.x, unitPos.y - Tile.HALF_HEIGHT),
-      new Phaser.Geom.Point(unitPos.x + Tile.HALF_WIDTH, unitPos.y),
-      new Phaser.Geom.Point(unitPos.x, unitPos.y + Tile.HALF_HEIGHT),
-      new Phaser.Geom.Point(unitPos.x - Tile.HALF_WIDTH, unitPos.y),
+      new Phaser.Geom.Point(UNIT_X, UNIT_Y - Tile.HALF_HEIGHT),
+      new Phaser.Geom.Point(UNIT_X + Tile.HALF_WIDTH, UNIT_Y),
+      new Phaser.Geom.Point(UNIT_X, UNIT_Y + Tile.HALF_HEIGHT),
+      new Phaser.Geom.Point(UNIT_X - Tile.HALF_WIDTH, UNIT_Y),
     ];
   }
 
-  public static getHash(tilePos: Phaser.Geom.Point) : String {
-    return tilePos.x.toString() + "," + tilePos.y.toString();
+  public static getHash(x: number, y: number) : String {
+    return x.toString() + "," + y.toString();
   }
 }

@@ -79,11 +79,11 @@ export default class MainScene extends Phaser.Scene {
     this.graphics.fillCircle(this.playerPosTest.x, this.playerPosTest.y, 4);
 
     // Draw tiles
-    const proximityTiles = this.tileSet.getProximityTileList(playerTilePos, 8);
+    const proximityTiles = this.tileSet.getProximityTileList(playerTilePos.x, playerTilePos.y, 8);
     this.tileDrawer.drawDebugTileList(proximityTiles, 2, 0x0000FF);
 
     // Draw player tile
-    const points = Tile.getPointsFromTilePos(playerTilePos);
+    const points = Tile.getPointsFromTilePos(playerTilePos.x, playerTilePos.y);
     this.tileDrawer.drawDebugTilePos(points, 3, 0xFF0000);
 
     // Draw cursor tile
@@ -92,7 +92,7 @@ export default class MainScene extends Phaser.Scene {
       this.pointer.y - this.centerPoint.y + this.playerPosTest.y
     );
     const cursorTilePos = TileSet.getTilePosFromUnitPos(cursorPos)
-    const cursorTilePoints = Tile.getPointsFromTilePos(cursorTilePos);
+    const cursorTilePoints = Tile.getPointsFromTilePos(cursorTilePos.x, cursorTilePos.y);
     this.tileDrawer.drawDebugTilePos(cursorTilePoints, 3, 0xFFFF00);
   }
 }

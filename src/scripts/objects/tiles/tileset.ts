@@ -18,38 +18,35 @@ export default class TileSet {
     for (let i = -size; i <= size; i++) {
       for (let j = -size; j <= size; j++) {
         let tile = new Tile(i, j);
-        this.tiles.set(Tile.getHash(tile.pos), tile);
+        this.tiles.set(Tile.getHash(tile.x, tile.y), tile);
       }
     }
   }
 
-  public addTile(tilePos: Phaser.Geom.Point) {
-    const HASH : String = Tile.getHash(tilePos);
+  public addTile(x: number, y: number) {
+    const HASH : String = Tile.getHash(x, y);
     if (this.tiles.get(HASH) === undefined)
-      this.tiles.set(HASH, new Tile(tilePos.x, tilePos.y))
+      this.tiles.set(HASH, new Tile(x, y))
   }
 
-  public deleteTile(tilePos: Phaser.Geom.Point) {
-    const HASH : String = Tile.getHash(tilePos);
+  public deleteTile(x: number, y: number) {
+    const HASH : String = Tile.getHash(x, y);
     if (this.tiles.get(HASH) !== undefined)
       this.tiles.delete(HASH);
   }
 
-  public getProximityTileList(tilePos: Phaser.Geom.Point, proximity: number) : Tile[] {
+  public getProximityTileList(x: number, y: number, proximity: number) : Tile[] {
     const tileList : Tile[] = [];
-    const point : Phaser.Geom.Point = new Phaser.Geom.Point;
     let tile : Tile | undefined;
     const P2 : number = proximity * proximity;
 
     // Select tiles in a circle, column by column
     // Algorithm used: https://stackoverflow.com/a/14036626
-    for (let x = tilePos.x - proximity; x <= tilePos.x + proximity; x++) {
-      point.x = x;
-      const X2 : number = Math.pow((tilePos.x - x), 2);
+    for (let cx = x - proximity; cx <= x + proximity; cx++) {
+      const X2 : number = Math.pow((x - cx), 2);
       const Y_DIST : number = Math.floor(Math.sqrt( P2 - X2 ));
-      for (let y = tilePos.y - Y_DIST; y <= tilePos.y + Y_DIST; y++) {
-        point.y = y;
-        tile = this.tiles.get(Tile.getHash(point));
+      for (let cy = y - Y_DIST; cy <= y + Y_DIST; cy++) {
+        tile = this.tiles.get(Tile.getHash(cx, cy));
         if (tile) tileList.push(tile);
       }
     }
@@ -64,8 +61,8 @@ export default class TileSet {
 
     for (const tile of this.tiles.values()) {
       tileSetJson.tiles.push({
-        x: tile.pos.x,
-        y: tile.pos.y
+        x: tile.x,
+        y: tile.y
       });
     }
 
@@ -77,7 +74,7 @@ export default class TileSet {
 
     for (const tileJson of tileSetJson.tiles) {
       const TILE = new Tile(tileJson.x, tileJson.y);
-      const TILE_HASH = Tile.getHash(TILE.pos);
+      const TILE_HASH = Tile.getHash(TILE.x, TILE.y);
       this.tiles.set(TILE_HASH, TILE);
     }
   }

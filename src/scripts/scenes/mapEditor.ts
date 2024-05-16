@@ -199,8 +199,8 @@ export default class MapEditor extends Phaser.Scene {
   private tileModeClick() {
     const cursorTilePos = TileSet.getTilePosFromUnitPos(this.getCursorUnitPos());
 
-    if      (this.tileMode === TileMode.Add)      this.tileSet.addTile(cursorTilePos);
-    else if (this.tileMode === TileMode.Delete)   this.tileSet.deleteTile(cursorTilePos);
+    if      (this.tileMode === TileMode.Add)      this.tileSet.addTile(cursorTilePos.x, cursorTilePos.y);
+    else if (this.tileMode === TileMode.Delete)   this.tileSet.deleteTile(cursorTilePos.x, cursorTilePos.y);
   }
 
   private zoom(dy : number) {
@@ -223,12 +223,12 @@ export default class MapEditor extends Phaser.Scene {
     this.tileDrawer.drawDebugTileList(this.tileSet.tiles.values(), 2, 0x0000FF);
 
     // Draw player tile
-    const points = Tile.getPointsFromTilePos(playerTilePos);
+    const points = Tile.getPointsFromTilePos(playerTilePos.x, playerTilePos.y);
     this.tileDrawer.drawDebugTilePos(points, 3, 0xFF0000);
 
     // Draw cursor tile
     const cursorColor = (this.tileMode === TileMode.Add ? 0x00FFFF : 0xFF0000);
-    const cursorTilePoints = Tile.getPointsFromTilePos(this.cursorTilePos);
+    const cursorTilePoints = Tile.getPointsFromTilePos(this.cursorTilePos.x, this.cursorTilePos.y);
     this.tileDrawer.drawDebugTilePos(cursorTilePoints, 3, cursorColor);
   }
 
