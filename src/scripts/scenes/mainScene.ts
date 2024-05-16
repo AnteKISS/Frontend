@@ -5,6 +5,7 @@ import TileDrawer from '../objects/tiles/tiledrawer'
 import TileSet from '../objects/tiles/tileset'
 
 export default class MainScene extends Phaser.Scene {
+  uiCamera : Phaser.Cameras.Scene2D.Camera;
   fpsText : FpsText;
   versionText : Phaser.GameObjects.Text
   tileSet : TileSet;
@@ -32,7 +33,7 @@ export default class MainScene extends Phaser.Scene {
       this.cameras.main.height / 2
     );
     this.mapEditorButton = this.add
-      .text(0, 0, 'Map Editor (Click me!)', {
+      .text(30, 670, 'Map Editor (Click me!)', {
         color: '#000000',
         fontSize: '24px'
       })
@@ -41,7 +42,7 @@ export default class MainScene extends Phaser.Scene {
 
     // display the Phaser.VERSION
     this.versionText = this.add
-      .text(0, 0, `Phaser v${Phaser.VERSION}`, {
+      .text(1250, 30, `Phaser v${Phaser.VERSION}`, {
         color: '#000000',
         fontSize: '24px'
       })
@@ -50,6 +51,15 @@ export default class MainScene extends Phaser.Scene {
     // let music: Phaser.Sound.BaseSound;
     // music = this.sound.add('spinning_rat_power', { loop: true});
     // music.play();
+    this.cameras.main.ignore(
+      [
+        this.fpsText,
+        this.versionText,
+        this.mapEditorButton
+      ]
+    );
+    this.uiCamera = this.cameras.add(0, 0, 1280, 720);
+    this.uiCamera.ignore([this.graphics]);
   }
 
   update() {
@@ -57,10 +67,6 @@ export default class MainScene extends Phaser.Scene {
       this.playerPosTest.x - this.cameras.main.width / 2,
       this.playerPosTest.y - this.cameras.main.height / 2
     );
-
-    this.fpsText.setPosition(this.cameras.main.scrollX + 30, this.cameras.main.scrollY + 20);
-    this.versionText.setPosition(this.cameras.main.scrollX + 1250, this.cameras.main.scrollY + 20);
-    this.mapEditorButton.setPosition(this.cameras.main.scrollX + 30, this.cameras.main.scrollY + this.cameras.main.height - 50);
 
     this.fpsText.update();
     this.drawTileSet();

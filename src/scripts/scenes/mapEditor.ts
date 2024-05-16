@@ -83,17 +83,15 @@ export default class MapEditor extends Phaser.Scene {
     this.tileMode = TileMode.Add;
     this.swipeMode = SwipeMode.Off;
 
-    const HW = 640; // Half cam width
-    const HH = 360; // Half cam height
-    this.moveText = this.add.text(30-HW, 30-HH, "Move (WASD)", {color: '#000000', fontSize: '24px'});
-    this.moveFasterText = this.add.text(30-HW, 60-HH, "Move Faster (Hold Shift)", {color: '#000000', fontSize: '24px'});
-    this.tileModeText = this.add.text(30-HW, 110-HH, "TileMode : " + this.tileMode, {color: '#000000', fontSize: '24px'});
-    this.addText = this.add.text(60-HW, 140-HH, "Add (Z)", {color: '#000000', fontSize: '24px'});
-    this.deleteText = this.add.text(60-HW, 170-HH, "Delete (X)", {color: '#000000', fontSize: '24px'});
-    this.swipeText = this.add.text(60-HW, 200-HH, "Swipe (Space) : " + this.swipeMode, {color: '#000000', fontSize: '24px'});
-    this.zoomText = this.add.text(30-HW, 250-HH, "Zoom In/Out (Scroll)", {color: '#000000', fontSize: '24px'});
-    this.unitPosText = this.add.text(HW-30, 30-HH, "Unit Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
-    this.tilePosText = this.add.text(HW-30, 60-HH, "Tile Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
+    this.moveText = this.add.text(30, 30, "Move (WASD)", {color: '#000000', fontSize: '24px'});
+    this.moveFasterText = this.add.text(30, 60, "Move Faster (Hold Shift)", {color: '#000000', fontSize: '24px'});
+    this.tileModeText = this.add.text(30, 110, "TileMode : " + this.tileMode, {color: '#000000', fontSize: '24px'});
+    this.addText = this.add.text(60, 140, "Add (Z)", {color: '#000000', fontSize: '24px'});
+    this.deleteText = this.add.text(60, 170, "Delete (X)", {color: '#000000', fontSize: '24px'});
+    this.swipeText = this.add.text(60, 200, "Swipe (Space) : " + this.swipeMode, {color: '#000000', fontSize: '24px'});
+    this.zoomText = this.add.text(30, 250, "Zoom In/Out (Scroll)", {color: '#000000', fontSize: '24px'});
+    this.unitPosText = this.add.text(1250, 30, "Unit Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
+    this.tilePosText = this.add.text(1250, 60, "Tile Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
 
     this.unitPosText.setOrigin(1, 0);
     this.tilePosText.setOrigin(1, 0);
@@ -131,7 +129,6 @@ export default class MapEditor extends Phaser.Scene {
     );
     this.uiCamera = this.cameras.add(0, 0, 1280, 720);
     this.uiCamera.ignore([this.graphics]);
-    this.uiCamera.setScroll(-this.cameras.main.width / 2, -this.cameras.main.height / 2);
   }
 
   update() {
