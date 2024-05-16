@@ -15,6 +15,7 @@ enum SwipeMode {
 
 export default class MapEditor extends Phaser.Scene {
   static readonly MOVE_CAMERA_SPEED = 10;
+  static readonly MOVE_FASTER_MULTIPLIER = 2;
   static readonly ZOOM_SPEED = 1;
   static readonly MIN_ZOOM = 0.5;
   static readonly MAX_ZOOM = 2;
@@ -39,6 +40,7 @@ export default class MapEditor extends Phaser.Scene {
 
   // Texts
   moveText : Phaser.GameObjects.Text;
+  moveFasterText : Phaser.GameObjects.Text;
   tileModeText : Phaser.GameObjects.Text;
   addText : Phaser.GameObjects.Text;
   deleteText : Phaser.GameObjects.Text;
@@ -55,6 +57,7 @@ export default class MapEditor extends Phaser.Scene {
 
   zKey : Phaser.Input.Keyboard.Key; // TileMode Add
   xKey : Phaser.Input.Keyboard.Key; // TileMode Delete
+  shiftKey : Phaser.Input.Keyboard.Key; // Move faster
   spaceKey : Phaser.Input.Keyboard.Key; // Swipe
 
   constructor() {
@@ -80,11 +83,12 @@ export default class MapEditor extends Phaser.Scene {
     const HW = 640; // Half cam width
     const HH = 360; // Half cam height
     this.moveText = this.add.text(30-HW, 30-HH, "Move (WASD)", {color: '#000000', fontSize: '24px'});
-    this.tileModeText = this.add.text(30-HW, 80-HH, "TileMode : " + this.tileMode, {color: '#000000', fontSize: '24px'});
-    this.addText = this.add.text(60-HW, 110-HH, "Add (Z)", {color: '#000000', fontSize: '24px'});
-    this.deleteText = this.add.text(60-HW, 140-HH, "Delete (X)", {color: '#000000', fontSize: '24px'});
-    this.swipeText = this.add.text(60-HW, 170-HH, "Swipe (Space) : " + this.swipeMode, {color: '#000000', fontSize: '24px'});
-    this.zoomText = this.add.text(30-HW, 220-HH, "Zoom In/Out (Scroll)", {color: '#000000', fontSize: '24px'});
+    this.moveFasterText = this.add.text(30-HW, 60-HH, "Move Faster (Hold Shift)", {color: '#000000', fontSize: '24px'});
+    this.tileModeText = this.add.text(30-HW, 110-HH, "TileMode : " + this.tileMode, {color: '#000000', fontSize: '24px'});
+    this.addText = this.add.text(60-HW, 140-HH, "Add (Z)", {color: '#000000', fontSize: '24px'});
+    this.deleteText = this.add.text(60-HW, 170-HH, "Delete (X)", {color: '#000000', fontSize: '24px'});
+    this.swipeText = this.add.text(60-HW, 200-HH, "Swipe (Space) : " + this.swipeMode, {color: '#000000', fontSize: '24px'});
+    this.zoomText = this.add.text(30-HW, 250-HH, "Zoom In/Out (Scroll)", {color: '#000000', fontSize: '24px'});
     this.unitPosText = this.add.text(HW-30, 30-HH, "Unit Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
     this.tilePosText = this.add.text(HW-30, 60-HH, "Tile Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
 
@@ -97,6 +101,7 @@ export default class MapEditor extends Phaser.Scene {
     this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.zKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
     this.xKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
+    this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
     this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
     this.input.on('pointerdown', () => {
@@ -111,6 +116,7 @@ export default class MapEditor extends Phaser.Scene {
     this.cameras.main.ignore(
       [
         this.moveText,
+        this.moveFasterText,
         this.tileModeText,
         this.addText,
         this.deleteText,
@@ -149,24 +155,26 @@ export default class MapEditor extends Phaser.Scene {
   }
 
   private handleCameraMovement() {
-    // // Move camera left
+    const MOVE_SPEED = MapEditor.MOVE_CAMERA_SPEED * (this.shiftKey.isDown ? MapEditor.MOVE_FASTER_MULTIPLIER : 1);
+
+    // Move camera left
     if (this.aKey.isDown) {
-      this.cameraOffsetPos.x -= MapEditor.MOVE_CAMERA_SPEED;
+      this.cameraOffsetPos.x -= MOVE_SPEED;
     }
 
     // Move camera right
     if (this.dKey.isDown) {
-      this.cameraOffsetPos.x += MapEditor.MOVE_CAMERA_SPEED;
+      this.cameraOffsetPos.x += MOVE_SPEED;
     }
 
     // Move camera up
     if (this.wKey.isDown) {
-      this.cameraOffsetPos.y -= MapEditor.MOVE_CAMERA_SPEED;
+      this.cameraOffsetPos.y -= MOVE_SPEED;
     }
 
     // Move camera down
     if (this.sKey.isDown) {
-      this.cameraOffsetPos.y += MapEditor.MOVE_CAMERA_SPEED;
+      this.cameraOffsetPos.y += MOVE_SPEED;
     }
   }
 
