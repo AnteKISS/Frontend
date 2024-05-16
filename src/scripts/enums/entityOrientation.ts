@@ -10,3 +10,26 @@ export enum EntityOrientation {
   DOWN = 192,
   DOWN_LEFT = 224
 }
+
+export function getOrientationString(orientation: EntityOrientation): string {
+  switch (orientation) {
+    case EntityOrientation.LEFT:
+      return 'LEFT';
+    case EntityOrientation.UP_LEFT:
+      return 'UP_LEFT';
+    case EntityOrientation.UP:
+      return 'UP';
+    case EntityOrientation.UP_RIGHT:
+      return 'UP_RIGHT';
+    case EntityOrientation.RIGHT:
+      return 'RIGHT';
+    case EntityOrientation.DOWN_RIGHT:
+      return 'DOWN_RIGHT';
+    case EntityOrientation.DOWN:
+      return 'DOWN';
+    case EntityOrientation.DOWN_LEFT:
+      return 'DOWN_LEFT';
+    default:
+      return '';
+  }
+}
