@@ -39,6 +39,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "node": "^20.13.1",
     "phaser": "^3.55.2"
   },
   "devDependencies": {
