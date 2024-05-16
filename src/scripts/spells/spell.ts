@@ -13,8 +13,6 @@ export default class Spell
 
     castType: CastType;
 
-    scene: Phaser.Scene;
-
     private timeSinceLastCast: number = 0;
     private remainingCooldown: number = 0;
 
@@ -27,7 +25,6 @@ export default class Spell
         this.spellIcon = spellIcon;
         this.spellOwner = spellOwner;
         this.castType = castType;
-        this.scene = spellOwner.scene;
     }
 
     
@@ -80,9 +77,9 @@ export default class Spell
 
     private getPointerX(): number
     {
-        this.scene.input.setDefaultCursor('pointer');
+        this.spellOwner.scene.input.setDefaultCursor('pointer');
 
-        this.scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+        this.spellOwner.scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
         return pointer.x
         });
 
@@ -91,9 +88,9 @@ export default class Spell
 
     private getPointerY(): number
     {
-        this.scene.input.setDefaultCursor('pointer');
+        this.spellOwner.scene.input.setDefaultCursor('pointer');
 
-        this.scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+        this.spellOwner.scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
         return pointer.y;
         });
 

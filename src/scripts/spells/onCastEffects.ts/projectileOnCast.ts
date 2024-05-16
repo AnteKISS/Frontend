@@ -25,9 +25,9 @@ class ProjectileOnCast implements IOnCastEffect
         const dx = Math.cos(castDirection);
         const dy = Math.sin(castDirection);
 
-        this.spell.scene.physics.moveTo(projectile, this.spell.spellOwner.x + dx * this.spell.range, this.spell.spellOwner.y + dy * this.spell.range, this.projectileSpeed);
+        this.spell.spellOwner.scene.physics.moveTo(projectile, this.spell.spellOwner.x + dx * this.spell.range, this.spell.spellOwner.y + dy * this.spell.range, this.projectileSpeed);
 
-        this.spell.scene.time.delayedCall(this.spell.range / this.projectileSpeed * 1000, () => {
+        this.spell.spellOwner.scene.time.delayedCall(this.spell.range / this.projectileSpeed * 1000, () => {
             projectile.destroy();
         }, [], this);
     }
