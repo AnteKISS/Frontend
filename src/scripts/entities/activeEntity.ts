@@ -6,6 +6,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   protected _stats: ActiveEntityStats;
   protected _species: EntitySpecies;
   protected _destination: MapCoordinateEntity;
+  protected _isMoving: boolean = false;
   
   constructor(scene) {
     super(scene);
@@ -57,6 +58,10 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
   setMovementSpeed(speed: number): void {
     this.stats.movementSpeed = speed;
+  }
+
+  isMoving(): boolean {
+    return this._isMoving;
   }
 
   getSpeed(): number {

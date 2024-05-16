@@ -6,6 +6,7 @@ interface IMovable {
     setBaseMovementSpeed(speed: number): void;
     getMovementSpeed(): number;
     setMovementSpeed(speed: number): void;
+    isMoving(): boolean;
     getSpeed(): number;
     getGravity(): number;
     setGravity(gravity: number): void;

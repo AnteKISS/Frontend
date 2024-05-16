@@ -10,22 +10,6 @@ export default class PreloadScene extends Phaser.Scene {
     
     this.initializeSpritesheets();
 
-    // player.play('player_body_idle_top');
-    // player.anims.play('player_body_idle_top');
-    // this.load.spritesheet('character', 'assets/character_spritesheet.png', { frameWidth: 32, frameHeight: 48 });
-
-    // Checker comment loader la 2e ligne de la spritesheet pour le mouvement top left
-    // Loader le blender file pis checker la duree de chaque anim pour la setter
-    // this.anims.create({
-    //   key: 'walk',
-    //   frames: this.anims.generateFrameNumbers('character', { start: 0, end: 5 }),
-    //   frameRate: 10,
-    //   repeat: -1
-    // });
-
-    // var character = this.add.sprite(400, 300, 'character');
-    // character.play('walk');
-
     // this.load.image('sky', 'assets/sky.png');
     // this.load.image('ground', 'assets/platform.png');
     // this.load.image('star', 'assets/star.png');

@@ -5,8 +5,11 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
   protected _id: number;
   protected _code: string;
   // protected _position: MapCoordinateEntity;
-  protected _orientationOld: EntityOrientation = EntityOrientation.DOWN;
-  protected _orientationNew: EntityOrientation = EntityOrientation.DOWN;
+  protected _xOld: number = 0;
+  protected _yOld: number = 0;
+  protected _orientation: EntityOrientation = EntityOrientation.DOWN;
+  // protected _orientationOld: EntityOrientation = EntityOrientation.DOWN;
+  // protected _orientationNew: EntityOrientation = EntityOrientation.DOWN;
   protected _isResetReady: boolean = false;
    
   constructor(scene) {
@@ -41,12 +44,11 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
   // }
 
   public get orientation(): EntityOrientation {
-    return this._orientationNew;
+    return this._orientation;
   }
 
   public set orientation(v: EntityOrientation) {
-    this._orientationOld = this._orientationNew;
-    this._orientationNew = v;
+    this._orientation = v;
   }
 
   public get isResetReady(): boolean {

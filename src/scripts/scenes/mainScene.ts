@@ -26,20 +26,6 @@ export default class MainScene extends Phaser.Scene {
 	  let music: Phaser.Sound.BaseSound;
 	  music = this.sound.add('spinning_rat_power', { loop: true});
 	  //music.play();
-    // var player = this.add.sprite(300, 300, 'player_body');
-    // this.anims.create({
-    //   key: 'player_body_idle_top',
-    //   frames: this.anims.generateFrameNumbers('player_body', { start: 64, end: 67 }),
-    //   frameRate: 4,
-    //   repeat: -1
-    // });
-    // this.anims.create({
-    //   key: 'player_body_run_top',
-    //   frames: this.anims.generateFrameNumbers('player_body', { start: 0, end: 3 }),
-    //   frameRate: 4,
-    //   repeat: -1
-    // });
-    // player.play('player_body_idle_top');
     this.playerTest = new PlayerEntity(this);
     this.playerTest.setPosition(this.cameras.main.width / 2, this.cameras.main.height / 2);
   }
