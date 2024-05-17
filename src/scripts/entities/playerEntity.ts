@@ -42,6 +42,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.onPointerDown = this.onPointerDown.bind(this);
     scene.input.on('pointerdown', this.onPointerDown);
     scene.input.on('pointerup', this.onPointerUp);
+
+    this.stats.movementSpeed = 100;
   }
 
   // Getters/Setters
@@ -49,7 +51,18 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
   // Methods
   public update(deltaTime: number): void {
-    this.updateOrientation();
+    if ((this.positionX != this._destinationX) || (this.positionY != this._destinationY)) {
+      // TODO: Check if destination coords change between each update call
+      // so if it doesn't change, we move the same value that we moved last call
+      this.updateOrientation();
+      let deltaX: number = 0;
+      let deltaY: number = 0;
+      deltaX += this.stats.movementSpeed;
+      deltaY += this.stats.movementSpeed;
+      deltaX *= (Math.cos(this._orientation_degrees) * (deltaTime / 1000));
+      deltaY *= (Math.sin(this._orientation_degrees) * (deltaTime / 1000));
+      this.move(deltaX, deltaY);
+    }
   }
 
   public reset(): void {
@@ -57,36 +70,21 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   updateOrientation(): void {
-    if ((this.x == this._xOld) || (this.y == this._yOld)) {
-      return;
-    }
-    console.log("x", this.x);
-    console.log("y", this.y);
-    console.log("xo", this._xOld);
-    console.log("yo", this._yOld);
-    let pointerX: number = this.scene.game.input.mousePointer.x
-    let pointerY: number = this.scene.game.input.mousePointer.y
-
-    let angle_rad = Phaser.Math.Angle.Between(this.x, this.y, pointerX, pointerY);
-    let angle_degrees = Phaser.Math.RadToDeg(angle_rad);
-    // console.log('Pointer down');
-    // console.log(`Radians: ${angle_rad}, Degrees: ${angle_degrees}`);
-
-    if ((angle_degrees >= -22.5 && angle_degrees < 0) || (angle_degrees >= 0 && angle_degrees < 22.5)) {
+    if ((this._orientation_degrees >= -22.5 && this._orientation_degrees < 0) || (this._orientation_degrees >= 0 && this._orientation_degrees < 22.5)) {
       this.orientation = EntityOrientation.RIGHT;
-    } else if (angle_degrees >= 22.5 && angle_degrees < 67.5) {
+    } else if (this._orientation_degrees >= 22.5 && this._orientation_degrees < 67.5) {
       this.orientation = EntityOrientation.DOWN_RIGHT;
-    } else if (angle_degrees >= 67.5 && angle_degrees < 112.5) {
+    } else if (this._orientation_degrees >= 67.5 && this._orientation_degrees < 112.5) {
       this.orientation = EntityOrientation.DOWN;
-    } else if (angle_degrees >= 112.5 && angle_degrees < 157.5) {
+    } else if (this._orientation_degrees >= 112.5 && this._orientation_degrees < 157.5) {
       this.orientation = EntityOrientation.DOWN_LEFT;
-    } else if ((angle_degrees >= 157.5 && angle_degrees <= 180) || (angle_degrees >= -180 && angle_degrees < -157.5)) {
+    } else if ((this._orientation_degrees >= 157.5 && this._orientation_degrees <= 180) || (this._orientation_degrees >= -180 && this._orientation_degrees < -157.5)) {
       this.orientation = EntityOrientation.LEFT;
-    } else if (angle_degrees >= -157.5 && angle_degrees < -112.5) {
+    } else if (this._orientation_degrees >= -157.5 && this._orientation_degrees < -112.5) {
       this.orientation = EntityOrientation.UP_LEFT;
-    } else if (angle_degrees >= -112.5 && angle_degrees < -67.5) {
+    } else if (this._orientation_degrees >= -112.5 && this._orientation_degrees < -67.5) {
       this.orientation = EntityOrientation.UP;
-    } else if (angle_degrees >= -67.5 && angle_degrees < -22.5) {
+    } else if (this._orientation_degrees >= -67.5 && this._orientation_degrees < -22.5) {
       this.orientation = EntityOrientation.UP_RIGHT;
     }
     console.log("Orientation: ", this.orientation);
@@ -152,34 +150,12 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   // Event Handlers
   private onPointerDown(pointer: Phaser.Input.Pointer): void {
     this._pointerDown = true;
-    // let angle_rad = Phaser.Math.Angle.Between(this.x, this.y, pointer.x, pointer.y);
-    // let angle_degrees = Phaser.Math.RadToDeg(angle_rad);
-    // console.log('Pointer down');
-    // console.log(`Radians: ${angle_rad}, Degrees: ${angle_degrees}`);
-
-    // if ((angle_degrees >= -22.5 && angle_degrees < 0) || (angle_degrees >= 0 && angle_degrees < 22.5)) {
-    //   this.play('player_body_run_right');
-    // } else if (angle_degrees >= 22.5 && angle_degrees < 67.5) {
-    //     this.play('player_body_run_down_right');
-    // } else if (angle_degrees >= 67.5 && angle_degrees < 112.5) {
-    //     this.play('player_body_run_down');
-    // } else if (angle_degrees >= 112.5 && angle_degrees < 157.5) {
-    //     this.play('player_body_run_down_left');
-    // } else if ((angle_degrees >= 157.5 && angle_degrees <= 180) || (angle_degrees >= -180 && angle_degrees < -157.5)) {
-    //     this.play('player_body_run_left');
-    // } else if (angle_degrees >= -157.5 && angle_degrees < -112.5) {
-    //     this.play('player_body_run_up_left');
-    // } else if (angle_degrees >= -112.5 && angle_degrees < -67.5) {
-    //     this.play('player_body_run_up');
-    // } else if (angle_degrees >= -67.5 && angle_degrees < -22.5) {
-    //     this.play('player_body_run_up_right');
-    // }
+    this._destinationX = pointer.x;
+    this._destinationY = pointer.y;
+    this._orientation_degrees = Phaser.Math.Angle.Between(this.x, this.y, pointer.x, pointer.y);
   }
 
   private onPointerUp(pointer: Phaser.Input.Pointer): void {
-    // console.log('Pointer up');
-    // this.play('player_body_idle_down');
-    // this.play('player_steel_armor_idle_down');
     this._pointerDown = false;
   }
 

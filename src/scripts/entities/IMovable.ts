@@ -1,7 +1,8 @@
 interface IMovable {
-    move(coordinate: MapCoordinateEntity): void;
-    setDestination(coordinate: MapCoordinateEntity): void;
-    getDestination(): MapCoordinateEntity;
+    move(dx?: number, dy?: number): void;
+    setDestination(x?: number, y?: number): void;
+    getDestinationX(): number;
+    getDestinationY(): number;
     getBaseMovementSpeed(): number;
     setBaseMovementSpeed(speed: number): void;
     getMovementSpeed(): number;

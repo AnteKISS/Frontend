@@ -1,17 +1,21 @@
 import { BaseEntity } from './baseEntity';
 import NotImplementedError from '../errors/notImplementedError';
+import { ActiveEntityStats } from './activeEntityStats';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
   protected _stats: ActiveEntityStats;
   protected _species: EntitySpecies;
-  protected _destination: MapCoordinateEntity;
+  protected _destinationX: number;
+  protected _destinationY: number;
   protected _isMoving: boolean = false;
+  protected _orientation_degrees: number;
   
   constructor(scene) {
     super(scene);
     scene.add.existing(this);
     this.type = 'ActiveEntity';
+    this.stats = new ActiveEntityStats();
   }
 
   // Getters/Setters
@@ -31,17 +35,57 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this._species = v;
   }
 
+  public get positionX(): number {
+    return this._positionX;
+  }
+
+  public set positionX(v: number) {
+    this._positionX = v;
+    this._destinationX = v;
+    this.setX(v);
+  }
+
+  public get positionY(): number {
+    return this._positionY;
+  }
+
+  public set positionY(v: number) {
+    this._positionY = v;
+    this._destinationY = v;
+    this.setY(v);
+  }
+
   // Methods
-  move(coordinate: MapCoordinateEntity): void {
-    throw new NotImplementedError();
+  move(dx?: number, dy?: number): void {
+    // TODO: Call method for collision detection
+    this._isMoving = true;
+    this._positionXOld = this.positionX;
+    this._positionYOld = this.positionY;
+    if (dx) {
+      this._positionX += dx;
+      this.setX(this.x + dx);
+    }
+    if (dy) {
+      this._positionY += dy;
+      this.setY(this.y + dy);
+    }
   }
 
-  setDestination(coordinate: MapCoordinateEntity): void {
-    this._destination = coordinate;
+  setDestination(x?: number, y?: number): void {
+    if (x) {
+      this._destinationX = x;
+    }
+    if (y) {
+      this._destinationY = y;
+    }
   }
 
-  getDestination(): MapCoordinateEntity {
-    return this._destination;
+  getDestinationX(): number {
+    return this._destinationX;
+  }
+
+  getDestinationY(): number {
+    return this._destinationY;
   }
 
   getBaseMovementSpeed(): number {

@@ -4,12 +4,11 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
 
   protected _id: number;
   protected _code: string;
-  // protected _position: MapCoordinateEntity;
-  protected _xOld: number = 0;
-  protected _yOld: number = 0;
+  protected _positionX: number = 0;
+  protected _positionY: number = 0;
+  protected _positionXOld: number = 0;
+  protected _positionYOld: number = 0;
   protected _orientation: EntityOrientation = EntityOrientation.DOWN;
-  // protected _orientationOld: EntityOrientation = EntityOrientation.DOWN;
-  // protected _orientationNew: EntityOrientation = EntityOrientation.DOWN;
   protected _isResetReady: boolean = false;
    
   constructor(scene) {
@@ -35,13 +34,25 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
     this._code = v;
   }
 
-  // public get position(): MapCoordinateEntity {
-  //   return this._position;
-  // }
+  public get positionX(): number {
+    return this._positionX;
+  }
 
-  // public set position(v: MapCoordinateEntity) {
-  //   this._position = v;
-  // }
+  public set positionX(v: number) {
+    this._positionX = v;
+    this._positionXOld = v;
+    this.setX(v)
+  }
+
+  public get positionY(): number {
+    return this._positionY;
+  }
+
+  public set positionY(v: number) {
+    this._positionY = v;
+    this._positionYOld = v;
+    this.setY(v);
+  }
 
   public get orientation(): EntityOrientation {
     return this._orientation;
