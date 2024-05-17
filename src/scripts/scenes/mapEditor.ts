@@ -1,7 +1,7 @@
 import 'phaser'
-import Tile, { TileType } from '../objects/tiles/tile'
-import TileDrawer from '../objects/tiles/tiledrawer'
-import TileSet from '../objects/tiles/tileset'
+import Tile, { TileType } from '../objects/map/tile'
+import TileDrawer, { TileColor } from '../objects/map/tiledrawer'
+import TileSet from '../objects/map/tileset'
 
 enum TileMode {
   Add = "Add",
@@ -150,7 +150,9 @@ export default class MapEditor extends Phaser.Scene {
         this.swipeText,
         this.zoomText,
         this.unitPosText,
-        this.tilePosText
+        this.tilePosText,
+        this.floorTileButton,
+        this.transitionTileButton
       ]
     );
     this.uiCamera = this.cameras.add(0, 0, 1280, 720);
@@ -239,7 +241,7 @@ export default class MapEditor extends Phaser.Scene {
     this.graphics.clear();
 
     // Center point
-    this.graphics.fillStyle(0xFF0000, 1);
+    this.graphics.fillStyle(TileColor.Player, 1);
     this.graphics.fillCircle(this.playerPos.x, this.playerPos.y, 4);
 
     // Draw tiles
@@ -247,22 +249,22 @@ export default class MapEditor extends Phaser.Scene {
 
     // Draw player tile
     const points = Tile.getPointsFromTilePos(playerTilePos.x, playerTilePos.y);
-    this.tileDrawer.drawDebugTilePos(points, 3, 0xFF0000);
+    this.tileDrawer.drawDebugTilePos(points, TileColor.Player);
 
     // Draw cursor tile
     let cursorColor = 0x000000;
     if (this.tileMode === TileMode.Add) {
       if (this.tileType === TileType.Floor)
-        cursorColor = 0x00FFFF;
+        cursorColor = TileColor.Floor;
       else if (this.tileType === TileType.Transition)
-        cursorColor = 0xFFFF00;
+        cursorColor = TileColor.Transition;
     }
     else if (this.tileMode === TileMode.Delete) {
-        cursorColor = 0xFF0000;
+        cursorColor = TileColor.Delete;
     }
 
     const cursorTilePoints = Tile.getPointsFromTilePos(this.cursorTilePos.x, this.cursorTilePos.y);
-    this.tileDrawer.drawDebugTilePos(cursorTilePoints, 3, cursorColor);
+    this.tileDrawer.drawDebugTilePos(cursorTilePoints, cursorColor);
   }
 
   private getCursorUnitPos() : Phaser.Geom.Point {

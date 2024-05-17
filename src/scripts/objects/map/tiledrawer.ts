@@ -1,6 +1,14 @@
 import 'phaser'
 import Tile, { TileType } from './tile'
 
+export enum TileColor {
+  Floor = 0x0000FF,
+  Transition = 0xFFFF00,
+  Player = 0x00FF00,
+  Delete = 0xFF0000,
+  DefaultCursor = 0xFFFF00
+}
+
 export default class TileDrawer {
   graphics: Phaser.GameObjects.Graphics
 
@@ -13,16 +21,16 @@ export default class TileDrawer {
       const points = Tile.getPointsFromTilePos(tile.x, tile.y);
       let lineColor = 0x000000;
       switch (tile.type) {
-        case TileType.Floor:      lineColor = 0x0000FF; break;
-        case TileType.Transition: lineColor = 0xFFFF00; break;
+        case TileType.Floor:      lineColor = TileColor.Floor;       break;
+        case TileType.Transition: lineColor = TileColor.Transition;  break;
       }
-      this.drawDebugTilePos(points, lineWidth, lineColor);
+      this.drawDebugTilePos(points, lineColor);
     }
   }
 
-  public drawDebugTilePos(points: Phaser.Geom.Point[], lineWidth: number, lineColor: number) {
-    this.graphics.lineStyle(lineWidth, lineColor);
-    this.graphics.fillStyle(lineColor, 0.2);
+  public drawDebugTilePos(points: Phaser.Geom.Point[], lineColor: number) {
+    this.graphics.lineStyle(2, 0x000000);
+    this.graphics.fillStyle(lineColor, 0.5);
     this.graphics.beginPath();
 
     this.graphics.moveTo(points[0].x, points[0].y);

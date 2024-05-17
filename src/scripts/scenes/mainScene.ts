@@ -1,8 +1,8 @@
 import GameLogo from '../objects/gameLogo'
 import FpsText from '../objects/fpsText'
-import Tile from '../objects/tiles/tile'
-import TileDrawer from '../objects/tiles/tiledrawer'
-import TileSet from '../objects/tiles/tileset'
+import Tile from '../objects/map/tile'
+import TileDrawer, { TileColor } from '../objects/map/tiledrawer'
+import TileSet from '../objects/map/tileset'
 
 export default class MainScene extends Phaser.Scene {
   uiCamera : Phaser.Cameras.Scene2D.Camera;
@@ -81,7 +81,7 @@ export default class MainScene extends Phaser.Scene {
     this.graphics.clear();
 
     // Center point
-    this.graphics.fillStyle(0xFF0000, 1);
+    this.graphics.fillStyle(TileColor.Player, 1);
     this.graphics.fillCircle(this.playerPosTest.x, this.playerPosTest.y, 4);
 
     // Draw tiles
@@ -90,7 +90,7 @@ export default class MainScene extends Phaser.Scene {
 
     // Draw player tile
     const points = Tile.getPointsFromTilePos(playerTilePos.x, playerTilePos.y);
-    this.tileDrawer.drawDebugTilePos(points, 3, 0xFF0000);
+    this.tileDrawer.drawDebugTilePos(points, TileColor.Player);
 
     // Draw cursor tile
     const cursorPos = new Phaser.Geom.Point(
@@ -99,6 +99,6 @@ export default class MainScene extends Phaser.Scene {
     );
     const cursorTilePos = TileSet.getTilePosFromUnitPos(cursorPos)
     const cursorTilePoints = Tile.getPointsFromTilePos(cursorTilePos.x, cursorTilePos.y);
-    this.tileDrawer.drawDebugTilePos(cursorTilePoints, 3, 0xFFFF00);
+    this.tileDrawer.drawDebugTilePos(cursorTilePoints, TileColor.DefaultCursor);
   }
 }

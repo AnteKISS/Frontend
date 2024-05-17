@@ -1,4 +1,5 @@
 import 'phaser'
+import Transition from './transition'
 
 export enum TileType {
   Floor,
@@ -14,6 +15,7 @@ export default class Tile {
   x: number;
   y: number;
   type: TileType;
+  transition: Transition | undefined;
 
   constructor(x: number, y: number, type: TileType) {
     this.x = x;
