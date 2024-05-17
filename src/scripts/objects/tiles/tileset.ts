@@ -1,8 +1,9 @@
-import Tile from './tile'
+import Tile, {TileType} from './tile'
 
 interface TileJson {
   x: number
   y: number
+  type: TileType
 }
 
 interface TileSetJson {
@@ -17,16 +18,15 @@ export default class TileSet {
 
     for (let i = -size; i <= size; i++) {
       for (let j = -size; j <= size; j++) {
-        let tile = new Tile(i, j);
+        let tile = new Tile(i, j, TileType.Floor);
         this.tiles.set(Tile.getHash(tile.x, tile.y), tile);
       }
     }
   }
 
-  public addTile(x: number, y: number) {
+  public addTile(x: number, y: number, type: TileType) {
     const HASH : String = Tile.getHash(x, y);
-    if (this.tiles.get(HASH) === undefined)
-      this.tiles.set(HASH, new Tile(x, y))
+    this.tiles.set(HASH, new Tile(x, y, type))
   }
 
   public deleteTile(x: number, y: number) {
@@ -62,7 +62,8 @@ export default class TileSet {
     for (const tile of this.tiles.values()) {
       tileSetJson.tiles.push({
         x: tile.x,
-        y: tile.y
+        y: tile.y,
+        type: tile.type
       });
     }
 
@@ -73,7 +74,7 @@ export default class TileSet {
     this.tiles.clear();
 
     for (const tileJson of tileSetJson.tiles) {
-      const TILE = new Tile(tileJson.x, tileJson.y);
+      const TILE = new Tile(tileJson.x, tileJson.y, tileJson.type);
       const TILE_HASH = Tile.getHash(TILE.x, TILE.y);
       this.tiles.set(TILE_HASH, TILE);
     }

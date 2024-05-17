@@ -1,5 +1,10 @@
 import 'phaser'
 
+export enum TileType {
+  Floor,
+  Transition
+}
+
 export default class Tile {
   static readonly WIDTH : number = 100;
   static readonly HEIGHT : number = this.WIDTH / 2;
@@ -8,10 +13,12 @@ export default class Tile {
 
   x: number;
   y: number;
+  type: TileType;
 
-  constructor(x: number, y: number) {
+  constructor(x: number, y: number, type: TileType) {
     this.x = x;
     this.y = y;
+    this.type = type;
   }
 
   public static getPointsFromTilePos(x: number, y: number) : Phaser.Geom.Point[] {

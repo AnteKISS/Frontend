@@ -1,5 +1,5 @@
 import 'phaser'
-import Tile from '../objects/tiles/tile'
+import Tile, { TileType } from '../objects/tiles/tile'
 import TileDrawer from '../objects/tiles/tiledrawer'
 import TileSet from '../objects/tiles/tileset'
 
@@ -37,6 +37,8 @@ export default class MapEditor extends Phaser.Scene {
   // Editor states
   tileMode : TileMode;
   swipeMode : SwipeMode;
+  tileType : TileType;
+  canPlaceObject : boolean;
 
   // Texts
   moveText : Phaser.GameObjects.Text;
@@ -48,6 +50,10 @@ export default class MapEditor extends Phaser.Scene {
   zoomText : Phaser.GameObjects.Text;
   unitPosText : Phaser.GameObjects.Text;
   tilePosText : Phaser.GameObjects.Text;
+
+  // Buttons
+  floorTileButton : Phaser.GameObjects.Text;
+  transitionTileButton : Phaser.GameObjects.Text;
 
   // Input keys
   aKey : Phaser.Input.Keyboard.Key; // Move left
@@ -73,8 +79,7 @@ export default class MapEditor extends Phaser.Scene {
     );
 
     // Tileset json import test
-    this.tileSet = new TileSet;
-    this.tileSet.importJson(JSON.parse('{"tiles":[{"x":-3,"y":-3},{"x":-3,"y":-2},{"x":-3,"y":-1},{"x":-3,"y":0},{"x":-3,"y":1},{"x":-3,"y":2},{"x":-3,"y":3},{"x":-2,"y":-3},{"x":-2,"y":-2},{"x":-2,"y":-1},{"x":-2,"y":0},{"x":-2,"y":1},{"x":-2,"y":2},{"x":-2,"y":3},{"x":-1,"y":-3},{"x":-1,"y":-2},{"x":-1,"y":-1},{"x":-1,"y":0},{"x":-1,"y":1},{"x":-1,"y":2},{"x":-1,"y":3},{"x":0,"y":-3},{"x":0,"y":-2},{"x":0,"y":-1},{"x":0,"y":0},{"x":0,"y":1},{"x":0,"y":2},{"x":0,"y":3},{"x":1,"y":-3},{"x":1,"y":-2},{"x":1,"y":-1},{"x":1,"y":0},{"x":1,"y":1},{"x":1,"y":2},{"x":1,"y":3},{"x":2,"y":-3},{"x":2,"y":-2},{"x":2,"y":-1},{"x":2,"y":0},{"x":2,"y":1},{"x":2,"y":2},{"x":2,"y":3},{"x":3,"y":-3},{"x":3,"y":-2},{"x":3,"y":-1},{"x":3,"y":0},{"x":3,"y":1},{"x":3,"y":2},{"x":3,"y":3},{"x":-3,"y":5},{"x":-2,"y":5},{"x":-1,"y":5},{"x":0,"y":5},{"x":1,"y":5},{"x":2,"y":5},{"x":3,"y":5},{"x":5,"y":3},{"x":5,"y":2},{"x":5,"y":1},{"x":5,"y":0},{"x":5,"y":-1},{"x":5,"y":-2},{"x":5,"y":-3},{"x":3,"y":-5},{"x":2,"y":-5},{"x":1,"y":-5},{"x":0,"y":-5},{"x":-1,"y":-5},{"x":-2,"y":-5},{"x":-3,"y":-5},{"x":-5,"y":-3},{"x":-5,"y":-2},{"x":-5,"y":-1},{"x":-5,"y":0},{"x":-5,"y":1},{"x":-5,"y":2},{"x":-5,"y":3},{"x":-5,"y":4},{"x":-5,"y":5},{"x":-4,"y":5},{"x":4,"y":5},{"x":5,"y":5},{"x":5,"y":4},{"x":5,"y":-4},{"x":5,"y":-5},{"x":4,"y":-5},{"x":-4,"y":-5},{"x":-5,"y":-4},{"x":-5,"y":-5},{"x":0,"y":-4},{"x":-1,"y":-4},{"x":1,"y":-4},{"x":-4,"y":0},{"x":-4,"y":1},{"x":-4,"y":-1},{"x":0,"y":4},{"x":-1,"y":4},{"x":1,"y":4},{"x":4,"y":0},{"x":4,"y":1},{"x":4,"y":-1}]}'));
+    this.tileSet = new TileSet(3);
 
     this.tileDrawer = new TileDrawer(this.graphics);
     this.playerPos = new Phaser.Geom.Point;
@@ -82,7 +87,10 @@ export default class MapEditor extends Phaser.Scene {
 
     this.tileMode = TileMode.Add;
     this.swipeMode = SwipeMode.Off;
+    this.tileType = TileType.Floor;
+    this.canPlaceObject = true;
 
+    // Texts
     this.moveText = this.add.text(30, 30, "Move (WASD)", {color: '#000000', fontSize: '24px'});
     this.moveFasterText = this.add.text(30, 60, "Move Faster (Hold Shift)", {color: '#000000', fontSize: '24px'});
     this.tileModeText = this.add.text(30, 110, "TileMode : " + this.tileMode, {color: '#000000', fontSize: '24px'});
@@ -96,6 +104,19 @@ export default class MapEditor extends Phaser.Scene {
     this.unitPosText.setOrigin(1, 0);
     this.tilePosText.setOrigin(1, 0);
 
+    // Buttons
+    this.floorTileButton = this.add.text(30, 670, "Floor Tile", {color: '#000000', fontSize: '24px'})
+      .setInteractive()
+      .on('pointerdown', () => {
+        this.tileType = TileType.Floor;
+      });
+    this.transitionTileButton = this.add.text(300, 670, "Transition Tile", {color: '#000000', fontSize: '24px'})
+      .setInteractive()
+      .on('pointerdown', () => {
+        this.tileType = TileType.Transition;
+      });
+
+    // Inputs
     this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     this.sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
@@ -105,8 +126,13 @@ export default class MapEditor extends Phaser.Scene {
     this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
     this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-    this.input.on('pointerdown', () => {
-      this.tileModeClick();
+    this.input.on('pointerdown', (pointer, objects) => {
+      if (objects.length === 0) {
+        this.tileModeClick();
+        this.canPlaceObject = true;
+      }
+      else
+        this.canPlaceObject = false;
     });
 
     this.input.on('wheel', (pointer, currentlyOver, dx, dy, dz, event) => {
@@ -147,7 +173,7 @@ export default class MapEditor extends Phaser.Scene {
     );
 
     // Detect swipe + hold click (tilemode)
-    if (this.swipeMode === SwipeMode.On && this.pointer.leftButtonDown()) {
+    if (this.swipeMode === SwipeMode.On && this.pointer.leftButtonDown() && this.canPlaceObject === true) {
       this.tileModeClick();
     }
 
@@ -196,7 +222,7 @@ export default class MapEditor extends Phaser.Scene {
   private tileModeClick() {
     const cursorTilePos = TileSet.getTilePosFromUnitPos(this.getCursorUnitPos());
 
-    if      (this.tileMode === TileMode.Add)      this.tileSet.addTile(cursorTilePos.x, cursorTilePos.y);
+    if      (this.tileMode === TileMode.Add)      this.tileSet.addTile(cursorTilePos.x, cursorTilePos.y, this.tileType);
     else if (this.tileMode === TileMode.Delete)   this.tileSet.deleteTile(cursorTilePos.x, cursorTilePos.y);
   }
 
@@ -217,14 +243,24 @@ export default class MapEditor extends Phaser.Scene {
     this.graphics.fillCircle(this.playerPos.x, this.playerPos.y, 4);
 
     // Draw tiles
-    this.tileDrawer.drawDebugTileList(this.tileSet.tiles.values(), 2, 0x0000FF);
+    this.tileDrawer.drawDebugTileList(this.tileSet.tiles.values(), 2);
 
     // Draw player tile
     const points = Tile.getPointsFromTilePos(playerTilePos.x, playerTilePos.y);
     this.tileDrawer.drawDebugTilePos(points, 3, 0xFF0000);
 
     // Draw cursor tile
-    const cursorColor = (this.tileMode === TileMode.Add ? 0x00FFFF : 0xFF0000);
+    let cursorColor = 0x000000;
+    if (this.tileMode === TileMode.Add) {
+      if (this.tileType === TileType.Floor)
+        cursorColor = 0x00FFFF;
+      else if (this.tileType === TileType.Transition)
+        cursorColor = 0xFFFF00;
+    }
+    else if (this.tileMode === TileMode.Delete) {
+        cursorColor = 0xFF0000;
+    }
+
     const cursorTilePoints = Tile.getPointsFromTilePos(this.cursorTilePos.x, this.cursorTilePos.y);
     this.tileDrawer.drawDebugTilePos(cursorTilePoints, 3, cursorColor);
   }

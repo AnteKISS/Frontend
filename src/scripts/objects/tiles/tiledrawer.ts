@@ -1,5 +1,5 @@
 import 'phaser'
-import Tile from './tile'
+import Tile, { TileType } from './tile'
 
 export default class TileDrawer {
   graphics: Phaser.GameObjects.Graphics
@@ -8,9 +8,14 @@ export default class TileDrawer {
     this.graphics = graphics;
   }
 
-  public drawDebugTileList(tiles: Iterable<Tile>, lineWidth: number, lineColor: number) {
+  public drawDebugTileList(tiles: Iterable<Tile>, lineWidth: number) {
     for (const tile of tiles) {
       const points = Tile.getPointsFromTilePos(tile.x, tile.y);
+      let lineColor = 0x000000;
+      switch (tile.type) {
+        case TileType.Floor:      lineColor = 0x0000FF; break;
+        case TileType.Transition: lineColor = 0xFFFF00; break;
+      }
       this.drawDebugTilePos(points, lineWidth, lineColor);
     }
   }
@@ -19,8 +24,8 @@ export default class TileDrawer {
     this.graphics.lineStyle(lineWidth, lineColor);
     this.graphics.fillStyle(lineColor, 0.2);
     this.graphics.beginPath();
-    this.graphics.moveTo(points[0].x, points[0].y);
 
+    this.graphics.moveTo(points[0].x, points[0].y);
     for (let i = 1; i < points.length; i++)
       this.graphics.lineTo(points[i].x, points[i].y);
 
