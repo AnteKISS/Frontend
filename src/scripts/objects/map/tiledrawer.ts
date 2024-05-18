@@ -4,9 +4,9 @@ import Tile, { TileType } from './tile'
 export enum TileColor {
   Floor = 0x0000FF,
   Transition = 0xFFFF00,
-  Player = 0x00FF00,
+  Player = 0xFF00FF,
   Delete = 0xFF0000,
-  DefaultCursor = 0xFFFF00
+  DefaultCursor = 0x00FF00
 }
 
 export default class TileDrawer {

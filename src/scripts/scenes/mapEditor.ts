@@ -2,6 +2,8 @@ import 'phaser'
 import Tile, { TileType } from '../objects/map/tile'
 import TileDrawer, { TileColor } from '../objects/map/tiledrawer'
 import TileSet from '../objects/map/tileset'
+import Area from '../objects/map/area'
+import GameMap from '../objects/map/gamemap'
 
 enum TileMode {
   Add = "Add",
@@ -27,7 +29,7 @@ export default class MapEditor extends Phaser.Scene {
   uiCamera : Phaser.Cameras.Scene2D.Camera;
 
   // Editor data / helpers
-  tileSet : TileSet;
+  gameMap : GameMap;
   tileDrawer : TileDrawer;
   playerPos : Phaser.Geom.Point;
   cameraOffsetPos : Phaser.Geom.Point;
@@ -48,8 +50,10 @@ export default class MapEditor extends Phaser.Scene {
   deleteText : Phaser.GameObjects.Text;
   swipeText : Phaser.GameObjects.Text;
   zoomText : Phaser.GameObjects.Text;
+  changeAreaText : Phaser.GameObjects.Text;
   unitPosText : Phaser.GameObjects.Text;
   tilePosText : Phaser.GameObjects.Text;
+  currentMapText : Phaser.GameObjects.Text;
 
   // Buttons
   floorTileButton : Phaser.GameObjects.Text;
@@ -66,6 +70,9 @@ export default class MapEditor extends Phaser.Scene {
   shiftKey : Phaser.Input.Keyboard.Key; // Move faster
   spaceKey : Phaser.Input.Keyboard.Key; // Swipe
 
+  oKey : Phaser.Input.Keyboard.Key; // Previous area
+  pKey : Phaser.Input.Keyboard.Key; // Next area
+
   constructor() {
     super({key: 'MapEditor'});
   }
@@ -79,8 +86,9 @@ export default class MapEditor extends Phaser.Scene {
     );
 
     // Tileset json import test
-    this.tileSet = new TileSet(3);
-
+    this.gameMap = new GameMap;
+    this.gameMap.addArea(new Area("Yooo"));
+    this.gameMap.addArea(new Area("Allo"));
     this.tileDrawer = new TileDrawer(this.graphics);
     this.playerPos = new Phaser.Geom.Point;
     this.cameraOffsetPos = new Phaser.Geom.Point;
@@ -98,11 +106,14 @@ export default class MapEditor extends Phaser.Scene {
     this.deleteText = this.add.text(60, 170, "Delete (X)", {color: '#000000', fontSize: '24px'});
     this.swipeText = this.add.text(60, 200, "Swipe (Space) : " + this.swipeMode, {color: '#000000', fontSize: '24px'});
     this.zoomText = this.add.text(30, 250, "Zoom In/Out (Scroll)", {color: '#000000', fontSize: '24px'});
+    this.changeAreaText = this.add.text(30, 300, "Change Area (O/P)", {color: '#000000', fontSize: '24px'});
     this.unitPosText = this.add.text(1250, 30, "Unit Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
     this.tilePosText = this.add.text(1250, 60, "Tile Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
+    this.currentMapText = this.add.text(1250, 90, "Area : ", {color: '#000000', fontSize: '24px', align: 'right'});
 
     this.unitPosText.setOrigin(1, 0);
     this.tilePosText.setOrigin(1, 0);
+    this.currentMapText.setOrigin(1, 0);
 
     // Buttons
     this.floorTileButton = this.add.text(30, 670, "Floor Tile", {color: '#000000', fontSize: '24px'})
@@ -125,6 +136,8 @@ export default class MapEditor extends Phaser.Scene {
     this.xKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
     this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
     this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.oKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
+    this.pKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
     this.input.on('pointerdown', (pointer, objects) => {
       if (objects.length === 0) {
@@ -149,8 +162,10 @@ export default class MapEditor extends Phaser.Scene {
         this.deleteText,
         this.swipeText,
         this.zoomText,
+        this.changeAreaText,
         this.unitPosText,
         this.tilePosText,
+        this.currentMapText,
         this.floorTileButton,
         this.transitionTileButton
       ]
@@ -161,14 +176,14 @@ export default class MapEditor extends Phaser.Scene {
 
   update() {
     this.handleCameraMovement();
-    this.checkTileModeUpdate();
+    this.handleUserInput();
 
     this.cursorUnitPos = this.getCursorUnitPos();
     this.cursorTilePos = TileSet.getTilePosFromUnitPos(this.cursorUnitPos);
 
     this.unitPosText.setText("Unit Pos : " + Math.round(this.cursorUnitPos.x) + ", " + Math.round(this.cursorUnitPos.y));
     this.tilePosText.setText("Tile Pos : " + this.cursorTilePos.x + ", " + this.cursorTilePos.y);
-
+    this.currentMapText.setText("Area : " + this.gameMap.currentArea().name);
     this.cameras.main.setScroll(
       this.playerPos.x + this.cameraOffsetPos.x - this.cameras.main.width / 2,
       this.playerPos.y + this.cameraOffsetPos.y - this.cameras.main.height / 2
@@ -206,7 +221,7 @@ export default class MapEditor extends Phaser.Scene {
     }
   }
 
-  private checkTileModeUpdate() {
+  private handleUserInput() {
     if (Phaser.Input.Keyboard.JustDown(this.zKey)) {
       this.changeTileMode(TileMode.Add);
     }
@@ -219,13 +234,23 @@ export default class MapEditor extends Phaser.Scene {
       this.swipeMode = (this.swipeMode === SwipeMode.Off ? SwipeMode.On : SwipeMode.Off);
       this.swipeText.setText("Swipe (Space) : " + this.swipeMode);
     }
+
+    if (Phaser.Input.Keyboard.JustDown(this.oKey)) {
+      this.gameMap.previousArea();
+    }
+
+    if (Phaser.Input.Keyboard.JustDown(this.pKey)) {
+      this.gameMap.nextArea();
+    }
   }
 
   private tileModeClick() {
     const cursorTilePos = TileSet.getTilePosFromUnitPos(this.getCursorUnitPos());
 
-    if      (this.tileMode === TileMode.Add)      this.tileSet.addTile(cursorTilePos.x, cursorTilePos.y, this.tileType);
-    else if (this.tileMode === TileMode.Delete)   this.tileSet.deleteTile(cursorTilePos.x, cursorTilePos.y);
+    if (this.tileMode === TileMode.Add)
+      this.gameMap.currentArea().tileSet.addTile(cursorTilePos.x, cursorTilePos.y, this.tileType);
+    else if (this.tileMode === TileMode.Delete)
+      this.gameMap.currentArea().tileSet.deleteTile(cursorTilePos.x, cursorTilePos.y);
   }
 
   private zoom(dy : number) {
@@ -245,7 +270,7 @@ export default class MapEditor extends Phaser.Scene {
     this.graphics.fillCircle(this.playerPos.x, this.playerPos.y, 4);
 
     // Draw tiles
-    this.tileDrawer.drawDebugTileList(this.tileSet.tiles.values(), 2);
+    this.tileDrawer.drawDebugTileList(this.gameMap.currentArea().tileSet.tiles.values(), 2);
 
     // Draw player tile
     const points = Tile.getPointsFromTilePos(playerTilePos.x, playerTilePos.y);
