@@ -23,5 +23,5 @@ export abstract class InactiveEntity extends BaseEntity {
   abstract update(deltaTime: number): void;
   abstract reset(): void;
   abstract initializeAnimations(): void;
-  abstract updateOrientation(): void;
+  abstract updateOrientation(): boolean;
 }

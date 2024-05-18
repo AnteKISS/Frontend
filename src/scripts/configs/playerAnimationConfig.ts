@@ -366,7 +366,7 @@ export const playerAnimationConfig = {
       { start: runAnimationStartFrame + EntityOrientation.DOWN,        end: runAnimationEndFrame + EntityOrientation.DOWN,        sheet: 'greatbow', orientation: EntityOrientation.DOWN },
       { start: runAnimationStartFrame + EntityOrientation.DOWN_LEFT,   end: runAnimationEndFrame + EntityOrientation.DOWN_LEFT,   sheet: 'greatbow', orientation: EntityOrientation.DOWN_LEFT }
     ],
-    frameRate: 4
+    frameRate: 8
   },
   meleeAttack: {
     frames: [

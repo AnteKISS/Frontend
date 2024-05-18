@@ -74,5 +74,5 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
   abstract update(deltaTime: number): void;
   abstract reset(): void;
   abstract initializeAnimations(): void;
-  abstract updateOrientation(): void;
+  abstract updateOrientation(): boolean;
 }
