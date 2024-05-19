@@ -3,12 +3,13 @@ import NotImplementedError from '../errors/notImplementedError';
 
 export class MonsterEntity extends ActiveEntity implements IFightable {
 
-  private 
+  private sprite: Phaser.GameObjects.Sprite;
 
   constructor(scene) {
     super(scene);
     scene.add.existing(this);
     this.type = 'MonsterEntity';
+    this.sprite = scene.add.sprite(0, 0, 'sprite');
   }
 
   // Getters/Setters

@@ -15,28 +15,6 @@ const cheerAnimationEndFrame = 27;
 const bowAttackAnimationStartFrame = 28;
 const bowAttackAnimationEndFrame = 31;
 
-/**
- * steel_armor done
- * clothes done
- * leather_armor done
- * male_head1 done
- * male_head2 done
- * male_head3 done
- * buckler
- * shield
- * greatstaff
- * rod
- * staff
- * wand
- * dagger
- * shortsword
- * longsword
- * greatsword
- * slingshot
- * shortbow
- * longbow
- */
-
 export const playerAnimationConfig = {
   idle: {
     frames: [
