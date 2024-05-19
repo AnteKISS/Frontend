@@ -19,6 +19,16 @@ export default class GameMap {
     this.areaIndex = this.areas.length - 1;
   }
 
+  public deleteCurrentArea() {
+    this.areas.splice(this.areaIndex, 1);
+
+    if (this.areas.length === 0)
+      this.addArea(new Area("New Area"));
+
+    if (this.areaIndex >= this.areas.length)
+      this.areaIndex = this.areas.length - 1;
+  }
+
   public previousArea() {
     this.areaIndex--;
     if (this.areaIndex < 0) this.areaIndex += this.areas.length;

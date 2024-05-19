@@ -53,6 +53,9 @@ export default class MapEditor extends Phaser.Scene {
   swipeText : Phaser.GameObjects.Text;
   zoomText : Phaser.GameObjects.Text;
   changeAreaText : Phaser.GameObjects.Text;
+  renameAreaText : Phaser.GameObjects.Text;
+  newAreaText : Phaser.GameObjects.Text;
+  deleteAreaText : Phaser.GameObjects.Text;
   unitPosText : Phaser.GameObjects.Text;
   tilePosText : Phaser.GameObjects.Text;
   currentAreaText : Phaser.GameObjects.Text;
@@ -78,6 +81,8 @@ export default class MapEditor extends Phaser.Scene {
   oKey : Phaser.Input.Keyboard.Key; // Previous area
   pKey : Phaser.Input.Keyboard.Key; // Next area
   nKey : Phaser.Input.Keyboard.Key; // Rename area
+  mKey : Phaser.Input.Keyboard.Key; // New area
+  deleteKey : Phaser.Input.Keyboard.Key; // Delete area
 
   constructor() {
     super({key: 'MapEditor'});
@@ -114,6 +119,9 @@ export default class MapEditor extends Phaser.Scene {
     this.swipeText = this.add.text(60, 200, "Swipe (Space) : " + this.swipeMode, {color: '#000000', fontSize: '24px'});
     this.zoomText = this.add.text(30, 250, "Zoom In/Out (Scroll)", {color: '#000000', fontSize: '24px'});
     this.changeAreaText = this.add.text(30, 300, "Change Area (O/P)", {color: '#000000', fontSize: '24px'});
+    this.renameAreaText = this.add.text(30, 330, "Rename Area (N)", {color: '#000000', fontSize: '24px'});
+    this.newAreaText = this.add.text(30, 360, "New Area (M)", {color: '#000000', fontSize: '24px'});
+    this.deleteAreaText = this.add.text(30, 390, "Delete Area (Delete)", {color: '#000000', fontSize: '24px'});
     this.unitPosText = this.add.text(1250, 30, "Unit Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
     this.tilePosText = this.add.text(1250, 60, "Tile Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
     this.currentAreaText = this.add.text(1250, 90, "Area (1/1) : ", {color: '#000000', fontSize: '24px', align: 'right'});
@@ -135,7 +143,7 @@ export default class MapEditor extends Phaser.Scene {
       });
 
     // Forms
-    this.renameAreaInput = new TextInput(this, () => this.renameArea(), 1250, 90, 'Renaming area : ', {color: '#000000', fontSize: '24px', align: 'right'});
+    this.renameAreaInput = new TextInput(this, () => this.renameArea(), 1250, 90, 'Renaming area (Enter to submit): ', {color: '#000000', fontSize: '24px', align: 'right'});
     this.renameAreaInput.visible = false;
     this.renameAreaInput.setOrigin(1, 0);
 
@@ -151,6 +159,8 @@ export default class MapEditor extends Phaser.Scene {
     this.oKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
     this.pKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
     this.nKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
+    this.mKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
+    this.deleteKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DELETE);
 
     this.input.on('pointerdown', (pointer, objects) => {
       if (objects.length === 0) {
@@ -176,6 +186,9 @@ export default class MapEditor extends Phaser.Scene {
         this.swipeText,
         this.zoomText,
         this.changeAreaText,
+        this.renameAreaText,
+        this.newAreaText,
+        this.deleteAreaText,
         this.unitPosText,
         this.tilePosText,
         this.currentAreaText,
@@ -261,6 +274,12 @@ export default class MapEditor extends Phaser.Scene {
       this.currentAreaText.visible = false;
       this.renameAreaInput.updateInputText(this.gameMap.currentArea().name);
     }
+
+    if (Phaser.Input.Keyboard.JustDown(this.mKey))
+      this.gameMap.addArea(new Area("New Area"));
+
+    if (Phaser.Input.Keyboard.JustDown(this.deleteKey))
+      this.gameMap.deleteCurrentArea();
   }
 
   private tileModeClick() {
