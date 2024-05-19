@@ -4,6 +4,7 @@ import TileDrawer, { TileColor } from '../objects/map/tiledrawer'
 import TileSet from '../objects/map/tileset'
 import Area from '../objects/map/area'
 import GameMap from '../objects/map/gamemap'
+import TextInput from '../objects/textInput'
 
 enum TileMode {
   Add = "Add",
@@ -41,6 +42,7 @@ export default class MapEditor extends Phaser.Scene {
   swipeMode : SwipeMode;
   tileType : TileType;
   canPlaceObject : boolean;
+  inMenu : boolean;
 
   // Texts
   moveText : Phaser.GameObjects.Text;
@@ -53,11 +55,14 @@ export default class MapEditor extends Phaser.Scene {
   changeAreaText : Phaser.GameObjects.Text;
   unitPosText : Phaser.GameObjects.Text;
   tilePosText : Phaser.GameObjects.Text;
-  currentMapText : Phaser.GameObjects.Text;
+  currentAreaText : Phaser.GameObjects.Text;
 
   // Buttons
   floorTileButton : Phaser.GameObjects.Text;
   transitionTileButton : Phaser.GameObjects.Text;
+
+  // Forms
+  renameAreaInput : TextInput;
 
   // Input keys
   aKey : Phaser.Input.Keyboard.Key; // Move left
@@ -72,6 +77,7 @@ export default class MapEditor extends Phaser.Scene {
 
   oKey : Phaser.Input.Keyboard.Key; // Previous area
   pKey : Phaser.Input.Keyboard.Key; // Next area
+  nKey : Phaser.Input.Keyboard.Key; // Rename area
 
   constructor() {
     super({key: 'MapEditor'});
@@ -97,6 +103,7 @@ export default class MapEditor extends Phaser.Scene {
     this.swipeMode = SwipeMode.Off;
     this.tileType = TileType.Floor;
     this.canPlaceObject = true;
+    this.inMenu = false;
 
     // Texts
     this.moveText = this.add.text(30, 30, "Move (WASD)", {color: '#000000', fontSize: '24px'});
@@ -109,23 +116,28 @@ export default class MapEditor extends Phaser.Scene {
     this.changeAreaText = this.add.text(30, 300, "Change Area (O/P)", {color: '#000000', fontSize: '24px'});
     this.unitPosText = this.add.text(1250, 30, "Unit Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
     this.tilePosText = this.add.text(1250, 60, "Tile Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
-    this.currentMapText = this.add.text(1250, 90, "Area : ", {color: '#000000', fontSize: '24px', align: 'right'});
+    this.currentAreaText = this.add.text(1250, 90, "Area (1/1) : ", {color: '#000000', fontSize: '24px', align: 'right'});
 
     this.unitPosText.setOrigin(1, 0);
     this.tilePosText.setOrigin(1, 0);
-    this.currentMapText.setOrigin(1, 0);
+    this.currentAreaText.setOrigin(1, 0);
 
     // Buttons
     this.floorTileButton = this.add.text(30, 670, "Floor Tile", {color: '#000000', fontSize: '24px'})
       .setInteractive()
       .on('pointerdown', () => {
-        this.tileType = TileType.Floor;
+        if (!this.inMenu) this.tileType = TileType.Floor;
       });
     this.transitionTileButton = this.add.text(300, 670, "Transition Tile", {color: '#000000', fontSize: '24px'})
       .setInteractive()
       .on('pointerdown', () => {
-        this.tileType = TileType.Transition;
+        if (!this.inMenu) this.tileType = TileType.Transition;
       });
+
+    // Forms
+    this.renameAreaInput = new TextInput(this, () => this.renameArea(), 1250, 90, 'Renaming area : ', {color: '#000000', fontSize: '24px', align: 'right'});
+    this.renameAreaInput.visible = false;
+    this.renameAreaInput.setOrigin(1, 0);
 
     // Inputs
     this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -138,6 +150,7 @@ export default class MapEditor extends Phaser.Scene {
     this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.oKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
     this.pKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+    this.nKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
 
     this.input.on('pointerdown', (pointer, objects) => {
       if (objects.length === 0) {
@@ -165,9 +178,10 @@ export default class MapEditor extends Phaser.Scene {
         this.changeAreaText,
         this.unitPosText,
         this.tilePosText,
-        this.currentMapText,
+        this.currentAreaText,
         this.floorTileButton,
-        this.transitionTileButton
+        this.transitionTileButton,
+        this.renameAreaInput,
       ]
     );
     this.uiCamera = this.cameras.add(0, 0, 1280, 720);
@@ -183,7 +197,8 @@ export default class MapEditor extends Phaser.Scene {
 
     this.unitPosText.setText("Unit Pos : " + Math.round(this.cursorUnitPos.x) + ", " + Math.round(this.cursorUnitPos.y));
     this.tilePosText.setText("Tile Pos : " + this.cursorTilePos.x + ", " + this.cursorTilePos.y);
-    this.currentMapText.setText("Area : " + this.gameMap.currentArea().name);
+    this.currentAreaText.setText("Area (" + (this.gameMap.areaIndex + 1) + "/" + this.gameMap.areas.length + ") : "
+      + this.gameMap.currentArea().name);
     this.cameras.main.setScroll(
       this.playerPos.x + this.cameraOffsetPos.x - this.cameras.main.width / 2,
       this.playerPos.y + this.cameraOffsetPos.y - this.cameras.main.height / 2
@@ -200,52 +215,58 @@ export default class MapEditor extends Phaser.Scene {
   private handleCameraMovement() {
     const MOVE_SPEED = MapEditor.MOVE_CAMERA_SPEED * (this.shiftKey.isDown ? MapEditor.MOVE_FASTER_MULTIPLIER : 1);
 
+    if (this.inMenu) return;
+
     // Move camera left
-    if (this.aKey.isDown) {
+    if (this.aKey.isDown)
       this.cameraOffsetPos.x -= MOVE_SPEED;
-    }
 
     // Move camera right
-    if (this.dKey.isDown) {
+    if (this.dKey.isDown)
       this.cameraOffsetPos.x += MOVE_SPEED;
-    }
 
     // Move camera up
-    if (this.wKey.isDown) {
+    if (this.wKey.isDown)
       this.cameraOffsetPos.y -= MOVE_SPEED;
-    }
 
     // Move camera down
-    if (this.sKey.isDown) {
+    if (this.sKey.isDown)
       this.cameraOffsetPos.y += MOVE_SPEED;
-    }
   }
 
   private handleUserInput() {
-    if (Phaser.Input.Keyboard.JustDown(this.zKey)) {
-      this.changeTileMode(TileMode.Add);
-    }
+    if (this.inMenu) return;
 
-    if (Phaser.Input.Keyboard.JustDown(this.xKey)) {
+    if (Phaser.Input.Keyboard.JustDown(this.zKey))
+      this.changeTileMode(TileMode.Add);
+
+    if (Phaser.Input.Keyboard.JustDown(this.xKey))
       this.changeTileMode(TileMode.Delete);
-    }
 
     if (Phaser.Input.Keyboard.JustDown(this.spaceKey)) {
       this.swipeMode = (this.swipeMode === SwipeMode.Off ? SwipeMode.On : SwipeMode.Off);
       this.swipeText.setText("Swipe (Space) : " + this.swipeMode);
     }
 
-    if (Phaser.Input.Keyboard.JustDown(this.oKey)) {
+    if (Phaser.Input.Keyboard.JustDown(this.oKey))
       this.gameMap.previousArea();
-    }
 
-    if (Phaser.Input.Keyboard.JustDown(this.pKey)) {
+    if (Phaser.Input.Keyboard.JustDown(this.pKey))
       this.gameMap.nextArea();
+
+    if (Phaser.Input.Keyboard.JustDown(this.nKey)) {
+      this.inMenu = true;
+      this.renameAreaInput.focused = true;
+      this.renameAreaInput.visible = true;
+      this.currentAreaText.visible = false;
+      this.renameAreaInput.updateInputText(this.gameMap.currentArea().name);
     }
   }
 
   private tileModeClick() {
     const cursorTilePos = TileSet.getTilePosFromUnitPos(this.getCursorUnitPos());
+
+    if (this.inMenu) return;
 
     if (this.tileMode === TileMode.Add)
       this.gameMap.currentArea().tileSet.addTile(cursorTilePos.x, cursorTilePos.y, this.tileType);
@@ -255,6 +276,9 @@ export default class MapEditor extends Phaser.Scene {
 
   private zoom(dy : number) {
     let newZoom = this.cameras.main.zoom + (dy * MapEditor.ZOOM_SPEED / 1000);
+
+    if (this.inMenu) return;
+
     newZoom = Math.min(Math.max(newZoom, MapEditor.MIN_ZOOM), MapEditor.MAX_ZOOM);
     this.cameras.main.setZoom(newZoom);
   }
@@ -284,12 +308,18 @@ export default class MapEditor extends Phaser.Scene {
       else if (this.tileType === TileType.Transition)
         cursorColor = TileColor.Transition;
     }
-    else if (this.tileMode === TileMode.Delete) {
+    else if (this.tileMode === TileMode.Delete)
         cursorColor = TileColor.Delete;
-    }
 
     const cursorTilePoints = Tile.getPointsFromTilePos(this.cursorTilePos.x, this.cursorTilePos.y);
     this.tileDrawer.drawDebugTilePos(cursorTilePoints, cursorColor);
+  }
+
+  private renameArea() {
+    this.gameMap.currentArea().name = this.renameAreaInput.inputText;
+    this.renameAreaInput.visible = false;
+    this.currentAreaText.visible = true;
+    this.inMenu = false;
   }
 
   private getCursorUnitPos() : Phaser.Geom.Point {
