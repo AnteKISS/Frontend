@@ -155,7 +155,7 @@ export default class MapEditor extends Phaser.Scene {
     this.renameAreaInput.visible = false;
     this.renameAreaInput.setOrigin(1, 0);
 
-    this.transitionForm = new TransitionForm(this, [], () => this.hideTransitionForm());
+    this.transitionForm = new TransitionForm(this, this.gameMap.transitions, this.gameMap.areas, () => this.hideTransitionForm());
     this.transitionForm.hide();
 
     // Inputs

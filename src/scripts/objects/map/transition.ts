@@ -1,12 +1,13 @@
 import Area from "./area";
 
 export default class Transition {
-  targetMap : Area;
-  targetX : number;
-  targetY : number;
+  targetArea: Area;
+  targetX: number;
+  targetY: number;
 
-  constructor() {
-    this.targetX = 0;
-    this.targetY = 0;
+  constructor(targetArea: Area, targetX: number, targetY: number) {
+    this.targetArea = targetArea;
+    this.targetX = targetX;
+    this.targetY = targetY;
   }
 }

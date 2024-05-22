@@ -1,10 +1,12 @@
 import 'phaser'
 import TextInput from '../textInput'
 import Transition from './transition'
+import Area from './area'
 
 export default class TransitionForm {
   transitionList: Transition[];
-  selectedTransitionIndex: number;
+  areaList: Area[];
+  selectedAreaIndex: number;
 
   title: Phaser.GameObjects.Text;
   xInput: TextInput;
@@ -22,9 +24,9 @@ export default class TransitionForm {
   textInputIndex: number;
   onFinished: Function;
 
-  constructor(scene: Phaser.Scene, transitionList: Transition[], onFinished: Function) {
+  constructor(scene: Phaser.Scene, transitionList: Transition[], areaList: Area[], onFinished: Function) {
     this.transitionList = transitionList;
-    this.selectedTransitionIndex = 0;
+    this.selectedAreaIndex = 0;
 
     this.title = scene.add.text(450, 200, "Create Transition", {color: '#000000', fontSize: '40px'});
     this.xInput = new TextInput(scene, 400, 300, "To X : ", {color: '#000000', fontSize: '24px'});
@@ -33,7 +35,7 @@ export default class TransitionForm {
     this.yInput.setInputFilter(TextInput.NUMBER_TYPE);
     this.xInput.setMaxLength(6);
     this.yInput.setMaxLength(6);
-    this.areaSelect = scene.add.text(400, 375, "Target Area (<-/->):\nbruh", {color: '#000000', fontSize: '24px'});
+    this.areaSelect = scene.add.text(400, 375, "Target Area (<-/->):\n", {color: '#000000', fontSize: '24px'});
     this.areaSelect.setLineSpacing(10);
 
     this.nextInputText = scene.add.text(400, 475, "Next Text Field (Shift)", {color: '#000000', fontSize: '24px'});
@@ -124,12 +126,12 @@ export default class TransitionForm {
     }
     else if (event.key === 'ArrowLeft') {
       // Next transition
-      this.selectedTransitionIndex = (this.selectedTransitionIndex + 1) % this.transitionList.length;
+      this.selectedAreaIndex = (this.selectedAreaIndex + 1) % this.transitionList.length;
     }
     else if (event.key === 'ArrowRight') {
       // Previous transition
-      this.selectedTransitionIndex--;
-      if (this.selectedTransitionIndex < 0) this.selectedTransitionIndex = this.transitionList.length - 1;
+      this.selectedAreaIndex--;
+      if (this.selectedAreaIndex < 0) this.selectedAreaIndex = this.transitionList.length - 1;
     }
     else if (event.key === 'Escape') {
       // Quit without saving transition
@@ -137,6 +139,7 @@ export default class TransitionForm {
     }
     else if (event.key === 'Enter') {
       // Quit and create transition
+      // this.transitionList.push(new Transition(this.areaList[this.selectedAreaIndex], 0, 0));
       this.onFinished();
     }
 
