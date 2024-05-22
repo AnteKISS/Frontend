@@ -5,6 +5,7 @@ import TileSet from '../objects/map/tileset'
 import Area from '../objects/map/area'
 import GameMap from '../objects/map/gamemap'
 import TextInput from '../objects/textInput'
+import TransitionForm from '../objects/map/transitionform'
 
 enum TileMode {
   Add = "Add",
@@ -18,71 +19,76 @@ enum SwipeMode {
 
 export default class MapEditor extends Phaser.Scene {
   static readonly MOVE_CAMERA_SPEED = 10;
-  static readonly MOVE_FASTER_MULTIPLIER = 2;
+  static readonly MOVE_CAMERA_FASTER_MULTIPLIER = 2;
   static readonly ZOOM_SPEED = 1;
   static readonly MIN_ZOOM = 0.5;
   static readonly MAX_ZOOM = 2;
 
   // Phaser refs/objects
-  graphics : Phaser.GameObjects.Graphics;
-  pointer : Phaser.Input.Pointer;
-  centerPoint : Phaser.Geom.Point;
-  uiCamera : Phaser.Cameras.Scene2D.Camera;
+  graphics: Phaser.GameObjects.Graphics;
+  pointer: Phaser.Input.Pointer;
+  centerPoint: Phaser.Geom.Point;
+  uiCamera: Phaser.Cameras.Scene2D.Camera;
 
   // Editor data / helpers
-  gameMap : GameMap;
-  tileDrawer : TileDrawer;
-  playerPos : Phaser.Geom.Point;
-  cameraOffsetPos : Phaser.Geom.Point;
-  cursorUnitPos : Phaser.Geom.Point;
-  cursorTilePos : Phaser.Geom.Point;
+  gameMap: GameMap;
+  tileDrawer: TileDrawer;
+  playerPos: Phaser.Geom.Point;
+  cameraOffsetPos: Phaser.Geom.Point;
+  cursorUnitPos: Phaser.Geom.Point;
+  cursorTilePos: Phaser.Geom.Point;
 
   // Editor states
-  tileMode : TileMode;
-  swipeMode : SwipeMode;
-  tileType : TileType;
-  canPlaceObject : boolean;
-  inMenu : boolean;
+  tileMode: TileMode;
+  swipeMode: SwipeMode;
+  tileType: TileType;
+  canPlaceObject: boolean;
+  inMenu: boolean;
 
+  bruh: Phaser.GameObjects.Rectangle;
   // Texts
-  moveText : Phaser.GameObjects.Text;
-  moveFasterText : Phaser.GameObjects.Text;
-  tileModeText : Phaser.GameObjects.Text;
-  addText : Phaser.GameObjects.Text;
-  deleteText : Phaser.GameObjects.Text;
-  swipeText : Phaser.GameObjects.Text;
-  zoomText : Phaser.GameObjects.Text;
-  changeAreaText : Phaser.GameObjects.Text;
-  renameAreaText : Phaser.GameObjects.Text;
-  newAreaText : Phaser.GameObjects.Text;
-  deleteAreaText : Phaser.GameObjects.Text;
-  unitPosText : Phaser.GameObjects.Text;
-  tilePosText : Phaser.GameObjects.Text;
-  currentAreaText : Phaser.GameObjects.Text;
+  moveText: Phaser.GameObjects.Text;
+  moveFasterText: Phaser.GameObjects.Text;
+  tileModeText: Phaser.GameObjects.Text;
+  addText: Phaser.GameObjects.Text;
+  deleteText: Phaser.GameObjects.Text;
+  swipeText: Phaser.GameObjects.Text;
+  zoomText: Phaser.GameObjects.Text;
+  changeAreaText: Phaser.GameObjects.Text;
+  renameAreaText: Phaser.GameObjects.Text;
+  newAreaText: Phaser.GameObjects.Text;
+  deleteAreaText: Phaser.GameObjects.Text;
+  createTransitionText: Phaser.GameObjects.Text;
+  unitPosText: Phaser.GameObjects.Text;
+  tilePosText: Phaser.GameObjects.Text;
+  currentAreaText: Phaser.GameObjects.Text;
 
   // Buttons
-  floorTileButton : Phaser.GameObjects.Text;
-  transitionTileButton : Phaser.GameObjects.Text;
+  floorTileButton: Phaser.GameObjects.Text;
+  transitionTileButton: Phaser.GameObjects.Text;
 
   // Forms
-  renameAreaInput : TextInput;
+  renameAreaInput: TextInput;
+  transitionForm: TransitionForm;
 
   // Input keys
-  aKey : Phaser.Input.Keyboard.Key; // Move left
-  dKey : Phaser.Input.Keyboard.Key; // Move right
-  sKey : Phaser.Input.Keyboard.Key; // Move down
-  wKey : Phaser.Input.Keyboard.Key; // Move up
+  aKey: Phaser.Input.Keyboard.Key; // Move left
+  dKey: Phaser.Input.Keyboard.Key; // Move right
+  sKey: Phaser.Input.Keyboard.Key; // Move down
+  wKey: Phaser.Input.Keyboard.Key; // Move up
 
-  zKey : Phaser.Input.Keyboard.Key; // TileMode Add
-  xKey : Phaser.Input.Keyboard.Key; // TileMode Delete
-  shiftKey : Phaser.Input.Keyboard.Key; // Move faster
-  spaceKey : Phaser.Input.Keyboard.Key; // Swipe
+  zKey: Phaser.Input.Keyboard.Key; // TileMode Add
+  xKey: Phaser.Input.Keyboard.Key; // TileMode Delete
+  shiftKey: Phaser.Input.Keyboard.Key; // Move faster
+  spaceKey: Phaser.Input.Keyboard.Key; // Swipe
 
-  oKey : Phaser.Input.Keyboard.Key; // Previous area
-  pKey : Phaser.Input.Keyboard.Key; // Next area
-  nKey : Phaser.Input.Keyboard.Key; // Rename area
-  mKey : Phaser.Input.Keyboard.Key; // New area
-  deleteKey : Phaser.Input.Keyboard.Key; // Delete area
+  oKey: Phaser.Input.Keyboard.Key; // Previous area
+  pKey: Phaser.Input.Keyboard.Key; // Next area
+  nKey: Phaser.Input.Keyboard.Key; // Rename area
+  mKey: Phaser.Input.Keyboard.Key; // New area
+  deleteKey: Phaser.Input.Keyboard.Key; // Delete area
+
+  tKey: Phaser.Input.Keyboard.Key; // New transition
 
   constructor() {
     super({key: 'MapEditor'});
@@ -122,6 +128,7 @@ export default class MapEditor extends Phaser.Scene {
     this.renameAreaText = this.add.text(30, 330, "Rename Area (N)", {color: '#000000', fontSize: '24px'});
     this.newAreaText = this.add.text(30, 360, "New Area (M)", {color: '#000000', fontSize: '24px'});
     this.deleteAreaText = this.add.text(30, 390, "Delete Area (Delete)", {color: '#000000', fontSize: '24px'});
+    this.createTransitionText = this.add.text(30, 440, "New Transition (T)", {color: '#000000', fontSize: '24px'});
     this.unitPosText = this.add.text(1250, 30, "Unit Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
     this.tilePosText = this.add.text(1250, 60, "Tile Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
     this.currentAreaText = this.add.text(1250, 90, "Area (1/1) : ", {color: '#000000', fontSize: '24px', align: 'right'});
@@ -143,9 +150,13 @@ export default class MapEditor extends Phaser.Scene {
       });
 
     // Forms
-    this.renameAreaInput = new TextInput(this, () => this.renameArea(), 1250, 90, 'Renaming area (Enter to submit): ', {color: '#000000', fontSize: '24px', align: 'right'});
+    this.renameAreaInput = new TextInput(this, 1250, 90, 'Renaming area (Enter to submit): ', {color: '#000000', fontSize: '24px', align: 'right'});
+    this.renameAreaInput.onSubmit = () => { this.renameArea() };
     this.renameAreaInput.visible = false;
     this.renameAreaInput.setOrigin(1, 0);
+
+    this.transitionForm = new TransitionForm(this, [], () => this.hideTransitionForm());
+    this.transitionForm.hide();
 
     // Inputs
     this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -161,6 +172,7 @@ export default class MapEditor extends Phaser.Scene {
     this.nKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
     this.mKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
     this.deleteKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DELETE);
+    this.tKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
 
     this.input.on('pointerdown', (pointer, objects) => {
       if (objects.length === 0) {
@@ -189,12 +201,14 @@ export default class MapEditor extends Phaser.Scene {
         this.renameAreaText,
         this.newAreaText,
         this.deleteAreaText,
+        this.createTransitionText,
         this.unitPosText,
         this.tilePosText,
         this.currentAreaText,
         this.floorTileButton,
         this.transitionTileButton,
         this.renameAreaInput,
+        ...this.transitionForm.getGameObjects(),
       ]
     );
     this.uiCamera = this.cameras.add(0, 0, 1280, 720);
@@ -226,7 +240,7 @@ export default class MapEditor extends Phaser.Scene {
   }
 
   private handleCameraMovement() {
-    const MOVE_SPEED = MapEditor.MOVE_CAMERA_SPEED * (this.shiftKey.isDown ? MapEditor.MOVE_FASTER_MULTIPLIER : 1);
+    const MOVE_SPEED = MapEditor.MOVE_CAMERA_SPEED * (this.shiftKey.isDown ? MapEditor.MOVE_CAMERA_FASTER_MULTIPLIER : 1);
 
     if (this.inMenu) return;
 
@@ -280,6 +294,11 @@ export default class MapEditor extends Phaser.Scene {
 
     if (Phaser.Input.Keyboard.JustDown(this.deleteKey))
       this.gameMap.deleteCurrentArea();
+
+    if (Phaser.Input.Keyboard.JustDown(this.tKey)) {
+      this.transitionForm.show();
+      this.inMenu = true;
+    }
   }
 
   private tileModeClick() {
@@ -339,6 +358,11 @@ export default class MapEditor extends Phaser.Scene {
     this.renameAreaInput.visible = false;
     this.currentAreaText.visible = true;
     this.inMenu = false;
+  }
+
+  private hideTransitionForm() {
+    this.inMenu = false;
+    this.transitionForm.hide();
   }
 
   private getCursorUnitPos() : Phaser.Geom.Point {
