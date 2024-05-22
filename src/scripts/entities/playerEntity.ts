@@ -45,6 +45,9 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   // Methods
   public update(deltaTime: number): void {
     let hasOrientationUpdated: boolean = false;
+    let action: string = this.headSprite.anims.currentAnim ? this.headSprite.anims.currentAnim.key.split('_')[0] : '';
+    let animationUpdateNeeded: boolean = false;
+
     if ((this.positionX != this._destinationX) || (this.positionY != this._destinationY)) {
       // TODO: Check if destination coords change between each update call
       // so if it doesn't change, we move the same value that we moved last call
@@ -55,26 +58,31 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       deltaY += this.stats.movementSpeed;
       deltaX *= (Math.cos(this._orientation_rad) * (deltaTime / 1000));
       deltaY *= (Math.sin(this._orientation_rad) * (deltaTime / 1000));
+
       this.move(deltaX, deltaY);
+
       if (MathModule.isValueInThreshold(this.positionX, this._destinationX, 1) &&
           MathModule.isValueInThreshold(this.positionY, this._destinationY, 1)) {
         this._destinationX = this.positionX;
         this._destinationY = this.positionY;
         this._isMoving = false;
       }
-      if (!this.headSprite.anims.isPlaying || !this.headSprite.anims.currentAnim.key.startsWith("RUN") || hasOrientationUpdated) {
-        this.headSprite.play(`RUN_${getOrientationString(this.orientation)}_MALE_HEAD2`);
-        this.bodySprite.play(`RUN_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
-        this.meleeSprite.play(`RUN_${getOrientationString(this.orientation)}_LONGSWORD`);
-        this.bowSprite.play(`RUN_${getOrientationString(this.orientation)}_LONGBOW`);
+      if (!this.headSprite.anims.isPlaying || action != 'RUN' || hasOrientationUpdated) {
+        animationUpdateNeeded = true;
+        action = 'RUN';
       }
     } else {
-      if (!this.headSprite.anims.isPlaying || !this.headSprite.anims.currentAnim.key.startsWith("IDLE") || hasOrientationUpdated) {
-        this.headSprite.play(`IDLE_${getOrientationString(this.orientation)}_MALE_HEAD2`);
-        this.bodySprite.play(`IDLE_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
-        this.meleeSprite.play(`IDLE_${getOrientationString(this.orientation)}_LONGSWORD`);
-        this.bowSprite.play(`IDLE_${getOrientationString(this.orientation)}_LONGBOW`);
+      if (!this.headSprite.anims.isPlaying || action != 'IDLE' || hasOrientationUpdated) {
+        animationUpdateNeeded = true;
+        action = 'IDLE';
       }
+    }
+    if (animationUpdateNeeded) {
+      // TODO: Check gear slots for loading spritesheet name dynamically
+      this.headSprite.play(`${action}_${getOrientationString(this.orientation)}_MALE_HEAD2`);
+      this.bodySprite.play(`${action}_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
+      this.meleeSprite.play(`${action}_${getOrientationString(this.orientation)}_LONGSWORD`);
+      this.bowSprite.play(`${action}_${getOrientationString(this.orientation)}_LONGBOW`);
     }
   }
 
