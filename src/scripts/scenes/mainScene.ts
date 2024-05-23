@@ -38,6 +38,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   update(time, deltaTime) {
+    window['deltaTime'] = deltaTime;
     this.fpsText.update();
     this.playerTest.update(deltaTime);
     this.monsterTest.update(deltaTime);

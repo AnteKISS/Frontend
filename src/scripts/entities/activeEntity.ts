@@ -55,20 +55,17 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this.setY(v);
   }
 
-  // Methods
-  move(dx?: number, dy?: number): void {
-    // TODO: Call method for collision detection
+  move(): void {
     this._isMoving = true;
-    this._positionXOld = this.positionX;
-    this._positionYOld = this.positionY;
-    if (dx) {
-      this._positionX += dx;
-      this.setX(this.x + dx);
-    }
-    if (dy) {
-      this._positionY += dy;
-      this.setY(this.y + dy);
-    }
+    let distance: number = this.stats.movementSpeed * (window['deltaTime'] / 1000);
+    let distanceMultiplier: number = 1 - (Math.abs(Math.sin(this._orientation_rad)) / 2);
+    distance *= distanceMultiplier;
+    let deltaX: number = distance * Math.cos(this._orientation_rad);
+    let deltaY: number = distance * Math.sin(this._orientation_rad);
+    this._positionX += deltaX;
+    this.setX(this.x + deltaX);
+    this._positionY += deltaY;
+    this.setY(this.y + deltaY);
   }
 
   setDestination(x?: number, y?: number): void {

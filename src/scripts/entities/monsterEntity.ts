@@ -33,14 +33,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       // TODO: Check if destination coords change between each update call
       // so if it doesn't change, we move the same value that we moved last call
       hasOrientationUpdated = this.updateOrientation();
-      let deltaX: number = 0;
-      let deltaY: number = 0;
-      deltaX += this.stats.movementSpeed;
-      deltaY += this.stats.movementSpeed;
-      deltaX *= (Math.cos(this._orientation_rad) * (deltaTime / 1000));
-      deltaY *= (Math.sin(this._orientation_rad) * (deltaTime / 1000));
-
-      this.move(deltaX, deltaY);
+      this.move();
 
       if (MathModule.isValueInThreshold(this.positionX, this._destinationX, 1) &&
           MathModule.isValueInThreshold(this.positionY, this._destinationY, 1)) {

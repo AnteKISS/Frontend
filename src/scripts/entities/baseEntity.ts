@@ -6,8 +6,6 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
   protected _code: string;
   protected _positionX: number = 0;
   protected _positionY: number = 0;
-  protected _positionXOld: number = 0;
-  protected _positionYOld: number = 0;
   protected _orientation: EntityOrientation = EntityOrientation.DOWN;
   protected _isResetReady: boolean = false;
    
@@ -40,7 +38,6 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
 
   public set positionX(v: number) {
     this._positionX = v;
-    this._positionXOld = v;
     this.setX(v)
   }
 
@@ -50,7 +47,6 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
 
   public set positionY(v: number) {
     this._positionY = v;
-    this._positionYOld = v;
     this.setY(v);
   }
 

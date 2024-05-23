@@ -17,12 +17,12 @@ export class AnimationManager {
           const { start, end, sheet, orientation } = frameRange;
           const frameKey = `${action.toUpperCase()}_${getOrientationString(orientation)}_${sheet.toUpperCase()}`;
 
-          console.log(`start: ${start}`);
-          console.log(`end: ${end}`);
-          console.log(`sheet: ${sheet}`);
-          console.log(`orientation: ${orientation}`);
-          console.log(`orientation enum: ${getOrientationString(orientation)}`);
-          console.log(`frameKey: ${frameKey}`);
+          // console.log(`start: ${start}`);
+          // console.log(`end: ${end}`);
+          // console.log(`sheet: ${sheet}`);
+          // console.log(`orientation: ${orientation}`);
+          // console.log(`orientation enum: ${getOrientationString(orientation)}`);
+          // console.log(`frameKey: ${frameKey}`);
 
           let animExists: Boolean = container.scene.anims.exists(frameKey);
 
@@ -36,7 +36,6 @@ export class AnimationManager {
           }
       });
     }
-    // console.table(container.scene.anims);
   }
 
   public static getAnimationConfig(monsterCode: string) {
