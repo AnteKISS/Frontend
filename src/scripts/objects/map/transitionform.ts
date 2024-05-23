@@ -1,11 +1,11 @@
 import 'phaser'
 import TextInput from '../textInput'
 import Transition from './transition'
+import GameMap from './gamemap'
 import Area from './area'
 
 export default class TransitionForm {
-  transitionList: Transition[];
-  areaList: Area[];
+  gameMap: GameMap;
   selectedAreaIndex: number;
 
   title: Phaser.GameObjects.Text;
@@ -24,8 +24,8 @@ export default class TransitionForm {
   textInputIndex: number;
   onFinished: Function;
 
-  constructor(scene: Phaser.Scene, transitionList: Transition[], areaList: Area[], onFinished: Function) {
-    this.transitionList = transitionList;
+  constructor(scene: Phaser.Scene, gameMap: GameMap, onFinished: Function) {
+    this.gameMap = gameMap;
     this.selectedAreaIndex = 0;
 
     this.title = scene.add.text(450, 200, "Create Transition", {color: '#000000', fontSize: '40px'});
@@ -33,9 +33,12 @@ export default class TransitionForm {
     this.yInput = new TextInput(scene, 680, 300, "To Y : ", {color: '#000000', fontSize: '24px'});
     this.xInput.setInputFilter(TextInput.NUMBER_TYPE);
     this.yInput.setInputFilter(TextInput.NUMBER_TYPE);
-    this.xInput.setMaxLength(6);
-    this.yInput.setMaxLength(6);
-    this.areaSelect = scene.add.text(400, 375, "Target Area (<-/->):\n", {color: '#000000', fontSize: '24px'});
+    this.xInput.setValueRange(-999999, 999999);
+    this.yInput.setValueRange(-999999, 999999);
+    this.xInput.updateInputText('0');
+    this.yInput.updateInputText('0');
+
+    this.areaSelect = scene.add.text(400, 375, "", {color: '#000000', fontSize: '24px'});
     this.areaSelect.setLineSpacing(10);
 
     this.nextInputText = scene.add.text(400, 475, "Next Text Field (Shift)", {color: '#000000', fontSize: '24px'});
@@ -43,20 +46,8 @@ export default class TransitionForm {
     this.confirmText = scene.add.text(400, 510, "Confirm (Enter)", {color: '#000000', fontSize: '24px'});
 
     this.background = scene.add.rectangle(640, 360, 600, 400, 0xAAAAAA);
-    this.xInputBackground = scene.add.rectangle(
-      500,
-      this.xInput.y + this.xInput.height / 2,
-      242,
-      this.xInput.height + 40,
-      0xFFFFFF
-    );
-    this.yInputBackground = scene.add.rectangle(
-      780,
-      this.yInput.y + this.yInput.height / 2,
-      242,
-      this.yInput.height + 40,
-      0xFFFFFF
-    );
+    this.xInputBackground = scene.add.rectangle( 500, this.xInput.y + this.xInput.height / 2, 242, this.xInput.height + 40, 0xFFFFFF);
+    this.yInputBackground = scene.add.rectangle( 780, this.yInput.y + this.yInput.height / 2, 242, this.yInput.height + 40, 0xFFFFFF);
 
     this.title.setDepth(100);
     this.xInput.setDepth(101);
@@ -74,6 +65,11 @@ export default class TransitionForm {
   }
 
   public show() {
+    this.selectedAreaIndex = 0;
+    this.xInput.updateInputText('0');
+    this.yInput.updateInputText('0');
+    this.updateAreaSelectText();
+
     this.title.setVisible(true);
     this.xInput.setVisible(true);
     this.yInput.setVisible(true);
@@ -126,21 +122,25 @@ export default class TransitionForm {
     }
     else if (event.key === 'ArrowLeft') {
       // Next transition
-      this.selectedAreaIndex = (this.selectedAreaIndex + 1) % this.transitionList.length;
+      this.selectedAreaIndex = (this.selectedAreaIndex + 1) % this.gameMap.areas.length;
+      this.updateAreaSelectText();
     }
     else if (event.key === 'ArrowRight') {
       // Previous transition
       this.selectedAreaIndex--;
-      if (this.selectedAreaIndex < 0) this.selectedAreaIndex = this.transitionList.length - 1;
+      if (this.selectedAreaIndex < 0) this.selectedAreaIndex = this.gameMap.areas.length - 1;
+      this.updateAreaSelectText();
     }
     else if (event.key === 'Escape') {
       // Quit without saving transition
       this.onFinished();
     }
     else if (event.key === 'Enter') {
-      // Quit and create transition
-      // this.transitionList.push(new Transition(this.areaList[this.selectedAreaIndex], 0, 0));
-      this.onFinished();
+      // Quit and create transition if valid inputs
+      if (this.xInput.isInputValid() && this.yInput.isInputValid()) {
+        this.gameMap.transitions.push(new Transition(this.getSelectedArea(), this.xInput.getNumValue(), this.yInput.getNumValue()));
+        this.onFinished();
+      }
     }
 
     this.updateTextInputs();
@@ -159,5 +159,13 @@ export default class TransitionForm {
       this.xInput.focused = false;
       this.yInput.focused = true;
     }
+  }
+
+  private updateAreaSelectText() {
+    this.areaSelect.setText("Target Area (<-/->):\n" + this.getSelectedArea().name);
+  }
+
+  private getSelectedArea() : Area {
+    return this.gameMap.areas[this.selectedAreaIndex];
   }
 }

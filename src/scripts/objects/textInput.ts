@@ -2,7 +2,7 @@ import 'phaser'
 
 export default class TextInput extends Phaser.GameObjects.Text {
   static readonly TEXT_TYPE = /^[a-zA-Z0-9 ]$/;
-  static readonly NUMBER_TYPE = /^[0-9]$/;
+  static readonly NUMBER_TYPE = /^[0-9-]$/;
 
   focused: boolean;
   onSubmit: Function;
@@ -10,6 +10,8 @@ export default class TextInput extends Phaser.GameObjects.Text {
   inputText: string;
   inputFilter: RegExp;
   maxLength: number;
+  minValue: number;
+  maxValue: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number, label: string, style: Phaser.Types.GameObjects.Text.TextStyle) {
     super(scene, x, y, '', style);
@@ -33,9 +35,34 @@ export default class TextInput extends Phaser.GameObjects.Text {
     this.maxLength = length;
   }
 
+  public setValueRange(min: number, max: number) {
+    this.minValue = min;
+    this.maxValue = max;
+  }
+
   public updateInputText(text: string) {
     this.inputText = text;
     this.setText(this.label + this.inputText);
+  }
+
+  public getNumValue() : number {
+    return Number(this.inputText);
+  }
+
+  public isInputValid() {
+    // Must not be empty
+    if (this.inputText.length === 0)
+      return false;
+
+    if (this.inputFilter === TextInput.NUMBER_TYPE) {
+      const NUM_VALUE = Number(this.inputText);
+
+      // Is number
+      if (isNaN(NUM_VALUE))
+        return false;
+    }
+
+    return true;
   }
 
   private handleInput(event: KeyboardEvent) {
@@ -49,12 +76,39 @@ export default class TextInput extends Phaser.GameObjects.Text {
       if (this.onSubmit !== undefined)
         this.onSubmit();
     }
-    else if (this.inputFilter.test(event.key)) {
-      // Type character
-      if (this.inputText.length < this.maxLength)
-        this.inputText += event.key;
-    }
+    else
+      this.addCharToInput(event.key);
 
     this.setText(this.label + this.inputText);
+  }
+
+  private addCharToInput(key: string) {
+    // Is valid character
+    if (!this.inputFilter.test(key))
+      return;
+
+    // Doesn't exceed max char limit
+    if (this.inputText.length >= this.maxLength)
+      return;
+
+    let textValue = this.inputText + key;
+
+    // Number type checks
+    if (this.inputFilter === TextInput.NUMBER_TYPE) {
+      const NUM_VALUE = Number(textValue);
+
+      // Is valid number
+      if (isNaN(NUM_VALUE) && textValue != '-') // Accept '-' to accept starting to type negative number
+        return;
+
+      // Set within value range
+      if (NUM_VALUE < this.minValue)
+        textValue = this.minValue.toString();
+      else if (NUM_VALUE > this.maxValue)
+        textValue = this.maxValue.toString();
+    }
+
+    // Set final input text value
+    this.inputText = textValue;
   }
 }

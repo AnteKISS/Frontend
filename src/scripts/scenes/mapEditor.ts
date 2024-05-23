@@ -76,19 +76,7 @@ export default class MapEditor extends Phaser.Scene {
   dKey: Phaser.Input.Keyboard.Key; // Move right
   sKey: Phaser.Input.Keyboard.Key; // Move down
   wKey: Phaser.Input.Keyboard.Key; // Move up
-
-  zKey: Phaser.Input.Keyboard.Key; // TileMode Add
-  xKey: Phaser.Input.Keyboard.Key; // TileMode Delete
   shiftKey: Phaser.Input.Keyboard.Key; // Move faster
-  spaceKey: Phaser.Input.Keyboard.Key; // Swipe
-
-  oKey: Phaser.Input.Keyboard.Key; // Previous area
-  pKey: Phaser.Input.Keyboard.Key; // Next area
-  nKey: Phaser.Input.Keyboard.Key; // Rename area
-  mKey: Phaser.Input.Keyboard.Key; // New area
-  deleteKey: Phaser.Input.Keyboard.Key; // Delete area
-
-  tKey: Phaser.Input.Keyboard.Key; // New transition
 
   constructor() {
     super({key: 'MapEditor'});
@@ -155,7 +143,7 @@ export default class MapEditor extends Phaser.Scene {
     this.renameAreaInput.visible = false;
     this.renameAreaInput.setOrigin(1, 0);
 
-    this.transitionForm = new TransitionForm(this, this.gameMap.transitions, this.gameMap.areas, () => this.hideTransitionForm());
+    this.transitionForm = new TransitionForm(this, this.gameMap, () => this.hideTransitionForm());
     this.transitionForm.hide();
 
     // Inputs
@@ -163,16 +151,7 @@ export default class MapEditor extends Phaser.Scene {
     this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
     this.sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-    this.zKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z);
-    this.xKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.X);
     this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
-    this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    this.oKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
-    this.pKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
-    this.nKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N);
-    this.mKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
-    this.deleteKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DELETE);
-    this.tKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
 
     this.input.on('pointerdown', (pointer, objects) => {
       if (objects.length === 0) {
@@ -183,6 +162,7 @@ export default class MapEditor extends Phaser.Scene {
         this.canPlaceObject = false;
     });
 
+    this.input.keyboard.on('keydown', (event: KeyboardEvent) => this.handleKeyDown(event));
     this.input.on('wheel', (pointer, currentlyOver, dx, dy, dz, event) => {
       this.zoom(dy);
     });
@@ -217,7 +197,6 @@ export default class MapEditor extends Phaser.Scene {
 
   update() {
     this.handleCameraMovement();
-    this.handleUserInput();
 
     this.cursorUnitPos = this.getCursorUnitPos();
     this.cursorTilePos = TileSet.getTilePosFromUnitPos(this.cursorUnitPos);
@@ -261,27 +240,29 @@ export default class MapEditor extends Phaser.Scene {
       this.cameraOffsetPos.y += MOVE_SPEED;
   }
 
-  private handleUserInput() {
+  private handleKeyDown(event: KeyboardEvent) {
     if (this.inMenu) return;
 
-    if (Phaser.Input.Keyboard.JustDown(this.zKey))
+    const PRESSED_KEY = event.key.toLowerCase();
+
+    if (PRESSED_KEY === 'z')
       this.changeTileMode(TileMode.Add);
 
-    if (Phaser.Input.Keyboard.JustDown(this.xKey))
+    if (PRESSED_KEY === 'x')
       this.changeTileMode(TileMode.Delete);
 
-    if (Phaser.Input.Keyboard.JustDown(this.spaceKey)) {
+    if (PRESSED_KEY === ' ') {
       this.swipeMode = (this.swipeMode === SwipeMode.Off ? SwipeMode.On : SwipeMode.Off);
       this.swipeText.setText("Swipe (Space) : " + this.swipeMode);
     }
 
-    if (Phaser.Input.Keyboard.JustDown(this.oKey))
+    if (PRESSED_KEY === 'o')
       this.gameMap.previousArea();
 
-    if (Phaser.Input.Keyboard.JustDown(this.pKey))
+    if (PRESSED_KEY === 'p')
       this.gameMap.nextArea();
 
-    if (Phaser.Input.Keyboard.JustDown(this.nKey)) {
+    if (PRESSED_KEY === 'n') {
       this.inMenu = true;
       this.renameAreaInput.focused = true;
       this.renameAreaInput.visible = true;
@@ -289,13 +270,13 @@ export default class MapEditor extends Phaser.Scene {
       this.renameAreaInput.updateInputText(this.gameMap.currentArea().name);
     }
 
-    if (Phaser.Input.Keyboard.JustDown(this.mKey))
+    if (PRESSED_KEY === 'm')
       this.gameMap.addArea(new Area("New Area"));
 
-    if (Phaser.Input.Keyboard.JustDown(this.deleteKey))
+    if (PRESSED_KEY === 'delete')
       this.gameMap.deleteCurrentArea();
 
-    if (Phaser.Input.Keyboard.JustDown(this.tKey)) {
+    if (PRESSED_KEY === 't') {
       this.transitionForm.show();
       this.inMenu = true;
     }
