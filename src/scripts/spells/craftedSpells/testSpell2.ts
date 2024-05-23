@@ -4,13 +4,13 @@ import ProjectileOnCast from "../onCastEffects/projectileOnCast"
 import { CastType } from "../../enums/castTypes"
 
 
-export default class TestSpell2 extends Spell
+export default class FireBolt extends Spell
 {
     constructor(spellOwner: PlayerEntity)
     {
-        super(4, 500, 0, CastType.SkillShot, 'TheBigRat', '', spellOwner)
+        super(4, 500, 0, CastType.SkillShot, 'Fire Bolt', '', spellOwner)
         {
-            new ProjectileOnCast(this, 480, 200, 200);
+            new ProjectileOnCast(this, 480, 200, 200, 'firebolt');
         }
     }
 }

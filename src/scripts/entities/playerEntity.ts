@@ -6,7 +6,7 @@ import { BaseEntity } from './baseEntity';
 // import { player_AnimationConfig } from '../configs/animationConfig';
 import { MathModule } from '../utilities/mathModule'
 import Spell from '../spells/spell';
-import TestSpell from '../spells/craftedSpells/testSpell';
+import TestSpell from '../spells/craftedSpells/iceShard';
 import TestSpell2 from '../spells/craftedSpells/testSpell2';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {

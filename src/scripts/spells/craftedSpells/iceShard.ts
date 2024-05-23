@@ -4,13 +4,13 @@ import ProjectileOnCast from "../onCastEffects/projectileOnCast"
 import { CastType } from "../../enums/castTypes"
 
 
-export default class TestSpell extends Spell
+export default class IceShard extends Spell
 {
     constructor(spellOwner: PlayerEntity)
     {
-        super(0.5, 300, 0, CastType.SkillShot, 'TheRat', '', spellOwner)
+        super(0.5, 300, 0, CastType.SkillShot, 'Ice Shard', '', spellOwner)
         {
-            new ProjectileOnCast(this, 240, 50, 50);
+            new ProjectileOnCast(this, 240, 50, 50, 'icicle');
         }
     }
 }

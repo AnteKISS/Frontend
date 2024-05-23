@@ -30,6 +30,12 @@ const zombie_0_hitAndDeathAnimationEndFrame = 27;
 const zombie_0_criticalDeathAnimationStartFrame = 28;
 const zombie_0_criticalDeathAnimationEndFrame = 35;
 
+const icicle_AnimationStartFrame = 0;
+const icicle_AnimationEndFrame = 7; 
+
+const firebolt_AnimationStartFrame = 0;
+const firebolt_AnimationEndFrame = 7; 
+
 export const player_AnimationConfig = {
   idle: {
     frames: [
@@ -1280,6 +1286,20 @@ export const zombie_0_AnimationConfig = {
     ],
     frameRate: 4
   }
+};
+
+export const projectile_AnimationConfig = {
+  icicle: {
+    frames:{ start: icicle_AnimationStartFrame, end: icicle_AnimationEndFrame, sheet: 'icicle' },
+    frameRate: 8,
+    repeat: -1
+  }, 
+
+  firebolt: {
+    frames:{ start: firebolt_AnimationStartFrame, end: firebolt_AnimationEndFrame, sheet: 'firebolt' },
+    frameRate: 8,
+    repeat: -1
+  } 
 };
 
 export const animationConfigKeys = {
