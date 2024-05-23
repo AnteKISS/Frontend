@@ -140,6 +140,7 @@ export default class MapEditor extends Phaser.Scene {
     // Forms
     this.renameAreaInput = new TextInput(this, 1250, 90, 'Renaming area (Enter to submit): ', {color: '#000000', fontSize: '24px', align: 'right'});
     this.renameAreaInput.onSubmit = () => { this.renameArea() };
+    this.renameAreaInput.focused = false;
     this.renameAreaInput.visible = false;
     this.renameAreaInput.setOrigin(1, 0);
 
@@ -336,6 +337,7 @@ export default class MapEditor extends Phaser.Scene {
 
   private renameArea() {
     this.gameMap.currentArea().name = this.renameAreaInput.inputText;
+    this.renameAreaInput.focused = false;
     this.renameAreaInput.visible = false;
     this.currentAreaText.visible = true;
     this.inMenu = false;
