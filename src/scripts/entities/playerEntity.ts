@@ -3,7 +3,7 @@ import { EntityOrientation, getOrientationString } from '../enums/entityOrientat
 import NotImplementedError from '../errors/notImplementedError';
 import { AnimationManager } from '../managers/animationManager';
 import { BaseEntity } from './baseEntity';
-import { player_AnimationConfig } from '../configs/playerAnimationConfig';
+// import { player_AnimationConfig } from '../configs/animationConfig';
 import { MathModule } from '../utilities/mathModule'
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
@@ -18,6 +18,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     super(scene);
     scene.add.existing(this);
     this.type = 'PlayerEntity';
+    this._code = "player"
     this._headSprite = scene.add.sprite(0, 0, 'headTexture');
     this._headSprite.scale = 1.5;
     this._bodySprite = scene.add.sprite(0, 0, 'bodyTexture');
@@ -194,7 +195,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   public initializeAnimations(): void {
-    AnimationManager.createAnimations(this, player_AnimationConfig);
+    AnimationManager.createAnimations(this, `${this._code}_AnimationConfig`);
+    // AnimationManager.createAnimations(this, player_AnimationConfig);
   }
 }
 

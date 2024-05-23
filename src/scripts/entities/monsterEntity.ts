@@ -1,7 +1,7 @@
 import { ActiveEntity } from './activeEntity';
 import NotImplementedError from '../errors/notImplementedError';
 import { AnimationManager } from '../managers/animationManager';
-import { zombie_0_AnimationConfig } from '../configs/zombieAnimationConfig';
+// import { animationConfigKeys } from '../configs/animationConfig';
 import { getOrientationString } from '../enums/entityOrientation';
 import { MathModule } from '../utilities/mathModule';
 
@@ -15,6 +15,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     scene.add.existing(this);
     this.type = 'MonsterEntity';
     this._baseSprite = scene.add.sprite(0, 0, 'baseSprite');
+    this._baseSprite.scale = 1.5;
     // scene.remove.sprite(this._baseSprite);
     this.add(this._baseSprite);
     this.initializeAnimations();
@@ -60,8 +61,11 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       }
     }
     if (animationUpdateNeeded) {
+      // console.log(`${action}_${getOrientationString(this.orientation)}_ZOMBIE_0`);
+      // console.table(this._baseSprite.anims);
       // TODO: Check gear slots for loading spritesheet name dynamically
-      this._baseSprite.play(`${action}_${getOrientationString(this.orientation)}_MALE_HEAD2`);
+      // this._baseSprite.play(`RUN_${getOrientationString(this.orientation)}_ZOMBIE_0`);
+      this._baseSprite.play(`${action}_${getOrientationString(this.orientation)}_ZOMBIE_0`);
     }
   }
 
@@ -70,12 +74,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
   }
 
   public initializeAnimations(): void {
-    switch (this._code) {
-      case 'zombie_0':
-        AnimationManager.createAnimations(this, zombie_0_AnimationConfig);
-        default:
-          break;
-    }
+    AnimationManager.createAnimations(this, `${this._code}_AnimationConfig`);
   }
   
   updateOrientation(): boolean {
