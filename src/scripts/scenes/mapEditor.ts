@@ -23,6 +23,8 @@ export default class MapEditor extends Phaser.Scene {
   static readonly ZOOM_SPEED = 1;
   static readonly MIN_ZOOM = 0.2;
   static readonly MAX_ZOOM = 2;
+  static readonly MIN_BRUSH_SIZE = 0;
+  static readonly MAX_BRUSH_SIZE = 10;
 
   // Phaser refs/objects
   graphics: Phaser.GameObjects.Graphics;
@@ -37,6 +39,7 @@ export default class MapEditor extends Phaser.Scene {
   cameraOffsetPos: Phaser.Geom.Point;
   cursorUnitPos: Phaser.Geom.Point;
   cursorTilePos: Phaser.Geom.Point;
+  brushSize: number;
 
   // Editor states
   tileMode: TileMode;
@@ -53,6 +56,7 @@ export default class MapEditor extends Phaser.Scene {
   addText: Phaser.GameObjects.Text;
   deleteText: Phaser.GameObjects.Text;
   swipeText: Phaser.GameObjects.Text;
+  brushSizeText: Phaser.GameObjects.Text;
   zoomText: Phaser.GameObjects.Text;
   changeAreaText: Phaser.GameObjects.Text;
   renameAreaText: Phaser.GameObjects.Text;
@@ -99,6 +103,7 @@ export default class MapEditor extends Phaser.Scene {
     this.tileType = TileType.Floor;
     this.canPlaceObject = true;
     this.inMenu = false;
+    this.brushSize = 0;
 
     // Texts
     this.moveText = this.add.text(30, 30, "Move (WASD)", {color: '#000000', fontSize: '24px'});
@@ -107,12 +112,13 @@ export default class MapEditor extends Phaser.Scene {
     this.addText = this.add.text(60, 140, "Add (Z)", {color: '#000000', fontSize: '24px'});
     this.deleteText = this.add.text(60, 170, "Delete (X)", {color: '#000000', fontSize: '24px'});
     this.swipeText = this.add.text(60, 200, "Swipe (Space) : " + this.swipeMode, {color: '#000000', fontSize: '24px'});
-    this.zoomText = this.add.text(30, 250, "Zoom In/Out (Scroll)", {color: '#000000', fontSize: '24px'});
-    this.changeAreaText = this.add.text(30, 300, "Change Area (O/P)", {color: '#000000', fontSize: '24px'});
-    this.renameAreaText = this.add.text(30, 330, "Rename Area (N)", {color: '#000000', fontSize: '24px'});
-    this.newAreaText = this.add.text(30, 360, "New Area (M)", {color: '#000000', fontSize: '24px'});
-    this.deleteAreaText = this.add.text(30, 390, "Delete Area (Delete)", {color: '#000000', fontSize: '24px'});
-    this.createTransitionText = this.add.text(30, 440, "New Transition (T)", {color: '#000000', fontSize: '24px'});
+    this.brushSizeText = this.add.text(60, 230, "Brush Size (-/+) : " + this.brushSize, {color: '#000000', fontSize: '24px'});
+    this.zoomText = this.add.text(30, 280, "Zoom In/Out (Scroll)", {color: '#000000', fontSize: '24px'});
+    this.changeAreaText = this.add.text(30, 330, "Change Area (O/P)", {color: '#000000', fontSize: '24px'});
+    this.renameAreaText = this.add.text(30, 360, "Rename Area (N)", {color: '#000000', fontSize: '24px'});
+    this.newAreaText = this.add.text(30, 390, "New Area (M)", {color: '#000000', fontSize: '24px'});
+    this.deleteAreaText = this.add.text(30, 420, "Delete Area (Delete)", {color: '#000000', fontSize: '24px'});
+    this.createTransitionText = this.add.text(30, 470, "New Transition (T)", {color: '#000000', fontSize: '24px'});
     this.unitPosText = this.add.text(1250, 30, "Unit Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
     this.tilePosText = this.add.text(1250, 60, "Tile Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
     this.currentAreaText = this.add.text(1250, 90, "Area (1/1) : ", {color: '#000000', fontSize: '24px', align: 'right'});
@@ -159,6 +165,7 @@ export default class MapEditor extends Phaser.Scene {
         this.addText,
         this.deleteText,
         this.swipeText,
+        this.brushSizeText,
         this.zoomText,
         this.changeAreaText,
         this.renameAreaText,
@@ -237,6 +244,16 @@ export default class MapEditor extends Phaser.Scene {
       this.swipeText.setText("Swipe (Space) : " + this.swipeMode);
     }
 
+    else if (PRESSED_KEY === '-' && this.brushSize > MapEditor.MIN_BRUSH_SIZE) {
+      this.brushSize--;
+      this.brushSizeText.setText("Brush Size (-/+) : " + this.brushSize);
+    }
+
+    else if (PRESSED_KEY === '+' && this.brushSize < MapEditor.MAX_BRUSH_SIZE) {
+      this.brushSize++;
+      this.brushSizeText.setText("Brush Size (-/+) : " + this.brushSize);
+    }
+
     else if (PRESSED_KEY === 'o')
       this.gameMap.previousArea();
 
@@ -264,14 +281,16 @@ export default class MapEditor extends Phaser.Scene {
   }
 
   private tileModeClick() {
-    const cursorTilePos = TileSet.getTilePosFromUnitPos(this.getCursorUnitPos());
-
     if (this.inMenu) return;
 
+    const CURSOR_TILES_POS = TileSet.getProximityTilePos(this.cursorTilePos.x, this.cursorTilePos.y, this.brushSize);
+
     if (this.tileMode === TileMode.Add)
-      this.gameMap.currentArea().tileSet.addTile(cursorTilePos.x, cursorTilePos.y, this.tileType);
+      for (const TILE_POS of CURSOR_TILES_POS)
+        this.gameMap.currentArea().tileSet.addTile(TILE_POS.x, TILE_POS.y, this.tileType);
     else if (this.tileMode === TileMode.Delete)
-      this.gameMap.currentArea().tileSet.deleteTile(cursorTilePos.x, cursorTilePos.y);
+      for (const TILE_POS of CURSOR_TILES_POS)
+        this.gameMap.currentArea().tileSet.deleteTile(TILE_POS.x, TILE_POS.y);
   }
 
   private zoom(dy : number) {
@@ -297,8 +316,8 @@ export default class MapEditor extends Phaser.Scene {
     this.tileDrawer.drawDebugTileList(this.gameMap.currentArea().tileSet.tiles.values(), 2);
 
     // Draw player tile
-    const points = Tile.getPointsFromTilePos(playerTilePos.x, playerTilePos.y);
-    this.tileDrawer.drawDebugTilePos(points, TileColor.Player);
+    const PLAYER_TILE_POINTS = Tile.getPointsFromTilePos(playerTilePos.x, playerTilePos.y);
+    this.tileDrawer.drawDebugTilePos(PLAYER_TILE_POINTS, TileColor.Player);
 
     // Draw cursor tile
     let cursorColor = 0x000000;
@@ -307,8 +326,8 @@ export default class MapEditor extends Phaser.Scene {
     else if (this.tileMode === TileMode.Delete)
         cursorColor = TileColor.Delete;
 
-    const cursorTilePoints = Tile.getPointsFromTilePos(this.cursorTilePos.x, this.cursorTilePos.y);
-    this.tileDrawer.drawDebugTilePos(cursorTilePoints, cursorColor);
+    const CURSOR_TILES_POS = TileSet.getProximityTilePos(this.cursorTilePos.x, this.cursorTilePos.y, this.brushSize);
+    this.tileDrawer.drawDebugTilePosList(CURSOR_TILES_POS, 2, cursorColor);
   }
 
   private renameArea() {

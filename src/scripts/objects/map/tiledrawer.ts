@@ -32,9 +32,16 @@ export default class TileDrawer {
     }
   }
 
-  public drawDebugTilePos(points: Phaser.Geom.Point[], lineColor: number) {
+  public drawDebugTilePosList(tilesPos: Iterable<Phaser.Geom.Point>, lineWidth: number, fillColor: number) {
+    for (const pos of tilesPos) {
+      const points = Tile.getPointsFromTilePos(pos.x, pos.y);
+      this.drawDebugTilePos(points, fillColor);
+    }
+  }
+
+  public drawDebugTilePos(points: Phaser.Geom.Point[], fillColor: number) {
     this.graphics.lineStyle(2, 0x000000);
-    this.graphics.fillStyle(lineColor, 0.5);
+    this.graphics.fillStyle(fillColor, 0.5);
     this.graphics.beginPath();
 
     this.graphics.moveTo(points[0].x, points[0].y);

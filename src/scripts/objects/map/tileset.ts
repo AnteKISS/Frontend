@@ -80,6 +80,23 @@ export default class TileSet {
     }
   }
 
+  public static getProximityTilePos(x: number, y: number, proximity: number) : Phaser.Geom.Point[] {
+    const posList : Phaser.Geom.Point[] = [];
+    const P2 : number = proximity * proximity;
+
+    // Select tiles in a circle, column by column
+    // Algorithm used: https://stackoverflow.com/a/14036626
+    for (let cx = x - proximity; cx <= x + proximity; cx++) {
+      const X2 : number = Math.pow((x - cx), 2);
+      const Y_DIST : number = Math.floor(Math.sqrt( P2 - X2 ));
+      for (let cy = y - Y_DIST; cy <= y + Y_DIST; cy++) {
+        posList.push(new Phaser.Geom.Point(cx, cy));
+      }
+    }
+
+    return posList;
+  }
+
   public static getTilePosFromUnitPos(unitPos: Phaser.Geom.Point) : Phaser.Geom.Point {
     const adjustedX = unitPos.x;
     const adjustedY = unitPos.y - Tile.HALF_HEIGHT;
