@@ -24,8 +24,4 @@ export class ShrineEntity extends InactiveEntity {
   initializeAnimations(): void {
     
   }
-
-  updateOrientation(): boolean {
-    throw new NotImplementedError();
-  }
 }

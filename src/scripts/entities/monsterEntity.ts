@@ -63,10 +63,6 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
   public initializeAnimations(): void {
     AnimationManager.createAnimations(this, `${this._code}_AnimationConfig`);
   }
-  
-  updateOrientation(): boolean {
-    throw new NotImplementedError();
-  }
 
   attack(target: IFightable): void {
     throw new NotImplementedError();

@@ -83,32 +83,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     throw new NotImplementedError();
   }
 
-  updateOrientation(): boolean {
-    let orientation_deg = Phaser.Math.RadToDeg(this._orientation_rad);
-    let currentOrientation = this.orientation;
-    if ((orientation_deg >= -22.5 && orientation_deg < 0) || (orientation_deg >= 0 && orientation_deg < 22.5)) {
-      this.orientation = EntityOrientation.RIGHT;
-    } else if (orientation_deg >= 22.5 && orientation_deg < 67.5) {
-      this.orientation = EntityOrientation.DOWN_RIGHT;
-    } else if (orientation_deg >= 67.5 && orientation_deg < 112.5) {
-      this.orientation = EntityOrientation.DOWN;
-    } else if (orientation_deg >= 112.5 && orientation_deg < 157.5) {
-      this.orientation = EntityOrientation.DOWN_LEFT;
-    } else if ((orientation_deg >= 157.5 && orientation_deg <= 180) || (orientation_deg >= -180 && orientation_deg < -157.5)) {
-      this.orientation = EntityOrientation.LEFT;
-    } else if (orientation_deg >= -157.5 && orientation_deg < -112.5) {
-      this.orientation = EntityOrientation.UP_LEFT;
-    } else if (orientation_deg >= -112.5 && orientation_deg < -67.5) {
-      this.orientation = EntityOrientation.UP;
-    } else if (orientation_deg >= -67.5 && orientation_deg < -22.5) {
-      this.orientation = EntityOrientation.UP_RIGHT;
-    }
-    if (currentOrientation == this.orientation) {
-      return false;
-    }
-    return true;
-  }
-
   attack(target: IFightable): void {
     throw new NotImplementedError();
   }

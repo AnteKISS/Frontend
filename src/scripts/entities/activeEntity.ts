@@ -9,7 +9,6 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   protected _destinationX: number;
   protected _destinationY: number;
   protected _isMoving: boolean = false;
-  protected _orientation_rad: number;
   
   constructor(scene) {
     super(scene);
@@ -123,5 +122,4 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   abstract update(deltaTime: number): void;
   abstract reset(): void;
   abstract initializeAnimations(): void;
-  abstract updateOrientation(): boolean;
 }
