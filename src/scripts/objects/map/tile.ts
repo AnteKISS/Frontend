@@ -3,7 +3,6 @@ import Transition from './transition'
 
 export enum TileType {
   Floor,
-  Transition
 }
 
 export default class Tile {

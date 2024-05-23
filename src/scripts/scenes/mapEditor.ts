@@ -21,7 +21,7 @@ export default class MapEditor extends Phaser.Scene {
   static readonly MOVE_CAMERA_SPEED = 10;
   static readonly MOVE_CAMERA_FASTER_MULTIPLIER = 2;
   static readonly ZOOM_SPEED = 1;
-  static readonly MIN_ZOOM = 0.5;
+  static readonly MIN_ZOOM = 0.2;
   static readonly MAX_ZOOM = 2;
 
   // Phaser refs/objects
@@ -62,10 +62,6 @@ export default class MapEditor extends Phaser.Scene {
   unitPosText: Phaser.GameObjects.Text;
   tilePosText: Phaser.GameObjects.Text;
   currentAreaText: Phaser.GameObjects.Text;
-
-  // Buttons
-  floorTileButton: Phaser.GameObjects.Text;
-  transitionTileButton: Phaser.GameObjects.Text;
 
   // Forms
   renameAreaInput: TextInput;
@@ -125,18 +121,6 @@ export default class MapEditor extends Phaser.Scene {
     this.tilePosText.setOrigin(1, 0);
     this.currentAreaText.setOrigin(1, 0);
 
-    // Buttons
-    this.floorTileButton = this.add.text(30, 670, "Floor Tile", {color: '#000000', fontSize: '24px'})
-      .setInteractive()
-      .on('pointerdown', () => {
-        if (!this.inMenu) this.tileType = TileType.Floor;
-      });
-    this.transitionTileButton = this.add.text(300, 670, "Transition Tile", {color: '#000000', fontSize: '24px'})
-      .setInteractive()
-      .on('pointerdown', () => {
-        if (!this.inMenu) this.tileType = TileType.Transition;
-      });
-
     // Forms
     this.renameAreaInput = new TextInput(this, 1250, 90, 'Renaming area (Enter to submit): ', {color: '#000000', fontSize: '24px', align: 'right'});
     this.renameAreaInput.onSubmit = () => { this.renameArea() };
@@ -164,9 +148,7 @@ export default class MapEditor extends Phaser.Scene {
     });
 
     this.input.keyboard.on('keydown', (event: KeyboardEvent) => this.handleKeyDown(event));
-    this.input.on('wheel', (pointer, currentlyOver, dx, dy, dz, event) => {
-      this.zoom(dy);
-    });
+    this.input.on('wheel', (pointer, currentlyOver, dx, dy, dz, event) => this.zoom(dy));
 
     // Handle cameras to make only specific elements affected by zoom
     this.cameras.main.ignore(
@@ -186,8 +168,6 @@ export default class MapEditor extends Phaser.Scene {
         this.unitPosText,
         this.tilePosText,
         this.currentAreaText,
-        this.floorTileButton,
-        this.transitionTileButton,
         this.renameAreaInput,
         ...this.transitionForm.getGameObjects(),
       ]
@@ -249,21 +229,21 @@ export default class MapEditor extends Phaser.Scene {
     if (PRESSED_KEY === 'z')
       this.changeTileMode(TileMode.Add);
 
-    if (PRESSED_KEY === 'x')
+    else if (PRESSED_KEY === 'x')
       this.changeTileMode(TileMode.Delete);
 
-    if (PRESSED_KEY === ' ') {
+    else if (PRESSED_KEY === ' ') {
       this.swipeMode = (this.swipeMode === SwipeMode.Off ? SwipeMode.On : SwipeMode.Off);
       this.swipeText.setText("Swipe (Space) : " + this.swipeMode);
     }
 
-    if (PRESSED_KEY === 'o')
+    else if (PRESSED_KEY === 'o')
       this.gameMap.previousArea();
 
-    if (PRESSED_KEY === 'p')
+    else if (PRESSED_KEY === 'p')
       this.gameMap.nextArea();
 
-    if (PRESSED_KEY === 'n') {
+    else if (PRESSED_KEY === 'n') {
       this.inMenu = true;
       this.renameAreaInput.focused = true;
       this.renameAreaInput.visible = true;
@@ -271,13 +251,13 @@ export default class MapEditor extends Phaser.Scene {
       this.renameAreaInput.updateInputText(this.gameMap.currentArea().name);
     }
 
-    if (PRESSED_KEY === 'm')
+    else if (PRESSED_KEY === 'm')
       this.gameMap.addArea(new Area("New Area"));
 
-    if (PRESSED_KEY === 'delete')
+    else if (PRESSED_KEY === 'delete')
       this.gameMap.deleteCurrentArea();
 
-    if (PRESSED_KEY === 't') {
+    else if (PRESSED_KEY === 't') {
       this.transitionForm.show();
       this.inMenu = true;
     }
@@ -322,12 +302,8 @@ export default class MapEditor extends Phaser.Scene {
 
     // Draw cursor tile
     let cursorColor = 0x000000;
-    if (this.tileMode === TileMode.Add) {
-      if (this.tileType === TileType.Floor)
+    if (this.tileMode === TileMode.Add)
         cursorColor = TileColor.Floor;
-      else if (this.tileType === TileType.Transition)
-        cursorColor = TileColor.Transition;
-    }
     else if (this.tileMode === TileMode.Delete)
         cursorColor = TileColor.Delete;
 

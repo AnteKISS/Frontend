@@ -120,21 +120,25 @@ export default class TransitionForm {
       // Change text input focus
       this.textInputIndex = (this.textInputIndex + 1) % 2;
     }
+
     else if (event.key === 'ArrowLeft') {
       // Next transition
       this.selectedAreaIndex = (this.selectedAreaIndex + 1) % this.gameMap.areas.length;
       this.updateAreaSelectText();
     }
+
     else if (event.key === 'ArrowRight') {
       // Previous transition
       this.selectedAreaIndex--;
       if (this.selectedAreaIndex < 0) this.selectedAreaIndex = this.gameMap.areas.length - 1;
       this.updateAreaSelectText();
     }
+
     else if (event.key === 'Escape') {
       // Quit without saving transition
       this.onFinished();
     }
+
     else if (event.key === 'Enter') {
       // Quit and create transition if valid inputs
       if (this.xInput.isInputValid() && this.yInput.isInputValid()) {

@@ -20,10 +20,14 @@ export default class TileDrawer {
     for (const tile of tiles) {
       const points = Tile.getPointsFromTilePos(tile.x, tile.y);
       let lineColor = 0x000000;
-      switch (tile.type) {
-        case TileType.Floor:      lineColor = TileColor.Floor;       break;
-        case TileType.Transition: lineColor = TileColor.Transition;  break;
+
+      if (tile.type === TileType.Floor) {
+        if (tile.transition !== undefined)
+          lineColor = TileColor.Transition;
+        else
+          lineColor = TileColor.Floor;
       }
+
       this.drawDebugTilePos(points, lineColor);
     }
   }
