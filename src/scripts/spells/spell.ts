@@ -1,3 +1,6 @@
+import { PlayerEntity } from "../entities/playerEntity";
+import { CastType } from "../enums/castTypes"
+
 export default class Spell
 {
     cooldown: number;
@@ -5,18 +8,21 @@ export default class Spell
     manaCost: number;
 
     spellName: string = 'undefined';
-    spellOwner: Entity;
+    spellOwner: PlayerEntity;
     spellIcon: string;
 
-    onCastEffects: IOnCastEffect[];
-    onHitEffects: IOnHitEffect[];
+    onCastEffects: IOnCastEffect[] = [];
+    onHitEffects: IOnHitEffect[] = [];
 
     castType: CastType;
 
     private timeSinceLastCast: number = 0;
     private remainingCooldown: number = 0;
 
-    constructor(cooldown: number, range: number, manaCost: number, castType: CastType, spellName: string, spellIcon: string, spellOwner: Entity)
+    pointerX: number = -1;
+    pointerY: number = -1;
+
+    constructor(cooldown: number, range: number, manaCost: number, castType: CastType, spellName: string, spellIcon: string, spellOwner: PlayerEntity)
     {
         this.cooldown = cooldown;
         this.range = range;
@@ -27,14 +33,20 @@ export default class Spell
         this.castType = castType;
     }
 
-    
+    public canCast(): boolean
+    {
+        const currentTime = Date.now();
+        const timeDiff = currentTime - this.timeSinceLastCast;
+        return timeDiff >= this.cooldown*1000 && this.spellOwner.stats.mana - this.manaCost >= 0;
+    }
+
     public onCast(): boolean
     {
-        if(this.remainingCooldown == 0)
+        if(this.canCast())
             {
                 if(this.castSpell())
                     {
-                        spellOwner.mana -= this.manaCost;
+                        this.spellOwner.stats.mana -= this.manaCost;
                         this.timeSinceLastCast = Date.now();
                         return true;
                     }
@@ -48,7 +60,9 @@ export default class Spell
             case CastType.SkillShot:
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
-                        //onCastEffect.onCast(castDirection);
+                        const x = this.getPointerX();
+                        const y = this.getPointerY();
+                        onCastEffect.onCast(Phaser.Math.Angle.Between(this.spellOwner.x, this.spellOwner.y, x, y));
                     });
                     break;
             case CastType.GroundTarget:
@@ -77,24 +91,20 @@ export default class Spell
 
     private getPointerX(): number
     {
-        this.spellOwner.scene.input.setDefaultCursor('pointer');
-
         this.spellOwner.scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-        return pointer.x
+        this.pointerX = pointer.x
         });
 
-        return -1;
+        return this.pointerX;
     }
 
     private getPointerY(): number
     {
-        this.spellOwner.scene.input.setDefaultCursor('pointer');
-
         this.spellOwner.scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-        return pointer.y;
+        this.pointerY = pointer.y;
         });
 
-        return -1;
+        return this.pointerY;
     }
 
     public addOnHitEffect(onHitEffect: IOnHitEffect)

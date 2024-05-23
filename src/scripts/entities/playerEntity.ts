@@ -5,6 +5,9 @@ import { AnimationManager } from '../managers/animationManager';
 import { BaseEntity } from './baseEntity';
 // import { player_AnimationConfig } from '../configs/animationConfig';
 import { MathModule } from '../utilities/mathModule'
+import Spell from '../spells/spell';
+import TestSpell from '../spells/craftedSpells/testSpell';
+import TestSpell2 from '../spells/craftedSpells/testSpell2';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -13,6 +16,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   private _bodySprite: Phaser.GameObjects.Sprite;
   private _meleeSprite: Phaser.GameObjects.Sprite;
   private _bowSprite: Phaser.GameObjects.Sprite;
+  equippedSpells: Spell[] = [];
 
   constructor(scene) {
     super(scene);
@@ -36,6 +40,13 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
     scene.input.on('pointerup', (pointer: Phaser.Input.Pointer) => this.onPointerUp(pointer));
     scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
+
+    const keyQ = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+    keyQ.on('down',() => this.onKeyDown('Q'), this);
+    const keyW = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+    keyW.on('down',() => this.onKeyDown('W'), this);
+    this.equippedSpells.push(new TestSpell(this));
+    this.equippedSpells.push(new TestSpell2(this));
 
     this.stats.movementSpeed = 100;
   }
@@ -191,6 +202,23 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       this._destinationX = pointer.x;
       this._destinationY = pointer.y;
       this._orientation_rad = Phaser.Math.Angle.Between(this.x, this.y, pointer.x, pointer.y);
+    }
+  }
+
+  private onKeyDown(key: string): void
+  {
+    switch (key)
+    {
+    case 'Q':
+      console.log('Q Press');
+      if(this.equippedSpells[0])
+        this.equippedSpells[0].onCast();
+      break;
+    case 'W':
+      console.log('W Press');
+      if(this.equippedSpells[1])
+        this.equippedSpells[1].onCast();
+      break;
     }
   }
 

@@ -14,6 +14,7 @@ export class MonsterFactory {
       dexterity: 0,
       vitality: 0,
       energy: 0,
+      mana: 0,
       health: 1,
       maxHealth: 1,
       healthRegeneration: 0,

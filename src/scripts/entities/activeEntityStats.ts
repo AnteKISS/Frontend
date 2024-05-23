@@ -3,6 +3,7 @@ export class ActiveEntityStats {
   dexterity: number = 0;
   vitality: number = 0;
   energy: number = 0;
+  mana: number = 0;
 
   health: number = 1;
   maxHealth: number = 1;

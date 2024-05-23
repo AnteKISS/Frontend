@@ -36,8 +36,7 @@ export default class MainScene extends Phaser.Scene {
         fontSize: '24px'
       })
       .setOrigin(1, 0);
-	let music: Phaser.Sound.BaseSound;
-	music = this.sound.add('spinning_rat_power', { loop: true});
+	
 	//music.play();
 	  let music: Phaser.Sound.BaseSound;
 	  music = this.sound.add('spinning_rat_power', { loop: true});

@@ -1,4 +1,4 @@
 interface IOnCastEffect
 {
-    onCast(castDirection?: any, cursorX?: number, cursorY?: number): void 
+    onCast(castDirection?: number, cursorX?: number, cursorY?: number): void 
 }

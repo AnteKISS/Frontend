@@ -1,4 +1,4 @@
-enum CastType
+export enum CastType
 {
     SkillShot, //Creates projectile and throw it in a direction
     GroundTarget, //Takes pointerX and pointerY if in range

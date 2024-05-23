@@ -1,6 +1,6 @@
 import Spell from "../spell"
 
-class ProjectileOnCast implements IOnCastEffect
+export default class ProjectileOnCast implements IOnCastEffect
 {
     spell: Spell;
     projectileSpeed: number;
@@ -16,19 +16,21 @@ class ProjectileOnCast implements IOnCastEffect
         spell.addOnCastEffect(this);
     }
 
-    onCast(castDirection: any)
+    onCast(castDirection: number)
     {
-        const projectile = this.spell.spellOwner.scene.add.graphics();
-        projectile.fillStyle(0x000000, 1);
-        projectile.fillRect(this.spell.spellOwner.x, this.spell.spellOwner.y, this.projectileWidth, this.projectileLength);
+        const projectileSprite = this.spell.spellOwner.scene.physics.add.sprite(0, 0,'game-logo');
 
         const dx = Math.cos(castDirection);
         const dy = Math.sin(castDirection);
 
-        this.spell.spellOwner.scene.physics.moveTo(projectile, this.spell.spellOwner.x + dx * this.spell.range, this.spell.spellOwner.y + dy * this.spell.range, this.projectileSpeed);
+        projectileSprite.setScale(this.projectileWidth/projectileSprite.displayWidth, this.projectileLength/projectileSprite.displayHeight);
+        projectileSprite.setAngle(castDirection * 180 / Math.PI);
+        projectileSprite.setVelocity(this.projectileSpeed * dx, this.projectileSpeed * dy);
+
+        projectileSprite.setPosition(this.spell.spellOwner.x, this.spell.spellOwner.y);
 
         this.spell.spellOwner.scene.time.delayedCall(this.spell.range / this.projectileSpeed * 1000, () => {
-            projectile.destroy();
+            projectileSprite.destroy();
         }, [], this);
     }
 }
