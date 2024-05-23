@@ -25,14 +25,17 @@ export default class TileSet {
   }
 
   public addTile(x: number, y: number, type: TileType) {
-    const HASH : String = Tile.getHash(x, y);
-    this.tiles.set(HASH, new Tile(x, y, type))
+    this.tiles.set(Tile.getHash(x, y), new Tile(x, y, type))
   }
 
   public deleteTile(x: number, y: number) {
     const HASH : String = Tile.getHash(x, y);
     if (this.tiles.get(HASH) !== undefined)
       this.tiles.delete(HASH);
+  }
+
+  public getTile(x: number, y: number) : Tile | undefined {
+    return this.tiles.get(Tile.getHash(x, y));
   }
 
   public getProximityTileList(x: number, y: number, proximity: number) : Tile[] {
@@ -46,7 +49,7 @@ export default class TileSet {
       const X2 : number = Math.pow((x - cx), 2);
       const Y_DIST : number = Math.floor(Math.sqrt( P2 - X2 ));
       for (let cy = y - Y_DIST; cy <= y + Y_DIST; cy++) {
-        tile = this.tiles.get(Tile.getHash(cx, cy));
+        tile = this.getTile(cx, cy);
         if (tile) tileList.push(tile);
       }
     }

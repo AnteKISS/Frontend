@@ -6,6 +6,7 @@ export enum TileColor {
   Transition = 0xFFFF00,
   Player = 0xFF00FF,
   Delete = 0xFF0000,
+  Configure = 0x00FF00,
   DefaultCursor = 0x00FF00
 }
 
@@ -28,18 +29,18 @@ export default class TileDrawer {
           lineColor = TileColor.Floor;
       }
 
-      this.drawDebugTilePos(points, lineColor);
+      this.drawDebugTilePoints(points, lineColor);
     }
   }
 
   public drawDebugTilePosList(tilesPos: Iterable<Phaser.Geom.Point>, lineWidth: number, fillColor: number) {
     for (const pos of tilesPos) {
       const points = Tile.getPointsFromTilePos(pos.x, pos.y);
-      this.drawDebugTilePos(points, fillColor);
+      this.drawDebugTilePoints(points, fillColor);
     }
   }
 
-  public drawDebugTilePos(points: Phaser.Geom.Point[], fillColor: number) {
+  public drawDebugTilePoints(points: Phaser.Geom.Point[], fillColor: number) {
     this.graphics.lineStyle(2, 0x000000);
     this.graphics.fillStyle(fillColor, 0.5);
     this.graphics.beginPath();

@@ -9,7 +9,8 @@ import TransitionForm from '../objects/map/transitionform'
 
 enum TileMode {
   Add = "Add",
-  Delete = "Delete"
+  Delete = "Delete",
+  Configure = "Configure",
 }
 
 enum SwipeMode {
@@ -55,6 +56,7 @@ export default class MapEditor extends Phaser.Scene {
   tileModeText: Phaser.GameObjects.Text;
   addText: Phaser.GameObjects.Text;
   deleteText: Phaser.GameObjects.Text;
+  configureText: Phaser.GameObjects.Text;
   swipeText: Phaser.GameObjects.Text;
   brushSizeText: Phaser.GameObjects.Text;
   zoomText: Phaser.GameObjects.Text;
@@ -111,14 +113,15 @@ export default class MapEditor extends Phaser.Scene {
     this.tileModeText = this.add.text(30, 110, "TileMode : " + this.tileMode, {color: '#000000', fontSize: '24px'});
     this.addText = this.add.text(60, 140, "Add (Z)", {color: '#000000', fontSize: '24px'});
     this.deleteText = this.add.text(60, 170, "Delete (X)", {color: '#000000', fontSize: '24px'});
-    this.swipeText = this.add.text(60, 200, "Swipe (Space) : " + this.swipeMode, {color: '#000000', fontSize: '24px'});
-    this.brushSizeText = this.add.text(60, 230, "Brush Size (-/+) : " + this.brushSize, {color: '#000000', fontSize: '24px'});
-    this.zoomText = this.add.text(30, 280, "Zoom In/Out (Scroll)", {color: '#000000', fontSize: '24px'});
-    this.changeAreaText = this.add.text(30, 330, "Change Area (O/P)", {color: '#000000', fontSize: '24px'});
-    this.renameAreaText = this.add.text(30, 360, "Rename Area (N)", {color: '#000000', fontSize: '24px'});
-    this.newAreaText = this.add.text(30, 390, "New Area (M)", {color: '#000000', fontSize: '24px'});
-    this.deleteAreaText = this.add.text(30, 420, "Delete Area (Delete)", {color: '#000000', fontSize: '24px'});
-    this.createTransitionText = this.add.text(30, 470, "New Transition (T)", {color: '#000000', fontSize: '24px'});
+    this.configureText = this.add.text(60, 200, "Configure (C)", {color: '#000000', fontSize: '24px'});
+    this.swipeText = this.add.text(60, 230, "Swipe (Space) : " + this.swipeMode, {color: '#000000', fontSize: '24px'});
+    this.brushSizeText = this.add.text(60, 260, "Brush Size (-/+) : " + this.brushSize, {color: '#000000', fontSize: '24px'});
+    this.zoomText = this.add.text(30, 310, "Zoom In/Out (Scroll)", {color: '#000000', fontSize: '24px'});
+    this.changeAreaText = this.add.text(30, 360, "Change Area (O/P)", {color: '#000000', fontSize: '24px'});
+    this.renameAreaText = this.add.text(30, 390, "Rename Area (N)", {color: '#000000', fontSize: '24px'});
+    this.newAreaText = this.add.text(30, 420, "New Area (M)", {color: '#000000', fontSize: '24px'});
+    this.deleteAreaText = this.add.text(30, 450, "Delete Area (Delete)", {color: '#000000', fontSize: '24px'});
+    this.createTransitionText = this.add.text(30, 500, "New Transition (T)", {color: '#000000', fontSize: '24px'});
     this.unitPosText = this.add.text(1250, 30, "Unit Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
     this.tilePosText = this.add.text(1250, 60, "Tile Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
     this.currentAreaText = this.add.text(1250, 90, "Area (1/1) : ", {color: '#000000', fontSize: '24px', align: 'right'});
@@ -164,6 +167,7 @@ export default class MapEditor extends Phaser.Scene {
         this.tileModeText,
         this.addText,
         this.deleteText,
+        this.configureText,
         this.swipeText,
         this.brushSizeText,
         this.zoomText,
@@ -239,6 +243,9 @@ export default class MapEditor extends Phaser.Scene {
     else if (PRESSED_KEY === 'x')
       this.changeTileMode(TileMode.Delete);
 
+    else if (PRESSED_KEY === 'c')
+      this.changeTileMode(TileMode.Configure);
+
     else if (PRESSED_KEY === ' ') {
       this.swipeMode = (this.swipeMode === SwipeMode.Off ? SwipeMode.On : SwipeMode.Off);
       this.swipeText.setText("Swipe (Space) : " + this.swipeMode);
@@ -291,6 +298,14 @@ export default class MapEditor extends Phaser.Scene {
     else if (this.tileMode === TileMode.Delete)
       for (const TILE_POS of CURSOR_TILES_POS)
         this.gameMap.currentArea().tileSet.deleteTile(TILE_POS.x, TILE_POS.y);
+    else if (this.tileMode === TileMode.Configure) {
+      const TILE : Tile | undefined = this.gameMap.currentArea().tileSet.getTile(this.cursorTilePos.x, this.cursorTilePos.y);
+      if (TILE)
+        console.log("there's a tile");
+      else
+        console.log("no tile");
+    }
+
   }
 
   private zoom(dy : number) {
@@ -317,17 +332,26 @@ export default class MapEditor extends Phaser.Scene {
 
     // Draw player tile
     const PLAYER_TILE_POINTS = Tile.getPointsFromTilePos(playerTilePos.x, playerTilePos.y);
-    this.tileDrawer.drawDebugTilePos(PLAYER_TILE_POINTS, TileColor.Player);
+    this.tileDrawer.drawDebugTilePoints(PLAYER_TILE_POINTS, TileColor.Player);
 
     // Draw cursor tile
     let cursorColor = 0x000000;
     if (this.tileMode === TileMode.Add)
-        cursorColor = TileColor.Floor;
+      cursorColor = TileColor.Floor;
     else if (this.tileMode === TileMode.Delete)
-        cursorColor = TileColor.Delete;
+      cursorColor = TileColor.Delete;
+    else if (this.tileMode === TileMode.Configure)
+      cursorColor = TileColor.Configure;
 
-    const CURSOR_TILES_POS = TileSet.getProximityTilePos(this.cursorTilePos.x, this.cursorTilePos.y, this.brushSize);
-    this.tileDrawer.drawDebugTilePosList(CURSOR_TILES_POS, 2, cursorColor);
+    if (this.tileMode === TileMode.Configure) {
+      // Don't apply brush size when in "configure" mode
+      const CURSOR_TILE_POINTS = Tile.getPointsFromTilePos(this.cursorTilePos.x, this.cursorTilePos.y);
+      this.tileDrawer.drawDebugTilePoints(CURSOR_TILE_POINTS, cursorColor);
+    }
+    else {
+      const CURSOR_TILES_POS = TileSet.getProximityTilePos(this.cursorTilePos.x, this.cursorTilePos.y, this.brushSize);
+      this.tileDrawer.drawDebugTilePosList(CURSOR_TILES_POS, 2, cursorColor);
+    }
   }
 
   private renameArea() {

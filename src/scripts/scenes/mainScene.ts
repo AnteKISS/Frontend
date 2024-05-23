@@ -90,7 +90,7 @@ export default class MainScene extends Phaser.Scene {
 
     // Draw player tile
     const points = Tile.getPointsFromTilePos(playerTilePos.x, playerTilePos.y);
-    this.tileDrawer.drawDebugTilePos(points, TileColor.Player);
+    this.tileDrawer.drawDebugTilePoints(points, TileColor.Player);
 
     // Draw cursor tile
     const cursorPos = new Phaser.Geom.Point(
@@ -99,6 +99,6 @@ export default class MainScene extends Phaser.Scene {
     );
     const cursorTilePos = TileSet.getTilePosFromUnitPos(cursorPos)
     const cursorTilePoints = Tile.getPointsFromTilePos(cursorTilePos.x, cursorTilePos.y);
-    this.tileDrawer.drawDebugTilePos(cursorTilePoints, TileColor.DefaultCursor);
+    this.tileDrawer.drawDebugTilePoints(cursorTilePoints, TileColor.DefaultCursor);
   }
 }
