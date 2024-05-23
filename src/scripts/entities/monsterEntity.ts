@@ -1,7 +1,6 @@
 import { ActiveEntity } from './activeEntity';
 import NotImplementedError from '../errors/notImplementedError';
 import { AnimationManager } from '../managers/animationManager';
-// import { animationConfigKeys } from '../configs/animationConfig';
 import { getOrientationString } from '../enums/entityOrientation';
 import { MathModule } from '../utilities/mathModule';
 
@@ -16,7 +15,6 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     this.type = 'MonsterEntity';
     this._baseSprite = scene.add.sprite(0, 0, 'baseSprite');
     this._baseSprite.scale = 1.5;
-    // scene.remove.sprite(this._baseSprite);
     this.add(this._baseSprite);
     this.initializeAnimations();
     scene.add.existing(this);
@@ -61,10 +59,6 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       }
     }
     if (animationUpdateNeeded) {
-      // console.log(`${action}_${getOrientationString(this.orientation)}_ZOMBIE_0`);
-      // console.table(this._baseSprite.anims);
-      // TODO: Check gear slots for loading spritesheet name dynamically
-      // this._baseSprite.play(`RUN_${getOrientationString(this.orientation)}_ZOMBIE_0`);
       this._baseSprite.play(`${action}_${getOrientationString(this.orientation)}_ZOMBIE_0`);
     }
   }

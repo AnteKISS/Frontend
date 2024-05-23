@@ -3,7 +3,6 @@ import { EntityOrientation, getOrientationString } from '../enums/entityOrientat
 import NotImplementedError from '../errors/notImplementedError';
 import { AnimationManager } from '../managers/animationManager';
 import { BaseEntity } from './baseEntity';
-// import { player_AnimationConfig } from '../configs/animationConfig';
 import { MathModule } from '../utilities/mathModule'
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
