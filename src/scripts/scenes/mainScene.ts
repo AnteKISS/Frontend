@@ -3,10 +3,12 @@ import FpsText from '../objects/fpsText'
 import { BaseEntity } from '../entities/baseEntity';
 import { ActiveEntity } from '../entities/activeEntity';
 import { PlayerEntity } from '../entities/playerEntity';
+import { MonsterEntity } from '../entities/monsterEntity';
 
 export default class MainScene extends Phaser.Scene {
   fpsText
   private playerTest: PlayerEntity;
+  private monsterTest: MonsterEntity;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -29,6 +31,10 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest = new PlayerEntity(this);
     this.playerTest.positionX = this.cameras.main.width / 2;
     this.playerTest.positionY = this.cameras.main.height / 2;
+    this.monsterTest = new MonsterEntity(this, 'zombie_0');
+    this.monsterTest.positionX = this.cameras.main.width / 4;
+    this.monsterTest.positionY = this.cameras.main.height / 4;
+
   }
 
   update(time, deltaTime) {

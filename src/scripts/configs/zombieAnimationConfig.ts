@@ -15,7 +15,7 @@ const hitAndDeathAnimationEndFrame = 27;
 const criticalDeathAnimationStartFrame = 28;
 const criticalDeathAnimationEndFrame = 35;
 
-export const monsterAnimationConfig = {
+export const zombie_0_AnimationConfig = {
   idle: {
     frames: [
       { start: idleAnimationStartFrame + EntityOrientation.LEFT,        end: idleAnimationEndFrame + EntityOrientation.LEFT,        sheet: 'zombie_0', orientation: EntityOrientation.LEFT },

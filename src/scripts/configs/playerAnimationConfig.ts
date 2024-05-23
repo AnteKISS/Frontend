@@ -15,7 +15,7 @@ const cheerAnimationEndFrame = 27;
 const bowAttackAnimationStartFrame = 28;
 const bowAttackAnimationEndFrame = 31;
 
-export const playerAnimationConfig = {
+export const player_AnimationConfig = {
   idle: {
     frames: [
       { start: idleAnimationStartFrame + EntityOrientation.LEFT,        end: idleAnimationEndFrame + EntityOrientation.LEFT,        sheet: 'steel_armor', orientation: EntityOrientation.LEFT },

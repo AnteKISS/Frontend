@@ -3,33 +3,33 @@ import { EntityOrientation, getOrientationString } from '../enums/entityOrientat
 import NotImplementedError from '../errors/notImplementedError';
 import { AnimationManager } from '../managers/animationManager';
 import { BaseEntity } from './baseEntity';
-import { playerAnimationConfig } from '../configs/playerAnimationConfig';
+import { player_AnimationConfig } from '../configs/playerAnimationConfig';
 import { MathModule } from '../utilities/mathModule'
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
   private _pointerDown: boolean = false;
-  private headSprite: Phaser.GameObjects.Sprite;
-  private bodySprite: Phaser.GameObjects.Sprite;
-  private meleeSprite: Phaser.GameObjects.Sprite;
-  private bowSprite: Phaser.GameObjects.Sprite;
+  private _headSprite: Phaser.GameObjects.Sprite;
+  private _bodySprite: Phaser.GameObjects.Sprite;
+  private _meleeSprite: Phaser.GameObjects.Sprite;
+  private _bowSprite: Phaser.GameObjects.Sprite;
 
   constructor(scene) {
     super(scene);
     scene.add.existing(this);
     this.type = 'PlayerEntity';
-    this.headSprite = scene.add.sprite(0, 0, 'headTexture');
-    this.headSprite.scale = 1.5;
-    this.bodySprite = scene.add.sprite(0, 0, 'bodyTexture');
-    this.bodySprite.scale = 1.5;
-    this.meleeSprite = scene.add.sprite(0, 0, 'meleeTexture');
-    this.meleeSprite.scale = 1.5;
-    this.bowSprite = scene.add.sprite(0, 0, 'bowTexture');
-    this.bowSprite.scale = 1.5;
-    this.add(this.headSprite);
-    this.add(this.bodySprite);
-    this.add(this.meleeSprite);
-    this.add(this.bowSprite);
+    this._headSprite = scene.add.sprite(0, 0, 'headTexture');
+    this._headSprite.scale = 1.5;
+    this._bodySprite = scene.add.sprite(0, 0, 'bodyTexture');
+    this._bodySprite.scale = 1.5;
+    this._meleeSprite = scene.add.sprite(0, 0, 'meleeTexture');
+    this._meleeSprite.scale = 1.5;
+    this._bowSprite = scene.add.sprite(0, 0, 'bowTexture');
+    this._bowSprite.scale = 1.5;
+    this.add(this._headSprite);
+    this.add(this._bodySprite);
+    this.add(this._meleeSprite);
+    this.add(this._bowSprite);
     this.initializeAnimations();
     scene.add.existing(this);
     scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
@@ -45,7 +45,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   // Methods
   public update(deltaTime: number): void {
     let hasOrientationUpdated: boolean = false;
-    let action: string = this.headSprite.anims.currentAnim ? this.headSprite.anims.currentAnim.key.split('_')[0] : '';
+    let action: string = this._headSprite.anims.currentAnim ? this._headSprite.anims.currentAnim.key.split('_')[0] : '';
     let animationUpdateNeeded: boolean = false;
 
     if ((this.positionX != this._destinationX) || (this.positionY != this._destinationY)) {
@@ -67,22 +67,22 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
         this._destinationY = this.positionY;
         this._isMoving = false;
       }
-      if (!this.headSprite.anims.isPlaying || action != 'RUN' || hasOrientationUpdated) {
+      if (!this._headSprite.anims.isPlaying || action != 'RUN' || hasOrientationUpdated) {
         animationUpdateNeeded = true;
         action = 'RUN';
       }
     } else {
-      if (!this.headSprite.anims.isPlaying || action != 'IDLE' || hasOrientationUpdated) {
+      if (!this._headSprite.anims.isPlaying || action != 'IDLE' || hasOrientationUpdated) {
         animationUpdateNeeded = true;
         action = 'IDLE';
       }
     }
     if (animationUpdateNeeded) {
       // TODO: Check gear slots for loading spritesheet name dynamically
-      this.headSprite.play(`${action}_${getOrientationString(this.orientation)}_MALE_HEAD2`);
-      this.bodySprite.play(`${action}_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
-      this.meleeSprite.play(`${action}_${getOrientationString(this.orientation)}_LONGSWORD`);
-      this.bowSprite.play(`${action}_${getOrientationString(this.orientation)}_LONGBOW`);
+      this._headSprite.play(`${action}_${getOrientationString(this.orientation)}_MALE_HEAD2`);
+      this._bodySprite.play(`${action}_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
+      this._meleeSprite.play(`${action}_${getOrientationString(this.orientation)}_LONGSWORD`);
+      this._bowSprite.play(`${action}_${getOrientationString(this.orientation)}_LONGBOW`);
     }
   }
 
@@ -194,10 +194,10 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   public initializeAnimations(): void {
-    AnimationManager.createAnimations(this, playerAnimationConfig);
+    AnimationManager.createAnimations(this, player_AnimationConfig);
   }
 }
 
-if ((module as any).hot) {
-  (module as any).hot.accept();
-}
+// if ((module as any).hot) {
+//   (module as any).hot.accept();
+// }
