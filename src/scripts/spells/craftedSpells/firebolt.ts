@@ -1,6 +1,7 @@
 import { PlayerEntity } from "../../entities/playerEntity";
 import Spell from "../spell";
 import ProjectileOnCast from "../onCastEffects/projectileOnCast"
+import SpeedBuffOnCast from "../onCastEffects/speedBuffOnCast";
 import { CastType } from "../../enums/castTypes"
 
 
@@ -10,7 +11,8 @@ export default class FireBolt extends Spell
     {
         super(4, 500, 20, CastType.SkillShot, 'Fire Bolt', '', spellOwner)
         {
-            new ProjectileOnCast(this, 480, 200, 200, 'firebolt');
+            new ProjectileOnCast(this, 480, 128, 128, 'firebolt');
+            new SpeedBuffOnCast(this, 200, 1);
         }
     }
 }

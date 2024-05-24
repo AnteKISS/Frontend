@@ -6,8 +6,9 @@ import { BaseEntity } from './baseEntity';
 // import { player_AnimationConfig } from '../configs/animationConfig';
 import { MathModule } from '../utilities/mathModule'
 import Spell from '../spells/spell';
-import TestSpell from '../spells/craftedSpells/iceShard';
-import TestSpell2 from '../spells/craftedSpells/firebolt';
+import IceShard from '../spells/craftedSpells/iceShard';
+import Firebolt from '../spells/craftedSpells/firebolt';
+import Quake from '../spells/craftedSpells/quake';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -46,8 +47,12 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     keyQ.on('down',() => this.onKeyDown('Q'), this);
     const keyW = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     keyW.on('down',() => this.onKeyDown('W'), this);
-    this.equippedSpells.push(new TestSpell(this));
-    this.equippedSpells.push(new TestSpell2(this));
+    const keyE = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
+    keyE.on('down',() => this.onKeyDown('E'), this);
+
+    this.equippedSpells.push(new IceShard(this));
+    this.equippedSpells.push(new Quake(this));
+    this.equippedSpells.push(new Firebolt(this));
 
     
     this.stats.movementSpeed = 100;
@@ -222,6 +227,11 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       console.log('W Press');
       if(this.equippedSpells[1])
         this.equippedSpells[1].onCast();
+      break;
+    case 'E':
+      console.log('E Press');
+      if(this.equippedSpells[2])
+        this.equippedSpells[2].onCast();
       break;
     }
   }

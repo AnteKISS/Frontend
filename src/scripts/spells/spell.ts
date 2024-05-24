@@ -56,28 +56,32 @@ export default class Spell
 
     private castSpell(): boolean
     {
+        const x = this.getPointerX();
+        const y = this.getPointerY();
+
         switch (this.castType) {
             case CastType.SkillShot:
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
-                        const x = this.getPointerX();
-                        const y = this.getPointerY();
                         onCastEffect.onCast(Phaser.Math.Angle.Between(this.spellOwner.x, this.spellOwner.y, x, y));
                     });
                     break;
             case CastType.GroundTarget:
+                if(Phaser.Math.Distance.Between(this.spellOwner.x, this.spellOwner.y, x, y) > this.range)
+                    return false;
+
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
-                        onCastEffect.onCast(undefined, this.getPointerX(), this.getPointerY());
+                            onCastEffect.onCast(undefined, x, y);   
                     });
                     break;
             case CastType.PointNClick:
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
-                        onCastEffect.onCast(undefined, this.getPointerX(), this.getPointerY());
+                        onCastEffect.onCast(undefined, x, y);
                     });
                     break;
-            case CastType.SelfAura:
+            case CastType.SelfBuff:
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
                         onCastEffect.onCast();
@@ -91,20 +95,12 @@ export default class Spell
 
     private getPointerX(): number
     {
-        this.spellOwner.scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-        this.pointerX = pointer.x
-        });
-
-        return this.pointerX;
+        return this.spellOwner.scene.input.activePointer.x;
     }
 
     private getPointerY(): number
     {
-        this.spellOwner.scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-        this.pointerY = pointer.y;
-        });
-
-        return this.pointerY;
+        return this.spellOwner.scene.input.activePointer.y;
     }
 
     public addOnHitEffect(onHitEffect: IOnHitEffect)

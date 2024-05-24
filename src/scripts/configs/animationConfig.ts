@@ -36,6 +36,15 @@ const icicle_AnimationEndFrame = 7;
 const firebolt_AnimationStartFrame = 0;
 const firebolt_AnimationEndFrame = 7; 
 
+const greyQuake_AnimationStartFrame = 0;
+const greyQuake_AnimationEndFrame = 5;
+
+const redQuake_AnimationStartFrame = 6;
+const redQuake_AnimationEndFrame = 11;
+
+const blueQuake_AnimationStartFrame = 12;
+const blueQuake_AnimationEndFrame = 17;
+
 export const player_AnimationConfig = {
   idle: {
     frames: [
@@ -1300,6 +1309,26 @@ export const projectile_AnimationConfig = {
     frameRate: 8,
     repeat: -1
   } 
+};
+
+export const circleSpell_AnimationConfig = {
+  greyQuake: {
+    frames:{ start: greyQuake_AnimationStartFrame, end: greyQuake_AnimationEndFrame, sheet: 'quake'},
+    frameRate: 6,
+    repeat: -1
+  },
+
+  redQuake: {
+    frames:{ start: redQuake_AnimationStartFrame, end: redQuake_AnimationEndFrame, sheet: 'quake'},
+    frameRate: 6,
+    repeat: -1
+  },
+
+  blueQuake: {
+    frames:{ start: blueQuake_AnimationStartFrame, end: blueQuake_AnimationEndFrame, sheet: 'quake'},
+    frameRate: 6,
+    repeat: -1
+  }
 };
 
 export const animationConfigKeys = {
