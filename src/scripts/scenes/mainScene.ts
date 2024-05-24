@@ -43,7 +43,7 @@ export default class MainScene extends Phaser.Scene {
 	  let music: Phaser.Sound.BaseSound;
 	  music = this.sound.add('spinning_rat_power', { loop: true});
 	  // music.play();
-    
+
     this.playerTest = new PlayerEntity(this);
     this.playerTest.positionX = this.cameras.main.width / 2;
     this.playerTest.positionY = this.cameras.main.height / 2;
@@ -57,5 +57,15 @@ export default class MainScene extends Phaser.Scene {
     this.fpsText.update();
     this.playerTest.update(deltaTime);
     this.monsterTest.update(deltaTime);
+    this.updateGUI();
+  }
+
+  updateGUI(): void
+  {
+    this.gui.manaBar.setCurrentValue(this.playerTest.stats.mana);
+    this.gui.manaBar.setMaxValue(this.playerTest.maxMana);
+    this.gui.healthBar.setCurrentValue(this.playerTest.stats.health);
+    this.gui.healthBar.setMaxValue(this.playerTest.getMaxHealth());
+    //ajouter les autres barres
   }
 }

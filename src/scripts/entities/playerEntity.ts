@@ -7,7 +7,7 @@ import { BaseEntity } from './baseEntity';
 import { MathModule } from '../utilities/mathModule'
 import Spell from '../spells/spell';
 import TestSpell from '../spells/craftedSpells/iceShard';
-import TestSpell2 from '../spells/craftedSpells/testSpell2';
+import TestSpell2 from '../spells/craftedSpells/firebolt';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -16,6 +16,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   private _bodySprite: Phaser.GameObjects.Sprite;
   private _meleeSprite: Phaser.GameObjects.Sprite;
   private _bowSprite: Phaser.GameObjects.Sprite;
+  maxMana: number = 150; //Pour test
   equippedSpells: Spell[] = [];
 
   constructor(scene) {
@@ -48,7 +49,10 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.equippedSpells.push(new TestSpell(this));
     this.equippedSpells.push(new TestSpell2(this));
 
+    
     this.stats.movementSpeed = 100;
+    this.stats.mana = 150; //Pour test
+    this.setMaxHealth(150) //Pour test
   }
 
   // Getters/Setters
