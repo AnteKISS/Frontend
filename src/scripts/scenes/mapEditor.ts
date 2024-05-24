@@ -147,6 +147,9 @@ export default class MapEditor extends Phaser.Scene {
     this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
+    // Prevent DOM from handling tab key
+    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB, true);
+
     this.input.on('pointerdown', (pointer, objects) => {
       if (objects.length === 0) {
         this.tileModeClick();

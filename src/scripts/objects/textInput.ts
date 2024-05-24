@@ -102,8 +102,14 @@ export default class TextInput extends Phaser.GameObjects.Text {
     if (this.inputFilter === TextInput.NUMBER_TYPE) {
       const NUM_VALUE = Number(textValue);
 
+      // Handle typing '-'
+      if (textValue === '-' || textValue === '0-') {
+        this.inputText = '-';
+        return;
+      }
+
       // Is valid number
-      if (isNaN(NUM_VALUE) && textValue != '-') // Accept '-' to accept starting to type negative number
+      if (isNaN(NUM_VALUE))
         return;
 
       // Set within value range
@@ -111,6 +117,9 @@ export default class TextInput extends Phaser.GameObjects.Text {
         textValue = this.minValue.toString();
       else if (NUM_VALUE > this.maxValue)
         textValue = this.maxValue.toString();
+
+      // Remove leading zeros
+      textValue = String(NUM_VALUE);
     }
 
     // Set final input text value

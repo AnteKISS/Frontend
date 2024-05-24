@@ -32,6 +32,7 @@ export default class TransitionForm {
 
     this.title = scene.add.text(450, 150, "Create Transition", { color: '#000000', fontSize: '40px' });
     this.nameInput = new TextInput(scene, 400, 250, "Name : ", { color: '#000000', fontSize: '24px' });
+    this.nameInput.setMaxLength(25);
     this.xInput = new TextInput(scene, 400, 325, "To X : ", { color: '#000000', fontSize: '24px' });
     this.yInput = new TextInput(scene, 680, 325, "To Y : ", { color: '#000000', fontSize: '24px' });
     this.xInput.setInputFilter(TextInput.NUMBER_TYPE);
@@ -44,7 +45,7 @@ export default class TransitionForm {
     this.areaSelect = scene.add.text(400, 425, "", { color: '#000000', fontSize: '24px' });
     this.areaSelect.setLineSpacing(10);
 
-    this.nextInputText = scene.add.text(400, 525, "Next Text Field (Shift)", { color: '#000000', fontSize: '24px' });
+    this.nextInputText = scene.add.text(400, 525, "Next Text Field (Tab)", { color: '#000000', fontSize: '24px' });
     this.cancelText = scene.add.text(720, 560, "Cancel (Esc)", { color: '#000000', fontSize: '24px' });
     this.confirmText = scene.add.text(400, 560, "Confirm (Enter)", { color: '#000000', fontSize: '24px' });
 
@@ -128,7 +129,7 @@ export default class TransitionForm {
     if (this.focused === false)
       return;
 
-    if (event.key === 'Shift') {
+    if (event.key === 'Tab') {
       // Change text input focus
       this.textInputIndex = (this.textInputIndex + 1) % 3;
     }
