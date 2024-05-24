@@ -45,7 +45,7 @@ export default class TextInput extends Phaser.GameObjects.Text {
     this.setText(this.label + this.inputText);
   }
 
-  public getNumValue() : number {
+  public getNumValue(): number {
     return Number(this.inputText);
   }
 
@@ -54,6 +54,11 @@ export default class TextInput extends Phaser.GameObjects.Text {
     if (this.inputText.length === 0)
       return false;
 
+    if (this.inputFilter === TextInput.TEXT_TYPE) {
+      // Isn't empty
+      if (this.inputText.length === 0)
+        return false;
+    }
     if (this.inputFilter === TextInput.NUMBER_TYPE) {
       const NUM_VALUE = Number(this.inputText);
 

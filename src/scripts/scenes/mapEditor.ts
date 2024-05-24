@@ -81,7 +81,7 @@ export default class MapEditor extends Phaser.Scene {
   shiftKey: Phaser.Input.Keyboard.Key; // Move faster
 
   constructor() {
-    super({key: 'MapEditor'});
+    super({ key: 'MapEditor' });
   }
 
   create() {
@@ -108,30 +108,30 @@ export default class MapEditor extends Phaser.Scene {
     this.brushSize = 0;
 
     // Texts
-    this.moveText = this.add.text(30, 30, "Move (WASD)", {color: '#000000', fontSize: '24px'});
-    this.moveFasterText = this.add.text(30, 60, "Move Faster (Hold Shift)", {color: '#000000', fontSize: '24px'});
-    this.tileModeText = this.add.text(30, 110, "TileMode : " + this.tileMode, {color: '#000000', fontSize: '24px'});
-    this.addText = this.add.text(60, 140, "Add (Z)", {color: '#000000', fontSize: '24px'});
-    this.deleteText = this.add.text(60, 170, "Delete (X)", {color: '#000000', fontSize: '24px'});
-    this.configureText = this.add.text(60, 200, "Configure (C)", {color: '#000000', fontSize: '24px'});
-    this.swipeText = this.add.text(60, 230, "Swipe (Space) : " + this.swipeMode, {color: '#000000', fontSize: '24px'});
-    this.brushSizeText = this.add.text(60, 260, "Brush Size (-/+) : " + this.brushSize, {color: '#000000', fontSize: '24px'});
-    this.zoomText = this.add.text(30, 310, "Zoom In/Out (Scroll)", {color: '#000000', fontSize: '24px'});
-    this.changeAreaText = this.add.text(30, 360, "Change Area (O/P)", {color: '#000000', fontSize: '24px'});
-    this.renameAreaText = this.add.text(30, 390, "Rename Area (N)", {color: '#000000', fontSize: '24px'});
-    this.newAreaText = this.add.text(30, 420, "New Area (M)", {color: '#000000', fontSize: '24px'});
-    this.deleteAreaText = this.add.text(30, 450, "Delete Area (Delete)", {color: '#000000', fontSize: '24px'});
-    this.createTransitionText = this.add.text(30, 500, "New Transition (T)", {color: '#000000', fontSize: '24px'});
-    this.unitPosText = this.add.text(1250, 30, "Unit Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
-    this.tilePosText = this.add.text(1250, 60, "Tile Pos : 0,0", {color: '#000000', fontSize: '24px', align: 'right'});
-    this.currentAreaText = this.add.text(1250, 90, "Area (1/1) : ", {color: '#000000', fontSize: '24px', align: 'right'});
+    this.moveText = this.add.text(30, 30, "Move (WASD)", { color: '#000000', fontSize: '24px' });
+    this.moveFasterText = this.add.text(30, 60, "Move Faster (Hold Shift)", { color: '#000000', fontSize: '24px' });
+    this.tileModeText = this.add.text(30, 110, "TileMode : " + this.tileMode, { color: '#000000', fontSize: '24px' });
+    this.addText = this.add.text(60, 140, "Add (Z)", { color: '#000000', fontSize: '24px' });
+    this.deleteText = this.add.text(60, 170, "Delete (X)", { color: '#000000', fontSize: '24px' });
+    this.configureText = this.add.text(60, 200, "Configure (C)", { color: '#000000', fontSize: '24px' });
+    this.swipeText = this.add.text(60, 230, "Swipe (Space) : " + this.swipeMode, { color: '#000000', fontSize: '24px' });
+    this.brushSizeText = this.add.text(60, 260, "Brush Size (-/+) : " + this.brushSize, { color: '#000000', fontSize: '24px' });
+    this.zoomText = this.add.text(30, 310, "Zoom In/Out (Scroll)", { color: '#000000', fontSize: '24px' });
+    this.changeAreaText = this.add.text(30, 360, "Change Area (O/P)", { color: '#000000', fontSize: '24px' });
+    this.renameAreaText = this.add.text(30, 390, "Rename Area (N)", { color: '#000000', fontSize: '24px' });
+    this.newAreaText = this.add.text(30, 420, "New Area (M)", { color: '#000000', fontSize: '24px' });
+    this.deleteAreaText = this.add.text(30, 450, "Delete Area (Delete)", { color: '#000000', fontSize: '24px' });
+    this.createTransitionText = this.add.text(30, 500, "New Transition (T)", { color: '#000000', fontSize: '24px' });
+    this.unitPosText = this.add.text(1250, 30, "Unit Pos : 0,0", { color: '#000000', fontSize: '24px', align: 'right' });
+    this.tilePosText = this.add.text(1250, 60, "Tile Pos : 0,0", { color: '#000000', fontSize: '24px', align: 'right' });
+    this.currentAreaText = this.add.text(1250, 90, "Area (1/1) : ", { color: '#000000', fontSize: '24px', align: 'right' });
 
     this.unitPosText.setOrigin(1, 0);
     this.tilePosText.setOrigin(1, 0);
     this.currentAreaText.setOrigin(1, 0);
 
     // Forms
-    this.renameAreaInput = new TextInput(this, 1250, 90, 'Renaming area (Enter to submit): ', {color: '#000000', fontSize: '24px', align: 'right'});
+    this.renameAreaInput = new TextInput(this, 1250, 90, 'Renaming area (Enter to submit): ', { color: '#000000', fontSize: '24px', align: 'right' });
     this.renameAreaInput.onSubmit = () => { this.renameArea() };
     this.renameAreaInput.focused = false;
     this.renameAreaInput.visible = false;
@@ -299,7 +299,7 @@ export default class MapEditor extends Phaser.Scene {
       for (const TILE_POS of CURSOR_TILES_POS)
         this.gameMap.currentArea().tileSet.deleteTile(TILE_POS.x, TILE_POS.y);
     else if (this.tileMode === TileMode.Configure) {
-      const TILE : Tile | undefined = this.gameMap.currentArea().tileSet.getTile(this.cursorTilePos.x, this.cursorTilePos.y);
+      const TILE: Tile | undefined = this.gameMap.currentArea().tileSet.getTile(this.cursorTilePos.x, this.cursorTilePos.y);
       if (TILE)
         console.log("there's a tile");
       else
@@ -308,7 +308,7 @@ export default class MapEditor extends Phaser.Scene {
 
   }
 
-  private zoom(dy : number) {
+  private zoom(dy: number) {
     let newZoom = this.cameras.main.zoom + (dy * MapEditor.ZOOM_SPEED / 1000);
 
     if (this.inMenu) return;
@@ -367,14 +367,14 @@ export default class MapEditor extends Phaser.Scene {
     this.transitionForm.hide();
   }
 
-  private getCursorUnitPos() : Phaser.Geom.Point {
+  private getCursorUnitPos(): Phaser.Geom.Point {
     return new Phaser.Geom.Point(
       ((this.pointer.x - this.centerPoint.x + this.playerPos.x) / this.cameras.main.zoom) + this.cameraOffsetPos.x,
       ((this.pointer.y - this.centerPoint.y + this.playerPos.y) / this.cameras.main.zoom) + this.cameraOffsetPos.y
     );
   }
 
-  private changeTileMode(mode : TileMode) {
+  private changeTileMode(mode: TileMode) {
     this.tileMode = mode;
     this.tileModeText.setText("TileMode : " + mode);
   }
