@@ -162,7 +162,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
   public initializeAnimations(): void {
     AnimationManager.createAnimations(this, `${this._code}_AnimationConfig`);
-    // AnimationManager.createAnimations(this, player_AnimationConfig);
   }
 }
 

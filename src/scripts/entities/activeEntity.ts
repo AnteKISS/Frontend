@@ -1,6 +1,7 @@
 import { BaseEntity } from './baseEntity';
 import NotImplementedError from '../errors/notImplementedError';
 import { ActiveEntityStats } from './activeEntityStats';
+import { EntitySpecies } from '../enums/entitySpecies';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 

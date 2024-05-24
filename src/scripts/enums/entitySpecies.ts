@@ -1,4 +1,4 @@
-enum EntitySpecies {
+export enum EntitySpecies {
   HUMAN,
   UNDEAD,
   DEMON,
