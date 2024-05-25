@@ -6,6 +6,7 @@ import Area from '../objects/map/area'
 import GameMap from '../objects/map/gamemap'
 import TextInput from '../objects/textInput'
 import TransitionForm from '../objects/map/transitionform'
+import ConfigureTileForm from '../objects/map/configureTileForm'
 
 enum TileMode {
   Add = "Add",
@@ -72,6 +73,7 @@ export default class MapEditor extends Phaser.Scene {
   // Forms
   renameAreaInput: TextInput;
   transitionForm: TransitionForm;
+  configureTileForm: ConfigureTileForm;
 
   // Input keys
   aKey: Phaser.Input.Keyboard.Key; // Move left
@@ -142,6 +144,9 @@ export default class MapEditor extends Phaser.Scene {
     this.transitionForm = new TransitionForm(this, this.gameMap, () => this.hideTransitionForm());
     this.transitionForm.hide();
 
+    this.configureTileForm = new ConfigureTileForm(this, this.gameMap, () => this.hideConfigureTileForm());
+    this.configureTileForm.hide();
+
     // Inputs
     this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -186,6 +191,7 @@ export default class MapEditor extends Phaser.Scene {
         this.currentAreaText,
         this.renameAreaInput,
         this.transitionForm,
+        this.configureTileForm,
       ]
     );
     this.uiCamera = this.cameras.add(0, 0, 1280, 720);
@@ -305,10 +311,10 @@ export default class MapEditor extends Phaser.Scene {
         this.gameMap.currentArea().tileSet.deleteTile(TILE_POS.x, TILE_POS.y);
     else if (this.tileMode === TileMode.Configure) {
       const TILE: Tile | undefined = this.gameMap.currentArea().tileSet.getTile(this.cursorTilePos.x, this.cursorTilePos.y);
-      if (TILE)
-        console.log("there's a tile");
-      else
-        console.log("no tile");
+      if (TILE) {
+        this.inMenu = true;
+        this.configureTileForm.show(TILE);
+      }
     }
 
   }
@@ -370,6 +376,11 @@ export default class MapEditor extends Phaser.Scene {
   private hideTransitionForm() {
     this.inMenu = false;
     this.transitionForm.hide();
+  }
+
+  private hideConfigureTileForm() {
+    this.inMenu = false;
+    this.configureTileForm.hide();
   }
 
   private getCursorUnitPos(): Phaser.Geom.Point {

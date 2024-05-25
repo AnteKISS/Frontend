@@ -2,11 +2,11 @@ import Area from './area'
 import Transition from './transition'
 
 export default class GameMap {
-  areas : Area[]
+  areas: Area[]
   transitions: Transition[]
-  areaIndex : number;
+  areaIndex: number;
 
-  constructor () {
+  constructor() {
     this.areas = new Array<Area>;
     this.transitions = new Array<Transition>;
     this.addArea(new Area("Default"));
@@ -37,7 +37,7 @@ export default class GameMap {
     if (this.areaIndex < 0) this.areaIndex += this.areas.length;
   }
 
-  public nextArea () {
+  public nextArea() {
     this.areaIndex = (this.areaIndex + 1) % this.areas.length;
   }
 }

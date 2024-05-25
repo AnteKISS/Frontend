@@ -86,13 +86,13 @@ export default class TransitionForm extends Phaser.GameObjects.Container {
     }
 
     else if (event.key === 'ArrowLeft') {
-      // Next transition
+      // Next area
       this.selectedAreaIndex = (this.selectedAreaIndex + 1) % this.gameMap.areas.length;
       this.updateAreaSelectText();
     }
 
     else if (event.key === 'ArrowRight') {
-      // Previous transition
+      // Previous area
       this.selectedAreaIndex--;
       if (this.selectedAreaIndex < 0) this.selectedAreaIndex = this.gameMap.areas.length - 1;
       this.updateAreaSelectText();
