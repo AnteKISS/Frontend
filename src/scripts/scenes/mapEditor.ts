@@ -131,11 +131,13 @@ export default class MapEditor extends Phaser.Scene {
     this.currentAreaText.setOrigin(1, 0);
 
     // Forms
-    this.renameAreaInput = new TextInput(this, 1250, 90, 'Renaming area (Enter to submit): ', { color: '#000000', fontSize: '24px', align: 'right' });
+    this.renameAreaInput = new TextInput(this, 1250, 90, 0, 'Renaming area (Enter to submit): ', { color: '#000000', fontSize: '24px', align: 'right' });
     this.renameAreaInput.onSubmit = () => { this.renameArea() };
     this.renameAreaInput.focused = false;
     this.renameAreaInput.visible = false;
     this.renameAreaInput.setOrigin(1, 0);
+    this.renameAreaInput.setBackgroundVisibility(false);
+    this.renameAreaInput.setPadding(0);
 
     this.transitionForm = new TransitionForm(this, this.gameMap, () => this.hideTransitionForm());
     this.transitionForm.hide();
@@ -183,7 +185,7 @@ export default class MapEditor extends Phaser.Scene {
         this.tilePosText,
         this.currentAreaText,
         this.renameAreaInput,
-        ...this.transitionForm.getGameObjects(),
+        this.transitionForm,
       ]
     );
     this.uiCamera = this.cameras.add(0, 0, 1280, 720);

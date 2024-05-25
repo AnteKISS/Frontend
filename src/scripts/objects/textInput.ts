@@ -1,30 +1,54 @@
 import 'phaser'
 
-export default class TextInput extends Phaser.GameObjects.Text {
+export default class TextInput extends Phaser.GameObjects.Container {
   static readonly TEXT_TYPE = /^[a-zA-Z0-9 ]$/;
   static readonly NUMBER_TYPE = /^[0-9-]$/;
 
+  // Phaser objects
+  text: Phaser.GameObjects.Text;
+  background: Phaser.GameObjects.Rectangle;
+
+  // Text input properties
   focused: boolean;
-  onSubmit: Function;
-  label: string;
-  inputText: string;
-  inputFilter: RegExp;
-  maxLength: number;
   minValue: number;
   maxValue: number;
+  maxLength: number;
+  inputFilter: RegExp;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, label: string, style: Phaser.Types.GameObjects.Text.TextStyle) {
-    super(scene, x, y, '', style);
-    this.scene.add.existing(this);
+  // Style properties
+  padding: number;
+  width: number;
+
+  // Text input data
+  label: string;
+  inputText: string;
+
+  // Event handling
+  onSubmit: Function;
+
+  constructor(scene: Phaser.Scene, x: number, y: number, width: number, label: string, style: Phaser.Types.GameObjects.Text.TextStyle) {
+    super(scene, x, y);
+
+    this.padding = 20;
+    this.width = width;
+    this.text = scene.add.text(this.padding, this.padding, label, style);
+    this.background = scene.add.rectangle(0, 0, width, this.text.height + this.padding * 2, 0xFFFFFF);
+    this.background.setOrigin(0, 0);
+    this.add([this.background, this.text]);
+
+    this.focused = false;
+    this.minValue = -Infinity;
+    this.maxValue = Infinity;
+    this.maxLength = Infinity;
+    this.inputFilter = TextInput.TEXT_TYPE;
+
     this.label = label;
     this.inputText = '';
-    this.focused = false;
-    this.inputFilter = TextInput.TEXT_TYPE;
-    this.maxLength = Infinity;
 
     this.scene.input.keyboard.on('keydown', (event: KeyboardEvent) => this.handleInput(event));
 
     this.updateInputText("");
+    this.scene.add.existing(this);
   }
 
   public setInputFilter(filter: RegExp) {
@@ -40,9 +64,32 @@ export default class TextInput extends Phaser.GameObjects.Text {
     this.maxValue = max;
   }
 
+  public setOrigin(x: number, y: number) {
+    this.text.setOrigin(x, y);
+    this.background.setOrigin(x, y);
+  }
+
   public updateInputText(text: string) {
     this.inputText = text;
-    this.setText(this.label + this.inputText);
+    this.text.setText(this.label + this.inputText);
+  }
+
+  public setBackgroundVisibility(visible: boolean) {
+    this.background.setVisible(visible);
+  }
+
+  public setPadding(padding: number) {
+    this.padding = padding;
+    this.text.setPosition(this.padding, this.padding);
+    this.background.setSize(this.width, this.text.height + this.padding * 2);
+  }
+
+  public setFocus(focus: boolean) {
+    this.focused = focus;
+    if (this.focused)
+      this.background.setFillStyle(0xDDDDDD);
+    else
+      this.background.setFillStyle(0xFFFFFF);
   }
 
   public getNumValue(): number {
@@ -84,7 +131,7 @@ export default class TextInput extends Phaser.GameObjects.Text {
     else
       this.addCharToInput(event.key);
 
-    this.setText(this.label + this.inputText);
+    this.text.setText(this.label + this.inputText);
   }
 
   private addCharToInput(key: string) {
@@ -117,9 +164,8 @@ export default class TextInput extends Phaser.GameObjects.Text {
         textValue = this.minValue.toString();
       else if (NUM_VALUE > this.maxValue)
         textValue = this.maxValue.toString();
-
-      // Remove leading zeros
-      textValue = String(NUM_VALUE);
+      else
+        textValue = String(NUM_VALUE); // Remove leading zeros
     }
 
     // Set final input text value
