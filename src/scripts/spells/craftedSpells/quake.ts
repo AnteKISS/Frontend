@@ -8,7 +8,7 @@ export default class Quake extends Spell
 {
     constructor(spellOwner: PlayerEntity)
     {
-        super(3, 300, 2, CastType.GroundTarget, 'Rat', '', spellOwner)
+        super(3, 300, 10, CastType.GroundTarget, 'Rat', '', spellOwner)
         {
             new CircleOnCast(this, 75, 2, 'greyQuake');
         }
