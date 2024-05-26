@@ -6,7 +6,8 @@ import Area from '../objects/map/area'
 import GameMap from '../objects/map/gamemap'
 import TextInput from '../objects/textInput'
 import TransitionForm from '../objects/map/transitionform'
-import ConfigureTileForm from '../objects/map/configureTileForm'
+import ConfigureTileForm from '../objects/map/configuretileform'
+import DeleteTransitionForm from '../objects/map/deletetransitionform'
 
 enum TileMode {
   Add = "Add",
@@ -66,6 +67,7 @@ export default class MapEditor extends Phaser.Scene {
   newAreaText: Phaser.GameObjects.Text;
   deleteAreaText: Phaser.GameObjects.Text;
   createTransitionText: Phaser.GameObjects.Text;
+  deleteTransitionText: Phaser.GameObjects.Text;
   unitPosText: Phaser.GameObjects.Text;
   tilePosText: Phaser.GameObjects.Text;
   currentAreaText: Phaser.GameObjects.Text;
@@ -74,6 +76,7 @@ export default class MapEditor extends Phaser.Scene {
   renameAreaInput: TextInput;
   transitionForm: TransitionForm;
   configureTileForm: ConfigureTileForm;
+  deleteTransitionForm: DeleteTransitionForm;
 
   // Input keys
   aKey: Phaser.Input.Keyboard.Key; // Move left
@@ -124,6 +127,7 @@ export default class MapEditor extends Phaser.Scene {
     this.newAreaText = this.add.text(30, 420, "New Area (M)", { color: '#000000', fontSize: '24px' });
     this.deleteAreaText = this.add.text(30, 450, "Delete Area (Delete)", { color: '#000000', fontSize: '24px' });
     this.createTransitionText = this.add.text(30, 500, "New Transition (T)", { color: '#000000', fontSize: '24px' });
+    this.deleteTransitionText = this.add.text(30, 530, "Delete Transition (Y)", { color: '#000000', fontSize: '24px' });
     this.unitPosText = this.add.text(1250, 30, "Unit Pos : 0,0", { color: '#000000', fontSize: '24px', align: 'right' });
     this.tilePosText = this.add.text(1250, 60, "Tile Pos : 0,0", { color: '#000000', fontSize: '24px', align: 'right' });
     this.currentAreaText = this.add.text(1250, 90, "Area (1/1) : ", { color: '#000000', fontSize: '24px', align: 'right' });
@@ -146,6 +150,9 @@ export default class MapEditor extends Phaser.Scene {
 
     this.configureTileForm = new ConfigureTileForm(this, this.gameMap, () => this.hideConfigureTileForm());
     this.configureTileForm.hide();
+
+    this.deleteTransitionForm = new DeleteTransitionForm(this, this.gameMap, () => this.hideDeleteTransitionForm());
+    this.deleteTransitionForm.hide();
 
     // Inputs
     this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -186,11 +193,13 @@ export default class MapEditor extends Phaser.Scene {
         this.newAreaText,
         this.deleteAreaText,
         this.createTransitionText,
+        this.deleteTransitionText,
         this.unitPosText,
         this.tilePosText,
         this.currentAreaText,
         this.renameAreaInput,
         this.transitionForm,
+        this.deleteTransitionForm,
         this.configureTileForm,
       ]
     );
@@ -296,6 +305,11 @@ export default class MapEditor extends Phaser.Scene {
       this.transitionForm.show();
       this.inMenu = true;
     }
+
+    else if (PRESSED_KEY === 'y') {
+      this.deleteTransitionForm.show();
+      this.inMenu = true;
+    }
   }
 
   private tileModeClick() {
@@ -381,6 +395,11 @@ export default class MapEditor extends Phaser.Scene {
   private hideConfigureTileForm() {
     this.inMenu = false;
     this.configureTileForm.hide();
+  }
+
+  private hideDeleteTransitionForm() {
+    this.inMenu = false;
+    this.deleteTransitionForm.hide();
   }
 
   private getCursorUnitPos(): Phaser.Geom.Point {

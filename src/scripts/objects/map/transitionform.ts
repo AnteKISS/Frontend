@@ -62,10 +62,12 @@ export default class TransitionForm extends Phaser.GameObjects.Container {
 
   public show() {
     this.selectedAreaIndex = 0;
+    this.textInputIndex = 0;
     this.nameInput.updateInputText('');
     this.xInput.updateInputText('0');
     this.yInput.updateInputText('0');
     this.updateAreaSelectText();
+    this.updateTextInputs();
 
     this.setVisible(true);
     this.focused = true;
@@ -106,7 +108,8 @@ export default class TransitionForm extends Phaser.GameObjects.Container {
     else if (event.key === 'Enter') {
       // Quit and create transition if valid inputs
       if (this.nameInput.isInputValid() && this.xInput.isInputValid() && this.yInput.isInputValid()) {
-        this.gameMap.transitions.push(new Transition(this.nameInput.inputText, this.getSelectedArea(), this.xInput.getNumValue(), this.yInput.getNumValue()));
+        const TRANSITION = new Transition(this.nameInput.inputText, this.getSelectedArea(), this.xInput.getNumValue(), this.yInput.getNumValue());
+        this.gameMap.transitions.set(TRANSITION.name, TRANSITION);
         this.onFinished();
       }
     }

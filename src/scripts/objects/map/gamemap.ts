@@ -3,12 +3,12 @@ import Transition from './transition'
 
 export default class GameMap {
   areas: Area[]
-  transitions: Transition[]
+  transitions: Map<string, Transition>;
   areaIndex: number;
 
   constructor() {
     this.areas = new Array<Area>;
-    this.transitions = new Array<Transition>;
+    this.transitions = new Map<string, Transition>;
     this.addArea(new Area("Default"));
     this.areaIndex = 0;
   }

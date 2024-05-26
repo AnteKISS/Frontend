@@ -1,13 +1,10 @@
 import 'phaser'
-import Tile from './tile'
 import GameMap from './gamemap'
 
-export default class ConfigureTileForm extends Phaser.GameObjects.Container {
-  tile: Tile;
+export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
   gameMap: GameMap;
   transitionNames: string[];
   onFinished: Function;
-
   selectedTransitionIndex: number;
 
   title: Phaser.GameObjects.Text;
@@ -25,10 +22,9 @@ export default class ConfigureTileForm extends Phaser.GameObjects.Container {
     this.gameMap = gameMap;
     this.transitionNames = new Array<string>;
     this.onFinished = onFinished;
-
     this.selectedTransitionIndex = 0;
 
-    this.title = scene.add.text(480, 250, "Configure Tile", { color: '#000000', fontSize: '40px' });
+    this.title = scene.add.text(440, 250, "Delete Transition", { color: '#000000', fontSize: '40px' });
     this.background = scene.add.rectangle(640, 360, 600, 300, 0xAAAAAA);
     this.transitionSelect = scene.add.text(400, 325, "Selected Transition : \n", { color: '#000000', fontSize: '24px' });
     this.nextTransitionText = scene.add.text(400, 425, "Change Transition (<-/->)", { color: '#000000', fontSize: '24px' });
@@ -38,22 +34,17 @@ export default class ConfigureTileForm extends Phaser.GameObjects.Container {
     this.add([this.background, this.title, this.transitionSelect, this.nextTransitionText, this.cancelText, this.confirmText]);
     this.scene.add.existing(this);
 
-    scene.input.keyboard.on('keydown', (event: KeyboardEvent) => this.handleKeyDown(event));
-
     this.focused = false;
+
+    scene.input.keyboard.on('keydown', (event: KeyboardEvent) => this.handleKeyDown(event));
 
     this.updateTransitionText();
   }
 
-  public show(tile: Tile) {
+  public show() {
     this.transitionNames = Array.from(this.gameMap.transitions.keys());
     this.setVisible(true);
     this.focused = true;
-    this.tile = tile;
-
-    if (this.selectedTransitionIndex >= this.gameMap.transitions.size)
-      this.selectedTransitionIndex = Math.max(0, this.gameMap.transitions.size - 1);
-
     this.updateTransitionText();
   }
 
@@ -68,16 +59,16 @@ export default class ConfigureTileForm extends Phaser.GameObjects.Container {
 
     if (event.key === 'ArrowLeft') {
       // Next transition
-      if (this.gameMap.transitions.size > 0) {
+      if (this.transitionNames.length > 0) {
         this.selectedTransitionIndex--;
-        if (this.selectedTransitionIndex < 0) this.selectedTransitionIndex = this.gameMap.transitions.size - 1;
+        if (this.selectedTransitionIndex < 0) this.selectedTransitionIndex = this.transitionNames.length - 1;
       }
     }
 
     else if (event.key === 'ArrowRight') {
       // Previous transition
-      if (this.gameMap.transitions.size > 0) {
-        this.selectedTransitionIndex = (this.selectedTransitionIndex + 1) % this.gameMap.transitions.size;
+      if (this.transitionNames.length > 0) {
+        this.selectedTransitionIndex = (this.selectedTransitionIndex + 1) % this.transitionNames.length;
       }
     }
 
@@ -88,9 +79,19 @@ export default class ConfigureTileForm extends Phaser.GameObjects.Container {
 
     else if (event.key === 'Enter') {
       // Quit and create transition if valid inputs
-      if (this.tile && this.transitionNames.length > 0) {
+      if (this.gameMap.transitions.size > 0) {
         const TRANSITION_NAME = this.transitionNames[this.selectedTransitionIndex];
-        this.tile.transition = this.gameMap.transitions.get(TRANSITION_NAME);
+        this.gameMap.transitions.delete(TRANSITION_NAME);
+
+        // Delete all transition references in tiles
+        for (const AREA of this.gameMap.areas)
+          for (const TILE of AREA.tileSet.tiles.values())
+            if (TILE.transition && TILE.transition.name === TRANSITION_NAME)
+              TILE.transition = undefined;
+
+        if (this.selectedTransitionIndex >= this.gameMap.transitions.size)
+          this.selectedTransitionIndex = Math.max(0, this.gameMap.transitions.size - 1);
+
         this.onFinished();
       }
     }
