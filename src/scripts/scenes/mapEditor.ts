@@ -68,6 +68,7 @@ export default class MapEditor extends Phaser.Scene {
   deleteAreaText: Phaser.GameObjects.Text;
   createTransitionText: Phaser.GameObjects.Text;
   deleteTransitionText: Phaser.GameObjects.Text;
+  quitText: Phaser.GameObjects.Text;
   unitPosText: Phaser.GameObjects.Text;
   tilePosText: Phaser.GameObjects.Text;
   currentAreaText: Phaser.GameObjects.Text;
@@ -128,6 +129,7 @@ export default class MapEditor extends Phaser.Scene {
     this.deleteAreaText = this.add.text(30, 450, "Delete Area (Delete)", { color: '#000000', fontSize: '24px' });
     this.createTransitionText = this.add.text(30, 500, "New Transition (T)", { color: '#000000', fontSize: '24px' });
     this.deleteTransitionText = this.add.text(30, 530, "Delete Transition (Y)", { color: '#000000', fontSize: '24px' });
+    this.quitText = this.add.text(30, 580, "Quit (\\)", { color: '#000000', fontSize: '24px' });
     this.unitPosText = this.add.text(1250, 30, "Unit Pos : 0,0", { color: '#000000', fontSize: '24px', align: 'right' });
     this.tilePosText = this.add.text(1250, 60, "Tile Pos : 0,0", { color: '#000000', fontSize: '24px', align: 'right' });
     this.currentAreaText = this.add.text(1250, 90, "Area (1/1) : ", { color: '#000000', fontSize: '24px', align: 'right' });
@@ -194,6 +196,7 @@ export default class MapEditor extends Phaser.Scene {
         this.deleteAreaText,
         this.createTransitionText,
         this.deleteTransitionText,
+        this.quitText,
         this.unitPosText,
         this.tilePosText,
         this.currentAreaText,
@@ -309,6 +312,11 @@ export default class MapEditor extends Phaser.Scene {
     else if (PRESSED_KEY === 'y') {
       this.deleteTransitionForm.show();
       this.inMenu = true;
+    }
+
+    else if (PRESSED_KEY === '\\') {
+      this.scene.stop();
+      this.scene.start('MainScene');
     }
   }
 
