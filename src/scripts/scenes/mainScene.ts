@@ -58,28 +58,6 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest = EntityManager.instance.createMonster(this, 'zombie_0');
     // this.monsterTest.positionX = this.cameras.main.width / 4;
     // this.monsterTest.positionY = this.cameras.main.height / 4;
-
-    // const gameObject = this.monsterTest;
-    // const outlinePipeline = new OutlinePipeline(this.game);
-
-    // gameObject.setInteractive();
-    // gameObject.on('pointerover', function () {
-    //   console.log('pointerover');
-    //   gameObject.setPipeline(outlinePipeline);
-    // });
-
-    // this.monsterTest.setPipeline(outlinePipeline);
-    
-    // const baseShader = new Phaser.Display.BaseShader('brightness', BrightnessShader);
-    // const shader = this.add.shader(baseShader, 0, 0, this.cameras.main.width, this.cameras.main.height);
-
-    // const shader = this.add.shader('CustomShader', 0, 0, this.cameras.main.width, this.cameras.main.height, ['uMainSampler'], BrightnessShader);
-    // shader.setRenderToTexture('CustomShader');
-
-    // this.input.on('pointerover', (pointer, gameObject) => {
-    //   gameObject.setTint(0xffffff);
-    //   console.log('pointerover');
-    // });
   }
 
   update(time, deltaTime) {
