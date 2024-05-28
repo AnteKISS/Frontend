@@ -5,6 +5,7 @@ import { ActiveEntity } from '../entities/activeEntity';
 import { PlayerEntity } from '../entities/playerEntity';
 import { MonsterEntity } from '../entities/monsterEntity';
 import { EntityManager } from '../managers/entityManager';
+import { OutlinePipeline } from '../pipelines/outlinePipeline';
 
 const BrightnessShader = `
 precision mediump float;
@@ -28,6 +29,15 @@ export default class MainScene extends Phaser.Scene {
     super({ key: 'MainScene' });
   }
 
+  public init(data: any): void {
+    if (this.game.renderer instanceof Phaser.Renderer.WebGL.WebGLRenderer) {
+      this.game.renderer.pipelines.add(
+        OutlinePipeline.KEY,
+        new OutlinePipeline(this.game)
+      );
+    }
+  }
+
   create() {
     new GameLogo(this, this.cameras.main.width / 2, this.cameras.main.height / 16);
     this.fpsText = new FpsText(this);
@@ -46,8 +56,19 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest.positionX = this.cameras.main.width / 2;
     this.playerTest.positionY = this.cameras.main.height / 2;
     this.monsterTest = EntityManager.instance.createMonster(this, 'zombie_0');
-    this.monsterTest.positionX = this.cameras.main.width / 4;
-    this.monsterTest.positionY = this.cameras.main.height / 4;
+    // this.monsterTest.positionX = this.cameras.main.width / 4;
+    // this.monsterTest.positionY = this.cameras.main.height / 4;
+
+    // const gameObject = this.monsterTest;
+    // const outlinePipeline = new OutlinePipeline(this.game);
+
+    // gameObject.setInteractive();
+    // gameObject.on('pointerover', function () {
+    //   console.log('pointerover');
+    //   gameObject.setPipeline(outlinePipeline);
+    // });
+
+    // this.monsterTest.setPipeline(outlinePipeline);
     
     // const baseShader = new Phaser.Display.BaseShader('brightness', BrightnessShader);
     // const shader = this.add.shader(baseShader, 0, 0, this.cameras.main.width, this.cameras.main.height);
