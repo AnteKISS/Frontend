@@ -1,6 +1,6 @@
 import 'phaser'
 import Tile from './tile'
-import Act from './gamemap'
+import Act from './act'
 
 export default class ConfigureTileForm extends Phaser.GameObjects.Container {
   tile: Tile;

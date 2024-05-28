@@ -1,5 +1,5 @@
 import 'phaser'
-import Act from './gamemap'
+import Act from './act'
 
 export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
   act: Act;

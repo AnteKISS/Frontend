@@ -1,7 +1,7 @@
 import 'phaser'
 import TextInput from '../textInput'
 import Transition from './transition'
-import Act from './gamemap'
+import Act from './act'
 import Area from './area'
 
 export default class TransitionForm extends Phaser.GameObjects.Container {
