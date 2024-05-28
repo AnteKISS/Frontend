@@ -3,7 +3,8 @@ import Tile, { TileType } from '../objects/map/tile'
 import TileDrawer, { TileColor } from '../objects/map/tiledrawer'
 import TileSet from '../objects/map/tileset'
 import Area from '../objects/map/area'
-import GameMap from '../objects/map/gamemap'
+import Act from '../objects/map/act'
+import Campaign from '../objects/map/campaign'
 import TextInput from '../objects/textInput'
 import TransitionForm from '../objects/map/transitionform'
 import ConfigureTileForm from '../objects/map/configuretileform'
@@ -36,7 +37,7 @@ export default class MapEditor extends Phaser.Scene {
   uiCamera: Phaser.Cameras.Scene2D.Camera;
 
   // Editor data / helpers
-  gameMap: GameMap;
+  campaign: Campaign;
   tileDrawer: TileDrawer;
   playerPos: Phaser.Geom.Point;
   cameraOffsetPos: Phaser.Geom.Point;
@@ -99,9 +100,10 @@ export default class MapEditor extends Phaser.Scene {
     );
 
     // Tileset json import test
-    this.gameMap = new GameMap;
-    this.gameMap.addArea(new Area("Yooo"));
-    this.gameMap.addArea(new Area("Allo"));
+    this.campaign = new Campaign("Test campaign");
+    this.campaign.addAct(new Act("Act I"));
+    new Area("Yooo")
+    this.campaign.currentAct().addArea(new Area("Allo"));
     this.tileDrawer = new TileDrawer(this.graphics);
     this.playerPos = new Phaser.Geom.Point;
     this.cameraOffsetPos = new Phaser.Geom.Point;
@@ -147,13 +149,13 @@ export default class MapEditor extends Phaser.Scene {
     this.renameAreaInput.setBackgroundVisibility(false);
     this.renameAreaInput.setPadding(0);
 
-    this.transitionForm = new TransitionForm(this, this.gameMap, () => this.hideTransitionForm());
+    this.transitionForm = new TransitionForm(this, this.campaign.currentAct(), () => this.hideTransitionForm());
     this.transitionForm.hide();
 
-    this.configureTileForm = new ConfigureTileForm(this, this.gameMap, () => this.hideConfigureTileForm());
+    this.configureTileForm = new ConfigureTileForm(this, this.campaign.currentAct(), () => this.hideConfigureTileForm());
     this.configureTileForm.hide();
 
-    this.deleteTransitionForm = new DeleteTransitionForm(this, this.gameMap, () => this.hideDeleteTransitionForm());
+    this.deleteTransitionForm = new DeleteTransitionForm(this, this.campaign.currentAct(), () => this.hideDeleteTransitionForm());
     this.deleteTransitionForm.hide();
 
     // Inputs
@@ -218,8 +220,8 @@ export default class MapEditor extends Phaser.Scene {
 
     this.unitPosText.setText("Unit Pos : " + Math.round(this.cursorUnitPos.x) + ", " + Math.round(this.cursorUnitPos.y));
     this.tilePosText.setText("Tile Pos : " + this.cursorTilePos.x + ", " + this.cursorTilePos.y);
-    this.currentAreaText.setText("Area (" + (this.gameMap.areaIndex + 1) + "/" + this.gameMap.areas.length + ") : "
-      + this.gameMap.currentArea().name);
+    this.currentAreaText.setText("Area (" + (this.campaign.currentAct().areaIndex + 1) + "/" + this.campaign.currentAct().areas.length + ") : "
+      + this.campaign.currentArea().name);
     this.cameras.main.setScroll(
       this.playerPos.x + this.cameraOffsetPos.x - this.cameras.main.width / 2,
       this.playerPos.y + this.cameraOffsetPos.y - this.cameras.main.height / 2
@@ -285,24 +287,24 @@ export default class MapEditor extends Phaser.Scene {
     }
 
     else if (PRESSED_KEY === 'o')
-      this.gameMap.previousArea();
+      this.campaign.currentAct().previousArea();
 
     else if (PRESSED_KEY === 'p')
-      this.gameMap.nextArea();
+      this.campaign.currentAct().nextArea();
 
     else if (PRESSED_KEY === 'n') {
       this.inMenu = true;
       this.renameAreaInput.focused = true;
       this.renameAreaInput.visible = true;
       this.currentAreaText.visible = false;
-      this.renameAreaInput.updateInputText(this.gameMap.currentArea().name);
+      this.renameAreaInput.updateInputText(this.campaign.currentArea().name);
     }
 
     else if (PRESSED_KEY === 'm')
-      this.gameMap.addArea(new Area("New Area"));
+      this.campaign.currentAct().addArea(new Area("New Area"));
 
     else if (PRESSED_KEY === 'delete')
-      this.gameMap.deleteCurrentArea();
+      this.campaign.currentAct().deleteCurrentArea();
 
     else if (PRESSED_KEY === 't') {
       this.transitionForm.show();
@@ -327,12 +329,12 @@ export default class MapEditor extends Phaser.Scene {
 
     if (this.tileMode === TileMode.Add)
       for (const TILE_POS of CURSOR_TILES_POS)
-        this.gameMap.currentArea().tileSet.addTile(TILE_POS.x, TILE_POS.y, this.tileType);
+        this.campaign.currentArea().tileSet.addTile(TILE_POS.x, TILE_POS.y, this.tileType);
     else if (this.tileMode === TileMode.Delete)
       for (const TILE_POS of CURSOR_TILES_POS)
-        this.gameMap.currentArea().tileSet.deleteTile(TILE_POS.x, TILE_POS.y);
+        this.campaign.currentArea().tileSet.deleteTile(TILE_POS.x, TILE_POS.y);
     else if (this.tileMode === TileMode.Configure) {
-      const TILE: Tile | undefined = this.gameMap.currentArea().tileSet.getTile(this.cursorTilePos.x, this.cursorTilePos.y);
+      const TILE: Tile | undefined = this.campaign.currentArea().tileSet.getTile(this.cursorTilePos.x, this.cursorTilePos.y);
       if (TILE) {
         this.inMenu = true;
         this.configureTileForm.show(TILE);
@@ -361,7 +363,7 @@ export default class MapEditor extends Phaser.Scene {
     this.graphics.fillCircle(this.playerPos.x, this.playerPos.y, 4);
 
     // Draw tiles
-    this.tileDrawer.drawDebugTileList(this.gameMap.currentArea().tileSet.tiles.values(), 2);
+    this.tileDrawer.drawDebugTileList(this.campaign.currentArea().tileSet.tiles.values(), 2);
 
     // Draw player tile
     const PLAYER_TILE_POINTS = Tile.getPointsFromTilePos(playerTilePos.x, playerTilePos.y);
@@ -388,7 +390,7 @@ export default class MapEditor extends Phaser.Scene {
   }
 
   private renameArea() {
-    this.gameMap.currentArea().name = this.renameAreaInput.inputText;
+    this.campaign.currentArea().name = this.renameAreaInput.inputText;
     this.renameAreaInput.focused = false;
     this.renameAreaInput.visible = false;
     this.currentAreaText.visible = true;

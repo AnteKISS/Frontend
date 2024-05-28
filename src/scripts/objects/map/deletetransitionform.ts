@@ -1,8 +1,8 @@
 import 'phaser'
-import GameMap from './gamemap'
+import Act from './gamemap'
 
 export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
-  gameMap: GameMap;
+  act: Act;
   transitionNames: string[];
   onFinished: Function;
   selectedTransitionIndex: number;
@@ -16,10 +16,10 @@ export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
 
   focused: boolean;
 
-  constructor(scene: Phaser.Scene, gameMap: GameMap, onFinished: Function) {
+  constructor(scene: Phaser.Scene, act: Act, onFinished: Function) {
     super(scene, 0, 0);
 
-    this.gameMap = gameMap;
+    this.act = act;
     this.transitionNames = new Array<string>;
     this.onFinished = onFinished;
     this.selectedTransitionIndex = 0;
@@ -42,7 +42,7 @@ export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
   }
 
   public show() {
-    this.transitionNames = Array.from(this.gameMap.transitions.keys());
+    this.transitionNames = Array.from(this.act.transitions.keys());
     this.setVisible(true);
     this.focused = true;
     this.updateTransitionText();
@@ -79,18 +79,18 @@ export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
 
     else if (event.key === 'Enter') {
       // Quit and create transition if valid inputs
-      if (this.gameMap.transitions.size > 0) {
+      if (this.act.transitions.size > 0) {
         const TRANSITION_NAME = this.transitionNames[this.selectedTransitionIndex];
-        this.gameMap.transitions.delete(TRANSITION_NAME);
+        this.act.transitions.delete(TRANSITION_NAME);
 
         // Delete all transition references in tiles
-        for (const AREA of this.gameMap.areas)
+        for (const AREA of this.act.areas)
           for (const TILE of AREA.tileSet.tiles.values())
             if (TILE.transition && TILE.transition.name === TRANSITION_NAME)
               TILE.transition = undefined;
 
-        if (this.selectedTransitionIndex >= this.gameMap.transitions.size)
-          this.selectedTransitionIndex = Math.max(0, this.gameMap.transitions.size - 1);
+        if (this.selectedTransitionIndex >= this.act.transitions.size)
+          this.selectedTransitionIndex = Math.max(0, this.act.transitions.size - 1);
 
         this.onFinished();
       }

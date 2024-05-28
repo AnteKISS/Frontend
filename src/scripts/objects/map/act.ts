@@ -2,11 +2,13 @@ import Area from './area'
 import Transition from './transition'
 
 export default class GameMap {
-  areas: Area[]
+  name: string;
+  areas: Area[];
   transitions: Map<string, Transition>;
   areaIndex: number;
 
-  constructor() {
+  constructor(name: string) {
+    this.name = name;
     this.areas = new Array<Area>;
     this.transitions = new Map<string, Transition>;
     this.addArea(new Area("Default"));
