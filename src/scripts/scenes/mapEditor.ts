@@ -67,14 +67,20 @@ export default class MapEditor extends Phaser.Scene {
   renameAreaText: Phaser.GameObjects.Text;
   newAreaText: Phaser.GameObjects.Text;
   deleteAreaText: Phaser.GameObjects.Text;
+  changeActText: Phaser.GameObjects.Text;
+  renameActText: Phaser.GameObjects.Text;
+  newActText: Phaser.GameObjects.Text;
+  deleteActText: Phaser.GameObjects.Text;
   createTransitionText: Phaser.GameObjects.Text;
   deleteTransitionText: Phaser.GameObjects.Text;
   quitText: Phaser.GameObjects.Text;
   unitPosText: Phaser.GameObjects.Text;
   tilePosText: Phaser.GameObjects.Text;
+  currentActText: Phaser.GameObjects.Text;
   currentAreaText: Phaser.GameObjects.Text;
 
   // Forms
+  renameActInput: TextInput;
   renameAreaInput: TextInput;
   transitionForm: TransitionForm;
   configureTileForm: ConfigureTileForm;
@@ -101,8 +107,6 @@ export default class MapEditor extends Phaser.Scene {
 
     // Tileset json import test
     this.campaign = new Campaign("Test campaign");
-    this.campaign.addAct(new Act("Act I"));
-    new Area("Yooo")
     this.campaign.currentAct().addArea(new Area("Allo"));
     this.tileDrawer = new TileDrawer(this.graphics);
     this.playerPos = new Phaser.Geom.Point;
@@ -116,32 +120,47 @@ export default class MapEditor extends Phaser.Scene {
     this.brushSize = 0;
 
     // Texts
-    this.moveText = this.add.text(30, 30, "Move (WASD)", { color: '#000000', fontSize: '24px' });
-    this.moveFasterText = this.add.text(30, 60, "Move Faster (Hold Shift)", { color: '#000000', fontSize: '24px' });
-    this.tileModeText = this.add.text(30, 110, "TileMode : " + this.tileMode, { color: '#000000', fontSize: '24px' });
-    this.addText = this.add.text(60, 140, "Add (Z)", { color: '#000000', fontSize: '24px' });
-    this.deleteText = this.add.text(60, 170, "Delete (X)", { color: '#000000', fontSize: '24px' });
-    this.configureText = this.add.text(60, 200, "Configure (C)", { color: '#000000', fontSize: '24px' });
-    this.swipeText = this.add.text(60, 230, "Swipe (Space) : " + this.swipeMode, { color: '#000000', fontSize: '24px' });
-    this.brushSizeText = this.add.text(60, 260, "Brush Size (-/+) : " + this.brushSize, { color: '#000000', fontSize: '24px' });
-    this.zoomText = this.add.text(30, 310, "Zoom In/Out (Scroll)", { color: '#000000', fontSize: '24px' });
-    this.changeAreaText = this.add.text(30, 360, "Change Area (O/P)", { color: '#000000', fontSize: '24px' });
-    this.renameAreaText = this.add.text(30, 390, "Rename Area (N)", { color: '#000000', fontSize: '24px' });
-    this.newAreaText = this.add.text(30, 420, "New Area (M)", { color: '#000000', fontSize: '24px' });
-    this.deleteAreaText = this.add.text(30, 450, "Delete Area (Delete)", { color: '#000000', fontSize: '24px' });
-    this.createTransitionText = this.add.text(30, 500, "New Transition (T)", { color: '#000000', fontSize: '24px' });
-    this.deleteTransitionText = this.add.text(30, 530, "Delete Transition (Y)", { color: '#000000', fontSize: '24px' });
-    this.quitText = this.add.text(30, 580, "Quit (\\)", { color: '#000000', fontSize: '24px' });
+    this.moveText = this.add.text(30, 30, "Move (WASD)", { color: '#000000', fontSize: '18px' });
+    this.moveFasterText = this.add.text(30, 50, "Move Faster (Hold Shift)", { color: '#000000', fontSize: '18px' });
+    this.tileModeText = this.add.text(30, 80, "TileMode : " + this.tileMode, { color: '#000000', fontSize: '18px' });
+    this.addText = this.add.text(60, 100, "Add (Z)", { color: '#000000', fontSize: '18px' });
+    this.deleteText = this.add.text(60, 120, "Delete (X)", { color: '#000000', fontSize: '18px' });
+    this.configureText = this.add.text(60, 140, "Configure (C)", { color: '#000000', fontSize: '18px' });
+    this.swipeText = this.add.text(60, 160, "Swipe (Space) : " + this.swipeMode, { color: '#000000', fontSize: '18px' });
+    this.brushSizeText = this.add.text(60, 180, "Brush Size (-/+) : " + this.brushSize, { color: '#000000', fontSize: '18px' });
+    this.zoomText = this.add.text(30, 210, "Zoom In/Out (Scroll)", { color: '#000000', fontSize: '18px' });
+    this.changeAreaText = this.add.text(30, 240, "Change Area (O/P)", { color: '#000000', fontSize: '18px' });
+    this.renameAreaText = this.add.text(30, 260, "Rename Area (N)", { color: '#000000', fontSize: '18px' });
+    this.newAreaText = this.add.text(30, 280, "New Area (M)", { color: '#000000', fontSize: '18px' });
+    this.deleteAreaText = this.add.text(30, 300, "Delete Area (Delete)", { color: '#000000', fontSize: '18px' });
+    this.changeActText = this.add.text(30, 330, "Change Act (</>)", { color: '#000000', fontSize: '18px' });
+    this.renameActText = this.add.text(30, 350, "Rename Act (V)", { color: '#000000', fontSize: '18px' });
+    this.newActText = this.add.text(30, 370, "New Act (B)", { color: '#000000', fontSize: '18px' });
+    this.deleteActText = this.add.text(30, 390, "Delete Act (~)", { color: '#000000', fontSize: '18px' });
+    this.createTransitionText = this.add.text(30, 420, "New Transition (T)", { color: '#000000', fontSize: '18px' });
+    this.deleteTransitionText = this.add.text(30, 440, "Delete Transition (Y)", { color: '#000000', fontSize: '18px' });
+    this.quitText = this.add.text(30, 470, "Quit (\\)", { color: '#000000', fontSize: '18px' });
+
     this.unitPosText = this.add.text(1250, 30, "Unit Pos : 0,0", { color: '#000000', fontSize: '24px', align: 'right' });
     this.tilePosText = this.add.text(1250, 60, "Tile Pos : 0,0", { color: '#000000', fontSize: '24px', align: 'right' });
-    this.currentAreaText = this.add.text(1250, 90, "Area (1/1) : ", { color: '#000000', fontSize: '24px', align: 'right' });
+    this.currentActText = this.add.text(1250, 90, "Act (1/1) : ", { color: '#000000', fontSize: '24px', align: 'right' });
+    this.currentAreaText = this.add.text(1250, 120, "Area (1/1) : ", { color: '#000000', fontSize: '24px', align: 'right' });
 
     this.unitPosText.setOrigin(1, 0);
     this.tilePosText.setOrigin(1, 0);
+    this.currentActText.setOrigin(1, 0);
     this.currentAreaText.setOrigin(1, 0);
 
     // Forms
-    this.renameAreaInput = new TextInput(this, 1250, 90, 0, 'Renaming area (Enter to submit): ', { color: '#000000', fontSize: '24px', align: 'right' });
+    this.renameActInput = new TextInput(this, 1250, 90, 0, 'Renaming act (Enter to submit): ', { color: '#000000', fontSize: '24px', align: 'right' });
+    this.renameActInput.onSubmit = () => { this.renameAct() };
+    this.renameActInput.focused = false;
+    this.renameActInput.visible = false;
+    this.renameActInput.setOrigin(1, 0);
+    this.renameActInput.setBackgroundVisibility(false);
+    this.renameActInput.setPadding(0);
+
+    this.renameAreaInput = new TextInput(this, 1250, 120, 0, 'Renaming area (Enter to submit): ', { color: '#000000', fontSize: '24px', align: 'right' });
     this.renameAreaInput.onSubmit = () => { this.renameArea() };
     this.renameAreaInput.focused = false;
     this.renameAreaInput.visible = false;
@@ -196,12 +215,18 @@ export default class MapEditor extends Phaser.Scene {
         this.renameAreaText,
         this.newAreaText,
         this.deleteAreaText,
+        this.changeActText,
+        this.renameActText,
+        this.newActText,
+        this.deleteActText,
         this.createTransitionText,
         this.deleteTransitionText,
         this.quitText,
         this.unitPosText,
         this.tilePosText,
+        this.currentActText,
         this.currentAreaText,
+        this.renameActInput,
         this.renameAreaInput,
         this.transitionForm,
         this.deleteTransitionForm,
@@ -220,6 +245,8 @@ export default class MapEditor extends Phaser.Scene {
 
     this.unitPosText.setText("Unit Pos : " + Math.round(this.cursorUnitPos.x) + ", " + Math.round(this.cursorUnitPos.y));
     this.tilePosText.setText("Tile Pos : " + this.cursorTilePos.x + ", " + this.cursorTilePos.y);
+    this.currentActText.setText("Act (" + (this.campaign.actIndex + 1) + "/" + this.campaign.acts.length + ") : "
+      + this.campaign.currentAct().name);
     this.currentAreaText.setText("Area (" + (this.campaign.currentAct().areaIndex + 1) + "/" + this.campaign.currentAct().areas.length + ") : "
       + this.campaign.currentArea().name);
     this.cameras.main.setScroll(
@@ -316,6 +343,30 @@ export default class MapEditor extends Phaser.Scene {
       this.inMenu = true;
     }
 
+    else if (PRESSED_KEY === '<') {
+      this.campaign.previousAct();
+    }
+
+    else if (PRESSED_KEY === '>') {
+      this.campaign.nextAct();
+    }
+
+    else if (PRESSED_KEY === 'v') {
+      this.inMenu = true;
+      this.renameActInput.focused = true;
+      this.renameActInput.visible = true;
+      this.currentActText.visible = false;
+      this.renameActInput.updateInputText(this.campaign.currentAct().name);
+    }
+
+    else if (PRESSED_KEY === 'b') {
+      this.campaign.addAct(new Act("New Act"));
+    }
+
+    else if (PRESSED_KEY === '~') {
+      this.campaign.deleteCurrentAct();
+    }
+
     else if (PRESSED_KEY === '\\') {
       this.scene.stop();
       this.scene.start('MainScene');
@@ -387,6 +438,14 @@ export default class MapEditor extends Phaser.Scene {
       const CURSOR_TILES_POS = TileSet.getProximityTilePos(this.cursorTilePos.x, this.cursorTilePos.y, this.brushSize);
       this.tileDrawer.drawDebugTilePosList(CURSOR_TILES_POS, 2, cursorColor);
     }
+  }
+
+  private renameAct() {
+    this.campaign.currentAct().name = this.renameActInput.inputText;
+    this.renameActInput.focused = false;
+    this.renameActInput.visible = false;
+    this.currentActText.visible = true;
+    this.inMenu = false;
   }
 
   private renameArea() {
