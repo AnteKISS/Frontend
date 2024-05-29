@@ -61,7 +61,6 @@ export default class Spell
         const x = this.getPointerX();
         const y = this.getPointerY();
 
-
         switch (this.castType) {
             case CastType.SkillShot:
                 setTimeout(() => {
