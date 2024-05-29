@@ -68,8 +68,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.equippedSpells[index] = spell;
   }
 
-
-
   // Methods
   public update(deltaTime: number): void {
     let hasOrientationUpdated: boolean = false;

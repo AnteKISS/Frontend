@@ -9,7 +9,7 @@ export default class Spell
 
     spellName: string = 'undefined';
     spellOwner: PlayerEntity;
-    spellIcon: string;
+    spellIcon: string = 'undefined';
 
     onCastEffects: IOnCastEffect[] = [];
     onHitEffects: IOnHitEffect[] = [];
@@ -66,6 +66,7 @@ export default class Spell
                         onCastEffect.onCast(Phaser.Math.Angle.Between(this.spellOwner.x, this.spellOwner.y, x, y));
                     });
                     break;
+
             case CastType.GroundTarget:
                 if(Phaser.Math.Distance.Between(this.spellOwner.x, this.spellOwner.y, x, y) > this.range)
                     return false;
@@ -75,18 +76,21 @@ export default class Spell
                             onCastEffect.onCast(undefined, x, y);   
                     });
                     break;
+
             case CastType.PointNClick:
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
                         onCastEffect.onCast(undefined, x, y);
                     });
                     break;
+
             case CastType.SelfBuff:
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
                         onCastEffect.onCast();
                     });
                     break;
+
             default:
                 break;
         }
