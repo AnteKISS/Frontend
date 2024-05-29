@@ -6,6 +6,7 @@ import { BaseEntity } from './baseEntity';
 // import { player_AnimationConfig } from '../configs/animationConfig';
 import { MathModule } from '../utilities/mathModule'
 import Spell from '../spells/spell';
+import SpellBook from  '../spells/spellBook'
 import IceShard from '../spells/craftedSpells/iceShard';
 import Firebolt from '../spells/craftedSpells/firebolt';
 import Quake from '../spells/craftedSpells/quake';
@@ -18,7 +19,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   private _meleeSprite: Phaser.GameObjects.Sprite;
   private _bowSprite: Phaser.GameObjects.Sprite;
   maxMana: number = 150; //Pour test
-  equippedSpells: Spell[] = [];
+  mySpellBook: SpellBook;
+  private equippedSpells: Spell[] = [];
 
   constructor(scene) {
     super(scene);
@@ -43,17 +45,17 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     scene.input.on('pointerup', (pointer: Phaser.Input.Pointer) => this.onPointerUp(pointer));
     scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
 
-    const keyQ = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
-    keyQ.on('down',() => this.onKeyDown('Q'), this);
-    const keyW = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-    keyW.on('down',() => this.onKeyDown('W'), this);
-    const keyE = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
-    keyE.on('down',() => this.onKeyDown('E'), this);
+    const key1 = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
+    key1.on('down',() => this.onKeyDown('1'), this);
+    const key2 = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
+    key2.on('down',() => this.onKeyDown('2'), this);
+    const key3 = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
+    key3.on('down',() => this.onKeyDown('3'), this);
 
-    this.equippedSpells.push(new IceShard(this));
-    this.equippedSpells.push(new Quake(this));
-    this.equippedSpells.push(new Firebolt(this));
-
+    this.mySpellBook = new SpellBook(this);
+    this.mySpellBook.addSpell(new Firebolt(this));
+    this.mySpellBook.addSpell(new IceShard(this));
+    this.mySpellBook.addSpell(new Quake(this));
     
     this.stats.movementSpeed = 100;
     this.stats.mana = 150; //Pour test
@@ -61,6 +63,11 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   // Getters/Setters
+  public equipSpell(index, spell: Spell): void
+  {
+    this.equippedSpells[index] = spell;
+  }
+
 
 
   // Methods
@@ -218,18 +225,15 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   {
     switch (key)
     {
-    case 'Q':
-      console.log('Q Press');
+    case '1':
       if(this.equippedSpells[0])
         this.equippedSpells[0].onCast();
       break;
-    case 'W':
-      console.log('W Press');
+    case '2':
       if(this.equippedSpells[1])
         this.equippedSpells[1].onCast();
       break;
-    case 'E':
-      console.log('E Press');
+    case '3':
       if(this.equippedSpells[2])
         this.equippedSpells[2].onCast();
       break;

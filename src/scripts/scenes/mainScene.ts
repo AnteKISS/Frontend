@@ -50,6 +50,7 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest = new MonsterEntity(this, 'zombie_0');
     this.monsterTest.positionX = this.cameras.main.width / 4;
     this.monsterTest.positionY = this.cameras.main.height / 4;
+    this.gui.spellBar.setSpellBook(this.playerTest.mySpellBook); 
 
   }
 

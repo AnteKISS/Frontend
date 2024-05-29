@@ -2,7 +2,6 @@ import RessourceBar from '../uielements/ressourceBar'
 import SpellBar from '../uielements/spellBar'
 import ExpBar from '../uielements/expBar'
 import LeftInfoBar from '../uielements/leftInfoBar'
-import Spell from '../objects/spell'
 
 export default class GUI extends Phaser.GameObjects.Container
 {

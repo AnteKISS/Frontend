@@ -19,6 +19,9 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('expHighlight', 'assets/gui/infobars/itsmars_exp_highlight.png');
     this.load.image('expShadow', 'assets/gui/infobars/itsmars_exp_shadow.png');
     this.load.image('leftInfoBar', 'assets/gui/infobars/HealthPanel.png');
+    this.load.image('quakeIcon', 'assets/gui/icons/quakeIcon.png');
+    this.load.image('iceShardIcon', 'assets/gui/icons/iceShardIcon.png');
+    this.load.image('fireboltIcon', 'assets/gui/icons/fireboltIcon.png');
 
 	  this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
 	  this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');

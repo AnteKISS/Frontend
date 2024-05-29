@@ -9,7 +9,7 @@ export default class FireBolt extends Spell
 {
     constructor(spellOwner: PlayerEntity)
     {
-        super(4, 500, 20, CastType.SkillShot, 'Fire Bolt', '', spellOwner)
+        super(4, 500, 20, CastType.SkillShot, 'Fire Bolt', 'fireboltIcon', spellOwner)
         {
             new ProjectileOnCast(this, 480, 128, 128, 'firebolt');
             new SpeedBuffOnCast(this, 200, 1);
