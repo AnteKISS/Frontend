@@ -9,6 +9,7 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
   protected _orientation: EntityOrientation = EntityOrientation.DOWN;
   protected _orientation_rad: number;
   protected _isResetReady: boolean = false;
+  protected _debugMode: boolean = false;
   protected _debugGraphics: Phaser.GameObjects.Graphics;
    
   constructor(scene) {
@@ -93,6 +94,10 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
       return false;
     }
     return true;
+  }
+
+  public toggleDebugMode(enableDebugMode: boolean): void {
+    this._debugMode = enableDebugMode;
   }
 
   abstract update(deltaTime: number): void;

@@ -36,9 +36,6 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     this._baseSprite.setInteractive({ hitArea, hitAreaCallback: Phaser.Geom.Rectangle.Contains });
 
     this._debugGraphics = this.scene.add.graphics();
-
-    this._debugGraphics.lineStyle(2, 0xff0000);
-    this._debugGraphics.strokeRect(this.positionX - (scaledWidth / 2), this.positionY - (scaledHeight / 2), scaledWidth, scaledHeight * 2);
     
     this._baseSprite.on('pointerover', () => {
       
@@ -47,7 +44,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
     });
     scene.add.existing(this);
-    this._baseSprite.setOrigin(0.5, 0.70);
+    this._baseSprite.setOrigin(0.5, 0.75);
     this.setDepth(0);
   }
 
@@ -86,12 +83,20 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       this._baseSprite.play(`${action}_${getOrientationString(this.orientation)}_ZOMBIE_0`);
     }
 
-    const truncatedSpriteWidth: number = 32 * this._baseSprite.scaleX;
-    const truncatedSpriteHeight: number = 64 * this._baseSprite.scaleY;
+    if (this._debugMode) {
+      const truncatedSpriteWidth: number = 32 * this._baseSprite.scaleX;
+      const truncatedSpriteHeight: number = 64 * this._baseSprite.scaleY;
+      this._debugGraphics.clear();
 
-    this._debugGraphics.clear();
-    this._debugGraphics.lineStyle(2, 0xff0000);
-    this._debugGraphics.strokeRect(this.positionX - (truncatedSpriteWidth / 2), this.positionY - (truncatedSpriteHeight * this._baseSprite.originY), truncatedSpriteWidth, truncatedSpriteHeight);
+      this._debugGraphics.fillStyle(0x00FF00, 0.5);
+      this._debugGraphics.fillRect(this.positionX - (truncatedSpriteWidth / 2), this.positionY - (truncatedSpriteWidth / 4), truncatedSpriteWidth, truncatedSpriteWidth / 2);
+
+      this._debugGraphics.lineStyle(2, 0xff0000, 0.5);
+      this._debugGraphics.strokeRect(this.positionX - (truncatedSpriteWidth / 2), this.positionY - (truncatedSpriteHeight * this._baseSprite.originY), truncatedSpriteWidth, truncatedSpriteHeight);
+
+      this._debugGraphics.fillStyle(0x0000FF, 0.5);
+      this._debugGraphics.fillCircle(this.positionX, this.positionY, 5);
+    }
   }
 
   public reset(): void {

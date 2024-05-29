@@ -1,7 +1,9 @@
+import { BaseEntity } from "../entities/baseEntity";
+
 namespace Physics {
   export class Collider {
     
-    private _sprite: Phaser.GameObjects.Sprite;
+    private _parent: BaseEntity;
     
 
     // constructor(scene: Phaser.Scene, sprite: Phaser.GameObjects.Sprite, collider: Phaser.Physics.Arcade.Collider) {

@@ -55,6 +55,7 @@ export default class MainScene extends Phaser.Scene {
     this.input.mouse.disableContextMenu();
     this.playerTest = EntityManager.instance.createPlayer(this);
     this.monsterTest = EntityManager.instance.createMonster(this, 'zombie_0');
+    EntityManager.instance.toggleDebugMode(true);
   }
 
   update(time, deltaTime) {

@@ -44,10 +44,10 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
     this.stats.movementSpeed = 100;
 
-    this._headSprite.setOrigin(0.5, 0.70);
-    this._bodySprite.setOrigin(0.5, 0.70);
-    this._meleeSprite.setOrigin(0.5, 0.70);
-    this._bowSprite.setOrigin(0.5, 0.70);
+    this._headSprite.setOrigin(0.5, 0.75);
+    this._bodySprite.setOrigin(0.5, 0.75);
+    this._meleeSprite.setOrigin(0.5, 0.75);
+    this._bowSprite.setOrigin(0.5, 0.75);
 
     this.setDepth(0);
   }
@@ -91,12 +91,20 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       this._bowSprite.play(`${action}_${getOrientationString(this.orientation)}_LONGBOW`);
     }
 
-    const truncatedSpriteWidth: number = 32 * this._bodySprite.scaleX;
-    const truncatedSpriteHeight: number = 64 * this._bodySprite.scaleY;
+    if (this._debugMode) {
+      const truncatedSpriteWidth: number = 32 * this._bodySprite.scaleX;
+      const truncatedSpriteHeight: number = 64 * this._bodySprite.scaleY;
+      this._debugGraphics.clear();
 
-    this._debugGraphics.clear();
-    this._debugGraphics.lineStyle(2, 0xff0000);
-    this._debugGraphics.strokeRect(this.positionX - (truncatedSpriteWidth / 2), this.positionY - (truncatedSpriteHeight * this._bodySprite.originY), truncatedSpriteWidth, truncatedSpriteHeight);
+      this._debugGraphics.fillStyle(0x00FF00, 0.5);
+      this._debugGraphics.fillRect(this.positionX - (truncatedSpriteWidth / 2), this.positionY - (truncatedSpriteWidth / 4), truncatedSpriteWidth, truncatedSpriteWidth / 2);
+
+      this._debugGraphics.lineStyle(2, 0xff0000, 0.5);
+      this._debugGraphics.strokeRect(this.positionX - (truncatedSpriteWidth / 2), this.positionY - (truncatedSpriteHeight * this._bodySprite.originY), truncatedSpriteWidth, truncatedSpriteHeight);
+
+      this._debugGraphics.fillStyle(0x0000FF, 0.5);
+      this._debugGraphics.fillCircle(this.positionX, this.positionY, 5);
+    }
   }
 
   public reset(): void {
