@@ -1,7 +1,7 @@
 import Area from './area'
 import Transition from './transition'
 
-export default class GameMap {
+export default class Act {
   name: string;
   areas: Area[];
   transitions: Map<string, Transition>;

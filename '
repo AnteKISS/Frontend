@@ -1,0 +1,88 @@
+import Campaign from './campaign'
+import { TileType } from './tile'
+
+interface TileJson {
+  x: number
+  y: number
+  type: TileType
+}
+
+interface TileSetJson {
+  tiles: TileJson[]
+}
+
+interface TransitionJson {
+  name: string
+  areaName: string
+  targetX: number
+  targetY: number
+}
+
+interface AreaJson {
+  name: string
+  tileset: TileSetJson
+  transitions: TransitionJson[]
+}
+
+interface ActJson {
+  name: string
+  areas: AreaJson[]
+}
+
+interface CampaignJson {
+  name: string
+  acts: ActJson[]
+}
+
+export default class CampaignJsonHandler {
+  json: CampaignJson;
+
+  public static import(json: string): Campaign {
+    return new Campaign("temp");
+  }
+
+  public static export(campaign: Campaign): string {
+    const CAMPAIGN_JSON: CampaignJson = {
+      name: campaign.name,
+      acts: [],
+    };
+    for (const ACT of campaign.acts) {
+      const ACT_JSON: ActJson = {
+        name: ACT.name,
+        areas: [],
+      };
+      for (const AREA of ACT.areas) {
+        const TILESET_JSON: TileSetJson = {
+          tiles: [],
+        };
+        for (const TILE of AREA.tileSet.tiles.values()) {
+          const TILE_JSON: TileJson = {
+            x: TILE.x,
+            y: TILE.y,
+            type: TILE.type,
+          };
+          TILESET_JSON.tiles.push(TILE_JSON);
+        }
+        const AREA_JSON: AreaJson = {
+          name: AREA.name,
+          tileset: TILESET_JSON,
+          transitions: [],
+        };
+        for (const TRANSITION of ACT.transitions.values()) {
+          const TRANSITION_JSON: TransitionJson = {
+            name: TRANSITION.name,
+            areaName: TRANSITION.targetArea.name,
+            targetX: TRANSITION.targetX,
+            targetY: TRANSITION.targetY,
+          };
+          AREA_JSON.transitions.push(TRANSITION_JSON);
+        }
+        ACT_JSON.areas.push(AREA_JSON);
+      }
+      CAMPAIGN_JSON.acts.push(ACT_JSON);
+    }
+
+    console.log(CAMPAIGN_JSON);
+    return JSON.stringify(CAMPAIGN_JSON);
+  }
+}
