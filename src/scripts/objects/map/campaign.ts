@@ -38,11 +38,11 @@ export default class Campaign {
   }
 
   public nextAct() {
-    this.actIndex--;
-    if (this.actIndex < 0) this.actIndex += this.acts.length;
+    this.actIndex = (this.actIndex + 1) % this.acts.length;
   }
 
   public previousAct() {
-    this.actIndex = (this.actIndex + 1) % this.acts.length;
+    this.actIndex--;
+    if (this.actIndex < 0) this.actIndex += this.acts.length;
   }
 }

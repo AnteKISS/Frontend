@@ -129,14 +129,14 @@ export default class MapEditor extends Phaser.Scene {
     this.swipeText = this.add.text(60, 160, "Swipe (Space) : " + this.swipeMode, { color: '#000000', fontSize: '18px' });
     this.brushSizeText = this.add.text(60, 180, "Brush Size (-/+) : " + this.brushSize, { color: '#000000', fontSize: '18px' });
     this.zoomText = this.add.text(30, 210, "Zoom In/Out (Scroll)", { color: '#000000', fontSize: '18px' });
-    this.changeAreaText = this.add.text(30, 240, "Change Area (O/P)", { color: '#000000', fontSize: '18px' });
-    this.renameAreaText = this.add.text(30, 260, "Rename Area (N)", { color: '#000000', fontSize: '18px' });
-    this.newAreaText = this.add.text(30, 280, "New Area (M)", { color: '#000000', fontSize: '18px' });
-    this.deleteAreaText = this.add.text(30, 300, "Delete Area (Delete)", { color: '#000000', fontSize: '18px' });
-    this.changeActText = this.add.text(30, 330, "Change Act (</>)", { color: '#000000', fontSize: '18px' });
-    this.renameActText = this.add.text(30, 350, "Rename Act (V)", { color: '#000000', fontSize: '18px' });
-    this.newActText = this.add.text(30, 370, "New Act (B)", { color: '#000000', fontSize: '18px' });
-    this.deleteActText = this.add.text(30, 390, "Delete Act (~)", { color: '#000000', fontSize: '18px' });
+    this.newActText = this.add.text(30, 240, "New Act (U)", { color: '#000000', fontSize: '18px' });
+    this.renameActText = this.add.text(30, 260, "Rename Act (I)", { color: '#000000', fontSize: '18px' });
+    this.changeActText = this.add.text(30, 280, "Change Act (O/P)", { color: '#000000', fontSize: '18px' });
+    this.deleteActText = this.add.text(30, 300, "Delete Act (Delete)", { color: '#000000', fontSize: '18px' });
+    this.newAreaText = this.add.text(30, 330, "New Area (H)", { color: '#000000', fontSize: '18px' });
+    this.renameAreaText = this.add.text(30, 350, "Rename Area (J)", { color: '#000000', fontSize: '18px' });
+    this.changeAreaText = this.add.text(30, 370, "Change Area (K/L)", { color: '#000000', fontSize: '18px' });
+    this.deleteAreaText = this.add.text(30, 390, "Delete Area (~)", { color: '#000000', fontSize: '18px' });
     this.createTransitionText = this.add.text(30, 420, "New Transition (T)", { color: '#000000', fontSize: '18px' });
     this.deleteTransitionText = this.add.text(30, 440, "Delete Transition (Y)", { color: '#000000', fontSize: '18px' });
     this.quitText = this.add.text(30, 470, "Quit (\\)", { color: '#000000', fontSize: '18px' });
@@ -313,45 +313,13 @@ export default class MapEditor extends Phaser.Scene {
       this.brushSizeText.setText("Brush Size (-/+) : " + this.brushSize);
     }
 
-    else if (PRESSED_KEY === 'o')
-      this.campaign.currentAct().previousArea();
-
-    else if (PRESSED_KEY === 'p')
-      this.campaign.currentAct().nextArea();
-
-    else if (PRESSED_KEY === 'n') {
-      this.inMenu = true;
-      this.renameAreaInput.focused = true;
-      this.renameAreaInput.visible = true;
-      this.currentAreaText.visible = false;
-      this.renameAreaInput.updateInputText(this.campaign.currentArea().name);
+    // New act
+    else if (PRESSED_KEY === 'u') {
+      this.campaign.addAct(new Act("New Act"));
     }
 
-    else if (PRESSED_KEY === 'm')
-      this.campaign.currentAct().addArea(new Area("New Area"));
-
-    else if (PRESSED_KEY === 'delete')
-      this.campaign.currentAct().deleteCurrentArea();
-
-    else if (PRESSED_KEY === 't') {
-      this.transitionForm.show();
-      this.inMenu = true;
-    }
-
-    else if (PRESSED_KEY === 'y') {
-      this.deleteTransitionForm.show();
-      this.inMenu = true;
-    }
-
-    else if (PRESSED_KEY === '<') {
-      this.campaign.previousAct();
-    }
-
-    else if (PRESSED_KEY === '>') {
-      this.campaign.nextAct();
-    }
-
-    else if (PRESSED_KEY === 'v') {
+    // Rename current act
+    else if (PRESSED_KEY === 'i') {
       this.inMenu = true;
       this.renameActInput.focused = true;
       this.renameActInput.visible = true;
@@ -359,14 +327,59 @@ export default class MapEditor extends Phaser.Scene {
       this.renameActInput.updateInputText(this.campaign.currentAct().name);
     }
 
-    else if (PRESSED_KEY === 'b') {
-      this.campaign.addAct(new Act("New Act"));
+    // Go to previous act
+    else if (PRESSED_KEY === 'o') {
+      this.campaign.previousAct();
     }
 
-    else if (PRESSED_KEY === '~') {
+    // Go to next act
+    else if (PRESSED_KEY === 'p') {
+      this.campaign.nextAct();
+    }
+
+    // Delete current act
+    else if (PRESSED_KEY === 'delete') {
       this.campaign.deleteCurrentAct();
     }
 
+    // New area
+    else if (PRESSED_KEY === 'h')
+      this.campaign.currentAct().addArea(new Area("New Area"));
+
+    // Rename current area
+    else if (PRESSED_KEY === 'j') {
+      this.inMenu = true;
+      this.renameAreaInput.focused = true;
+      this.renameAreaInput.visible = true;
+      this.currentAreaText.visible = false;
+      this.renameAreaInput.updateInputText(this.campaign.currentArea().name);
+    }
+
+    // Go to previous area
+    else if (PRESSED_KEY === 'k')
+      this.campaign.currentAct().previousArea();
+
+    // Go to next area
+    else if (PRESSED_KEY === 'l')
+      this.campaign.currentAct().nextArea();
+
+    // Delete current area
+    else if (PRESSED_KEY === '~')
+      this.campaign.currentAct().deleteCurrentArea();
+
+    // Create transition
+    else if (PRESSED_KEY === 't') {
+      this.transitionForm.show();
+      this.inMenu = true;
+    }
+
+    // Delete transition
+    else if (PRESSED_KEY === 'y') {
+      this.deleteTransitionForm.show();
+      this.inMenu = true;
+    }
+
+    // Exit map editor
     else if (PRESSED_KEY === '\\') {
       this.scene.stop();
       this.scene.start('MainScene');
