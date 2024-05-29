@@ -32,8 +32,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.add(this._bowSprite);
     this.initializeAnimations();
 
-    this.positionX = 0;//this.scene.cameras.main.width / 2;
-    this.positionY = 0;//this.scene.cameras.main.height / 2;
+    this.positionX = this.scene.cameras.main.width / 2;
+    this.positionY = this.scene.cameras.main.height / 2;
 
     this._debugGraphics = this.scene.add.graphics();
 
@@ -44,36 +44,11 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
     this.stats.movementSpeed = 100;
 
-    // const spriteWidth = this._bodySprite.width / 5;
-    // const spriteHeight = this._bodySprite.height / 5;
-
-    // const scaledWidth = spriteWidth * this._bodySprite.scaleX;
-    // const scaledHeight = spriteHeight * this._bodySprite.scaleY;
-
-    console.debug(this._bodySprite.originX);
-    console.debug(this._bodySprite.originY);
-
     this._headSprite.setOrigin(0.5, 0.70);
     this._bodySprite.setOrigin(0.5, 0.70);
     this._meleeSprite.setOrigin(0.5, 0.70);
     this._bowSprite.setOrigin(0.5, 0.70);
 
-    // this._headSprite.setOrigin(scaledWidth / 2, (scaledHeight / 2) + (scaledWidth / 2));
-    // this._bodySprite.setOrigin(scaledWidth / 2, (scaledHeight / 2) + (scaledWidth / 2));
-    // this._meleeSprite.setOrigin(scaledWidth / 2, (scaledHeight / 2) + (scaledWidth / 2));
-    // this._bowSprite.setOrigin(scaledWidth / 2, (scaledHeight / 2) + (scaledWidth / 2));
-
-    console.debug(this._bodySprite.originX);
-    console.debug(this._bodySprite.originY);
-
-    // this._debugGraphics.clear();
-    // this._debugGraphics.lineStyle(2, 0xff0000);
-    // this._debugGraphics.strokeRect(this.positionX - (scaledWidth / 2), this.positionY - (scaledHeight / 2), scaledWidth, scaledHeight * 2);
-
-    // this._headSprite.setOrigin((this.positionX - (scaledWidth / 2)) + scaledWidth, ((this.positionY - (scaledHeight / 2)) + scaledHeight) - (scaledWidth / 2));
-    // this._bodySprite.setOrigin((this.positionX - (scaledWidth / 2)) + scaledWidth, ((this.positionY - (scaledHeight / 2)) + scaledHeight) - (scaledWidth / 2));
-    // this._meleeSprite.setOrigin((this.positionX - (scaledWidth / 2)) + scaledWidth, ((this.positionY - (scaledHeight / 2)) + scaledHeight) - (scaledWidth / 2));
-    // this._bowSprite.setOrigin((this.positionX - (scaledWidth / 2)) + scaledWidth, ((this.positionY - (scaledHeight / 2)) + scaledHeight) - (scaledWidth / 2));
     this.setDepth(0);
   }
 
