@@ -51,8 +51,29 @@ export default class PlayerController
     {
         const scene = this.player.scene;
 
-        scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.player.onPointerDown(pointer));
-        scene.input.on('pointerup', (pointer: Phaser.Input.Pointer) => this.player.onPointerUp(pointer));
-        scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.player.onPointerMove(pointer));
+        scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
+        scene.input.on('pointerup', (pointer: Phaser.Input.Pointer) => this.onPointerUp(pointer));
+        scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
     }
+
+    public onPointerDown(pointer: Phaser.Input.Pointer): void 
+    {
+        this.player.setPointerDown(true);
+        this.player.setDestination(pointer.x, pointer.y);
+        this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, pointer.x, pointer.y));
+    }
+    
+    public onPointerUp(pointer: Phaser.Input.Pointer): void 
+    {
+        this.player.setPointerDown(false);
+    }
+    
+      public onPointerMove(pointer: Phaser.Input.Pointer): void 
+      {
+        if (this.player.getPointerDown()) 
+        {
+            this.player.setDestination(pointer.x, pointer.y);
+            this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, pointer.x, pointer.y));
+        }
+      }
 }   

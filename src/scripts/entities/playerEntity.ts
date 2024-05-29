@@ -62,6 +62,16 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.equippedSpells[index] = spell;
   }
 
+  setPointerDown(state: boolean): void
+  {
+    this._pointerDown = state;
+  }
+
+  getPointerDown(): boolean
+  {
+    return this._pointerDown;
+  }
+
   // Methods
   public update(deltaTime: number): void {
     let hasOrientationUpdated: boolean = false;
@@ -194,28 +204,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   // Event Handlers
-  public onPointerDown(pointer: Phaser.Input.Pointer): void {
-    this._pointerDown = true;
-    this._destinationX = pointer.x;
-    this._destinationY = pointer.y;
-    this._orientation_rad = Phaser.Math.Angle.Between(this.x, this.y, pointer.x, pointer.y);
-  }
-
-  public onPointerUp(pointer: Phaser.Input.Pointer): void {
-    this._pointerDown = false;
-  }
-
-  public onPointerMove(pointer: Phaser.Input.Pointer): void {
-    if (this._pointerDown) {
-      this._destinationX = pointer.x;
-      this._destinationY = pointer.y;
-      this._orientation_rad = Phaser.Math.Angle.Between(this.x, this.y, pointer.x, pointer.y);
-    }
-  }
-
   public onSpellKeyDown(key: string): void
   {
-    console.log('POG');
     switch (key)
     {
     case '1':

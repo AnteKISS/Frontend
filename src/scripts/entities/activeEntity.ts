@@ -123,6 +123,11 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     throw new NotImplementedError();
   }
 
+  setOrientationRad(orientation: number)
+  {
+    this._orientation_rad = orientation;
+  }
+
   abstract update(deltaTime: number): void;
   abstract reset(): void;
   abstract initializeAnimations(): void;
