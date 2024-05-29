@@ -35,8 +35,8 @@ export default class Grid extends Phaser.GameObjects.Container {
           this.cellSize,
           0xffffff 
         );
-        cell.setOrigin(0); // Set origin to top-left to align properly
-        cell.setStrokeStyle(1, 0x000000); // Black border for the cell
+        cell.setOrigin(0); 
+        cell.setStrokeStyle(1, 0x000000); // noir pr contour
         this.add(cell);
         this.cells[row][col] = cell;
       }
@@ -63,19 +63,19 @@ export default class Grid extends Phaser.GameObjects.Container {
     if (row >= 0 && row < this.gridHeight && col >= 0 && col < this.gridWidth) {
         const cell = this.cells[row][col];
         
-        // Change the color of the new cell if it is different from the current one
+      
         if (this.currentCell !== cell) {
-          // Reset the color of the previous cell
+          
           if (this.currentCell) {
             this.currentCell.setFillStyle(0xffffff);
           }
   
-          // Set the color of the new cell
-          cell.setFillStyle(0x0000ff); // Blue color for the cell
+          
+          cell.setFillStyle(0x0000ff); 
           this.currentCell = cell;
         }
       } else {
-        // Reset the color of the previous cell if the mouse is not over any cell
+        
         if (this.currentCell) {
           this.currentCell.setFillStyle(0xffffff);
           this.currentCell = null;
