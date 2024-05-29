@@ -47,6 +47,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
     });
     scene.add.existing(this);
+    this._baseSprite.setOrigin(0.5, 0.70);
     this.setDepth(0);
   }
 
@@ -85,15 +86,12 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       this._baseSprite.play(`${action}_${getOrientationString(this.orientation)}_ZOMBIE_0`);
     }
 
-    const spriteWidth = this._baseSprite.width / 5;
-    const spriteHeight = this._baseSprite.height / 5;
-
-    const scaledWidth = spriteWidth * this._baseSprite.scaleX;
-    const scaledHeight = spriteHeight * this._baseSprite.scaleY;
+    const truncatedSpriteWidth: number = 32 * this._baseSprite.scaleX;
+    const truncatedSpriteHeight: number = 64 * this._baseSprite.scaleY;
 
     this._debugGraphics.clear();
     this._debugGraphics.lineStyle(2, 0xff0000);
-    this._debugGraphics.strokeRect(this.positionX - (scaledWidth / 2), this.positionY - (scaledHeight / 2), scaledWidth, scaledHeight * 2);
+    this._debugGraphics.strokeRect(this.positionX - (truncatedSpriteWidth / 2), this.positionY - (truncatedSpriteHeight * this._baseSprite.originY), truncatedSpriteWidth, truncatedSpriteHeight);
   }
 
   public reset(): void {
