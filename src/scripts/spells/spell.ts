@@ -50,6 +50,7 @@ export default class Spell
                     {
                         this.spellOwner.stats.mana -= this.manaCost;
                         this.timeSinceLastCast = Date.now();
+                        this.remainingCooldown = this.cooldown*1000;
                         return true;
                     }
             }
@@ -104,6 +105,18 @@ export default class Spell
                 break;
         }
         return true;
+    }
+
+    public updateRemainingCooldown(): number
+    {
+        const currentTime = Date.now();
+        const timeDiff = currentTime - this.timeSinceLastCast;
+        this.remainingCooldown = this.cooldown*1000 - timeDiff; 
+        if(this.remainingCooldown < 0)
+        {
+                this.remainingCooldown = 0;
+        }
+        return this.remainingCooldown;
     }
 
     private getPointerX(): number

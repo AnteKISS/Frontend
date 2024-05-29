@@ -118,7 +118,7 @@ export default class SpellBar
         if(slot < 0 || slot > 7)
             return;
 
-        this.spellSlots[slot].addSpell(spell.spellIcon);
+        this.spellSlots[slot].addSpell(spell);
         spell.spellOwner.equipSpell(slot, spell);
     }
 
@@ -130,9 +130,14 @@ export default class SpellBar
         this.spellSlots[slot].removeSpell();
     }
 
-    setSpellBook(book: SpellBook): void
+    public setSpellBook(book: SpellBook): void
     {
         this.spellBook = book;
+    }
+
+    public updateSlots(): void
+    {
+        this.spellSlots.forEach(slot => slot.updateCooldown());
     }
 
 }
