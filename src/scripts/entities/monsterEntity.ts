@@ -4,6 +4,7 @@ import { AnimationManager } from '../managers/animationManager';
 import { getOrientationString } from '../enums/entityOrientation';
 import { MathModule } from '../utilities/mathModule';
 import { OutlinePipeline } from '../pipelines/outlinePipeline';
+import { Physics } from '../physics/collider';
 
 export class MonsterEntity extends ActiveEntity implements IFightable {
 
@@ -34,8 +35,6 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     const hitArea = new Phaser.Geom.Rectangle(spriteWidth * 2, spriteHeight * 2, spriteWidth, spriteHeight * 2);
 
     this._baseSprite.setInteractive({ hitArea, hitAreaCallback: Phaser.Geom.Rectangle.Contains });
-
-    this._debugGraphics = this.scene.add.graphics();
     
     this._baseSprite.on('pointerover', () => {
       
@@ -46,6 +45,9 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     scene.add.existing(this);
     this._baseSprite.setOrigin(0.5, 0.75);
     this.setDepth(0);
+    this.truncatedSpriteWidth = 32 * this._baseSprite.scaleX;
+    this.truncatedSpriteHeight = 64 * this._baseSprite.scaleY;
+    this._collider = new Physics.Collider(this, this._baseSprite);
   }
 
   // Getters/Setters
@@ -84,18 +86,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     }
 
     if (this._debugMode) {
-      const truncatedSpriteWidth: number = 32 * this._baseSprite.scaleX;
-      const truncatedSpriteHeight: number = 64 * this._baseSprite.scaleY;
-      this._debugGraphics.clear();
-
-      this._debugGraphics.fillStyle(0x00FF00, 0.5);
-      this._debugGraphics.fillRect(this.positionX - (truncatedSpriteWidth / 2), this.positionY - (truncatedSpriteWidth / 4), truncatedSpriteWidth, truncatedSpriteWidth / 2);
-
-      this._debugGraphics.lineStyle(2, 0xff0000, 0.5);
-      this._debugGraphics.strokeRect(this.positionX - (truncatedSpriteWidth / 2), this.positionY - (truncatedSpriteHeight * this._baseSprite.originY), truncatedSpriteWidth, truncatedSpriteHeight);
-
-      this._debugGraphics.fillStyle(0x0000FF, 0.5);
-      this._debugGraphics.fillCircle(this.positionX, this.positionY, 5);
+      this._collider.displayDebugGraphics();
     }
   }
 

@@ -1,4 +1,5 @@
 import { EntityOrientation } from '../enums/entityOrientation';
+import { Physics } from '../physics/collider';
 
 export abstract class BaseEntity extends Phaser.GameObjects.Container {
 
@@ -10,7 +11,10 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
   protected _orientation_rad: number;
   protected _isResetReady: boolean = false;
   protected _debugMode: boolean = false;
-  protected _debugGraphics: Phaser.GameObjects.Graphics;
+  protected _collider: Physics.Collider;
+
+  public truncatedSpriteWidth: number;
+  public truncatedSpriteHeight: number;
    
   constructor(scene) {
     super(scene, 0, 0);
