@@ -35,17 +35,19 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
     this._baseSprite.setInteractive({ hitArea, hitAreaCallback: Phaser.Geom.Rectangle.Contains });
 
-    const debugGraphics = scene.add.graphics();
-    debugGraphics.lineStyle(2, 0xff0000);
-    debugGraphics.strokeRect(this.positionX - (scaledWidth / 2), this.positionY - (scaledHeight / 2), scaledWidth, scaledHeight * 2);
+    this._debugGraphics = this.scene.add.graphics();
 
+    this._debugGraphics.lineStyle(2, 0xff0000);
+    this._debugGraphics.strokeRect(this.positionX - (scaledWidth / 2), this.positionY - (scaledHeight / 2), scaledWidth, scaledHeight * 2);
+    
     this._baseSprite.on('pointerover', () => {
-
+      
     });
     this._baseSprite.on('pointerout', () => {
 
     });
     scene.add.existing(this);
+    this.setDepth(0);
   }
 
   // Getters/Setters
@@ -82,6 +84,16 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     if (animationUpdateNeeded) {
       this._baseSprite.play(`${action}_${getOrientationString(this.orientation)}_ZOMBIE_0`);
     }
+
+    const spriteWidth = this._baseSprite.width / 5;
+    const spriteHeight = this._baseSprite.height / 5;
+
+    const scaledWidth = spriteWidth * this._baseSprite.scaleX;
+    const scaledHeight = spriteHeight * this._baseSprite.scaleY;
+
+    this._debugGraphics.clear();
+    this._debugGraphics.lineStyle(2, 0xff0000);
+    this._debugGraphics.strokeRect(this.positionX - (scaledWidth / 2), this.positionY - (scaledHeight / 2), scaledWidth, scaledHeight * 2);
   }
 
   public reset(): void {

@@ -15,14 +15,14 @@ export class OutlinePipeline extends Phaser.Renderer.WebGL.Pipelines.MultiPipeli
       
       void main()
       {
-          // Sample the texture
-          vec4 pixel = texture2D(iChannel0, gl_FragCoord.xy); // / vec2(800.0, 600.0)); // Assuming resolution is 800x600
-      
-          // Increase the alpha value of the pixel
-          pixel.a *= 1.2; // Increase alpha by 20%
-      
-          // Output the modified color
-          gl_FragColor = pixel;
+        // Sample the texture
+        vec4 pixel = texture2D(iChannel0, gl_FragCoord.xy); // / vec2(800.0, 600.0)); // Assuming resolution is 800x600
+    
+        // Increase the alpha value of the pixel
+        pixel.a *= 1.2; // Increase alpha by 20%
+    
+        // Output the modified color
+        gl_FragColor = pixel;
       }
     `
       // fragShader: `

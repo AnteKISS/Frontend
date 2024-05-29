@@ -52,12 +52,9 @@ export default class MainScene extends Phaser.Scene {
 	  let music: Phaser.Sound.BaseSound;
 	  music = this.sound.add('spinning_rat_power', { loop: true});
 	  // music.play();
+    this.input.mouse.disableContextMenu();
     this.playerTest = EntityManager.instance.createPlayer(this);
-    this.playerTest.positionX = this.cameras.main.width / 2;
-    this.playerTest.positionY = this.cameras.main.height / 2;
     this.monsterTest = EntityManager.instance.createMonster(this, 'zombie_0');
-    // this.monsterTest.positionX = this.cameras.main.width / 4;
-    // this.monsterTest.positionY = this.cameras.main.height / 4;
   }
 
   update(time, deltaTime) {

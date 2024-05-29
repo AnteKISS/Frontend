@@ -31,12 +31,19 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.add(this._meleeSprite);
     this.add(this._bowSprite);
     this.initializeAnimations();
+
+    this.positionX = this.scene.cameras.main.width / 2;
+    this.positionY = this.scene.cameras.main.height / 2;
+
+    this._debugGraphics = this.scene.add.graphics();
+
     scene.add.existing(this);
     scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
     scene.input.on('pointerup', (pointer: Phaser.Input.Pointer) => this.onPointerUp(pointer));
     scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
 
     this.stats.movementSpeed = 100;
+    this.setDepth(0);
   }
 
   // Getters/Setters
@@ -77,6 +84,16 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       this._meleeSprite.play(`${action}_${getOrientationString(this.orientation)}_LONGSWORD`);
       this._bowSprite.play(`${action}_${getOrientationString(this.orientation)}_LONGBOW`);
     }
+
+    const spriteWidth = this._bodySprite.width / 5;
+    const spriteHeight = this._bodySprite.height / 5;
+
+    const scaledWidth = spriteWidth * this._bodySprite.scaleX;
+    const scaledHeight = spriteHeight * this._bodySprite.scaleY;
+
+    this._debugGraphics.clear();
+    this._debugGraphics.lineStyle(2, 0xff0000);
+    this._debugGraphics.strokeRect(this.positionX - (scaledWidth / 2), this.positionY - (scaledHeight / 2), scaledWidth, scaledHeight * 2);
   }
 
   public reset(): void {

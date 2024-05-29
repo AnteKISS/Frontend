@@ -9,6 +9,7 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
   protected _orientation: EntityOrientation = EntityOrientation.DOWN;
   protected _orientation_rad: number;
   protected _isResetReady: boolean = false;
+  protected _debugGraphics: Phaser.GameObjects.Graphics;
    
   constructor(scene) {
     super(scene, 0, 0);
