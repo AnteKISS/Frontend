@@ -1,10 +1,10 @@
 import 'phaser'
 import Tile from './tile'
-import Act from './act'
+import Campaign from './campaign'
 
 export default class ConfigureTileForm extends Phaser.GameObjects.Container {
   tile: Tile;
-  act: Act;
+  campaign: Campaign;
   transitionNames: string[];
   onFinished: Function;
 
@@ -19,10 +19,10 @@ export default class ConfigureTileForm extends Phaser.GameObjects.Container {
 
   focused: boolean;
 
-  constructor(scene: Phaser.Scene, act: Act, onFinished: Function) {
+  constructor(scene: Phaser.Scene, campaign: Campaign, onFinished: Function) {
     super(scene, 0, 0);
 
-    this.act = act;
+    this.campaign = campaign;
     this.transitionNames = new Array<string>;
     this.onFinished = onFinished;
 
@@ -46,13 +46,13 @@ export default class ConfigureTileForm extends Phaser.GameObjects.Container {
   }
 
   public show(tile: Tile) {
-    this.transitionNames = Array.from(this.act.transitions.keys());
+    this.transitionNames = Array.from(this.campaign.currentAct().transitions.keys());
     this.setVisible(true);
     this.focused = true;
     this.tile = tile;
 
-    if (this.selectedTransitionIndex >= this.act.transitions.size)
-      this.selectedTransitionIndex = Math.max(0, this.act.transitions.size - 1);
+    if (this.selectedTransitionIndex >= this.campaign.currentAct().transitions.size)
+      this.selectedTransitionIndex = Math.max(0, this.campaign.currentAct().transitions.size - 1);
 
     this.updateTransitionText();
   }
@@ -68,16 +68,16 @@ export default class ConfigureTileForm extends Phaser.GameObjects.Container {
 
     if (event.key === 'ArrowLeft') {
       // Next transition
-      if (this.act.transitions.size > 0) {
+      if (this.campaign.currentAct().transitions.size > 0) {
         this.selectedTransitionIndex--;
-        if (this.selectedTransitionIndex < 0) this.selectedTransitionIndex = this.act.transitions.size - 1;
+        if (this.selectedTransitionIndex < 0) this.selectedTransitionIndex = this.campaign.currentAct().transitions.size - 1;
       }
     }
 
     else if (event.key === 'ArrowRight') {
       // Previous transition
-      if (this.act.transitions.size > 0) {
-        this.selectedTransitionIndex = (this.selectedTransitionIndex + 1) % this.act.transitions.size;
+      if (this.campaign.currentAct().transitions.size > 0) {
+        this.selectedTransitionIndex = (this.selectedTransitionIndex + 1) % this.campaign.currentAct().transitions.size;
       }
     }
 
@@ -90,7 +90,7 @@ export default class ConfigureTileForm extends Phaser.GameObjects.Container {
       // Quit and create transition if valid inputs
       if (this.tile && this.transitionNames.length > 0) {
         const TRANSITION_NAME = this.transitionNames[this.selectedTransitionIndex];
-        this.tile.transition = this.act.transitions.get(TRANSITION_NAME);
+        this.tile.transition = this.campaign.currentAct().transitions.get(TRANSITION_NAME);
         this.onFinished();
       }
     }

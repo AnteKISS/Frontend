@@ -1,8 +1,8 @@
 import 'phaser'
-import Act from './act'
+import Campaign from './campaign'
 
 export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
-  act: Act;
+  campaign: Campaign;
   transitionNames: string[];
   onFinished: Function;
   selectedTransitionIndex: number;
@@ -16,10 +16,10 @@ export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
 
   focused: boolean;
 
-  constructor(scene: Phaser.Scene, act: Act, onFinished: Function) {
+  constructor(scene: Phaser.Scene, campaign: Campaign, onFinished: Function) {
     super(scene, 0, 0);
 
-    this.act = act;
+    this.campaign = campaign;
     this.transitionNames = new Array<string>;
     this.onFinished = onFinished;
     this.selectedTransitionIndex = 0;
@@ -42,7 +42,7 @@ export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
   }
 
   public show() {
-    this.transitionNames = Array.from(this.act.transitions.keys());
+    this.transitionNames = Array.from(this.campaign.currentAct().transitions.keys());
     this.setVisible(true);
     this.focused = true;
     this.updateTransitionText();
@@ -79,18 +79,18 @@ export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
 
     else if (event.key === 'Enter') {
       // Quit and create transition if valid inputs
-      if (this.act.transitions.size > 0) {
+      if (this.campaign.currentAct().transitions.size > 0) {
         const TRANSITION_NAME = this.transitionNames[this.selectedTransitionIndex];
-        this.act.transitions.delete(TRANSITION_NAME);
+        this.campaign.currentAct().transitions.delete(TRANSITION_NAME);
 
         // Delete all transition references in tiles
-        for (const AREA of this.act.areas)
+        for (const AREA of this.campaign.currentAct().areas)
           for (const TILE of AREA.tileSet.tiles.values())
             if (TILE.transition && TILE.transition.name === TRANSITION_NAME)
               TILE.transition = undefined;
 
-        if (this.selectedTransitionIndex >= this.act.transitions.size)
-          this.selectedTransitionIndex = Math.max(0, this.act.transitions.size - 1);
+        if (this.selectedTransitionIndex >= this.campaign.currentAct().transitions.size)
+          this.selectedTransitionIndex = Math.max(0, this.campaign.currentAct().transitions.size - 1);
 
         this.onFinished();
       }

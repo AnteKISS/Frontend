@@ -1,11 +1,11 @@
 import 'phaser'
 import TextInput from '../textInput'
 import Transition from './transition'
-import Act from './act'
+import Campaign from './campaign'
 import Area from './area'
 
 export default class TransitionForm extends Phaser.GameObjects.Container {
-  act: Act;
+  campaign: Campaign;
   selectedAreaIndex: number;
 
   title: Phaser.GameObjects.Text;
@@ -23,10 +23,10 @@ export default class TransitionForm extends Phaser.GameObjects.Container {
   textInputIndex: number;
   onFinished: Function;
 
-  constructor(scene: Phaser.Scene, act: Act, onFinished: Function) {
+  constructor(scene: Phaser.Scene, campaign: Campaign, onFinished: Function) {
     super(scene, 0, 0);
 
-    this.act = act;
+    this.campaign = campaign;
     this.selectedAreaIndex = 0;
 
     this.title = scene.add.text(450, 150, "Create Transition", { color: '#000000', fontSize: '40px' });
@@ -89,14 +89,14 @@ export default class TransitionForm extends Phaser.GameObjects.Container {
 
     else if (event.key === 'ArrowLeft') {
       // Next area
-      this.selectedAreaIndex = (this.selectedAreaIndex + 1) % this.act.areas.length;
+      this.selectedAreaIndex = (this.selectedAreaIndex + 1) % this.campaign.currentAct().areas.length;
       this.updateAreaSelectText();
     }
 
     else if (event.key === 'ArrowRight') {
       // Previous area
       this.selectedAreaIndex--;
-      if (this.selectedAreaIndex < 0) this.selectedAreaIndex = this.act.areas.length - 1;
+      if (this.selectedAreaIndex < 0) this.selectedAreaIndex = this.campaign.currentAct().areas.length - 1;
       this.updateAreaSelectText();
     }
 
@@ -109,7 +109,7 @@ export default class TransitionForm extends Phaser.GameObjects.Container {
       // Quit and create transition if valid inputs
       if (this.nameInput.isInputValid() && this.xInput.isInputValid() && this.yInput.isInputValid()) {
         const TRANSITION = new Transition(this.nameInput.inputText, this.getSelectedArea(), this.xInput.getNumValue(), this.yInput.getNumValue());
-        this.act.transitions.set(TRANSITION.name, TRANSITION);
+        this.campaign.currentAct().transitions.set(TRANSITION.name, TRANSITION);
         this.onFinished();
       }
     }
@@ -140,6 +140,6 @@ export default class TransitionForm extends Phaser.GameObjects.Container {
   }
 
   private getSelectedArea(): Area {
-    return this.act.areas[this.selectedAreaIndex];
+    return this.campaign.currentAct().areas[this.selectedAreaIndex];
   }
 }

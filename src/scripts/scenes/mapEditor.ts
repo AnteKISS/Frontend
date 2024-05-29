@@ -169,13 +169,13 @@ export default class MapEditor extends Phaser.Scene {
     this.renameAreaInput.setBackgroundVisibility(false);
     this.renameAreaInput.setPadding(0);
 
-    this.transitionForm = new TransitionForm(this, this.campaign.currentAct(), () => this.hideTransitionForm());
+    this.transitionForm = new TransitionForm(this, this.campaign, () => this.hideTransitionForm());
     this.transitionForm.hide();
 
-    this.configureTileForm = new ConfigureTileForm(this, this.campaign.currentAct(), () => this.hideConfigureTileForm());
+    this.configureTileForm = new ConfigureTileForm(this, this.campaign, () => this.hideConfigureTileForm());
     this.configureTileForm.hide();
 
-    this.deleteTransitionForm = new DeleteTransitionForm(this, this.campaign.currentAct(), () => this.hideDeleteTransitionForm());
+    this.deleteTransitionForm = new DeleteTransitionForm(this, this.campaign, () => this.hideDeleteTransitionForm());
     this.deleteTransitionForm.hide();
 
     // Inputs
@@ -385,10 +385,6 @@ export default class MapEditor extends Phaser.Scene {
       this.scene.stop();
       this.scene.start('MainScene');
     }
-
-    // TEMP
-    const EXPORT = CampaignJson.export(this.campaign);
-    console.log(EXPORT);
   }
 
   private tileModeClick() {
