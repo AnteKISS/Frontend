@@ -23,14 +23,7 @@ export default class MainScene extends Phaser.Scene {
     this.fpsText = new FpsText(this);
     this.gui = new GUI(this, 0, 0);
 
-    this.input.setDefaultCursor('pointer');
-
-    this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-      this.cursorX = pointer.x;
-      this.cursorY = pointer.y;
-    
-      console.log(`Cursor position: (${this.cursorX}, ${this.cursorY})`);
-    });
+    this.input.setDefaultCursor('default');
     
     // display the Phaser.VERSION
     this.add

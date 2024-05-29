@@ -5,6 +5,7 @@ import { AnimationManager } from '../managers/animationManager';
 import { BaseEntity } from './baseEntity';
 // import { player_AnimationConfig } from '../configs/animationConfig';
 import { MathModule } from '../utilities/mathModule'
+import PlayerController from '../inputs/playerController';
 import Spell from '../spells/spell';
 import SpellBook from  '../spells/spellBook'
 import IceShard from '../spells/craftedSpells/iceShard';
@@ -21,6 +22,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   maxMana: number = 150; //Pour test
   mySpellBook: SpellBook;
   private equippedSpells: Spell[] = [];
+  private controller: PlayerController;
 
   constructor(scene) {
     super(scene);
@@ -41,17 +43,9 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.add(this._bowSprite);
     this.initializeAnimations();
     scene.add.existing(this);
-    scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
-    scene.input.on('pointerup', (pointer: Phaser.Input.Pointer) => this.onPointerUp(pointer));
-    scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
-
-    const key1 = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
-    key1.on('down',() => this.onKeyDown('1'), this);
-    const key2 = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
-    key2.on('down',() => this.onKeyDown('2'), this);
-    const key3 = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
-    key3.on('down',() => this.onKeyDown('3'), this);
-
+    
+    this.controller = new PlayerController(scene, this);
+  
     this.mySpellBook = new SpellBook(this);
     this.mySpellBook.addSpell(new Firebolt(this));
     this.mySpellBook.addSpell(new IceShard(this));
@@ -200,18 +194,18 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   // Event Handlers
-  private onPointerDown(pointer: Phaser.Input.Pointer): void {
+  public onPointerDown(pointer: Phaser.Input.Pointer): void {
     this._pointerDown = true;
     this._destinationX = pointer.x;
     this._destinationY = pointer.y;
     this._orientation_rad = Phaser.Math.Angle.Between(this.x, this.y, pointer.x, pointer.y);
   }
 
-  private onPointerUp(pointer: Phaser.Input.Pointer): void {
+  public onPointerUp(pointer: Phaser.Input.Pointer): void {
     this._pointerDown = false;
   }
 
-  private onPointerMove(pointer: Phaser.Input.Pointer): void {
+  public onPointerMove(pointer: Phaser.Input.Pointer): void {
     if (this._pointerDown) {
       this._destinationX = pointer.x;
       this._destinationY = pointer.y;
@@ -219,8 +213,9 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     }
   }
 
-  private onKeyDown(key: string): void
+  public onSpellKeyDown(key: string): void
   {
+    console.log('POG');
     switch (key)
     {
     case '1':
@@ -234,6 +229,28 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     case '3':
       if(this.equippedSpells[2])
         this.equippedSpells[2].onCast();
+      break;
+    case 'Q':
+     if(this.equippedSpells[3])
+        this.equippedSpells[3].onCast();
+      break;
+    case 'W':
+      if(this.equippedSpells[4])
+        this.equippedSpells[4].onCast();
+      break;
+    case 'E':
+      if(this.equippedSpells[5])
+        this.equippedSpells[5].onCast();
+      break;
+    case 'R':
+      if(this.equippedSpells[6])
+        this.equippedSpells[6].onCast();
+      break;
+    case 'T':
+      if(this.equippedSpells[7])
+        this.equippedSpells[7].onCast();
+      break;
+    default:
       break;
     }
   }
