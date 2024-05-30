@@ -1,8 +1,8 @@
-export default class inventaire {
+export default class Inventaire {
 
 private occupied: boolean[][];
-private gridWidth: number;
-private gridHeight: number;
+public gridWidth: number;
+public gridHeight: number;
 private indexFound = -1;
 //private positionX : number;
 //private positionY : number;
@@ -17,7 +17,7 @@ constructor(gridWidth: number, gridHeight: number) {
     
   }
 
-  private isSpaceAvailable(item: Item, startX: number, startY: number): boolean {
+  public isSpaceAvailable(item: Item, startX: number, startY: number): boolean {
     // verif si il y a assez d espace
     if (startX + item.width > this.gridWidth || startY + item.height > this.gridHeight) {
       return false;
@@ -64,6 +64,8 @@ constructor(gridWidth: number, gridHeight: number) {
     this.item.splice(this.indexFound);
     return true;
   }
-
+  getItems(): [Item, number, number][] {
+    return this.item;
+  }
 
 }
