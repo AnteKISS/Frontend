@@ -12,27 +12,19 @@ export namespace Physics {
     private _parentEntity: BaseEntity;
     private _parentSprite: Phaser.GameObjects.Sprite;
     private _debugGraphics: Phaser.GameObjects.Graphics;
+    private _collidingEntityCallback: (hitEntity: BaseEntity) => void;
+    private _overlappingEntityCallback: (hitEntity: BaseEntity) => void;
     
-    constructor(parentEntity: BaseEntity, parentSprite: Phaser.GameObjects.Sprite) {
+    constructor(parentEntity: BaseEntity, parentSprite: Phaser.GameObjects.Sprite, collidingEntityCallback: (hitEntity: BaseEntity) => void, overlappingEntityCallback: (hitEntity: BaseEntity) => void) {
       this._parentEntity = parentEntity;
       this._parentSprite = parentSprite;
       this._debugGraphics = this._parentEntity.scene.add.graphics();
+      this._collidingEntityCallback = collidingEntityCallback;
+      this._overlappingEntityCallback = overlappingEntityCallback;
     }
 
     public displayDebugGraphics(): void {
       this._debugGraphics.clear();
-
-      // console.log(this._parentEntity.positionX - (this._parentEntity.displayWidth / 2));
-      // console.log(this._parentEntity.positionY - (this._parentEntity.displayHeight / 2));
-      // console.log(this._parentEntity.displayWidth);
-      // console.log(this._parentEntity.displayHeight);
-      // this._debugGraphics.lineStyle(2, this.ENTITY_HITBOX_COLOR, 1);
-      // this._debugGraphics.strokeRect(
-      //   this._parentEntity.positionX - (this._parentSprite.displayWidth / 2), 
-      //   this._parentEntity.positionY - (this._parentSprite.displayHeight / 2), 
-      //   this._parentSprite.displayWidth, 
-      //   this._parentSprite.displayHeight
-      // );
 
       this._debugGraphics.fillStyle(this.SPRITE_HITBOX_COLOR, 0.5);
       this._debugGraphics.fillRect(
@@ -79,7 +71,7 @@ export namespace Physics {
         if (!(positionY + (truncatedSpriteHeight - (truncatedSpriteHeight * originY)) > entities[index].positionY - (entities[index].truncatedSpriteHeight * originY))) {
           continue;
         }
-        console.log('Collision detected');
+        this._collidingEntityCallback(entities[index]);
       }
     }
 

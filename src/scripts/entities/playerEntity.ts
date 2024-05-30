@@ -52,7 +52,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.setDepth(0);
     this.truncatedSpriteWidth = 32 * this._bodySprite.scaleX;
     this.truncatedSpriteHeight = 64 * this._bodySprite.scaleY;
-    this._collider = new Physics.Collider(this, this._bodySprite);
+    this._collider = new Physics.Collider(this, this._bodySprite, this.onColliding, this.onOverlapping);
   }
 
   // Getters/Setters
@@ -179,6 +179,14 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       this._destinationY = pointer.y;
       this._orientation_rad = Phaser.Math.Angle.Between(this.x, this.y, pointer.x, pointer.y);
     }
+  }
+
+  onColliding(hitEntity: BaseEntity): void {
+    
+  }
+  
+  onOverlapping(hitEntity: BaseEntity): void {
+    
   }
 
   public initializeAnimations(): void {

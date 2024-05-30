@@ -1,5 +1,6 @@
 import { InactiveEntity } from './inactiveEntity';
 import NotImplementedError from '../errors/notImplementedError';
+import { BaseEntity } from './baseEntity';
 
 export class ShrineEntity extends InactiveEntity {
 
@@ -19,6 +20,13 @@ export class ShrineEntity extends InactiveEntity {
 
   public reset(): void {
     throw new NotImplementedError();
+  }
+
+  onColliding(hitEntity: BaseEntity): void {
+    console.log('Hit entity:', hitEntity.getType());
+  }
+  onOverlapping(hitEntity: BaseEntity): void {
+    console.log('Hit entity:', hitEntity.getType());
   }
 
   initializeAnimations(): void {

@@ -107,4 +107,6 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
   abstract update(deltaTime: number): void;
   abstract reset(): void;
   abstract initializeAnimations(): void;
+  abstract onColliding(hitEntity: BaseEntity): void;
+  abstract onOverlapping(hitEntity: BaseEntity): void;
 }

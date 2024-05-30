@@ -6,6 +6,7 @@ import { MathModule } from '../utilities/mathModule';
 import { OutlinePipeline } from '../pipelines/outlinePipeline';
 import { Physics } from '../physics/collider';
 import { IFightable } from './IFightable';
+import { BaseEntity } from './baseEntity';
 
 export class MonsterEntity extends ActiveEntity implements IFightable {
 
@@ -48,7 +49,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     this.setDepth(0);
     this.truncatedSpriteWidth = 32 * this._baseSprite.scaleX;
     this.truncatedSpriteHeight = 64 * this._baseSprite.scaleY;
-    this._collider = new Physics.Collider(this, this._baseSprite);
+    this._collider = new Physics.Collider(this, this._baseSprite, this.onColliding, this.onOverlapping);
   }
 
   // Getters/Setters
@@ -89,6 +90,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     if (this._debugMode) {
       this._collider.displayDebugGraphics();
     }
+    this._collider.checkCollision();
   }
 
   public reset(): void {
@@ -158,5 +160,13 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
   onPointerOver(): void {
     console.log('pointerover');
+  }
+
+  onColliding(hitEntity: BaseEntity): void {
+    
+  }
+  
+  onOverlapping(hitEntity: BaseEntity): void {
+    
   }
 }
