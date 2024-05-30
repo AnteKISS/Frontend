@@ -52,7 +52,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.setDepth(0);
     this.truncatedSpriteWidth = 32 * this._bodySprite.scaleX;
     this.truncatedSpriteHeight = 64 * this._bodySprite.scaleY;
-    this._collider = new Physics.Collider(this, this._bodySprite, this.onColliding, this.onOverlapping);
+    this._collider = new Physics.Collider(this, this._bodySprite, this.onSpriteColliding, this.onEntityColliding);
   }
 
   // Getters/Setters
@@ -97,7 +97,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     if (this._debugMode) {
       this._collider.displayDebugGraphics();
     }
-    this._collider.checkCollision();
+    this._collider.checkCollisions();
   }
 
   public reset(): void {
@@ -181,12 +181,12 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     }
   }
 
-  onColliding(hitEntity: BaseEntity): void {
+  onSpriteColliding(hitEntity: BaseEntity): void {
     
   }
   
-  onOverlapping(hitEntity: BaseEntity): void {
-    
+  onEntityColliding(hitEntity: BaseEntity): void {
+    console.log('Hit entity:', hitEntity.getType());
   }
 
   public initializeAnimations(): void {
