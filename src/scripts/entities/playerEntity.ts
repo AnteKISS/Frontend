@@ -186,7 +186,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
   
   onEntityColliding(hitEntity: BaseEntity): void {
-    console.log('Hit entity:', hitEntity.getType());
+    
   }
 
   public initializeAnimations(): void {
