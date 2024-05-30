@@ -36,6 +36,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
     this.positionX = this.scene.cameras.main.width / 2;
     this.positionY = this.scene.cameras.main.height / 2;
+    this._positionXOld = this.positionX;
+    this._positionYOld = this.positionY;
 
     scene.add.existing(this);
     scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
@@ -60,6 +62,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
   // Methods
   public update(deltaTime: number): void {
+    this.frameCount++;
     let hasOrientationUpdated: boolean = false;
     let action: string = this._headSprite.anims.currentAnim ? this._headSprite.anims.currentAnim.key.split('_')[0] : '';
     let animationUpdateNeeded: boolean = false;
@@ -68,17 +71,23 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       // TODO: Check if destination coords change between each update call
       // so if it doesn't change, we move the same value that we moved last call
       hasOrientationUpdated = this.updateOrientation();
-      this.move();
+      let isEntityColliding: Boolean = this._collider.checkEntityCollision();
+      if (!isEntityColliding) {
+        this.move();
 
-      if (MathModule.isValueInThreshold(this.positionX, this._destinationX, 1) &&
-          MathModule.isValueInThreshold(this.positionY, this._destinationY, 1)) {
-        this._destinationX = this.positionX;
-        this._destinationY = this.positionY;
-        this._isMoving = false;
-      }
-      if (!this._headSprite.anims.isPlaying || action != 'RUN' || hasOrientationUpdated) {
-        animationUpdateNeeded = true;
-        action = 'RUN';
+        if (MathModule.isValueInThreshold(this.positionX, this._destinationX, 1) &&
+            MathModule.isValueInThreshold(this.positionY, this._destinationY, 1)) {
+          this._destinationX = this.positionX;
+          this._destinationY = this.positionY;
+          this._isMoving = false;
+        }
+        if (!this._headSprite.anims.isPlaying || action != 'RUN' || hasOrientationUpdated) {
+          animationUpdateNeeded = true;
+          action = 'RUN';
+        }
+      } else {
+        this.positionX = this._lastValidPositionX;
+        this.positionY = this._lastValidPositionY;
       }
     } else {
       if (!this._headSprite.anims.isPlaying || action != 'IDLE' || hasOrientationUpdated) {
@@ -98,7 +107,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       this._collider.displayDebugGraphics();
     }
     this._collider.checkSpriteCollision();
-    this._collider.checkEntityCollision();
+    // this._collider.checkEntityCollision();
   }
 
   public reset(): void {

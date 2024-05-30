@@ -10,6 +10,11 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   protected _destinationX: number;
   protected _destinationY: number;
   protected _isMoving: boolean = false;
+
+  protected _lastValidPositionX: number;
+  protected _lastValidPositionY: number;
+
+  public frameCount: number = 0;
   
   constructor(scene) {
     super(scene);
@@ -64,8 +69,13 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     distance *= distanceMultiplier;
     let deltaX: number = distance * Math.cos(this._orientation_rad);
     let deltaY: number = distance * Math.sin(this._orientation_rad);
-    this._positionXOld = this._positionX;
-    this._positionYOld = this._positionY;
+    // console.log(this.frameCount % Math.ceil(window['deltaTime']) == 0);
+    // if (this.frameCount % Math.ceil(10 * window['deltaTime']) == 0) {
+    //   this._positionXOld = this._positionX;
+    //   this._positionYOld = this._positionY;
+    // }
+    this._lastValidPositionX = this._positionX;
+    this._lastValidPositionY = this._positionY;
     this._positionX += deltaX;
     this.setX(this.x + deltaX);
     this._positionY += deltaY;
