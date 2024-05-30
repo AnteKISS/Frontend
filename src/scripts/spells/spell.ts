@@ -6,6 +6,7 @@ export default class Spell
     cooldown: number;
     range: number;
     manaCost: number;
+    castTime: number;
 
     spellName: string = 'undefined';
     spellOwner: PlayerEntity;
@@ -22,7 +23,7 @@ export default class Spell
     pointerX: number = -1;
     pointerY: number = -1;
 
-    constructor(cooldown: number, range: number, manaCost: number, castType: CastType, spellName: string, spellIcon: string, spellOwner: PlayerEntity)
+    constructor(cooldown: number, range: number, manaCost: number, castTime: number, castType: CastType, spellName: string, spellIcon: string, spellOwner: PlayerEntity)
     {
         this.cooldown = cooldown;
         this.range = range;
@@ -31,6 +32,7 @@ export default class Spell
         this.spellIcon = spellIcon;
         this.spellOwner = spellOwner;
         this.castType = castType;
+        this.castTime = castTime;
     }
 
     public canCast(): boolean
@@ -48,53 +50,73 @@ export default class Spell
                     {
                         this.spellOwner.stats.mana -= this.manaCost;
                         this.timeSinceLastCast = Date.now();
+                        this.remainingCooldown = this.cooldown*1000;
                         return true;
                     }
             }
         return false;
     }
 
-    private castSpell(): boolean
+    castSpell(): boolean
     {
         const x = this.getPointerX();
         const y = this.getPointerY();
 
         switch (this.castType) {
             case CastType.SkillShot:
+                setTimeout(() => {
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
                         onCastEffect.onCast(Phaser.Math.Angle.Between(this.spellOwner.x, this.spellOwner.y, x, y));
                     });
+                }, this.castTime*1000);
                     break;
 
             case CastType.GroundTarget:
                 if(Phaser.Math.Distance.Between(this.spellOwner.x, this.spellOwner.y, x, y) > this.range)
                     return false;
-
+                setTimeout(() => {
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
                             onCastEffect.onCast(undefined, x, y);   
                     });
+                }, this.castTime*1000);
                     break;
 
             case CastType.PointNClick:
+                setTimeout(() => {
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
                         onCastEffect.onCast(undefined, x, y);
                     });
+                }, this.castTime*1000);
                     break;
 
             case CastType.SelfBuff:
+                setTimeout(() => {
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
                         onCastEffect.onCast();
                     });
+                }, this.castTime*1000);
                     break;
 
             default:
                 break;
         }
         return true;
+    }
+
+    public updateRemainingCooldown(): number
+    {
+        const currentTime = Date.now();
+        const timeDiff = currentTime - this.timeSinceLastCast;
+        this.remainingCooldown = this.cooldown*1000 - timeDiff; 
+        if(this.remainingCooldown < 0)
+        {
+                this.remainingCooldown = 0;
+        }
+        return this.remainingCooldown;
     }
 
     private getPointerX(): number
@@ -116,19 +138,4 @@ export default class Spell
     {
         this.onCastEffects.push(onCastEffect);
     }
-
-
-    public inInventoryUpdate(): void
-    {
-    }
-
-    public equipSpell(): void
-    {
-    }
-
-    public unequipSpell(): void
-    {
-    }
-    
-
 }

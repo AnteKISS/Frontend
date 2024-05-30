@@ -2,16 +2,16 @@ import SpellSlot from './spellSlot'
 import SpellBook from '../spells/spellBook'
 import Spell from '../spells/spell';
 
-export default class SpellBar
+export default class SpellBar extends Phaser.GameObjects.Container
 {
     private spellSlots: SpellSlot[];
     private spellBar: Phaser.GameObjects.Sprite;
-    private scene: Phaser.Scene;
     private spellBook: SpellBook;
     private spellSelectionMenu: Phaser.GameObjects.Group;
 
     constructor(scene: Phaser.Scene, x: number, y: number)
     {
+        super(scene);
         this.scene = scene;
         this.spellSlots = [];
 
@@ -118,7 +118,7 @@ export default class SpellBar
         if(slot < 0 || slot > 7)
             return;
 
-        this.spellSlots[slot].addSpell(spell.spellIcon);
+        this.spellSlots[slot].addSpell(spell);
         spell.spellOwner.equipSpell(slot, spell);
     }
 
@@ -130,9 +130,14 @@ export default class SpellBar
         this.spellSlots[slot].removeSpell();
     }
 
-    setSpellBook(book: SpellBook): void
+    public setSpellBook(book: SpellBook): void
     {
         this.spellBook = book;
+    }
+
+    public updateSlots(): void
+    {
+        this.spellSlots.forEach(slot => slot.updateCooldown());
     }
 
 }

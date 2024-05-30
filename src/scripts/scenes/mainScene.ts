@@ -128,6 +128,7 @@ export default class MainScene extends Phaser.Scene {
     this.gui.manaBar.setMaxValue(this.playerTest.maxMana);
     this.gui.healthBar.setCurrentValue(this.playerTest.stats.health);
     this.gui.healthBar.setMaxValue(this.playerTest.getMaxHealth());
+    this.gui.spellBar.updateSlots();
     //ajouter les autres barres
   }
 }

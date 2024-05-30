@@ -1,4 +1,4 @@
-export default class RessourceBar
+export default class RessourceBar extends Phaser.GameObjects.Container
 {
     private maxValue: number;
     private currentValue: number;
@@ -10,11 +10,11 @@ export default class RessourceBar
     private shadow: Phaser.GameObjects.Sprite;
     private highlight: Phaser.GameObjects.Sprite;
     private sphereTexture: string;
-    private mask: Phaser.GameObjects.Graphics;
-    private scale: number
+    private emask: Phaser.GameObjects.Graphics;
 
     constructor(scene: Phaser.Scene, x: number, y: number, maxValue: number, type: string)
     {
+        super(scene);
         this.scale = 0.75;
         this.maxValue = maxValue;
         this.currentValue = maxValue;
@@ -30,7 +30,7 @@ export default class RessourceBar
         }
         this.barSprite.setScale(this.scale);
 
-        this.mask = scene.add.graphics({x: x, y: y});
+        this.emask = scene.add.graphics({x: x, y: y});
 
         this.bigContourBottom = scene.add.sprite(x, y + this.barSprite.displayHeight / 4, 'bigContour');
         this.bigContourBottom.setScale(this.scale);
@@ -71,13 +71,13 @@ export default class RessourceBar
 
     private updateMask(): void
     {
-        this.mask.clear();
+        this.emask.clear();
 
         const radius = this.barSprite.displayWidth / 2;
         const height = ((this.maxValue - this.currentValue) / this.maxValue) * this.barSprite.displayHeight;
 
-        this.mask.fillStyle(0x000000);
-        this.mask.fillRect(- this.barSprite.displayWidth / 2, - this.barSprite.displayHeight / 2, this.barSprite.displayWidth, height); 
+        this.emask.fillStyle(0x000000);
+        this.emask.fillRect(- this.barSprite.displayWidth / 2, - this.barSprite.displayHeight / 2, this.barSprite.displayWidth, height); 
     }
 
     private updateText(): void
