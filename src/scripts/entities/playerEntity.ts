@@ -36,8 +36,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
     this.positionX = this.scene.cameras.main.width / 2;
     this.positionY = this.scene.cameras.main.height / 2;
-    this._positionXOld = this.positionX;
-    this._positionYOld = this.positionY;
 
     scene.add.existing(this);
     scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
@@ -207,13 +205,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
   
   onEntityColliding = (hitEntity: BaseEntity): void => {
-    if (!this.isMoving()) {
-      return;
-    }
-    this.positionX = this.positionXOld;
-    this.positionY = this.positionYOld;
-    this._destinationX = this.positionXOld;
-    this._destinationY = this.positionYOld;
+
   }
 
   public initializeAnimations(): void {
