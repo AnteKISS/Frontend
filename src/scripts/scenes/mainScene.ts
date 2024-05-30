@@ -7,19 +7,6 @@ import { MonsterEntity } from '../entities/monsterEntity';
 import { EntityManager } from '../managers/entityManager';
 import { OutlinePipeline } from '../pipelines/outlinePipeline';
 
-const BrightnessShader = `
-precision mediump float;
-
-uniform sampler2D uMainSampler;
-varying vec2 outTexCoord;
-
-void main(void) {
-    vec4 color = texture2D(uMainSampler, outTexCoord);
-    color.rgb *= 1.2; // Increase brightness by multiplying RGB values
-    gl_FragColor = color;
-}
-`;
-
 export default class MainScene extends Phaser.Scene {
   fpsText
   private playerTest: PlayerEntity;
