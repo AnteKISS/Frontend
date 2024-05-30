@@ -51,7 +51,7 @@ export namespace Physics {
       this.checkEntityCollision();
     }
 
-    public checkSpriteCollision(): void {
+    public checkSpriteCollision(): boolean {
       const entities: BaseEntity[] = EntityManager.instance.getEntities();
       const positionX: number = this._parentEntity.positionX;
       const positionY: number = this._parentEntity.positionY;
@@ -77,10 +77,12 @@ export namespace Physics {
           continue;
         }
         this._collidingSpriteCallback(entities[index]);
+        return true;
       }
+      return false;
     }
 
-    public checkEntityCollision(): void {
+    public checkEntityCollision(): boolean {
       const entities: BaseEntity[] = EntityManager.instance.getEntities();
       const positionX: number = this._parentEntity.positionX;
       const positionY: number = this._parentEntity.positionY;
@@ -106,7 +108,9 @@ export namespace Physics {
           continue;
         }
         this._collidingEntityCallback(entities[index]);
+        return true;
       }
+      return false;
     }
   }
 }

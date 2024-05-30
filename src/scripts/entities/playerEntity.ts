@@ -97,7 +97,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     if (this._debugMode) {
       this._collider.displayDebugGraphics();
     }
-    this._collider.checkCollisions();
+    this._collider.checkSpriteCollision();
+    this._collider.checkEntityCollision();
   }
 
   public reset(): void {
@@ -182,7 +183,18 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   onSpriteColliding = (hitEntity: BaseEntity): void => {
-    
+    if (hitEntity.list.length == 0) {
+      return;
+    }
+    let selfHeight: number = this.positionY + this._bodySprite.displayHeight;
+    let otherHeight: number = hitEntity.positionY + (hitEntity.list.at(0) as Phaser.GameObjects.Sprite).displayHeight;
+    if (selfHeight < otherHeight) {
+      this.depth = 0;
+      hitEntity.depth = 1;
+    } else {
+      this.depth = 1;
+      hitEntity.depth = 0;
+    }
   }
   
   onEntityColliding = (hitEntity: BaseEntity): void => {
