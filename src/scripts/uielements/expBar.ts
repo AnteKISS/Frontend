@@ -1,4 +1,4 @@
-export default class ExpBar
+export default class ExpBar extends Phaser.GameObjects.Container
 {
     private barFill: Phaser.GameObjects.Sprite;
     private background: Phaser.GameObjects.Sprite;
@@ -6,10 +6,11 @@ export default class ExpBar
     private shadow: Phaser.GameObjects.Sprite;
     private maxExp: number;
     private currentExp: number;
-    private mask: Phaser.GameObjects.Graphics;
+    private emask: Phaser.GameObjects.Graphics;
     
     constructor(scene: Phaser.Scene, x: number, y: number, maxExp: number)
     {
+        super(scene);
         this.maxExp = maxExp;
         this.currentExp = 0;
         const scale = 0.504;
@@ -21,7 +22,7 @@ export default class ExpBar
         this.barFill.setTintFill(0x1EACB8);
         this.barFill.setScale(scale);
 
-        this.mask = scene.add.graphics({x: x, y: y});
+        this.emask = scene.add.graphics({x: x, y: y});
 
         this.shadow = scene.add.sprite(x, y, 'expShadow');
         this.shadow.setScale(scale);
@@ -47,11 +48,11 @@ export default class ExpBar
 
     public updateMask()
     {
-        this.mask.clear();
+        this.emask.clear();
 
         const width = ((this.maxExp - this.currentExp) / this.maxExp) * this.barFill.displayWidth;
 
-        this.mask.fillStyle(0x333734);
-        this.mask.fillRect(this.barFill.displayWidth/2, -this.barFill.displayHeight/2, -width, this.barFill.displayHeight); 
+        this.emask.fillStyle(0x333734);
+        this.emask.fillRect(this.barFill.displayWidth/2, -this.barFill.displayHeight/2, -width, this.barFill.displayHeight); 
     }
 }

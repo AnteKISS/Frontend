@@ -2,16 +2,16 @@ import SpellSlot from './spellSlot'
 import SpellBook from '../spells/spellBook'
 import Spell from '../spells/spell';
 
-export default class SpellBar
+export default class SpellBar extends Phaser.GameObjects.Container
 {
     private spellSlots: SpellSlot[];
     private spellBar: Phaser.GameObjects.Sprite;
-    private scene: Phaser.Scene;
     private spellBook: SpellBook;
     private spellSelectionMenu: Phaser.GameObjects.Group;
 
     constructor(scene: Phaser.Scene, x: number, y: number)
     {
+        super(scene);
         this.scene = scene;
         this.spellSlots = [];
 
