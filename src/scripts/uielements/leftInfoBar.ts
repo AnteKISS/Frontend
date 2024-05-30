@@ -7,5 +7,7 @@ export default class LeftInfoBar extends Phaser.GameObjects.Container
         super(scene);
         this.leftInfoBar = scene.add.sprite(x, y, 'leftInfoBar');
         this.leftInfoBar.setScale(0.75);
+
+        this.add([this.leftInfoBar]);
     }
 }

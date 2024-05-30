@@ -28,6 +28,8 @@ export default class GUI extends Phaser.GameObjects.Container
         this.expBar = new ExpBar(scene, 640, 716, 100);
         //this.expBar.setCurrentExp(66);
 
+        this.add([this.leftInfoBar, this.healthBar, this.manaBar, this.spellBar, this.expBar]);
+
         scene.add.existing(this);
     }
 }

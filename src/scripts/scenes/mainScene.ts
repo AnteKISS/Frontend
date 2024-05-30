@@ -41,7 +41,7 @@ export default class MainScene extends Phaser.Scene {
       this.cameras.main.height / 2
     );
     this.mapEditorButton = this.add
-      .text(30, 670, 'Map Editor (Click me!)', {
+      .text(13, 50, 'Map Editor (Click me!)', {
         color: '#000000',
         fontSize: '24px'
       })
@@ -79,7 +79,11 @@ export default class MainScene extends Phaser.Scene {
       ]
     );
     this.uiCamera = this.cameras.add(0, 0, 1280, 720);
-    this.uiCamera.ignore([this.graphics]);
+    this.uiCamera.ignore([
+      this.graphics,
+      this.playerTest,
+      this.monsterTest,
+    ]);
   }
 
   update(time, deltaTime) {

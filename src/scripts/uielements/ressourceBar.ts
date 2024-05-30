@@ -15,11 +15,11 @@ export default class RessourceBar extends Phaser.GameObjects.Container
     constructor(scene: Phaser.Scene, x: number, y: number, maxValue: number, type: string)
     {
         super(scene);
-        this.scale = 0.75;
+        this.scale = 0.87;
         this.maxValue = maxValue;
         this.currentValue = maxValue;
 
-        this.barSprite = scene.add.sprite(x, y, 'sphereTexture');
+        this.barSprite = scene.add.sprite(0, 0, 'sphereTexture');
         if(type == 'health')
         {
             this.barSprite.setTint(0xff0000);
@@ -30,29 +30,33 @@ export default class RessourceBar extends Phaser.GameObjects.Container
         }
         this.barSprite.setScale(this.scale);
 
-        this.emask = scene.add.graphics({x: x, y: y});
+        this.emask = scene.add.graphics({x: 0, y: 0});
 
-        this.bigContourBottom = scene.add.sprite(x, y + this.barSprite.displayHeight / 4, 'bigContour');
+        this.bigContourBottom = scene.add.sprite(0, this.barSprite.displayHeight / 4, 'bigContour');
         this.bigContourBottom.setScale(this.scale);
 
-        this.bigContourTop = scene.add.sprite(x, y - this.barSprite.displayHeight / 4, 'bigContour');
+        this.bigContourTop = scene.add.sprite(0, 0 - this.barSprite.displayHeight / 4, 'bigContour');
         this.bigContourTop.setScale(this.scale);
         this.bigContourTop.setFlipY(true);
 
-        this.shadow = scene.add.sprite(x, y, 'shadow');
+        this.shadow = scene.add.sprite(0, 0, 'shadow');
         this.shadow.setScale(this.scale);
 
-        this.text = new Phaser.GameObjects.Text(scene, x, y, '', {color: 'white', fontSize: '18px'});
+        this.text = new Phaser.GameObjects.Text(scene, 0, 0, '', {color: 'white', fontSize: '18px'});
         scene.add.existing(this.text);
 
-        this.highlight = scene.add.sprite(x, y, 'highlight');
+        this.highlight = scene.add.sprite(0, 0, 'highlight');
         this.highlight.setScale(this.scale);
 
-        this.contour = scene.add.sprite(x, y, 'contour');
+        this.contour = scene.add.sprite(0, 0, 'contour');
         this.contour.setScale(this.scale - 0.07);
-        
+
         this.updateMask();
         this.updateText();
+
+        this.setPosition(x, y);
+
+        this.add([this.barSprite, this.emask, this.bigContourBottom, this.bigContourTop, this.shadow, this.text, this.highlight, this.contour]);
     }
 
     public setMaxValue(value: number): void

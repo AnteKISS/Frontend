@@ -31,6 +31,8 @@ export default class ExpBar extends Phaser.GameObjects.Container
         this.higlight.setTint(0x000000);
         this.higlight.setScale(scale);
 
+        this.add([this.background, this.barFill, this.emask, this.shadow, this.higlight]);
+
         this.updateMask();
     }
 
