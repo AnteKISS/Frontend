@@ -1,6 +1,6 @@
 export default class Inventaire {
 
-private occupied: boolean[][];
+public occupied: boolean[][];
 public gridWidth: number;
 public gridHeight: number;
 private indexFound = -1;

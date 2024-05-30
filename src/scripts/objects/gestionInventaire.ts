@@ -1,12 +1,13 @@
 import Inventaire from "./inventaire";
+import Grid from './grid';
 
 
 class InventoryManager {
     private inventaire: Inventaire;
+    private grid : Grid;
     private selectedItem: Item | null = null;
     private selectedItemData: [Item, number, number] | null = null;
-    private mouseX: number = 0;
-    private mouseY: number = 0;
+    
     private isDragging: boolean = false;
     private scene: Phaser.Scene;
   
@@ -20,12 +21,11 @@ class InventoryManager {
     }
   
     private onPointerMove(pointer: Phaser.Input.Pointer): void {
-      this.mouseX = pointer.x;
-      this.mouseY = pointer.y;
+      
   
       if (this.isDragging && this.selectedItem) {
         // position du cirseur avec objet
-        console.log(`item en main à (${this.mouseX}, ${this.mouseY})`);
+        console.log(`item en main à (${this.grid.mouseX}, ${this.grid.mouseY})`);
       }
     }
   
@@ -34,7 +34,7 @@ class InventoryManager {
         this.dropItem();
       } else {
         for (let [item, startX, startY] of this.inventaire.getItems()) {
-          if (this.mouseIsOver(item, startX, startY)) {
+          if (this.mouseIsOver( startX, startY)) {
             this.pickUpItem(item, startX, startY);
             break;
           }
@@ -52,7 +52,7 @@ class InventoryManager {
   
     private dropItem(): void {
       if (this.selectedItem && this.selectedItemData) {
-        const [gridX, gridY] = this.getGridPosition(this.mouseX, this.mouseY);
+        const [gridX, gridY] = this.grid.detectCellUnderMouse();
         if (this.inventaire.isSpaceAvailable(this.selectedItem, gridX, gridY)) {
           this.inventaire.addItem(this.selectedItem, gridX, gridY);
           console.log(`Dropped item: ${this.selectedItem.name} at (${gridX}, ${gridY})`);
@@ -67,20 +67,23 @@ class InventoryManager {
       }
     }
   
-    private getGridPosition(x: number, y: number): [number, number] {
-      const gridX = Math.floor(x / (800 / this.inventaire.gridWidth));
-      const gridY = Math.floor(y / (600 / this.inventaire.gridHeight));
-      return [gridX, gridY];
-    }
+    
   
-    private mouseIsOver(item: Item, startX: number, startY: number): boolean {
-      const endX = startX + item.width;
-      const endY = startY + item.height;
+    private mouseIsOver( x: number, y: number): boolean {
+      if(this.inventaire.occupied[y][x]){
+        return true;
+      }
+      else{
+        return false;
+      }
+      
+        //const endX = startX + item.width;
+      //const endY = startY + item.height;
   
-      return this.mouseX >= startX * (800 / this.inventaire.gridWidth) &&
-             this.mouseX <= endX * (800 / this.inventaire.gridWidth) &&
-             this.mouseY >= startY * (600 / this.inventaire.gridHeight) &&
-             this.mouseY <= endY * (600 / this.inventaire.gridHeight);
+      /*return this.grid.mouseX >= startX * (800 / this.inventaire.gridWidth) &&
+             this.grid.mouseX <= endX * (800 / this.inventaire.gridWidth) &&
+             this.grid.mouseY >= startY * (600 / this.inventaire.gridHeight) &&
+             this.grid.mouseY <= endY * (600 / this.inventaire.gridHeight);*/
     }
   }
   

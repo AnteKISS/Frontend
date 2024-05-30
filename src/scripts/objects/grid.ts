@@ -2,8 +2,8 @@ export default class Grid extends Phaser.GameObjects.Container {
   private cellSize: number;
   private gridWidth: number;
   private gridHeight: number;
-  private mouseX: number;
-  private mouseY: number;
+  public mouseX: number;
+  public mouseY: number;
   private cells: Phaser.GameObjects.Rectangle[][];
   private currentCell: Phaser.GameObjects.Rectangle | null;
 
@@ -50,36 +50,44 @@ export default class Grid extends Phaser.GameObjects.Container {
     
   }
 
-  private detectCellUnderMouse(): void {
-
-    // pour ajuster avec la position de la grille
-
+  public detectCellUnderMouse(): [number, number] {
+    
     const adjustedX = this.mouseX - this.x;
     const adjustedY = this.mouseY - this.y;
 
+    
     const col = Math.floor(adjustedX / this.cellSize);
     const row = Math.floor(adjustedY / this.cellSize);
 
+    
     if (row >= 0 && row < this.gridHeight && col >= 0 && col < this.gridWidth) {
         const cell = this.cells[row][col];
+
         
-      
         if (this.currentCell !== cell) {
-          
-          if (this.currentCell) {
-            this.currentCell.setFillStyle(0xffffff);
-          }
-  
-          
-          cell.setFillStyle(0x0000ff); 
-          this.currentCell = cell;
+            
+            if (this.currentCell) {
+                this.currentCell.setFillStyle(0xffffff);
+            }
+
+            
+            cell.setFillStyle(0x0000ff);
+            this.currentCell = cell;
+
+            
+            return [col, row];
         }
-      } else {
+    } else {
         
         if (this.currentCell) {
-          this.currentCell.setFillStyle(0xffffff);
-          this.currentCell = null;
+            this.currentCell.setFillStyle(0xffffff);
+            this.currentCell = null;
+            return [-1, -1];
         }
-      }
-  }
+    }
+
+    
+    return [-1, -1];
+}
+
 }
