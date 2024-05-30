@@ -10,6 +10,7 @@ interface TileJson {
   x: number
   y: number
   type: TileType
+  transitionName: string;
 }
 
 interface TileSetJson {
@@ -26,12 +27,12 @@ interface TransitionJson {
 interface AreaJson {
   name: string
   tileset: TileSetJson
-  transitions: TransitionJson[]
 }
 
 interface ActJson {
   name: string
   areas: AreaJson[]
+  transitions: TransitionJson[]
 }
 
 interface CampaignJson {
@@ -40,8 +41,6 @@ interface CampaignJson {
 }
 
 export default class CampaignJsonHandler {
-  json: CampaignJson;
-
   public static import(json: string): Campaign {
     const CAMPAIGN_JSON: CampaignJson = JSON.parse(json);
     const CAMPAIGN = new Campaign(CAMPAIGN_JSON.name);
@@ -52,28 +51,27 @@ export default class CampaignJsonHandler {
       const ACT = new Act(ACT_JSON.name);
       ACT.areas = [];
 
-      // Create campaign's acts
-      for (const AREA_JSON of ACT_JSON.areas) {
-        const AREA = new Area(AREA_JSON.name);
-        const TILESET = new TileSet(0);
+      // Create campaign's areas for each act
+      for (const AREA_JSON of ACT_JSON.areas)
+        ACT.addArea(new Area(AREA_JSON.name));
 
-        // Create tilesets for acts' areas
-        for (const TILE_JSON of AREA_JSON.tileset.tiles) {
-          const TILE = new Tile(TILE_JSON.x, TILE_JSON.y, TILE_JSON.type);
-          TILESET.addTile(TILE.x, TILE.y, TILE.type);
+      // Create act's transitions
+      for (const TRANSITION_JSON of ACT_JSON.transitions) {
+        const TRANSITION_TARGET_AREA = ACT.areas.find((area) => area.name === TRANSITION_JSON.areaName);
+        if (TRANSITION_TARGET_AREA !== undefined) {
+          const TRANSITION = new Transition(TRANSITION_JSON.name, TRANSITION_TARGET_AREA, TRANSITION_JSON.targetX, TRANSITION_JSON.targetY);
+          ACT.transitions.set(TRANSITION.name, TRANSITION);
         }
-        AREA.tileSet = TILESET;
-
-        // Create transitions for acts' areas
-        for (const TRANSITION_JSON of AREA_JSON.transitions) {
-          const TRANSITION_TARGET_AREA = ACT.areas.find((area) => area.name === TRANSITION_JSON.areaName);
-          if (TRANSITION_TARGET_AREA !== undefined) {
-            const TRANSITION = new Transition(TRANSITION_JSON.name, TRANSITION_TARGET_AREA, TRANSITION_JSON.targetX, TRANSITION_JSON.targetY);
-            ACT.transitions.set(TRANSITION.name, TRANSITION);
-          }
-        }
-        ACT.addArea(AREA);
       }
+
+      // Create tileset for each area
+      for (let i = 0; i < ACT.areas.length; i++) {
+        const TILESET = new TileSet(0);
+        for (const TILE_JSON of ACT_JSON.areas[i].tileset.tiles)
+          TILESET.addTile(TILE_JSON.x, TILE_JSON.y, TILE_JSON.type, ACT.transitions.get(TILE_JSON.transitionName));
+        ACT.areas[i].tileSet = TILESET;
+      }
+
       CAMPAIGN.addAct(ACT);
     }
     return CAMPAIGN;
@@ -90,12 +88,29 @@ export default class CampaignJsonHandler {
       const ACT_JSON: ActJson = {
         name: ACT.name,
         areas: [],
+        transitions: [],
       };
+
+      // Create JSON for each transition in the act
+      for (const TRANSITION of ACT.transitions.values()) {
+        const TRANSITION_JSON: TransitionJson = {
+          name: TRANSITION.name,
+          areaName: TRANSITION.targetArea.name,
+          targetX: TRANSITION.targetX,
+          targetY: TRANSITION.targetY,
+        };
+        ACT_JSON.transitions.push(TRANSITION_JSON);
+      }
 
       // Create JSON for each act's areas
       for (const AREA of ACT.areas) {
         const TILESET_JSON: TileSetJson = {
           tiles: [],
+        };
+
+        const AREA_JSON: AreaJson = {
+          name: AREA.name,
+          tileset: TILESET_JSON,
         };
 
         // Create JSON for each tiles for area's tileset
@@ -104,26 +119,11 @@ export default class CampaignJsonHandler {
             x: TILE.x,
             y: TILE.y,
             type: TILE.type,
+            transitionName: (TILE.transition !== undefined) ? TILE.transition.name : "",
           };
           TILESET_JSON.tiles.push(TILE_JSON);
         }
 
-        const AREA_JSON: AreaJson = {
-          name: AREA.name,
-          tileset: TILESET_JSON,
-          transitions: [],
-        };
-
-        // Create JSON for each transition in the area
-        for (const TRANSITION of ACT.transitions.values()) {
-          const TRANSITION_JSON: TransitionJson = {
-            name: TRANSITION.name,
-            areaName: TRANSITION.targetArea.name,
-            targetX: TRANSITION.targetX,
-            targetY: TRANSITION.targetY,
-          };
-          AREA_JSON.transitions.push(TRANSITION_JSON);
-        }
         ACT_JSON.areas.push(AREA_JSON);
       }
       CAMPAIGN_JSON.acts.push(ACT_JSON);

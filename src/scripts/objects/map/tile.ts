@@ -6,23 +6,24 @@ export enum TileType {
 }
 
 export default class Tile {
-  static readonly WIDTH : number = 100;
-  static readonly HEIGHT : number = this.WIDTH / 2;
-  static readonly HALF_WIDTH : number = this.WIDTH / 2;
-  static readonly HALF_HEIGHT : number = this.HEIGHT / 2;
+  static readonly WIDTH: number = 100;
+  static readonly HEIGHT: number = this.WIDTH / 2;
+  static readonly HALF_WIDTH: number = this.WIDTH / 2;
+  static readonly HALF_HEIGHT: number = this.HEIGHT / 2;
 
   x: number;
   y: number;
   type: TileType;
   transition: Transition | undefined;
 
-  constructor(x: number, y: number, type: TileType) {
+  constructor(x: number, y: number, type: TileType, transition: Transition | undefined = undefined) {
     this.x = x;
     this.y = y;
     this.type = type;
+    this.transition = transition;
   }
 
-  public static getPointsFromTilePos(x: number, y: number) : Phaser.Geom.Point[] {
+  public static getPointsFromTilePos(x: number, y: number): Phaser.Geom.Point[] {
     const UNIT_X = x * Tile.HALF_WIDTH + y * Tile.HALF_WIDTH;
     const UNIT_Y = x * Tile.HALF_HEIGHT - y * Tile.HALF_HEIGHT;
 
@@ -34,7 +35,7 @@ export default class Tile {
     ];
   }
 
-  public static getHash(x: number, y: number) : String {
+  public static getHash(x: number, y: number): String {
     return x.toString() + "," + y.toString();
   }
 }

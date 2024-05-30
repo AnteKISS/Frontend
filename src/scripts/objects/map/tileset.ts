@@ -1,4 +1,5 @@
 import Tile, { TileType } from './tile'
+import Transition from './transition'
 
 export default class TileSet {
   tiles: Map<String, Tile>
@@ -14,8 +15,8 @@ export default class TileSet {
     }
   }
 
-  public addTile(x: number, y: number, type: TileType) {
-    this.tiles.set(Tile.getHash(x, y), new Tile(x, y, type))
+  public addTile(x: number, y: number, type: TileType, transition: Transition | undefined = undefined) {
+    this.tiles.set(Tile.getHash(x, y), new Tile(x, y, type, transition))
   }
 
   public deleteTile(x: number, y: number) {
