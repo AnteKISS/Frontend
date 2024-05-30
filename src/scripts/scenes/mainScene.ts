@@ -1,20 +1,29 @@
 import GameLogo from '../objects/gameLogo'
 import FpsText from '../objects/fpsText'
+import GUI from '../objects/gui'
+import { BaseEntity } from '../entities/baseEntity';
+import { ActiveEntity } from '../entities/activeEntity';
+import { PlayerEntity } from '../entities/playerEntity';
+import { MonsterEntity } from '../entities/monsterEntity';
+
 import Tile from '../objects/map/tile'
 import TileDrawer, { TileColor } from '../objects/map/tiledrawer'
 import TileSet from '../objects/map/tileset'
 
 export default class MainScene extends Phaser.Scene {
-  uiCamera : Phaser.Cameras.Scene2D.Camera;
-  fpsText : FpsText;
-  versionText : Phaser.GameObjects.Text
-  tileSet : TileSet;
-  graphics : Phaser.GameObjects.Graphics;
-  tileDrawer : TileDrawer;
-  playerPosTest : Phaser.Geom.Point;
-  pointer : Phaser.Input.Pointer;
-  centerPoint : Phaser.Geom.Point;
-  mapEditorButton : Phaser.GameObjects.Text;
+  uiCamera: Phaser.Cameras.Scene2D.Camera;
+  fpsText: FpsText;
+  versionText: Phaser.GameObjects.Text
+  tileSet: TileSet;
+  graphics: Phaser.GameObjects.Graphics;
+  tileDrawer: TileDrawer;
+  pointer: Phaser.Input.Pointer;
+  centerPoint: Phaser.Geom.Point;
+  mapEditorButton: Phaser.GameObjects.Text;
+
+  private playerTest: PlayerEntity;
+  private monsterTest: MonsterEntity;
+  private gui: GUI;
 
   constructor() {
     super({ key: 'MainScene' });
@@ -26,7 +35,6 @@ export default class MainScene extends Phaser.Scene {
     this.tileSet = new TileSet();
     this.graphics = this.add.graphics();
     this.tileDrawer = new TileDrawer(this.graphics);
-    this.playerPosTest = new Phaser.Geom.Point;
     this.pointer = this.input.activePointer;
     this.centerPoint = new Phaser.Geom.Point(
       this.cameras.main.width / 2,
@@ -38,7 +46,18 @@ export default class MainScene extends Phaser.Scene {
         fontSize: '24px'
       })
       .setInteractive()
-      .on('pointerdown', () => {this.scene.start('MapEditor');});
+      .on('pointerdown', () => { this.scene.start('MapEditor'); });
+
+    this.gui = new GUI(this, 0, 0);
+    this.playerTest = new PlayerEntity(this);
+    this.playerTest.positionX = this.cameras.main.width / 2;
+    this.playerTest.positionY = this.cameras.main.height / 2;
+    this.monsterTest = new MonsterEntity(this, 'zombie_0');
+    this.monsterTest.positionX = this.cameras.main.width / 4;
+    this.monsterTest.positionY = this.cameras.main.height / 4;
+    this.gui.spellBar.setSpellBook(this.playerTest.mySpellBook);
+
+    this.input.setDefaultCursor('default');
 
     // display the Phaser.VERSION
     this.versionText = this.add
@@ -55,34 +74,36 @@ export default class MainScene extends Phaser.Scene {
       [
         this.fpsText,
         this.versionText,
-        this.mapEditorButton
+        this.mapEditorButton,
+        this.gui,
       ]
     );
     this.uiCamera = this.cameras.add(0, 0, 1280, 720);
     this.uiCamera.ignore([this.graphics]);
   }
 
-  update() {
+  update(time, deltaTime) {
     this.cameras.main.setScroll(
-      this.playerPosTest.x - this.cameras.main.width / 2,
-      this.playerPosTest.y - this.cameras.main.height / 2
+      this.playerTest.positionX - this.cameras.main.width / 2,
+      this.playerTest.positionY - this.cameras.main.height / 2
     );
 
     this.fpsText.update();
+    this.playerTest.update(deltaTime);
+    this.monsterTest.update(deltaTime);
+    this.updateGUI();
     this.drawTileSet();
-    this.playerPosTest.x += 2;
-    this.playerPosTest.y += 0.5;
   }
 
   drawTileSet() {
-    const playerTilePos = TileSet.getTilePosFromUnitPos(this.playerPosTest);
+    const playerTilePos = TileSet.getTilePosFromUnitPos(new Phaser.Geom.Point(this.playerTest.positionX, this.playerTest.positionY));
 
     // Clear previous drawn lines
     this.graphics.clear();
 
     // Center point
     this.graphics.fillStyle(TileColor.Player, 1);
-    this.graphics.fillCircle(this.playerPosTest.x, this.playerPosTest.y, 4);
+    this.graphics.fillCircle(this.playerTest.positionX, this.playerTest.positionY, 4);
 
     // Draw tiles
     const proximityTiles = this.tileSet.getProximityTileList(playerTilePos.x, playerTilePos.y, 8);
@@ -94,11 +115,19 @@ export default class MainScene extends Phaser.Scene {
 
     // Draw cursor tile
     const cursorPos = new Phaser.Geom.Point(
-      this.pointer.x - this.centerPoint.x + this.playerPosTest.x,
-      this.pointer.y - this.centerPoint.y + this.playerPosTest.y
+      this.pointer.x - this.centerPoint.x + this.playerTest.positionX,
+      this.pointer.y - this.centerPoint.y + this.playerTest.positionY
     );
     const cursorTilePos = TileSet.getTilePosFromUnitPos(cursorPos)
     const cursorTilePoints = Tile.getPointsFromTilePos(cursorTilePos.x, cursorTilePos.y);
     this.tileDrawer.drawDebugTilePoints(cursorTilePoints, TileColor.DefaultCursor);
+  }
+
+  updateGUI(): void {
+    this.gui.manaBar.setCurrentValue(this.playerTest.stats.mana);
+    this.gui.manaBar.setMaxValue(this.playerTest.maxMana);
+    this.gui.healthBar.setCurrentValue(this.playerTest.stats.health);
+    this.gui.healthBar.setMaxValue(this.playerTest.getMaxHealth());
+    //ajouter les autres barres
   }
 }
