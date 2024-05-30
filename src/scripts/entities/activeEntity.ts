@@ -40,6 +40,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   }
 
   public set positionX(v: number) {
+    this._positionXOld = this._positionX;
     this._positionX = v;
     this._destinationX = v;
     this.setX(v);
@@ -50,6 +51,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   }
 
   public set positionY(v: number) {
+    this._positionYOld = this._positionY;
     this._positionY = v;
     this._destinationY = v;
     this.setY(v);
@@ -62,6 +64,8 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     distance *= distanceMultiplier;
     let deltaX: number = distance * Math.cos(this._orientation_rad);
     let deltaY: number = distance * Math.sin(this._orientation_rad);
+    this._positionXOld = this._positionX;
+    this._positionYOld = this._positionY;
     this._positionX += deltaX;
     this.setX(this.x + deltaX);
     this._positionY += deltaY;

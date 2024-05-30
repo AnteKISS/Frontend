@@ -181,12 +181,18 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     }
   }
 
-  onSpriteColliding(hitEntity: BaseEntity): void {
+  onSpriteColliding = (hitEntity: BaseEntity): void => {
     
   }
   
-  onEntityColliding(hitEntity: BaseEntity): void {
-    
+  onEntityColliding = (hitEntity: BaseEntity): void => {
+    if (!this.isMoving()) {
+      return;
+    }
+    this.positionX = this.positionXOld;
+    this.positionY = this.positionYOld;
+    this._destinationX = this.positionXOld;
+    this._destinationY = this.positionYOld;
   }
 
   public initializeAnimations(): void {

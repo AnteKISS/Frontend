@@ -22,11 +22,11 @@ export class ShrineEntity extends InactiveEntity {
     throw new NotImplementedError();
   }
 
-  onSpriteColliding(hitEntity: BaseEntity): void {
+  onSpriteColliding = (hitEntity: BaseEntity): void => {
     console.log('Hit entity:', hitEntity.getType());
   }
-  
-  onEntityColliding(hitEntity: BaseEntity): void {
+
+  onEntityColliding = (hitEntity: BaseEntity): void => {
     console.log('Hit entity:', hitEntity.getType());
   }
 

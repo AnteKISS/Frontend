@@ -23,8 +23,8 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     this.initializeAnimations();
     this._baseSprite.play(`IDLE_${getOrientationString(this.orientation)}_ZOMBIE_0`);
 
-    this.positionX = this.scene.cameras.main.width / 4;
-    this.positionY = this.scene.cameras.main.height / 4;
+    this.positionX = this.scene.cameras.main.width / 2.5;
+    this.positionY = this.scene.cameras.main.height / 2.5;
 
     const spriteWidth = this._baseSprite.width / 5;
     const spriteHeight = this._baseSprite.height / 5;
@@ -162,11 +162,11 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     console.log('pointerover');
   }
 
-  onSpriteColliding(hitEntity: BaseEntity): void {
+  onSpriteColliding = (hitEntity: BaseEntity): void => {
     
   }
   
-  onEntityColliding(hitEntity: BaseEntity): void {
+  onEntityColliding = (hitEntity: BaseEntity): void => {
     
   }
 }
