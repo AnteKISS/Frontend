@@ -5,6 +5,7 @@ import { AnimationManager } from '../managers/animationManager';
 import { BaseEntity } from './baseEntity';
 import { MathModule } from '../utilities/mathModule'
 import { Physics } from '../physics/collider';
+import { IFightable } from './IFightable';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -96,6 +97,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     if (this._debugMode) {
       this._collider.displayDebugGraphics();
     }
+    this._collider.checkCollision();
   }
 
   public reset(): void {

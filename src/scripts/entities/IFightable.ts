@@ -1,4 +1,4 @@
-interface IFightable {
+export interface IFightable {
     attack(target: IFightable): void;
     damage(amount: number): void;
     getBasePhysicalDamage(): number;

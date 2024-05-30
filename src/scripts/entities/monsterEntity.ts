@@ -5,6 +5,7 @@ import { getOrientationString } from '../enums/entityOrientation';
 import { MathModule } from '../utilities/mathModule';
 import { OutlinePipeline } from '../pipelines/outlinePipeline';
 import { Physics } from '../physics/collider';
+import { IFightable } from './IFightable';
 
 export class MonsterEntity extends ActiveEntity implements IFightable {
 
