@@ -6,7 +6,7 @@ import { BaseEntity } from './baseEntity';
 import { MathModule } from '../utilities/mathModule'
 import PlayerController from '../inputs/playerController';
 import Spell from '../spells/spell';
-import SpellBook from  '../spells/spellBook'
+import SpellBook from  '../spells/spellBook';
 import IceShard from '../spells/craftedSpells/iceShard';
 import Firebolt from '../spells/craftedSpells/firebolt';
 import Quake from '../spells/craftedSpells/quake';
@@ -29,7 +29,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     super(scene);
     scene.add.existing(this);
     this.type = 'PlayerEntity';
-    this._code = "player"
+    this.code = "player";
     this._headSprite = scene.add.sprite(0, 0, 'headTexture');
     this._headSprite.scale = 1.5;
     this._bodySprite = scene.add.sprite(0, 0, 'bodyTexture');
@@ -58,7 +58,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     
     this.stats.movementSpeed = 100;
     this.stats.mana = 150; //Pour test
-    this.setMaxHealth(150) //Pour test
+    this.setMaxHealth(150); //Pour test
 
     this._headSprite.setOrigin(0.5, 0.75);
     this._bodySprite.setOrigin(0.5, 0.75);
@@ -260,7 +260,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   public initializeAnimations(): void {
-    AnimationManager.createAnimations(this, `${this._code}_AnimationConfig`);
+    AnimationManager.createAnimations(this, `${this.code}_AnimationConfig`);
   }
 }
 

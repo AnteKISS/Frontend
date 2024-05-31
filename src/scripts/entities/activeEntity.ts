@@ -76,10 +76,10 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   }
 
   setDestination(x?: number, y?: number): void {
-    if (x) {
+    if (x !== undefined) {
       this._destinationX = x;
     }
-    if (y) {
+    if (y !== undefined) {
       this._destinationY = y;
     }
   }
@@ -127,8 +127,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     throw new NotImplementedError();
   }
 
-  setOrientationRad(orientation: number)
-  {
+  setOrientationRad(orientation: number) {
     this._orientation_rad = orientation;
   }
 

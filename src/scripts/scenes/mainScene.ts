@@ -1,8 +1,5 @@
-import GameLogo from '../objects/gameLogo'
 import FpsText from '../objects/fpsText'
 import GUI from '../objects/gui'
-import { BaseEntity } from '../entities/baseEntity';
-import { ActiveEntity } from '../entities/activeEntity';
 import { PlayerEntity } from '../entities/playerEntity';
 import { MonsterEntity } from '../entities/monsterEntity';
 import { EntityManager } from '../managers/entityManager';
@@ -41,7 +38,6 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create() {
-    // new GameLogo(this, this.cameras.main.width / 2, this.cameras.main.height / 2);
     this.fpsText = new FpsText(this);
     this.tileSet = new TileSet();
     this.graphics = this.add.graphics();
@@ -92,11 +88,13 @@ export default class MainScene extends Phaser.Scene {
       ]
     );
     this.uiCamera = this.cameras.add(0, 0, 1280, 720, false, "uiCamera");
-    this.uiCamera.ignore([
-      this.graphics,
-      this.playerTest,
-      this.monsterTest,
-    ]);
+    this.uiCamera.ignore(
+      [
+        this.graphics,
+        this.playerTest,
+        this.monsterTest,
+      ]
+    );
   }
 
   update(time, deltaTime) {

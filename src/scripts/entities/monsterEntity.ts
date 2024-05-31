@@ -14,7 +14,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
   constructor(scene, monsterCode) {
     super(scene);
-    this._code = monsterCode;
+    this.code = monsterCode;
     scene.add.existing(this);
     this.type = 'MonsterEntity';
     this._baseSprite = scene.add.sprite(0, 0, 'baseSprite');
@@ -99,7 +99,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
   }
 
   public initializeAnimations(): void {
-    AnimationManager.createAnimations(this, `${this._code}_AnimationConfig`);
+    AnimationManager.createAnimations(this, `${this.code}_AnimationConfig`);
   }
 
   attack(target: IFightable): void {

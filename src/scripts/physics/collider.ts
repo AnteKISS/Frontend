@@ -87,9 +87,6 @@ export namespace Physics {
       const positionX: number = this._parentEntity.positionX;
       const positionY: number = this._parentEntity.positionY;
       const truncatedSpriteWidth: number = this._parentEntity.truncatedSpriteWidth;
-      const truncatedSpriteHeight: number = this._parentEntity.truncatedSpriteHeight;
-      const originX: number = this._parentSprite.originX;
-      const originY: number = this._parentSprite.originY;
 
       for (let index = 0; index < entities.length; index++) {
         if (entities[index] === this._parentEntity) {

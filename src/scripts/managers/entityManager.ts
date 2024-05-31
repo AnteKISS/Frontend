@@ -75,9 +75,9 @@ export class EntityManager {
 
   // TODO: Add function to create npc
 
-  public toggleDebugMode(enableDebugMode: boolean): void {
+  public setDebugMode(enableDebugMode: boolean): void {
     this._entities.forEach(entity => {
-      entity.toggleDebugMode(enableDebugMode);
+      entity.setDebugMode(enableDebugMode);
     });
   }
 }

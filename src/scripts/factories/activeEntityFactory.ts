@@ -1,8 +1,6 @@
 import { MonsterEntity } from '../entities/monsterEntity';
 import { PlayerEntity } from '../entities/playerEntity';
 import { EntitySpecies } from '../enums/entitySpecies';
-import InvalidMonsterCodeError from '../errors/invalidEntityCodeError';
-import NotImplementedError from '../errors/notImplementedError';
 
 export class ActiveEntityFactory {
 
