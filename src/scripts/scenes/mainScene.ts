@@ -11,6 +11,7 @@ import { OutlinePipeline } from '../pipelines/outlinePipeline';
 import Tile from '../tiles/tile'
 import TileDrawer, { TileColor } from '../tiles/tiledrawer'
 import TileSet from '../tiles/tileset'
+import Pathfinding from '../tiles/pathfinding'
 
 export default class MainScene extends Phaser.Scene {
   uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -111,6 +112,12 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest.update(deltaTime);
     this.updateGUI();
     this.drawTileSet();
+
+    // Test pathfinding
+    const playerTile = TileSet.getTilePosFromUnitPos(new Phaser.Geom.Point(this.playerTest.positionX, this.playerTest.positionY));
+    const path = Pathfinding.findPath(this.tileSet, 0, 0, playerTile.x, playerTile.y);
+    console.log(path);
+    this.tileDrawer.drawDebugTilePosList(path, 2, 0x000000);
   }
 
   drawTileSet() {

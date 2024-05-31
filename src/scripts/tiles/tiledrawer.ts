@@ -1,5 +1,6 @@
 import 'phaser'
 import Tile, { TileType } from './tile'
+import Point from '../types/point'
 
 export enum TileColor {
   Floor = 0x0000FF,
@@ -33,14 +34,14 @@ export default class TileDrawer {
     }
   }
 
-  public drawDebugTilePosList(tilesPos: Iterable<Phaser.Geom.Point>, lineWidth: number, fillColor: number) {
+  public drawDebugTilePosList(tilesPos: Iterable<Point>, lineWidth: number, fillColor: number) {
     for (const pos of tilesPos) {
       const points = Tile.getPointsFromTilePos(pos.x, pos.y);
       this.drawDebugTilePoints(points, fillColor);
     }
   }
 
-  public drawDebugTilePoints(points: Phaser.Geom.Point[], fillColor: number) {
+  public drawDebugTilePoints(points: Point[], fillColor: number) {
     this.graphics.lineStyle(2, 0x000000);
     this.graphics.fillStyle(fillColor, 0.5);
     this.graphics.beginPath();
