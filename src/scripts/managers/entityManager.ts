@@ -1,10 +1,7 @@
-import { ActiveEntity } from "../entities/activeEntity";
-import { InactiveEntity } from "../entities/inactiveEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import { MonsterEntity } from "../entities/monsterEntity";
 import { BaseEntity } from "../entities/baseEntity";
 import { ActiveEntityFactory } from "../factories/activeEntityFactory";
-import NotImplementedError from "../errors/notImplementedError";
 
 export class EntityManager {
   private static _instance: EntityManager;

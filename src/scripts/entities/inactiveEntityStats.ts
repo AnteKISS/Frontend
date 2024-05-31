@@ -1,5 +1,5 @@
 class InactiveEntityStats {
-  speed: number;
-  isInvisible: boolean;
-  isUntargetable: boolean;
+  public speed: number;
+  public isInvisible: boolean;
+  public isUntargetable: boolean;
 }

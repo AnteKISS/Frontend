@@ -2,7 +2,7 @@ import { BaseEntity } from './baseEntity';
 
 export abstract class InactiveEntity extends BaseEntity {
 
-  protected _stats: InactiveEntityStats;
+  public stats: InactiveEntityStats;
 
   constructor(scene) {
     super(scene);
@@ -11,13 +11,6 @@ export abstract class InactiveEntity extends BaseEntity {
   }
 
   // Getters/Setters
-  public get stats(): InactiveEntityStats {
-    return this._stats;
-  }
-
-  public set stats(v: InactiveEntityStats) {
-    this._stats = v;
-  }
 
   // Methods
   abstract update(deltaTime: number): void;

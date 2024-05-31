@@ -1,50 +1,50 @@
 export class ActiveEntityStats {
-  strength: number = 0;
-  dexterity: number = 0;
-  vitality: number = 0;
-  energy: number = 0;
-  mana: number = 0;
+  public strength: number = 0;
+  public dexterity: number = 0;
+  public vitality: number = 0;
+  public energy: number = 0;
+  public mana: number = 0;
+  
+  public health: number = 1;
+  public maxHealth: number = 1;
+  public healthRegeneration: number = 0;
 
-  health: number = 1;
-  maxHealth: number = 1;
-  healthRegeneration: number = 0;
+  public basePhysicalDamage: number = 0;
+  public baseMagicalDamage: number = 0;
+  public attackAccuracy: number = 0;
+  public criticalChance: number = 0;
+  public criticalMultiplier: number = 1;
+  public attackSpeed: number = 1;
 
-  basePhysicalDamage: number = 0;
-  baseMagicalDamage: number = 0;
-  attackAccuracy: number = 0;
-  criticalChance: number = 0;
-  criticalMultiplier: number = 1;
-  attackSpeed: number = 1;
+  public defense: number = 0;
+  public physicalResistance: number = 0;
+  public magicResistance: number = 0;
+  public fireResistance: number = 0;
+  public coldResistance: number = 0;
+  public lightningResistance: number = 0;
+  public poisonResistance: number = 0;
+  public physicalAbsorption: number = 0;
+  public magicAbsorption: number = 0;
+  public fireAbsorption: number = 0;
+  public coldAbsorption: number = 0;
+  public lightningAbsorption: number = 0;
+  public poisonAbsorption: number = 0;
 
-  defense: number = 0;
-  physicalResistance: number = 0;
-  magicResistance: number = 0;
-  fireResistance: number = 0;
-  coldResistance: number = 0;
-  lightningResistance: number = 0;
-  poisonResistance: number = 0;
-  physicalAbsorption: number = 0;
-  magicAbsorption: number = 0;
-  fireAbsorption: number = 0;
-  coldAbsorption: number = 0;
-  lightningAbsorption: number = 0;
-  poisonAbsorption: number = 0;
+  public baseMovementSpeed: number = 1;
+  public movementSpeed: number = 1;
 
-  baseMovementSpeed: number = 1;
-  movementSpeed: number = 1;
+  public level: number = 1;
+  public experience: number = 0;
 
-  level: number = 1;
-  experience: number = 0;
+  public isInvincible: boolean = false;
+  public isStunned: boolean = false;
+  public isSilenced: boolean = false;
+  public isRooted: boolean = false;
+  public isFeared: boolean = false;
+  public isCharmed: boolean = false;
+  public isTaunted: boolean = false;
+  public isBlinded: boolean = false;
 
-  isInvincible: boolean = false;
-  isStunned: boolean = false;
-  isSilenced: boolean = false;
-  isRooted: boolean = false;
-  isFeared: boolean = false;
-  isCharmed: boolean = false;
-  isTaunted: boolean = false;
-  isBlinded: boolean = false;
-
-  isInvisible: boolean = false;
-  isUntargetable: boolean = false;
+  public isInvisible: boolean = false;
+  public isUntargetable: boolean = false;
 }

@@ -3,7 +3,6 @@ import NotImplementedError from '../errors/notImplementedError';
 import { AnimationManager } from '../managers/animationManager';
 import { getOrientationString } from '../enums/entityOrientation';
 import { MathModule } from '../utilities/mathModule';
-import { OutlinePipeline } from '../pipelines/outlinePipeline';
 import { Physics } from '../physics/collider';
 import { IFightable } from './IFightable';
 import { BaseEntity } from './baseEntity';
@@ -61,16 +60,16 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     let action: string = this._baseSprite.anims.currentAnim ? this._baseSprite.anims.currentAnim.key.split('_')[0] : '';
     let animationUpdateNeeded: boolean = false;
 
-    if ((this.positionX != this._destinationX) || (this.positionY != this._destinationY)) {
+    if ((this.positionX != this.destinationX) || (this.positionY != this.destinationY)) {
       // TODO: Check if destination coords change between each update call
       // so if it doesn't change, we move the same value that we moved last call
       hasOrientationUpdated = this.updateOrientation();
       this.move();
 
-      if (MathModule.isValueInThreshold(this.positionX, this._destinationX, 1) &&
-          MathModule.isValueInThreshold(this.positionY, this._destinationY, 1)) {
-        this._destinationX = this.positionX;
-        this._destinationY = this.positionY;
+      if (MathModule.isValueInThreshold(this.positionX, this.destinationX, 1) &&
+          MathModule.isValueInThreshold(this.positionY, this.destinationY, 1)) {
+        this.destinationX = this.positionX;
+        this.destinationY = this.positionY;
         this._isMoving = false;
       }
       if (!this._baseSprite.anims.isPlaying || action != 'RUN' || hasOrientationUpdated) {
@@ -102,64 +101,16 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     AnimationManager.createAnimations(this, `${this.code}_AnimationConfig`);
   }
 
-  attack(target: IFightable): void {
+  public attack(target: IFightable): void {
     throw new NotImplementedError();
   }
 
-  damage(amount: number): void {
+  public damage(amount: number): void {
     // TODO: take into account gear, active effects then apply damage
     throw new NotImplementedError();
   }
 
-  getBasePhysicalDamage(): number {
-    return this.stats.basePhysicalDamage;
-  }
-
-  setBasePhysicalDamage(basePhysicalDamage: number): void {
-    this.stats.basePhysicalDamage = basePhysicalDamage;
-  }
-
-  getBaseMagicalDamage(): number {
-    return this.stats.baseMagicalDamage;
-  }
-
-  setBaseMagicalDamage(baseMagicalDamage: number): void {
-    this.stats.baseMagicalDamage = baseMagicalDamage;
-  }
-
-  getHealth(): number {
-    return this.stats.health;
-  }
-
-  setHealth(health: number): void {
-    this.stats.health = health;
-  }
-
-  getMaxHealth(): number {
-    return this.stats.maxHealth;
-  }
-
-  setMaxHealth(maxHealth: number): void {
-    this.stats.maxHealth = maxHealth;
-  }
-
-  getAccuracy(): number {
-    return this.stats.attackAccuracy;
-  }
-
-  setAccuracy(accuracy: number): void {
-    this.stats.attackAccuracy = accuracy;
-  }
-
-  getDefense(): number {
-    return this.stats.defense;
-  }
-
-  setDefense(defense: number): void {
-    this.stats.defense = defense;
-  }
-
-  onPointerOver(): void {
+  public onPointerOver(): void {
     console.log('pointerover');
   }
 
