@@ -1,6 +1,7 @@
 import { BaseEntity } from './baseEntity';
 import NotImplementedError from '../errors/notImplementedError';
 import { ActiveEntityStats } from './activeEntityStats';
+import { EntitySpecies } from '../enums/entitySpecies';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
@@ -9,7 +10,11 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   protected _destinationX: number;
   protected _destinationY: number;
   protected _isMoving: boolean = false;
-  protected _orientation_rad: number;
+
+  protected _lastValidPositionX: number;
+  protected _lastValidPositionY: number;
+
+  public frameCount: number = 0;
   
   constructor(scene) {
     super(scene);
@@ -55,20 +60,19 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this.setY(v);
   }
 
-  // Methods
-  move(dx?: number, dy?: number): void {
-    // TODO: Call method for collision detection
+  move(): void {
     this._isMoving = true;
-    this._positionXOld = this.positionX;
-    this._positionYOld = this.positionY;
-    if (dx) {
-      this._positionX += dx;
-      this.setX(this.x + dx);
-    }
-    if (dy) {
-      this._positionY += dy;
-      this.setY(this.y + dy);
-    }
+    let distance: number = this.stats.movementSpeed * (window['deltaTime'] / 1000);
+    let distanceMultiplier: number = 1 - (Math.abs(Math.sin(this._orientation_rad)) / 2);
+    distance *= distanceMultiplier;
+    let deltaX: number = distance * Math.cos(this._orientation_rad);
+    let deltaY: number = distance * Math.sin(this._orientation_rad);
+    this._lastValidPositionX = this._positionX;
+    this._lastValidPositionY = this._positionY;
+    this._positionX += deltaX;
+    this.setX(this.x + deltaX);
+    this._positionY += deltaY;
+    this.setY(this.y + deltaY);
   }
 
   setDestination(x?: number, y?: number): void {
@@ -131,5 +135,4 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   abstract update(deltaTime: number): void;
   abstract reset(): void;
   abstract initializeAnimations(): void;
-  abstract updateOrientation(): boolean;
 }

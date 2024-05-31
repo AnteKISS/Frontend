@@ -1,5 +1,6 @@
 import { InactiveEntity } from './inactiveEntity';
 import NotImplementedError from '../errors/notImplementedError';
+import { BaseEntity } from './baseEntity';
 
 export class ShrineEntity extends InactiveEntity {
 
@@ -21,11 +22,15 @@ export class ShrineEntity extends InactiveEntity {
     throw new NotImplementedError();
   }
 
-  initializeAnimations(): void {
-    
+  onSpriteColliding = (hitEntity: BaseEntity): void => {
+    console.log('Hit entity:', hitEntity.getType());
   }
 
-  updateOrientation(): boolean {
-    throw new NotImplementedError();
+  onEntityColliding = (hitEntity: BaseEntity): void => {
+    console.log('Hit entity:', hitEntity.getType());
+  }
+
+  initializeAnimations(): void {
+    
   }
 }

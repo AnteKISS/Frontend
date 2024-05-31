@@ -5,6 +5,8 @@ import { BaseEntity } from '../entities/baseEntity';
 import { ActiveEntity } from '../entities/activeEntity';
 import { PlayerEntity } from '../entities/playerEntity';
 import { MonsterEntity } from '../entities/monsterEntity';
+import { EntityManager } from '../managers/entityManager';
+import { OutlinePipeline } from '../pipelines/outlinePipeline';
 
 import Tile from '../objects/map/tile'
 import TileDrawer, { TileColor } from '../objects/map/tiledrawer'
@@ -29,6 +31,15 @@ export default class MainScene extends Phaser.Scene {
     super({ key: 'MainScene' });
   }
 
+  public init(data: any): void {
+    if (this.game.renderer instanceof Phaser.Renderer.WebGL.WebGLRenderer) {
+      this.game.renderer.pipelines.add(
+        OutlinePipeline.KEY,
+        new OutlinePipeline(this.game)
+      );
+    }
+  }
+
   create() {
     // new GameLogo(this, this.cameras.main.width / 2, this.cameras.main.height / 2);
     this.fpsText = new FpsText(this);
@@ -48,11 +59,13 @@ export default class MainScene extends Phaser.Scene {
       .setInteractive()
       .on('pointerdown', () => { this.scene.start('MapEditor'); });
 
+    this.input.mouse.disableContextMenu();
+
     this.gui = new GUI(this, 0, 0);
-    this.playerTest = new PlayerEntity(this);
+    this.playerTest = EntityManager.instance.createPlayer(this);
     this.playerTest.positionX = this.cameras.main.width / 2;
     this.playerTest.positionY = this.cameras.main.height / 2;
-    this.monsterTest = new MonsterEntity(this, 'zombie_0');
+    this.monsterTest = EntityManager.instance.createMonster(this, 'zombie_0');
     this.monsterTest.positionX = this.cameras.main.width / 4;
     this.monsterTest.positionY = this.cameras.main.height / 4;
     this.gui.spellBar.setSpellBook(this.playerTest.mySpellBook);
@@ -92,6 +105,7 @@ export default class MainScene extends Phaser.Scene {
       this.playerTest.positionY - this.cameras.main.height / 2
     );
 
+    window['deltaTime'] = deltaTime;
     this.fpsText.update();
     this.playerTest.update(deltaTime);
     this.monsterTest.update(deltaTime);

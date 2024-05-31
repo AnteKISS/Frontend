@@ -88,6 +88,8 @@ export default class SpellBar extends Phaser.GameObjects.Container
                 this.addSpell(index, spell);
             });
 
+            this.add([icon]);
+
             counterX ++;
 
             if(counterX == 3)
@@ -123,6 +125,7 @@ export default class SpellBar extends Phaser.GameObjects.Container
             return;
 
         this.spellSlots[slot].addSpell(spell);
+        this.add([this.spellSlots[slot].spellSprite, this.spellSlots[slot].cdMask]); // sketch
         spell.spellOwner.equipSpell(slot, spell);
     }
 

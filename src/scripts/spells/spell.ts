@@ -73,7 +73,10 @@ export default class Spell
                     break;
 
             case CastType.GroundTarget:
-                if(Phaser.Math.Distance.Between(this.spellOwner.x, this.spellOwner.y, x, y) > this.range)
+                // const DEST_X = pointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
+                // const DEST_Y = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
+
+                if(Phaser.Math.Distance.Between(this.spellOwner.positionX, this.spellOwner.positionY, x, y) > this.range)
                     return false;
                 setTimeout(() => {
                 this.onCastEffects.forEach(onCastEffect =>  

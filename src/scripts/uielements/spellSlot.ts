@@ -2,9 +2,9 @@ import Spell from "../spells/spell";
 
 export default class SpellSlot extends Phaser.GameObjects.Sprite
 {
-    private spellSprite: Phaser.GameObjects.Sprite;
+    public spellSprite: Phaser.GameObjects.Sprite;
     private spell: Spell | null;
-    private cdMask: Phaser.GameObjects.Graphics;
+    public cdMask: Phaser.GameObjects.Graphics;
 
     constructor(scene: Phaser.Scene, x: number, y: number)
     {

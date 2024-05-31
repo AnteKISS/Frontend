@@ -1,5 +1,5 @@
 interface IMovable {
-    move(dx?: number, dy?: number): void;
+    move(): void;
     setDestination(x?: number, y?: number): void;
     getDestinationX(): number;
     getDestinationY(): number;

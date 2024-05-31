@@ -3,10 +3,10 @@ import { InactiveEntity } from "../entities/inactiveEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import { MonsterEntity } from "../entities/monsterEntity";
 import { BaseEntity } from "../entities/baseEntity";
-import { MonsterFactory } from "../factories/monsterFactory";
+import { ActiveEntityFactory } from "../factories/activeEntityFactory";
 import NotImplementedError from "../errors/notImplementedError";
 
-class EntityManager {
+export class EntityManager {
   private static _instance: EntityManager;
   private _entities: BaseEntity[];
 
@@ -62,19 +62,22 @@ class EntityManager {
   // TODO: Add function to get all npcs
 
   public createPlayer(scene: Phaser.Scene): PlayerEntity {
-    throw new NotImplementedError();
-    // TODO: Create factory for player and call it here
-    // this.addEntity(player);
-    // return player;
+    let player: PlayerEntity = ActiveEntityFactory.createPlayer(scene);
+    this.addEntity(player);
+    return player;
   }
 
-  public createMonster(monsterCode: string, scene: Phaser.Scene): MonsterEntity {
-    throw new NotImplementedError();
-    // TODO: Create factory for monster and call it here
-    // MonsterFactory.createMonster("deader_than_dead", scene);
-    // this.addEntity(monster);
-    // return monster;
+  public createMonster(scene: Phaser.Scene, monsterCode: string): MonsterEntity {
+    let monster: MonsterEntity = ActiveEntityFactory.createMonster(scene, monsterCode);
+    this.addEntity(monster);
+    return monster;
   }
 
   // TODO: Add function to create npc
+
+  public toggleDebugMode(enableDebugMode: boolean): void {
+    this._entities.forEach(entity => {
+      entity.toggleDebugMode(enableDebugMode);
+    });
+  }
 }
