@@ -8,9 +8,9 @@ import { MonsterEntity } from '../entities/monsterEntity';
 import { EntityManager } from '../managers/entityManager';
 import { OutlinePipeline } from '../pipelines/outlinePipeline';
 
-import Tile from '../objects/map/tile'
-import TileDrawer, { TileColor } from '../objects/map/tiledrawer'
-import TileSet from '../objects/map/tileset'
+import Tile from '../tiles/tile'
+import TileDrawer, { TileColor } from '../tiles/tiledrawer'
+import TileSet from '../tiles/tileset'
 
 export default class MainScene extends Phaser.Scene {
   uiCamera: Phaser.Cameras.Scene2D.Camera;

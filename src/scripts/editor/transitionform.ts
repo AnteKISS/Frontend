@@ -1,8 +1,8 @@
 import 'phaser'
-import TextInput from '../textInput'
-import Transition from './transition'
-import Campaign from './campaign'
-import Area from './area'
+import TextInput from './textInput'
+import Transition from '../tiles/transition'
+import Campaign from '../tiles/campaign'
+import Area from '../tiles/area'
 
 export default class TransitionForm extends Phaser.GameObjects.Container {
   campaign: Campaign;

@@ -40,7 +40,7 @@ interface CampaignJson {
   acts: ActJson[]
 }
 
-export default class CampaignJsonHandler {
+export default class CampaignSerializer {
   public static import(json: string): Campaign {
     const CAMPAIGN_JSON: CampaignJson = JSON.parse(json);
     const CAMPAIGN = new Campaign(CAMPAIGN_JSON.name);

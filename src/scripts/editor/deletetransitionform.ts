@@ -1,5 +1,5 @@
 import 'phaser'
-import Campaign from './campaign'
+import Campaign from '../tiles/campaign'
 
 export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
   campaign: Campaign;
