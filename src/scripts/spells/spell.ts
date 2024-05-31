@@ -67,21 +67,18 @@ export default class Spell
                 setTimeout(() => {
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
-                        onCastEffect.onCast(Phaser.Math.Angle.Between(this.spellOwner.x, this.spellOwner.y, x, y));
+                        onCastEffect.onCast(Phaser.Math.Angle.Between(this.spellOwner.scene.cameras.main.width / 2, this.spellOwner.scene.cameras.main.height / 2, x, y)); // TODO : fix bad code
                     });
                 }, this.castTime*1000);
                     break;
 
             case CastType.GroundTarget:
-                // const DEST_X = pointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
-                // const DEST_Y = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
-
-                if(Phaser.Math.Distance.Between(this.spellOwner.positionX, this.spellOwner.positionY, x, y) > this.range)
+                if(Phaser.Math.Distance.Between(this.spellOwner.positionX, this.spellOwner.positionY, x + this.spellOwner.positionX - this.spellOwner.scene.cameras.main.width / 2, y + this.spellOwner.positionY - this.spellOwner.scene.cameras.main.height / 2) > this.range) // TODO : fix
                     return false;
                 setTimeout(() => {
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
-                            onCastEffect.onCast(undefined, x, y);   
+                            onCastEffect.onCast(undefined, x + this.spellOwner.positionX - this.spellOwner.scene.cameras.main.width / 2, y + this.spellOwner.positionY - this.spellOwner.scene.cameras.main.height / 2); // TODO : fix code mettre calcul dans constante stp
                     });
                 }, this.castTime*1000);
                     break;

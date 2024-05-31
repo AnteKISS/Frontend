@@ -91,7 +91,7 @@ export default class MainScene extends Phaser.Scene {
         this.gui,
       ]
     );
-    this.uiCamera = this.cameras.add(0, 0, 1280, 720);
+    this.uiCamera = this.cameras.add(0, 0, 1280, 720, false, "uiCamera");
     this.uiCamera.ignore([
       this.graphics,
       this.playerTest,
