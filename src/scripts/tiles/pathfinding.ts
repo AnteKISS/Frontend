@@ -44,7 +44,7 @@ export default abstract class Pathfinding {
   */
   public static findPath(tileset: TileSet, x1: number, y1: number, x2: number, y2: number): Point[] {
     if (tileset.getTile(x1, y1) === undefined || tileset.getTile(x2, y2) === undefined) {
-      console.error("Pathfinding::findPath - Couldn't find path, starting or destination tile is undefined.");
+      console.error("Pathfinding::findPath - Couldn't find path, start or end tile is doesn't exist in tileset.");
       return [];
     }
 
@@ -89,7 +89,7 @@ export default abstract class Pathfinding {
       }
     }
 
-    console.log("Pathfinding::findPath - No path to destination.");
+    // No path found
     return [];
   }
 
@@ -105,8 +105,18 @@ export default abstract class Pathfinding {
   }
 
   private static priorityQueueInsert(pq: Node[], node: Node): void {
-    pq.push(node);
-    pq.sort((n1, n2) => n1.fScore - n2.fScore);
+    let left = 0;
+    let right = pq.length;
+
+    while (left < right) {
+      let middle = Math.floor((left + right) / 2);
+      if (pq[middle].fScore < node.fScore)
+        left = middle + 1;
+      else
+        right = middle;
+    }
+
+    pq.splice(left, 0, node);
   };
 
   private static getDistance(n1: Node, n2: Node): number {

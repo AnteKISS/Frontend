@@ -4,7 +4,6 @@
   "description": "Projet S3i de la team AntéKISS",
   "homepage": "https://github.com/AnteKISS/NameTBD?tab=readme-ov-file#nametbd",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "start": "webpack serve --config webpack/webpack.dev.js",
     "build": "rimraf dist && webpack --config webpack/webpack.prod.js",
