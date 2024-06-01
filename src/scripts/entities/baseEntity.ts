@@ -15,7 +15,7 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
 
   public truncatedSpriteWidth: number;
   public truncatedSpriteHeight: number;
-   
+
   constructor(scene) {
     super(scene, 0, 0);
     scene.add.existing(this);

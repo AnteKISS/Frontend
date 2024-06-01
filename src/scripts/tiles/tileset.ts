@@ -65,14 +65,4 @@ export default class TileSet {
 
     return posList;
   }
-
-  public static getTilePosFromUnitPos(unitPos: Point): Point {
-    const adjustedX = unitPos.x;
-    const adjustedY = unitPos.y - Tile.HALF_HEIGHT;
-
-    return new Point(
-      Math.ceil(adjustedX / Tile.WIDTH + adjustedY / Tile.HEIGHT),
-      Math.floor(adjustedX / Tile.WIDTH - adjustedY / Tile.HEIGHT)
-    );
-  }
 }

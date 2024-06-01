@@ -37,9 +37,9 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     const hitArea = new Phaser.Geom.Rectangle(spriteWidth * 2, spriteHeight * 2, spriteWidth, spriteHeight * 2);
 
     this._baseSprite.setInteractive({ hitArea, hitAreaCallback: Phaser.Geom.Rectangle.Contains });
-    
+
     this._baseSprite.on('pointerover', () => {
-      
+
     });
     this._baseSprite.on('pointerout', () => {
 
@@ -68,7 +68,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       this.move();
 
       if (MathModule.isValueInThreshold(this.positionX, this._destinationX, 1) &&
-          MathModule.isValueInThreshold(this.positionY, this._destinationY, 1)) {
+        MathModule.isValueInThreshold(this.positionY, this._destinationY, 1)) {
         this._destinationX = this.positionX;
         this._destinationY = this.positionY;
         this._isMoving = false;
@@ -177,8 +177,8 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       hitEntity.depth = 0;
     }
   }
-  
+
   onEntityColliding = (hitEntity: BaseEntity): void => {
-    
+
   }
 }

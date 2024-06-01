@@ -243,7 +243,7 @@ export default class MapEditor extends Phaser.Scene {
     this.handleCameraMovement();
 
     this.cursorUnitPos = this.getCursorUnitPos();
-    this.cursorTilePos = TileSet.getTilePosFromUnitPos(this.cursorUnitPos);
+    this.cursorTilePos = Tile.getTilePosFromUnitPos(this.cursorUnitPos);
 
     this.unitPosText.setText("Unit Pos : " + Math.round(this.cursorUnitPos.x) + ", " + Math.round(this.cursorUnitPos.y));
     this.tilePosText.setText("Tile Pos : " + this.cursorTilePos.x + ", " + this.cursorTilePos.y);
@@ -383,7 +383,6 @@ export default class MapEditor extends Phaser.Scene {
 
     // Exit map editor
     else if (PRESSED_KEY === '\\') {
-      this.scene.stop();
       this.scene.start('MainScene');
     }
 
@@ -422,7 +421,7 @@ export default class MapEditor extends Phaser.Scene {
   }
 
   private drawTileSet() {
-    const playerTilePos = TileSet.getTilePosFromUnitPos(this.playerPos);
+    const playerTilePos = Tile.getTilePosFromUnitPos(this.playerPos);
 
     // Clear previous drawn lines
     this.graphics.clear();

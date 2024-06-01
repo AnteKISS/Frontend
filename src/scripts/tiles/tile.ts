@@ -24,15 +24,31 @@ export default class Tile {
   }
 
   public static getPointsFromTilePos(x: number, y: number): Point[] {
-    const UNIT_X = x * Tile.HALF_WIDTH + y * Tile.HALF_WIDTH;
-    const UNIT_Y = x * Tile.HALF_HEIGHT - y * Tile.HALF_HEIGHT;
+    const UNIT_POS = Tile.getUnitPosFromTilePos(x, y);
 
     return [
-      new Point(UNIT_X, UNIT_Y - Tile.HALF_HEIGHT),
-      new Point(UNIT_X + Tile.HALF_WIDTH, UNIT_Y),
-      new Point(UNIT_X, UNIT_Y + Tile.HALF_HEIGHT),
-      new Point(UNIT_X - Tile.HALF_WIDTH, UNIT_Y),
+      new Point(UNIT_POS.x, UNIT_POS.y - Tile.HALF_HEIGHT),
+      new Point(UNIT_POS.x + Tile.HALF_WIDTH, UNIT_POS.y),
+      new Point(UNIT_POS.x, UNIT_POS.y + Tile.HALF_HEIGHT),
+      new Point(UNIT_POS.x - Tile.HALF_WIDTH, UNIT_POS.y),
     ];
+  }
+
+  public static getUnitPosFromTilePos(x: number, y: number): Point {
+    return new Point(
+      x * Tile.HALF_WIDTH + y * Tile.HALF_WIDTH,
+      x * Tile.HALF_HEIGHT - y * Tile.HALF_HEIGHT
+    );
+  }
+
+  public static getTilePosFromUnitPos(unitPos: Point): Point {
+    const adjustedX = unitPos.x;
+    const adjustedY = unitPos.y - Tile.HALF_HEIGHT;
+
+    return new Point(
+      Math.ceil(adjustedX / Tile.WIDTH + adjustedY / Tile.HEIGHT),
+      Math.floor(adjustedX / Tile.WIDTH - adjustedY / Tile.HEIGHT)
+    );
   }
 
   public static getHash(x: number, y: number): String {
