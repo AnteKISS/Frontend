@@ -382,8 +382,9 @@ export default class MapEditor extends Phaser.Scene {
 
     // Exit map editor
     else if (PRESSED_KEY === '\\') {
-      this.scene.stop();
-      this.scene.start('MainScene');
+      this.scene.setVisible(false, 'MapEditor');
+      this.scene.setVisible(true, 'MainScene');
+      this.scene.resume('MainScene');
     }
 
     const EXPORT = CampaignJson.export(this.campaign);

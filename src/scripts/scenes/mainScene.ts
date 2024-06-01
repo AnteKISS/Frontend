@@ -53,7 +53,12 @@ export default class MainScene extends Phaser.Scene {
         fontSize: '24px'
       })
       .setInteractive()
-      .on('pointerdown', () => { this.scene.start('MapEditor'); });
+      .on('pointerdown', (pointer, localX, localY, event) => { 
+        event.stopPropagation(); 
+        this.scene.launch('MapEditor'); 
+        this.scene.pause('MainScene'); 
+        this.scene.setVisible(false, 'MainScene'); 
+      });
 
     this.input.mouse.disableContextMenu();
 
