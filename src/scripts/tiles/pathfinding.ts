@@ -45,32 +45,24 @@ export default abstract class Pathfinding {
     const start: Node = new Node(x1, y1);
     const dest: Node = new Node(x2, y2);
     const open: Node[] = []; // Unexplored nodes
-    const closed: Node[] = []; // Explored nodes
+    const closed: Set<string> = new Set(); // Explored nodes
 
     open.push(start);
 
     while (open.length > 0) {
       const current: Node = open.shift()!; // Gets and removes first point in "open" nodes
-      closed.push(current);
+      closed.add(`${current.x},${current.y}`);
 
       if (current.x === x2 && current.y === y2) {
-        console.log("Pathfinding::findPath - Path has been found.");
-        let first = current;
-        const path: Point[] = [new Point(first.x, first.y)];
-
-        while (first.parent !== undefined) {
-          first = first.parent;
-          path.push(new Point(first.x, first.y));
-        }
-
-        return path;
+        console.log(open);
+        return this.getPathFromNodeLinkedList(current);
       }
 
       for (const direction of Pathfinding.Directions) {
         let neighbor: Node = new Node(current.x + direction[0], current.y + direction[1]);
         const neighborTile: Tile | undefined = tileset.getTile(neighbor.x, neighbor.y);
 
-        if (neighborTile === undefined || neighborTile.type !== TileType.Floor)
+        if (neighborTile === undefined || neighborTile.type !== TileType.Floor || closed.has(`${neighbor.x},${neighbor.y}`))
           continue; // Tile not traversable
 
         const cost = Phaser.Math.Distance.Between(start.x, start.y, neighbor.x, neighbor.y) + Phaser.Math.Distance.Between(dest.x, dest.y, neighbor.x, neighbor.y);
@@ -90,5 +82,16 @@ export default abstract class Pathfinding {
 
     console.log("Pathfinding::findPath - No path to destination.");
     return [];
+  }
+
+  private static getPathFromNodeLinkedList(head: Node) {
+    const path: Point[] = [new Point(head.x, head.y)];
+
+    while (head.parent !== undefined) {
+      head = head.parent;
+      path.push(new Point(head.x, head.y));
+    }
+
+    return path;
   }
 }
