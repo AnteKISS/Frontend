@@ -6,17 +6,22 @@ import Point from '../types/point'
 class Node {
   public x: number;
   public y: number;
-  public cost: number;
-  public parent: Node;
+  public gScore: number; // Distance from starting node
+  public fScore: number; // gScore + heuristic
+  public parent: Node | null;
 
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
+    this.gScore = 0;
+    this.fScore = 0;
+    this.parent = null
   }
 }
 
 export default abstract class Pathfinding {
   static readonly Directions = [
+    // Xoffset, Yoffset, cost
     [0, 1],   // UP
     [1, 1],   // UP-RIGHT
     [1, 0],   // RIGHT
@@ -26,6 +31,8 @@ export default abstract class Pathfinding {
     [-1, 0],  // LEFT
     [-1, 1],  // UP-LEFT
   ];
+  static readonly DIAGONAL_COST = 140;
+  static readonly STRAIGHT_COST = 100;
 
   /**
   * Finds the shortest path between two tiles in a tileset, using the A* algorithm.
@@ -38,12 +45,12 @@ export default abstract class Pathfinding {
   */
   public static findPath(tileset: TileSet, x1: number, y1: number, x2: number, y2: number): Point[] {
     if (tileset.getTile(x1, y1) === undefined || tileset.getTile(x2, y2) === undefined) {
-      console.error("Pathfinding::findPath - Couldn't find path, starting of destination tile is undefined.");
+      console.error("Pathfinding::findPath - Couldn't find path, starting or destination tile is undefined.");
       return [];
     }
 
     const start: Node = new Node(x1, y1);
-    const dest: Node = new Node(x2, y2);
+    const end: Node = new Node(x2, y2);
     const open: Node[] = []; // Unexplored nodes
     const closed: Set<string> = new Set(); // Explored nodes
 
@@ -54,7 +61,7 @@ export default abstract class Pathfinding {
       closed.add(`${current.x},${current.y}`);
 
       if (current.x === x2 && current.y === y2) {
-        console.log(open);
+        // console.log(open);
         return this.getPathFromNodeLinkedList(current);
       }
 
@@ -63,19 +70,22 @@ export default abstract class Pathfinding {
         const neighborTile: Tile | undefined = tileset.getTile(neighbor.x, neighbor.y);
 
         if (neighborTile === undefined || neighborTile.type !== TileType.Floor || closed.has(`${neighbor.x},${neighbor.y}`))
-          continue; // Tile not traversable
+          continue; // Tile not traversable or already traversed
 
-        const cost = Phaser.Math.Distance.Between(start.x, start.y, neighbor.x, neighbor.y) + Phaser.Math.Distance.Between(dest.x, dest.y, neighbor.x, neighbor.y);
-        const existing: Node | undefined = open.find((p) => neighbor.x === p.x && neighbor.y === p.y); // Reference to node of same position if already exists in "open"
+        neighbor.gScore = current.gScore + Pathfinding.getDistance(current, neighbor);
+        neighbor.fScore = neighbor.gScore + Pathfinding.getDistance(current, end);
+        neighbor.parent = current;
 
-        if (existing !== undefined)
-          neighbor = existing;
+        const existingInOpenIndex: number = open.findIndex((p) => neighbor.x === p.x && neighbor.y === p.y); // Reference to node of same position if already exists in "open"
 
-        if (existing === undefined || neighbor.cost < existing.cost) {
-          neighbor.cost = cost;
-          neighbor.parent = current;
-          if (existing === undefined)
-            open.push(neighbor);
+        if (existingInOpenIndex === -1)
+          Pathfinding.priorityQueueInsert(open, neighbor);
+        else {
+          const existingNode = open[existingInOpenIndex];
+          if (neighbor.gScore < existingNode.gScore) {
+            open.splice(existingInOpenIndex, 1);
+            Pathfinding.priorityQueueInsert(open, neighbor);
+          }
         }
       }
     }
@@ -84,14 +94,39 @@ export default abstract class Pathfinding {
     return [];
   }
 
-  private static getPathFromNodeLinkedList(head: Node) {
+  private static getPathFromNodeLinkedList(head: Node): Point[] {
     const path: Point[] = [new Point(head.x, head.y)];
 
-    while (head.parent !== undefined) {
+    while (head.parent !== null) {
       head = head.parent;
       path.push(new Point(head.x, head.y));
     }
 
     return path;
+  }
+
+  private static priorityQueueInsert(pq: Node[], node: Node): void {
+    pq.push(node);
+    pq.sort((n1, n2) => n1.gScore - n2.gScore);
+    // let left = 0;
+    // let right = pq.length;
+    // while (left < right) {
+    //   const middle = Math.floor((left + right) / 2);
+    //   if (pq[middle].fScore < node.fScore) {
+    //     right = middle;
+    //   } else {
+    //     left = middle + 1;
+    //   }
+    // }
+    // pq.splice(left, 0, node);
+  };
+
+  private static getDistance(n1: Node, n2: Node): number {
+    const DIST_X = Math.abs(n1.x - n2.x);
+    const DIST_Y = Math.abs(n1.y - n2.y);
+
+    if (DIST_X > DIST_Y)
+      return Pathfinding.DIAGONAL_COST * DIST_Y + Pathfinding.STRAIGHT_COST * (DIST_X - DIST_Y);
+    return Pathfinding.DIAGONAL_COST * DIST_Y + Pathfinding.STRAIGHT_COST * (DIST_Y - DIST_X);
   }
 }

@@ -115,8 +115,9 @@ export default class MainScene extends Phaser.Scene {
 
     // Test pathfinding
     const playerTile = TileSet.getTilePosFromUnitPos(new Phaser.Geom.Point(this.playerTest.positionX, this.playerTest.positionY));
+    // console.log(playerTile.x, playerTile.y);
     const path = Pathfinding.findPath(this.tileSet, 0, 0, playerTile.x, playerTile.y);
-    console.log(path);
+    // console.log(path);
     this.tileDrawer.drawDebugTilePosList(path, 2, 0x000000);
   }
 
