@@ -12,6 +12,7 @@ import Tile from '../tiles/tile'
 import TileDrawer, { TileColor } from '../tiles/tiledrawer'
 import TileSet from '../tiles/tileset'
 import Pathfinding from '../tiles/pathfinding'
+import Point from '../types/point'
 
 export default class MainScene extends Phaser.Scene {
   uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -21,7 +22,7 @@ export default class MainScene extends Phaser.Scene {
   graphics: Phaser.GameObjects.Graphics;
   tileDrawer: TileDrawer;
   pointer: Phaser.Input.Pointer;
-  centerPoint: Phaser.Geom.Point;
+  centerPoint: Point;
   mapEditorButton: Phaser.GameObjects.Text;
 
   private playerTest: PlayerEntity;
@@ -48,7 +49,7 @@ export default class MainScene extends Phaser.Scene {
     this.graphics = this.add.graphics();
     this.tileDrawer = new TileDrawer(this.graphics);
     this.pointer = this.input.activePointer;
-    this.centerPoint = new Phaser.Geom.Point(
+    this.centerPoint = new Point(
       this.cameras.main.width / 2,
       this.cameras.main.height / 2
     );
@@ -114,7 +115,7 @@ export default class MainScene extends Phaser.Scene {
     this.drawTileSet();
 
     // Test pathfinding
-    const playerTile = TileSet.getTilePosFromUnitPos(new Phaser.Geom.Point(this.playerTest.positionX, this.playerTest.positionY));
+    const playerTile = TileSet.getTilePosFromUnitPos(new Point(this.playerTest.positionX, this.playerTest.positionY));
     // console.log(playerTile.x, playerTile.y);
     const path = Pathfinding.findPath(this.tileSet, 0, 0, playerTile.x, playerTile.y);
     // console.log(path);
@@ -122,7 +123,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   drawTileSet() {
-    const playerTilePos = TileSet.getTilePosFromUnitPos(new Phaser.Geom.Point(this.playerTest.positionX, this.playerTest.positionY));
+    const playerTilePos = TileSet.getTilePosFromUnitPos(new Point(this.playerTest.positionX, this.playerTest.positionY));
 
     // Clear previous drawn lines
     this.graphics.clear();
@@ -140,7 +141,7 @@ export default class MainScene extends Phaser.Scene {
     this.tileDrawer.drawDebugTilePoints(points, TileColor.Player);
 
     // Draw cursor tile
-    const cursorPos = new Phaser.Geom.Point(
+    const cursorPos = new Point(
       this.pointer.x - this.centerPoint.x + this.playerTest.positionX,
       this.pointer.y - this.centerPoint.y + this.playerTest.positionY
     );

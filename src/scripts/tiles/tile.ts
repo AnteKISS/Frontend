@@ -1,5 +1,5 @@
-import 'phaser'
 import Transition from './transition'
+import Point from '../types/point'
 
 export enum TileType {
   Floor,
@@ -23,15 +23,15 @@ export default class Tile {
     this.transition = transition;
   }
 
-  public static getPointsFromTilePos(x: number, y: number): Phaser.Geom.Point[] {
+  public static getPointsFromTilePos(x: number, y: number): Point[] {
     const UNIT_X = x * Tile.HALF_WIDTH + y * Tile.HALF_WIDTH;
     const UNIT_Y = x * Tile.HALF_HEIGHT - y * Tile.HALF_HEIGHT;
 
     return [
-      new Phaser.Geom.Point(UNIT_X, UNIT_Y - Tile.HALF_HEIGHT),
-      new Phaser.Geom.Point(UNIT_X + Tile.HALF_WIDTH, UNIT_Y),
-      new Phaser.Geom.Point(UNIT_X, UNIT_Y + Tile.HALF_HEIGHT),
-      new Phaser.Geom.Point(UNIT_X - Tile.HALF_WIDTH, UNIT_Y),
+      new Point(UNIT_X, UNIT_Y - Tile.HALF_HEIGHT),
+      new Point(UNIT_X + Tile.HALF_WIDTH, UNIT_Y),
+      new Point(UNIT_X, UNIT_Y + Tile.HALF_HEIGHT),
+      new Point(UNIT_X - Tile.HALF_WIDTH, UNIT_Y),
     ];
   }
 

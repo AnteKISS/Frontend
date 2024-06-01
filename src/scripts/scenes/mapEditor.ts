@@ -10,6 +10,7 @@ import TextInput from '../editor/textInput'
 import TransitionForm from '../editor/transitionform'
 import ConfigureTileForm from '../editor/configuretileform'
 import DeleteTransitionForm from '../editor/deletetransitionform'
+import Point from '../types/point'
 
 enum TileMode {
   Add = "Add",
@@ -34,16 +35,16 @@ export default class MapEditor extends Phaser.Scene {
   // Phaser refs/objects
   graphics: Phaser.GameObjects.Graphics;
   pointer: Phaser.Input.Pointer;
-  centerPoint: Phaser.Geom.Point;
+  centerPoint: Point;
   uiCamera: Phaser.Cameras.Scene2D.Camera;
 
   // Editor data / helpers
   campaign: Campaign;
   tileDrawer: TileDrawer;
-  playerPos: Phaser.Geom.Point;
-  cameraOffsetPos: Phaser.Geom.Point;
-  cursorUnitPos: Phaser.Geom.Point;
-  cursorTilePos: Phaser.Geom.Point;
+  playerPos: Point;
+  cameraOffsetPos: Point;
+  cursorUnitPos: Point;
+  cursorTilePos: Point;
   brushSize: number;
 
   // Editor states
@@ -101,7 +102,7 @@ export default class MapEditor extends Phaser.Scene {
   create() {
     this.graphics = this.add.graphics();
     this.pointer = this.input.activePointer;
-    this.centerPoint = new Phaser.Geom.Point(
+    this.centerPoint = new Point(
       this.cameras.main.width / 2,
       this.cameras.main.height / 2
     );
@@ -110,8 +111,8 @@ export default class MapEditor extends Phaser.Scene {
     //this.campaign = new Campaign("Test campaign");
     this.campaign = CampaignJson.import('{"name":"Test campaign","acts":[{"name":"Act I","areas":[{"name":"Default","tileset":{"tiles":[{"x":0,"y":0,"type":0,"transitionName":""},{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":"test"},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":"test"},{"x":-2,"y":3,"type":0,"transitionName":"test"},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":""},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":""},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":""},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":""},{"x":2,"y":3,"type":0,"transitionName":""},{"x":3,"y":-3,"type":0,"transitionName":"test"},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":""},{"x":3,"y":1,"type":0,"transitionName":""},{"x":3,"y":2,"type":0,"transitionName":""},{"x":3,"y":3,"type":0,"transitionName":""}]}},{"name":"New Area","tileset":{"tiles":[{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":"bruhmomento"},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":"bruhmomento"},{"x":-2,"y":3,"type":0,"transitionName":""},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":"bruhmomento"},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":0,"type":0,"transitionName":"bruhmomento"},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":"bruhmomento"},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":"bruhmomento"},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":""},{"x":2,"y":3,"type":0,"transitionName":""},{"x":3,"y":-3,"type":0,"transitionName":"bruhmomento"},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":""},{"x":3,"y":1,"type":0,"transitionName":""},{"x":3,"y":2,"type":0,"transitionName":""},{"x":3,"y":3,"type":0,"transitionName":""}]}}],"transitions":[{"name":"test","areaName":"Default","targetX":0,"targetY":0},{"name":"bruhmomento","areaName":"Default","targetX":0,"targetY":0}]},{"name":"New Act","areas":[{"name":"Default","tileset":{"tiles":[{"x":0,"y":0,"type":0,"transitionName":""},{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":""},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":""},{"x":-2,"y":3,"type":0,"transitionName":""},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":""},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":""},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":""},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":"test2"},{"x":2,"y":3,"type":0,"transitionName":"test2"},{"x":3,"y":-3,"type":0,"transitionName":""},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":"test2"},{"x":3,"y":1,"type":0,"transitionName":"test2"},{"x":3,"y":2,"type":0,"transitionName":"test2"},{"x":3,"y":3,"type":0,"transitionName":"test2"}]}}],"transitions":[{"name":"test2","areaName":"Default","targetX":0,"targetY":0}]}]}');
     this.tileDrawer = new TileDrawer(this.graphics);
-    this.playerPos = new Phaser.Geom.Point;
-    this.cameraOffsetPos = new Phaser.Geom.Point;
+    this.playerPos = new Point;
+    this.cameraOffsetPos = new Point;
 
     this.tileMode = TileMode.Add;
     this.swipeMode = SwipeMode.Off;
@@ -488,8 +489,8 @@ export default class MapEditor extends Phaser.Scene {
     this.deleteTransitionForm.hide();
   }
 
-  private getCursorUnitPos(): Phaser.Geom.Point {
-    return new Phaser.Geom.Point(
+  private getCursorUnitPos(): Point {
+    return new Point(
       ((this.pointer.x - this.centerPoint.x + this.playerPos.x) / this.cameras.main.zoom) + this.cameraOffsetPos.x,
       ((this.pointer.y - this.centerPoint.y + this.playerPos.y) / this.cameras.main.zoom) + this.cameraOffsetPos.y
     );

@@ -1,4 +1,3 @@
-import 'phaser'
 import TileSet from './tileset'
 import Tile, { TileType } from './tile'
 import Point from '../types/point'

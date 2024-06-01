@@ -1,4 +1,3 @@
-import 'phaser'
 import TileSet from './tileset'
 
 export default class Area {

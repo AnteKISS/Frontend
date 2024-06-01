@@ -1,4 +1,3 @@
-import 'phaser'
 import Act from './act'
 import Area from './area'
 

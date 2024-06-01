@@ -1,5 +1,6 @@
 import Tile, { TileType } from './tile'
 import Transition from './transition'
+import Point from '../types/point'
 
 export default class TileSet {
   tiles: Map<String, Tile>
@@ -48,8 +49,8 @@ export default class TileSet {
     return tileList;
   }
 
-  public static getProximityTilePos(x: number, y: number, proximity: number): Phaser.Geom.Point[] {
-    const posList: Phaser.Geom.Point[] = [];
+  public static getProximityTilePos(x: number, y: number, proximity: number): Point[] {
+    const posList: Point[] = [];
     const P2: number = proximity * proximity;
 
     // Select tiles in a circle, column by column
@@ -58,18 +59,18 @@ export default class TileSet {
       const X2: number = Math.pow((x - cx), 2);
       const Y_DIST: number = Math.floor(Math.sqrt(P2 - X2));
       for (let cy = y - Y_DIST; cy <= y + Y_DIST; cy++) {
-        posList.push(new Phaser.Geom.Point(cx, cy));
+        posList.push(new Point(cx, cy));
       }
     }
 
     return posList;
   }
 
-  public static getTilePosFromUnitPos(unitPos: Phaser.Geom.Point): Phaser.Geom.Point {
+  public static getTilePosFromUnitPos(unitPos: Point): Point {
     const adjustedX = unitPos.x;
     const adjustedY = unitPos.y - Tile.HALF_HEIGHT;
 
-    return new Phaser.Geom.Point(
+    return new Point(
       Math.ceil(adjustedX / Tile.WIDTH + adjustedY / Tile.HEIGHT),
       Math.floor(adjustedX / Tile.WIDTH - adjustedY / Tile.HEIGHT)
     );

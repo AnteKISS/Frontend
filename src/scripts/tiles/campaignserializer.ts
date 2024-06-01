@@ -2,7 +2,6 @@ import Campaign from './campaign'
 import Act from './act'
 import Area from './area'
 import TileSet from './tileset'
-import Tile from './tile'
 import Transition from './transition'
 import { TileType } from './tile'
 
