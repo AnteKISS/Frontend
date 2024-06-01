@@ -30,7 +30,7 @@ export default abstract class Pathfinding {
     [-1, 0],  // LEFT
     [-1, 1],  // UP-LEFT
   ];
-  static readonly DIAGONAL_COST = 140;
+  static readonly DIAGONAL_COST = 141;
   static readonly STRAIGHT_COST = 100;
 
   /**
@@ -106,18 +106,7 @@ export default abstract class Pathfinding {
 
   private static priorityQueueInsert(pq: Node[], node: Node): void {
     pq.push(node);
-    pq.sort((n1, n2) => n1.gScore - n2.gScore);
-    // let left = 0;
-    // let right = pq.length;
-    // while (left < right) {
-    //   const middle = Math.floor((left + right) / 2);
-    //   if (pq[middle].fScore < node.fScore) {
-    //     right = middle;
-    //   } else {
-    //     left = middle + 1;
-    //   }
-    // }
-    // pq.splice(left, 0, node);
+    pq.sort((n1, n2) => n1.fScore - n2.fScore);
   };
 
   private static getDistance(n1: Node, n2: Node): number {
@@ -126,6 +115,6 @@ export default abstract class Pathfinding {
 
     if (DIST_X > DIST_Y)
       return Pathfinding.DIAGONAL_COST * DIST_Y + Pathfinding.STRAIGHT_COST * (DIST_X - DIST_Y);
-    return Pathfinding.DIAGONAL_COST * DIST_Y + Pathfinding.STRAIGHT_COST * (DIST_Y - DIST_X);
+    return Pathfinding.DIAGONAL_COST * DIST_X + Pathfinding.STRAIGHT_COST * (DIST_Y - DIST_X);
   }
 }
