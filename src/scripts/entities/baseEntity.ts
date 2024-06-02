@@ -9,12 +9,12 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
   public isResetReady: boolean = false;
   public truncatedSpriteWidth: number;
   public truncatedSpriteHeight: number;
+  public collider: Physics.Collider;
 
   protected _positionX: number = 0;
   protected _positionY: number = 0;
   protected _orientation_rad: number;
   protected _debugMode: boolean = false;
-  protected _collider: Physics.Collider;
 
   constructor(scene) {
     super(scene, 0, 0);

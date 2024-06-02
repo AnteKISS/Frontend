@@ -43,12 +43,11 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     this._baseSprite.on('pointerout', () => {
 
     });
-    scene.add.existing(this);
     this._baseSprite.setOrigin(0.5, 0.75);
     this.setDepth(0);
     this.truncatedSpriteWidth = 32 * this._baseSprite.scaleX;
     this.truncatedSpriteHeight = 64 * this._baseSprite.scaleY;
-    this._collider = new Physics.Collider(this, this._baseSprite, this.onSpriteColliding, this.onEntityColliding);
+    this.collider = new Physics.Collider(this, this._baseSprite, this.onSpriteColliding, this.onEntityColliding);
   }
 
   // Getters/Setters
@@ -87,10 +86,10 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     }
 
     if (this._debugMode) {
-      this._collider.displayDebugGraphics();
+      this.collider.displayDebugGraphics();
     }
-    this._collider.checkSpriteCollision();
-    this._collider.checkEntityCollision();
+    this.collider.checkSpriteCollision();
+    this.collider.checkEntityCollision();
   }
 
   public reset(): void {

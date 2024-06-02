@@ -99,15 +99,19 @@ export default class MainScene extends Phaser.Scene {
       ]
     );
     this.uiCamera = this.cameras.add(0, 0, 1280, 720, false, "uiCamera");
+    // TODO: Find a way to make the ignore list more dynamic
     this.uiCamera.ignore(
       [
         this.graphics,
         this.playerTest,
         this.monsterTest,
         this.monsterTest2,
+        this.playerTest.collider.debugGraphics,
+        this.monsterTest.collider.debugGraphics,
+        this.monsterTest2.collider.debugGraphics,
       ]
     );
-    // EntityManager.instance.setDebugMode(true);
+    EntityManager.instance.setDebugMode(true);
   }
 
   update(time, deltaTime) {

@@ -46,8 +46,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
     this.positionX = this.scene.cameras.main.width / 2;
     this.positionY = this.scene.cameras.main.height / 2;
-
-    scene.add.existing(this);
     
     this.controller = new PlayerController(scene, this);
   
@@ -68,7 +66,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.setDepth(0);
     this.truncatedSpriteWidth = 32 * this._bodySprite.scaleX;
     this.truncatedSpriteHeight = 64 * this._bodySprite.scaleY;
-    this._collider = new Physics.Collider(this, this._bodySprite, this.onSpriteColliding, this.onEntityColliding);
+    this.collider = new Physics.Collider(this, this._bodySprite, this.onSpriteColliding, this.onEntityColliding);
   }
 
   // Getters/Setters
@@ -97,7 +95,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       // TODO: Check if destination coords change between each update call
       // so if it doesn't change, we move the same value that we moved last call
       hasOrientationUpdated = this.updateOrientation();
-      let isEntityColliding: Boolean = this._collider.checkEntityCollision();
+      let isEntityColliding: Boolean = this.collider.checkEntityCollision();
       if (!isEntityColliding) {
         this.move();
 
@@ -130,10 +128,9 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     }
 
     if (this._debugMode) {
-      this._collider.displayDebugGraphics();
+      this.collider.displayDebugGraphics();
     }
-    this._collider.checkSpriteCollision();
-    // this._collider.checkEntityCollision();
+    this.collider.checkSpriteCollision();
   }
 
   public reset(): void {

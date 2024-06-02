@@ -1,4 +1,5 @@
 import { BaseEntity } from "../entities/baseEntity";
+import { PlayerEntity } from "../entities/playerEntity";
 import { EntityManager } from "../managers/entityManager";
 
 export namespace Physics {
@@ -9,41 +10,45 @@ export namespace Physics {
     private readonly ENTITY_HITBOX_COLOR: number = 0xFF0000;
     private readonly ENTITY_ORIGIN_COLOR: number = 0x0000FF;
     
-    private _parentEntity: BaseEntity;
-    private _parentSprite: Phaser.GameObjects.Sprite;
-    private _debugGraphics: Phaser.GameObjects.Graphics;
+    public parentEntity: BaseEntity;
+    public parentSprite: Phaser.GameObjects.Sprite;
+    public debugGraphics: Phaser.GameObjects.Graphics;
+
     private _collidingSpriteCallback: (hitEntity: BaseEntity) => void;
     private _collidingEntityCallback: (hitEntity: BaseEntity) => void;
     
     constructor(parentEntity: BaseEntity, parentSprite: Phaser.GameObjects.Sprite, collidingSpriteCallback: (hitEntity: BaseEntity) => void, collidingEntityCallback: (hitEntity: BaseEntity) => void) {
-      this._parentEntity = parentEntity;
-      this._parentSprite = parentSprite;
-      this._debugGraphics = this._parentEntity.scene.add.graphics();
+      this.parentEntity = parentEntity;
+      this.parentSprite = parentSprite;
+      this.debugGraphics = this.parentEntity.scene.add.graphics();
       this._collidingSpriteCallback = collidingSpriteCallback;
       this._collidingEntityCallback = collidingEntityCallback;
     }
 
     public displayDebugGraphics(): void {
-      this._debugGraphics.clear();
+      this.debugGraphics.clear();
 
-      this._debugGraphics.fillStyle(this.SPRITE_HITBOX_COLOR, 0.5);
-      this._debugGraphics.fillRect(
-        this._parentEntity.positionX - (this._parentEntity.truncatedSpriteWidth / 2), 
-        this._parentEntity.positionY - (this._parentEntity.truncatedSpriteWidth / 4), 
-        this._parentEntity.truncatedSpriteWidth, 
-        this._parentEntity.truncatedSpriteWidth / 2
+      let players: PlayerEntity = EntityManager.instance.getPlayers()[0];
+      // console.log(this._parentEntity.positionX, this._parentEntity.positionY);
+
+      this.debugGraphics.fillStyle(this.SPRITE_HITBOX_COLOR, 0.5);
+      this.debugGraphics.fillRect(
+        (this.parentEntity.positionX - (this.parentEntity.truncatedSpriteWidth / 2)), 
+        (this.parentEntity.positionY - (this.parentEntity.truncatedSpriteWidth / 4)), 
+        this.parentEntity.truncatedSpriteWidth, 
+        this.parentEntity.truncatedSpriteWidth / 2
       );
 
-      this._debugGraphics.lineStyle(2, this.ENTITY_HITBOX_COLOR, 0.5);
-      this._debugGraphics.strokeRect(
-        this._parentEntity.positionX - (this._parentEntity.truncatedSpriteWidth / 2), 
-        this._parentEntity.positionY - (this._parentEntity.truncatedSpriteHeight * this._parentSprite.originY), 
-        this._parentEntity.truncatedSpriteWidth, 
-        this._parentEntity.truncatedSpriteHeight
+      this.debugGraphics.lineStyle(2, this.ENTITY_HITBOX_COLOR, 0.5);
+      this.debugGraphics.strokeRect(
+        (this.parentEntity.positionX - (this.parentEntity.truncatedSpriteWidth / 2)), 
+        (this.parentEntity.positionY - (this.parentEntity.truncatedSpriteHeight * this.parentSprite.originY)), 
+        this.parentEntity.truncatedSpriteWidth, 
+        this.parentEntity.truncatedSpriteHeight
       );
 
-      this._debugGraphics.fillStyle(this.ENTITY_ORIGIN_COLOR, 0.5);
-      this._debugGraphics.fillCircle(this._parentEntity.positionX, this._parentEntity.positionY, 5);
+      this.debugGraphics.fillStyle(this.ENTITY_ORIGIN_COLOR, 0.5);
+      this.debugGraphics.fillCircle(this.parentEntity.positionX, this.parentEntity.positionY, 5);
     }
 
     public checkCollisions(): void {
@@ -53,15 +58,15 @@ export namespace Physics {
 
     public checkSpriteCollision(): boolean {
       const entities: BaseEntity[] = EntityManager.instance.getEntities();
-      const positionX: number = this._parentEntity.positionX;
-      const positionY: number = this._parentEntity.positionY;
-      const truncatedSpriteWidth: number = this._parentEntity.truncatedSpriteWidth;
-      const truncatedSpriteHeight: number = this._parentEntity.truncatedSpriteHeight;
-      const originX: number = this._parentSprite.originX;
-      const originY: number = this._parentSprite.originY;
+      const positionX: number = this.parentEntity.positionX;
+      const positionY: number = this.parentEntity.positionY;
+      const truncatedSpriteWidth: number = this.parentEntity.truncatedSpriteWidth;
+      const truncatedSpriteHeight: number = this.parentEntity.truncatedSpriteHeight;
+      const originX: number = this.parentSprite.originX;
+      const originY: number = this.parentSprite.originY;
 
       for (let index = 0; index < entities.length; index++) {
-        if (entities[index] === this._parentEntity) {
+        if (entities[index] === this.parentEntity) {
           continue;
         }
         if (!(positionX + (truncatedSpriteWidth / 2) > entities[index].positionX - (entities[index].truncatedSpriteWidth / 2))) {
@@ -84,12 +89,12 @@ export namespace Physics {
 
     public checkEntityCollision(): boolean {
       const entities: BaseEntity[] = EntityManager.instance.getEntities();
-      const positionX: number = this._parentEntity.positionX;
-      const positionY: number = this._parentEntity.positionY;
-      const truncatedSpriteWidth: number = this._parentEntity.truncatedSpriteWidth;
+      const positionX: number = this.parentEntity.positionX;
+      const positionY: number = this.parentEntity.positionY;
+      const truncatedSpriteWidth: number = this.parentEntity.truncatedSpriteWidth;
 
       for (let index = 0; index < entities.length; index++) {
-        if (entities[index] === this._parentEntity) {
+        if (entities[index] === this.parentEntity) {
           continue;
         }
         if (!(positionX + (truncatedSpriteWidth / 2) > entities[index].positionX - (entities[index].truncatedSpriteWidth / 2))) {
