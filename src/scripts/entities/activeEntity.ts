@@ -9,12 +9,10 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   public species: EntitySpecies;
   public destinationX: number;
   public destinationY: number;
+  
   protected _isMoving: boolean = false;
-
   protected _lastValidPositionX: number;
   protected _lastValidPositionY: number;
-
-  public frameCount: number = 0;
   
   constructor(scene) {
     super(scene);

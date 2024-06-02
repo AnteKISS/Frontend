@@ -48,6 +48,49 @@ export class EntityManager {
     return this._entities;
   }
 
+  public getEntitiesAtPosition(positionX: number, positionY: number): BaseEntity[] {
+    let foundEntities: BaseEntity[] = [];
+
+    for (let entity of this._entities) {
+      let entitySprite: Phaser.GameObjects.Sprite = entity.getAll().filter(gameObject => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite;
+
+      if (positionX > entity.positionX - (entity.truncatedSpriteWidth / 2) &&
+          positionX < entity.positionX + (entity.truncatedSpriteWidth / 2) &&
+          positionY < entity.positionY + (entity.truncatedSpriteHeight - (entity.truncatedSpriteHeight * entitySprite.originY)) &&
+          positionY > entity.positionY - (entity.truncatedSpriteHeight * entitySprite.originY)) {
+        foundEntities.push(entity);
+      }
+    }
+    console.log(foundEntities);
+    return foundEntities;
+  }
+  
+  public getEntityAtPosition(positionX: number, positionY: number): BaseEntity | null {
+    let topMostEntity: BaseEntity | null = null;
+    let foundEntities: BaseEntity[] = [];
+
+    for (let entity of this._entities) {
+      let entitySprite: Phaser.GameObjects.Sprite = entity.getAll().filter(gameObject => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite;
+
+      if (positionX > entity.positionX - (entity.truncatedSpriteWidth / 2) &&
+          positionX < entity.positionX + (entity.truncatedSpriteWidth / 2) &&
+          positionY < entity.positionY + (entity.truncatedSpriteHeight - (entity.truncatedSpriteHeight * entitySprite.originY)) &&
+          positionY > entity.positionY - (entity.truncatedSpriteHeight * entitySprite.originY)) {
+        foundEntities.push(entity);
+      }
+    }
+    for (let entity of foundEntities) {
+      if (!topMostEntity) {
+        topMostEntity = entity;
+      } else {
+        if (entity.depth > topMostEntity.depth) {
+          topMostEntity = entity;
+        }
+      }
+    }
+    return topMostEntity;
+  }
+
   public getPlayers(): PlayerEntity[] {
     return this._entities.filter(entity => entity instanceof PlayerEntity) as PlayerEntity[];
   }

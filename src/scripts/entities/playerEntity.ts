@@ -89,7 +89,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
   // Methods
   public update(deltaTime: number): void {
-    this.frameCount++;
     let hasOrientationUpdated: boolean = false;
     let action: string = this._headSprite.anims.currentAnim ? this._headSprite.anims.currentAnim.key.split('_')[0] : '';
     let animationUpdateNeeded: boolean = false;

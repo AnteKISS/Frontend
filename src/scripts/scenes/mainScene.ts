@@ -22,6 +22,7 @@ export default class MainScene extends Phaser.Scene {
 
   private playerTest: PlayerEntity;
   private monsterTest: MonsterEntity;
+  private monsterTest2: MonsterEntity;
   private gui: GUI;
 
   constructor() {
@@ -67,8 +68,13 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest.positionX = this.cameras.main.width / 2;
     this.playerTest.positionY = this.cameras.main.height / 2;
     this.monsterTest = EntityManager.instance.createMonster(this, 'zombie_0');
+    this.monsterTest.name = 'Zombie 1';
     this.monsterTest.positionX = this.cameras.main.width / 4;
     this.monsterTest.positionY = this.cameras.main.height / 4;
+    this.monsterTest2 = EntityManager.instance.createMonster(this, 'zombie_0');
+    this.monsterTest2.name = 'Zombie 2';
+    this.monsterTest2.positionX = this.monsterTest.positionX;
+    this.monsterTest2.positionY = this.monsterTest.positionY - 30;
     this.gui.spellBar.setSpellBook(this.playerTest.mySpellBook);
 
     this.input.setDefaultCursor('default');
@@ -98,8 +104,10 @@ export default class MainScene extends Phaser.Scene {
         this.graphics,
         this.playerTest,
         this.monsterTest,
+        this.monsterTest2,
       ]
     );
+    // EntityManager.instance.setDebugMode(true);
   }
 
   update(time, deltaTime) {
@@ -112,6 +120,7 @@ export default class MainScene extends Phaser.Scene {
     this.fpsText.update();
     this.playerTest.update(deltaTime);
     this.monsterTest.update(deltaTime);
+    this.monsterTest2.update(deltaTime);
     this.updateGUI();
     this.drawTileSet();
   }
