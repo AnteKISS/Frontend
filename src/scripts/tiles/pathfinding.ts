@@ -19,17 +19,39 @@ class Node {
 }
 
 export default abstract class Pathfinding {
+  static readonly UP = [0, 1];
+  static readonly UP_RIGHT = [1, 1];
+  static readonly RIGHT = [1, 0];
+  static readonly DOWN_RIGHT = [1, -1];
+  static readonly DOWN = [0, -1];
+  static readonly DOWN_LEFT = [-1, -1];
+  static readonly LEFT = [-1, 0];
+  static readonly UP_LEFT = [-1, 1];
+
   static readonly Directions = [
-    // Xoffset, Yoffset, cost
-    [0, 1],   // UP
-    [1, 1],   // UP-RIGHT
-    [1, 0],   // RIGHT
-    [1, -1],  // DOWN-RIGHT
-    [0, -1],  // DOWN
-    [-1, -1], // DOWN-LEFT
-    [-1, 0],  // LEFT
-    [-1, 1],  // UP-LEFT
+    Pathfinding.UP,
+    Pathfinding.UP_RIGHT,
+    Pathfinding.RIGHT,
+    Pathfinding.DOWN_RIGHT,
+    Pathfinding.DOWN,
+    Pathfinding.DOWN_LEFT,
+    Pathfinding.LEFT,
+    Pathfinding.UP_LEFT
   ];
+
+  static readonly DirectionRequirements = new Map(
+    [
+      [Pathfinding.UP, []],
+      [Pathfinding.UP_RIGHT, [Pathfinding.UP, Pathfinding.RIGHT]],
+      [Pathfinding.RIGHT, []],
+      [Pathfinding.DOWN_RIGHT, [Pathfinding.DOWN, Pathfinding.RIGHT]],
+      [Pathfinding.DOWN, []],
+      [Pathfinding.DOWN_LEFT, [Pathfinding.DOWN, Pathfinding.LEFT]],
+      [Pathfinding.LEFT, []],
+      [Pathfinding.UP_LEFT, [Pathfinding.UP, Pathfinding.LEFT]],
+    ]
+  );
+
   static readonly DIAGONAL_COST = 141;
   static readonly STRAIGHT_COST = 100;
 
@@ -44,7 +66,7 @@ export default abstract class Pathfinding {
   */
   public static findPath(tileset: TileSet, x1: number, y1: number, x2: number, y2: number): Point[] {
     if (tileset.getTile(x1, y1) === undefined || tileset.getTile(x2, y2) === undefined) {
-      console.error("Pathfinding::findPath - Couldn't find path, start or end tile is doesn't exist in tileset.");
+      console.error("Pathfinding::findPath - Couldn't find path, start or end tile isn't in tileset.");
       return [];
     }
 
@@ -66,9 +88,8 @@ export default abstract class Pathfinding {
 
       for (const direction of Pathfinding.Directions) {
         let neighbor: Node = new Node(current.x + direction[0], current.y + direction[1]);
-        const neighborTile: Tile | undefined = tileset.getTile(neighbor.x, neighbor.y);
 
-        if (neighborTile === undefined || neighborTile.type !== TileType.Floor || closed.has(`${neighbor.x},${neighbor.y}`))
+        if (!Pathfinding.isValidTile(tileset, neighbor.x, neighbor.y, direction) || closed.has(`${neighbor.x},${neighbor.y}`))
           continue; // Tile not traversable or already traversed
 
         neighbor.gScore = current.gScore + Pathfinding.getDistance(current, neighbor);
@@ -91,6 +112,13 @@ export default abstract class Pathfinding {
 
     // No path found
     return [];
+  }
+
+  private static isValidTile(tileset: TileSet, x: number, y: number, dir: number[]) {
+    const tile: Tile | undefined = tileset.getTile(x, y);
+    return tile !== undefined
+      && tile.type === TileType.Floor
+      && !Pathfinding.DirectionRequirements.get(dir)?.find((rd) => !Pathfinding.isValidTile(tileset, x - dir[0] + rd[0], y - dir[1] + rd[1], rd)); // If diagonal, adjacent tiles must be valid
   }
 
   private static getPathFromNodeLinkedList(head: Node): Point[] {
