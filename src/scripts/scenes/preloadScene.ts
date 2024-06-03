@@ -22,6 +22,9 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('quakeIcon', 'assets/gui/icons/quakeIcon.png');
     this.load.image('iceShardIcon', 'assets/gui/icons/iceShardIcon.png');
     this.load.image('fireboltIcon', 'assets/gui/icons/fireboltIcon.png');
+    this.load.image('arrowLeft', 'assets/gui/editor/arrows/Arrow_W0001.png');
+    this.load.image('arrowRight', 'assets/gui/editor/arrows/Arrow_E0001.png');
+    this.load.image('whiteGlow', 'assets/gui/editor/white_glow.png');
 
     this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
     this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');

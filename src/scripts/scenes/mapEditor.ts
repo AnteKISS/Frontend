@@ -10,6 +10,7 @@ import TextInput from '../editor/textInput'
 import TransitionForm from '../editor/transitionform'
 import ConfigureTileForm from '../editor/configuretileform'
 import DeleteTransitionForm from '../editor/deletetransitionform'
+import TileSelector from '../editor/tileSelector'
 import Point from '../types/point'
 
 enum TileMode {
@@ -87,6 +88,7 @@ export default class MapEditor extends Phaser.Scene {
   transitionForm: TransitionForm;
   configureTileForm: ConfigureTileForm;
   deleteTransitionForm: DeleteTransitionForm;
+  tileSelector: TileSelector;
 
   // Input keys
   aKey: Phaser.Input.Keyboard.Key; // Move left
@@ -179,6 +181,8 @@ export default class MapEditor extends Phaser.Scene {
     this.deleteTransitionForm = new DeleteTransitionForm(this, this.campaign, () => this.hideDeleteTransitionForm());
     this.deleteTransitionForm.hide();
 
+    this.tileSelector = new TileSelector(this);
+
     // Inputs
     this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -233,6 +237,7 @@ export default class MapEditor extends Phaser.Scene {
         this.transitionForm,
         this.deleteTransitionForm,
         this.configureTileForm,
+        this.tileSelector,
       ]
     );
     this.uiCamera = this.cameras.add(0, 0, 1280, 720);
@@ -291,14 +296,20 @@ export default class MapEditor extends Phaser.Scene {
 
     const PRESSED_KEY = event.key.toLowerCase();
 
-    if (PRESSED_KEY === 'z')
+    if (PRESSED_KEY === 'z') {
       this.changeTileMode(TileMode.Add);
+      this.tileSelector.setVisible(true);
+    }
 
-    else if (PRESSED_KEY === 'x')
+    else if (PRESSED_KEY === 'x') {
       this.changeTileMode(TileMode.Delete);
+      this.tileSelector.setVisible(false);
+    }
 
-    else if (PRESSED_KEY === 'c')
+    else if (PRESSED_KEY === 'c') {
       this.changeTileMode(TileMode.Configure);
+      this.tileSelector.setVisible(false);
+    }
 
     else if (PRESSED_KEY === ' ') {
       this.swipeMode = (this.swipeMode === SwipeMode.Off ? SwipeMode.On : SwipeMode.Off);
@@ -387,7 +398,7 @@ export default class MapEditor extends Phaser.Scene {
     }
 
     const EXPORT = CampaignJson.export(this.campaign);
-    console.log(EXPORT);
+    // console.log(EXPORT);
   }
 
   private tileModeClick() {
