@@ -9,6 +9,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   public species: EntitySpecies;
   public destinationX: number;
   public destinationY: number;
+  public target: BaseEntity | null;
 
   protected _isMoving: boolean = false;
   protected _lastValidPositionX: number;

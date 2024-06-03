@@ -60,13 +60,18 @@ export default class PlayerController {
     const entity = EntityManager.instance.getEntityAtPosition(destinationX, destinationY);
     let isAttemptingToAttack: boolean = false;
     if ((entity !== undefined && entity !== null) && entity !== this.player) {
+      this.player.target = entity;
       if (MathModule.distanceBetween(this.player.positionX, this.player.positionY, entity.positionX, entity.positionY) > 100) {
         destinationX = entity.positionX;
         destinationY = entity.positionY;
       } else {
-        this.attackTarget(entity as PlayerEntity | MonsterEntity);
-        isAttemptingToAttack = true;
+        if (entity instanceof MonsterEntity || entity instanceof PlayerEntity) {
+          this.attackTarget(entity as PlayerEntity | MonsterEntity);
+          isAttemptingToAttack = true;
+        }
       }
+    } else {
+      this.player.target = null;
     }
 
     if (!isAttemptingToAttack) {
