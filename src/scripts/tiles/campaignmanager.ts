@@ -1,10 +1,8 @@
 import Campaign from './campaign'
 import CampaignSerializer from './campaignserializer'
-
-// TODO: Remove imports when they aren't necessary anymore
-import TileSprite from './tilesprite'
-import TileDrawer from './tiledrawer'
 import Pathfinding from './pathfinding'
+import TileDrawer from './tiledrawer'
+import TileSprite from './tilesprite'
 
 export default class CampaignManager {
   private scene: Phaser.Scene;
@@ -21,31 +19,27 @@ export default class CampaignManager {
     this.scene.cameras.getCamera("uiCamera").ignore(this.graphics);
   }
 
-  public loadCampaign(json: string) {
+  public loadCampaign(json: string): void {
     this.campaign = CampaignSerializer.import(json);
 
-    // TODO: Abstract so we just call currentArea().getTiles()
-    for (const tile of this.campaign.currentArea().tileSet.tiles.values()) {
+    for (const tile of this.campaign.currentArea().tileSet.getTiles()) {
       const TILE_SPRITE = new TileSprite(this.scene, tile, "rocky_floor_tiles", 8);
       TILE_SPRITE.setDepth(-1);
       this.scene.cameras.getCamera("uiCamera").ignore(TILE_SPRITE);
     }
   }
 
-  // TODO: Move to drawer module/tiledrawer
-  public drawPathfinding(x1, y1, x2, y2) {
-    const path = Pathfinding.findPath(this.campaign.currentArea().tileSet, x1, y1, x2, y2);
-    this.tiledrawer.drawDebugTilePosList(path, 2, 0x000000);
+  public drawDebugPathfinding(x1: number, y1: number, x2: number, y2: number): void {
+    for (const POINT of Pathfinding.findPath(this.campaign.currentArea().tileSet, x1, y1, x2, y2))
+      this.tiledrawer.drawDebugTilePos(POINT.x, POINT.y, 0x000000);
   }
 
-  // TODO: Move to drawer module/tiledrawer
-  public drawProximityTiles(x, y, depth) {
+  public drawDebugProximityTiles(x: number, y: number, depth: number): void {
     const proximityTiles = this.campaign.currentArea().tileSet.getProximityTileList(x, y, depth);
-    this.tiledrawer.drawDebugTileList(proximityTiles, 2);
+    this.tiledrawer.drawDebugTileList(proximityTiles);
   }
 
-  // TODO: remove this later
-  public clearGraphics() {
+  public clearDebugTiles() {
     this.graphics.clear();
   }
 }

@@ -1,10 +1,10 @@
 import TileSet from './tileset'
 
 export default class Area {
-  name: string;
-  tileSet: TileSet;
+  public name: string;
+  public tileSet: TileSet;
 
-  constructor(name: string) {
+  public constructor(name: string) {
     this.name = name;
     this.tileSet = new TileSet(3);
   }

@@ -119,7 +119,7 @@ export default class MainScene extends Phaser.Scene {
 
     // Test pathfinding
     const playerTile = Tile.getTilePosFromUnitPos(new Point(this.playerTest.positionX, this.playerTest.positionY));
-    this.campaignManager.drawPathfinding(0, 0, playerTile.x, playerTile.y);
+    this.campaignManager.drawDebugPathfinding(0, 0, playerTile.x, playerTile.y);
   }
 
   drawTileSet() {
@@ -127,18 +127,17 @@ export default class MainScene extends Phaser.Scene {
 
     // Clear previous drawn lines
     this.graphics.clear();
-    this.campaignManager.clearGraphics();
+    this.campaignManager.clearDebugTiles();
 
     // Center point
     this.graphics.fillStyle(TileColor.Player, 1);
     this.graphics.fillCircle(this.playerTest.positionX, this.playerTest.positionY, 4);
 
     // Draw tiles
-    this.campaignManager.drawProximityTiles(playerTilePos.x, playerTilePos.y, 8);
+    this.campaignManager.drawDebugProximityTiles(playerTilePos.x, playerTilePos.y, 8);
 
     // Draw player tile
-    const points = Tile.getPointsFromTilePos(playerTilePos.x, playerTilePos.y);
-    this.tileDrawer.drawDebugTilePoints(points, TileColor.Player);
+    this.tileDrawer.drawDebugTilePos(playerTilePos.x, playerTilePos.y, TileColor.Player);
 
     // Draw cursor tile
     const cursorPos = new Point(
@@ -146,8 +145,7 @@ export default class MainScene extends Phaser.Scene {
       this.pointer.y - this.centerPoint.y + this.playerTest.positionY
     );
     const cursorTilePos = Tile.getTilePosFromUnitPos(cursorPos)
-    const cursorTilePoints = Tile.getPointsFromTilePos(cursorTilePos.x, cursorTilePos.y);
-    this.tileDrawer.drawDebugTilePoints(cursorTilePoints, TileColor.DefaultCursor);
+    this.tileDrawer.drawDebugTilePos(cursorTilePos.x, cursorTilePos.y, TileColor.DefaultCursor);
   }
 
   updateGUI(): void {

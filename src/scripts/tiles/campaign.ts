@@ -2,11 +2,11 @@ import Act from './act'
 import Area from './area'
 
 export default class Campaign {
-  name: string;
-  acts: Array<Act>;
-  actIndex: number;
+  public name: string;
+  public acts: Array<Act>;
+  public actIndex: number;
 
-  constructor(name: string) {
+  public constructor(name: string) {
     this.name = name;
     this.acts = new Array<Act>;
     this.acts.push(new Act("Act I"));
@@ -21,12 +21,12 @@ export default class Campaign {
     return this.acts[this.actIndex].currentArea();
   }
 
-  public addAct(act: Act) {
+  public addAct(act: Act): void {
     this.acts.push(act);
     this.actIndex = this.acts.length - 1;
   }
 
-  public deleteCurrentAct() {
+  public deleteCurrentAct(): void {
     this.acts.splice(this.actIndex, 1);
 
     if (this.acts.length === 0)
@@ -36,11 +36,11 @@ export default class Campaign {
       this.actIndex = this.acts.length - 1;
   }
 
-  public nextAct() {
+  public nextAct(): void {
     this.actIndex = (this.actIndex + 1) % this.acts.length;
   }
 
-  public previousAct() {
+  public previousAct(): void {
     this.actIndex--;
     if (this.actIndex < 0) this.actIndex += this.acts.length;
   }

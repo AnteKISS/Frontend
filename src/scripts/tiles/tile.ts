@@ -6,17 +6,18 @@ export enum TileType {
 }
 
 export default class Tile {
-  static readonly WIDTH: number = 100;
-  static readonly HEIGHT: number = this.WIDTH / 2;
-  static readonly HALF_WIDTH: number = this.WIDTH / 2;
-  static readonly HALF_HEIGHT: number = this.HEIGHT / 2;
+  public static readonly WIDTH: number = 100;
+  public static readonly HEIGHT: number = this.WIDTH / 2;
+  public static readonly HALF_WIDTH: number = this.WIDTH / 2;
+  public static readonly HALF_HEIGHT: number = this.HEIGHT / 2;
 
-  x: number;
-  y: number;
-  type: TileType;
-  transition: Transition | undefined;
+  public readonly x: number;
+  public readonly y: number;
+  public readonly type: TileType;
 
-  constructor(x: number, y: number, type: TileType, transition: Transition | undefined = undefined) {
+  public transition: Transition | undefined;
+
+  public constructor(x: number, y: number, type: TileType, transition: Transition | undefined = undefined) {
     this.x = x;
     this.y = y;
     this.type = type;

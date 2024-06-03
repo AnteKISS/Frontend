@@ -9,7 +9,7 @@ class Node {
   public fScore: number; // gScore + heuristic
   public parent: Node | null;
 
-  constructor(x: number, y: number) {
+  public constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
     this.gScore = 0;
@@ -52,8 +52,8 @@ export default abstract class Pathfinding {
     ]
   );
 
-  static readonly DIAGONAL_COST = 141;
-  static readonly STRAIGHT_COST = 100;
+  private static readonly DIAGONAL_COST = 141;
+  private static readonly STRAIGHT_COST = 100;
 
   /**
   * Finds the shortest path between two tiles in a tileset, using the A* algorithm.
@@ -114,7 +114,7 @@ export default abstract class Pathfinding {
     return [];
   }
 
-  private static isValidTile(tileset: TileSet, x: number, y: number, dir: number[]) {
+  private static isValidTile(tileset: TileSet, x: number, y: number, dir: number[]): boolean {
     const tile: Tile | undefined = tileset.getTile(x, y);
     return tile !== undefined
       && tile.type === TileType.Floor

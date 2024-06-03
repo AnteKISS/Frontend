@@ -59,7 +59,7 @@ export default abstract class CampaignSerializer {
         const TRANSITION_TARGET_AREA = ACT.areas.find((area) => area.name === TRANSITION_JSON.areaName);
         if (TRANSITION_TARGET_AREA !== undefined) {
           const TRANSITION = new Transition(TRANSITION_JSON.name, TRANSITION_TARGET_AREA, TRANSITION_JSON.targetX, TRANSITION_JSON.targetY);
-          ACT.transitions.set(TRANSITION.name, TRANSITION);
+          ACT.setTransition(TRANSITION.name, TRANSITION);
         }
       }
 
@@ -67,7 +67,7 @@ export default abstract class CampaignSerializer {
       for (let i = 0; i < ACT.areas.length; i++) {
         const TILESET = new TileSet(0);
         for (const TILE_JSON of ACT_JSON.areas[i].tileset.tiles)
-          TILESET.addTile(TILE_JSON.x, TILE_JSON.y, TILE_JSON.type, ACT.transitions.get(TILE_JSON.transitionName));
+          TILESET.addTile(TILE_JSON.x, TILE_JSON.y, TILE_JSON.type, ACT.getTransition(TILE_JSON.transitionName));
         ACT.areas[i].tileSet = TILESET;
       }
 
@@ -91,7 +91,7 @@ export default abstract class CampaignSerializer {
       };
 
       // Create JSON for each transition in the act
-      for (const TRANSITION of ACT.transitions.values()) {
+      for (const TRANSITION of ACT.getTransitions()) {
         const TRANSITION_JSON: TransitionJson = {
           name: TRANSITION.name,
           areaName: TRANSITION.targetArea.name,
@@ -113,7 +113,7 @@ export default abstract class CampaignSerializer {
         };
 
         // Create JSON for each tiles for area's tileset
-        for (const TILE of AREA.tileSet.tiles.values()) {
+        for (const TILE of AREA.tileSet.getTiles()) {
           const TILE_JSON: TileJson = {
             x: TILE.x,
             y: TILE.y,

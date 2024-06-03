@@ -46,13 +46,13 @@ export default class ConfigureTileForm extends Phaser.GameObjects.Container {
   }
 
   public show(tile: Tile) {
-    this.transitionNames = Array.from(this.campaign.currentAct().transitions.keys());
+    this.transitionNames = Array.from(this.campaign.currentAct().getTransitionNames());
     this.setVisible(true);
     this.focused = true;
     this.tile = tile;
 
-    if (this.selectedTransitionIndex >= this.campaign.currentAct().transitions.size)
-      this.selectedTransitionIndex = Math.max(0, this.campaign.currentAct().transitions.size - 1);
+    if (this.selectedTransitionIndex >= this.campaign.currentAct().getTransitionAmount())
+      this.selectedTransitionIndex = Math.max(0, this.campaign.currentAct().getTransitionAmount() - 1);
 
     this.updateTransitionText();
   }
@@ -68,16 +68,16 @@ export default class ConfigureTileForm extends Phaser.GameObjects.Container {
 
     if (event.key === 'ArrowLeft') {
       // Next transition
-      if (this.campaign.currentAct().transitions.size > 0) {
+      if (this.campaign.currentAct().getTransitionAmount() > 0) {
         this.selectedTransitionIndex--;
-        if (this.selectedTransitionIndex < 0) this.selectedTransitionIndex = this.campaign.currentAct().transitions.size - 1;
+        if (this.selectedTransitionIndex < 0) this.selectedTransitionIndex = this.campaign.currentAct().getTransitionAmount() - 1;
       }
     }
 
     else if (event.key === 'ArrowRight') {
       // Previous transition
-      if (this.campaign.currentAct().transitions.size > 0) {
-        this.selectedTransitionIndex = (this.selectedTransitionIndex + 1) % this.campaign.currentAct().transitions.size;
+      if (this.campaign.currentAct().getTransitionAmount() > 0) {
+        this.selectedTransitionIndex = (this.selectedTransitionIndex + 1) % this.campaign.currentAct().getTransitionAmount();
       }
     }
 
@@ -90,7 +90,7 @@ export default class ConfigureTileForm extends Phaser.GameObjects.Container {
       // Quit and create transition if valid inputs
       if (this.tile && this.transitionNames.length > 0) {
         const TRANSITION_NAME = this.transitionNames[this.selectedTransitionIndex];
-        this.tile.transition = this.campaign.currentAct().transitions.get(TRANSITION_NAME);
+        this.tile.transition = this.campaign.currentAct().getTransition(TRANSITION_NAME);
         this.onFinished();
       }
     }

@@ -2,29 +2,55 @@ import Area from './area'
 import Transition from './transition'
 
 export default class Act {
-  name: string;
-  areas: Area[];
-  transitions: Map<string, Transition>;
-  areaIndex: number;
+  public name: string;
+  public areas: Area[];
+  public areaIndex: number;
 
-  constructor(name: string) {
+  private transitions: Map<string, Transition>;
+
+  public constructor(name: string) {
     this.name = name;
     this.areas = new Array<Area>;
     this.transitions = new Map<string, Transition>;
-    this.addArea(new Area("Default"));
     this.areaIndex = 0;
+
+    this.addArea(new Area("Default"));
   }
 
-  public currentArea() {
+  public currentArea(): Area {
     return this.areas[this.areaIndex];
   }
 
-  public addArea(area: Area) {
+  public addArea(area: Area): void {
     this.areas.push(area);
     this.areaIndex = this.areas.length - 1;
   }
 
-  public deleteCurrentArea() {
+  public getTransition(name: string): Transition | undefined {
+    return this.transitions.get(name);
+  }
+
+  public getTransitions(): IterableIterator<Transition> {
+    return this.transitions.values();
+  }
+
+  public getTransitionNames(): IterableIterator<string> {
+    return this.transitions.keys();
+  }
+
+  public getTransitionAmount(): number {
+    return this.transitions.size;
+  }
+
+  public setTransition(name: string, transition: Transition): void {
+    this.transitions.set(name, transition);
+  }
+
+  public deleteTransition(name: string): void {
+    this.transitions.delete(name);
+  }
+
+  public deleteCurrentArea(): void {
     this.areas.splice(this.areaIndex, 1);
 
     if (this.areas.length === 0)
@@ -34,12 +60,12 @@ export default class Act {
       this.areaIndex = this.areas.length - 1;
   }
 
-  public previousArea() {
+  public previousArea(): void {
     this.areaIndex--;
     if (this.areaIndex < 0) this.areaIndex += this.areas.length;
   }
 
-  public nextArea() {
+  public nextArea(): void {
     this.areaIndex = (this.areaIndex + 1) % this.areas.length;
   }
 }

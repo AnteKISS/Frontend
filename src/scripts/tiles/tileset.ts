@@ -3,9 +3,9 @@ import Transition from './transition'
 import Point from '../types/point'
 
 export default class TileSet {
-  tiles: Map<String, Tile>
+  private tiles: Map<String, Tile>
 
-  constructor(size: number = 30) {
+  public constructor(size: number = 30) {
     this.tiles = new Map();
 
     for (let i = -size; i <= size; i++) {
@@ -16,11 +16,11 @@ export default class TileSet {
     }
   }
 
-  public addTile(x: number, y: number, type: TileType, transition: Transition | undefined = undefined) {
+  public addTile(x: number, y: number, type: TileType, transition: Transition | undefined = undefined): void {
     this.tiles.set(Tile.getHash(x, y), new Tile(x, y, type, transition))
   }
 
-  public deleteTile(x: number, y: number) {
+  public deleteTile(x: number, y: number): void {
     const HASH: String = Tile.getHash(x, y);
     if (this.tiles.get(HASH) !== undefined)
       this.tiles.delete(HASH);
@@ -28,6 +28,10 @@ export default class TileSet {
 
   public getTile(x: number, y: number): Tile | undefined {
     return this.tiles.get(Tile.getHash(x, y));
+  }
+
+  public getTiles(): IterableIterator<Tile> {
+    return this.tiles.values();
   }
 
   public getProximityTileList(x: number, y: number, proximity: number): Tile[] {

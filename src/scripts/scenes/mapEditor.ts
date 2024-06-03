@@ -431,11 +431,10 @@ export default class MapEditor extends Phaser.Scene {
     this.graphics.fillCircle(this.playerPos.x, this.playerPos.y, 4);
 
     // Draw tiles
-    this.tileDrawer.drawDebugTileList(this.campaign.currentArea().tileSet.tiles.values(), 2);
+    this.tileDrawer.drawDebugTileList(this.campaign.currentArea().tileSet.getTiles());
 
     // Draw player tile
-    const PLAYER_TILE_POINTS = Tile.getPointsFromTilePos(playerTilePos.x, playerTilePos.y);
-    this.tileDrawer.drawDebugTilePoints(PLAYER_TILE_POINTS, TileColor.Player);
+    this.tileDrawer.drawDebugTilePos(playerTilePos.x, playerTilePos.y, TileColor.Player);
 
     // Draw cursor tile
     let cursorColor = 0x000000;
@@ -446,14 +445,12 @@ export default class MapEditor extends Phaser.Scene {
     else if (this.tileMode === TileMode.Configure)
       cursorColor = TileColor.Configure;
 
-    if (this.tileMode === TileMode.Configure) {
+    if (this.tileMode === TileMode.Configure)
       // Don't apply brush size when in "configure" mode
-      const CURSOR_TILE_POINTS = Tile.getPointsFromTilePos(this.cursorTilePos.x, this.cursorTilePos.y);
-      this.tileDrawer.drawDebugTilePoints(CURSOR_TILE_POINTS, cursorColor);
-    }
+      this.tileDrawer.drawDebugTilePos(this.cursorTilePos.x, this.cursorTilePos.y, cursorColor);
     else {
-      const CURSOR_TILES_POS = TileSet.getProximityTilePos(this.cursorTilePos.x, this.cursorTilePos.y, this.brushSize);
-      this.tileDrawer.drawDebugTilePosList(CURSOR_TILES_POS, 2, cursorColor);
+      for (const TILE_POS of TileSet.getProximityTilePos(this.cursorTilePos.x, this.cursorTilePos.y, this.brushSize))
+        this.tileDrawer.drawDebugTilePos(TILE_POS.x, TILE_POS.y, cursorColor);
     }
   }
 

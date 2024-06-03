@@ -109,7 +109,7 @@ export default class TransitionForm extends Phaser.GameObjects.Container {
       // Quit and create transition if valid inputs
       if (this.nameInput.isInputValid() && this.xInput.isInputValid() && this.yInput.isInputValid()) {
         const TRANSITION = new Transition(this.nameInput.inputText, this.getSelectedArea(), this.xInput.getNumValue(), this.yInput.getNumValue());
-        this.campaign.currentAct().transitions.set(TRANSITION.name, TRANSITION);
+        this.campaign.currentAct().setTransition(TRANSITION.name, TRANSITION);
         this.onFinished();
       }
     }

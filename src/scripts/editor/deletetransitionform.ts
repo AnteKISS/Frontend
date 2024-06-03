@@ -42,7 +42,7 @@ export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
   }
 
   public show() {
-    this.transitionNames = Array.from(this.campaign.currentAct().transitions.keys());
+    this.transitionNames = Array.from(this.campaign.currentAct().getTransitionNames());
     this.setVisible(true);
     this.focused = true;
     this.updateTransitionText();
@@ -79,18 +79,18 @@ export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
 
     else if (event.key === 'Enter') {
       // Quit and create transition if valid inputs
-      if (this.campaign.currentAct().transitions.size > 0) {
+      if (this.campaign.currentAct().getTransitionAmount() > 0) {
         const TRANSITION_NAME = this.transitionNames[this.selectedTransitionIndex];
-        this.campaign.currentAct().transitions.delete(TRANSITION_NAME);
+        this.campaign.currentAct().deleteTransition(TRANSITION_NAME);
 
         // Delete all transition references in tiles
         for (const AREA of this.campaign.currentAct().areas)
-          for (const TILE of AREA.tileSet.tiles.values())
+          for (const TILE of AREA.tileSet.getTiles())
             if (TILE.transition && TILE.transition.name === TRANSITION_NAME)
               TILE.transition = undefined;
 
-        if (this.selectedTransitionIndex >= this.campaign.currentAct().transitions.size)
-          this.selectedTransitionIndex = Math.max(0, this.campaign.currentAct().transitions.size - 1);
+        if (this.selectedTransitionIndex >= this.campaign.currentAct().getTransitionAmount())
+          this.selectedTransitionIndex = Math.max(0, this.campaign.currentAct().getTransitionAmount() - 1);
 
         this.onFinished();
       }
