@@ -33,16 +33,16 @@ export namespace Physics {
 
       this.debugGraphics.fillStyle(this.SPRITE_HITBOX_COLOR, 0.5);
       this.debugGraphics.fillRect(
-        (this.parentEntity.positionX - (this.parentEntity.truncatedSpriteWidth / 2)), 
-        (this.parentEntity.positionY - (this.parentEntity.truncatedSpriteWidth / 4)), 
+        this.parentEntity.positionX - (this.parentEntity.truncatedSpriteWidth / 2), 
+        this.parentEntity.positionY - (this.parentEntity.truncatedSpriteWidth / 4), 
         this.parentEntity.truncatedSpriteWidth, 
         this.parentEntity.truncatedSpriteWidth / 2
       );
 
       this.debugGraphics.lineStyle(2, this.ENTITY_HITBOX_COLOR, 0.5);
       this.debugGraphics.strokeRect(
-        (this.parentEntity.positionX - (this.parentEntity.truncatedSpriteWidth / 2)), 
-        (this.parentEntity.positionY - (this.parentEntity.truncatedSpriteHeight * this.parentSprite.originY)), 
+        this.parentEntity.positionX - (this.parentEntity.truncatedSpriteWidth / 2), 
+        this.parentEntity.positionY - (this.parentEntity.truncatedSpriteHeight * this.parentSprite.originY), 
         this.parentEntity.truncatedSpriteWidth, 
         this.parentEntity.truncatedSpriteHeight
       );

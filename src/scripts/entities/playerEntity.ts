@@ -54,7 +54,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.mySpellBook.addSpell(new IceShard(this));
     this.mySpellBook.addSpell(new Quake(this));
     
-    this.stats.movementSpeed = 100;
     this.stats.mana = 150; //Pour test
     this.stats.maxHealth = 150; //Pour test
 
@@ -138,7 +137,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   public attack(target: IFightable): void {
-    throw new NotImplementedError();
+    console.log('Player attacking target', target);
   }
 
   public damage(amount: number): void {

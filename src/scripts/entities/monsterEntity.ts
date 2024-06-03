@@ -6,6 +6,7 @@ import { MathModule } from '../utilities/mathModule';
 import { Physics } from '../physics/collider';
 import { IFightable } from './IFightable';
 import { BaseEntity } from './baseEntity';
+import { time } from 'console';
 
 export class MonsterEntity extends ActiveEntity implements IFightable {
 
@@ -22,8 +23,8 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     this.initializeAnimations();
     this._baseSprite.play(`IDLE_${getOrientationString(this.orientation)}_ZOMBIE_0`);
 
-    this.positionX = this.scene.cameras.main.width / 2.5;
-    this.positionY = this.scene.cameras.main.height / 2.5;
+    this.positionX = this.scene.cameras.main.width / 2;
+    this.positionY = this.scene.cameras.main.height / 2;
 
     const spriteWidth = this._baseSprite.width / 5;
     const spriteHeight = this._baseSprite.height / 5;
@@ -63,17 +64,23 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       // TODO: Check if destination coords change between each update call
       // so if it doesn't change, we move the same value that we moved last call
       hasOrientationUpdated = this.updateOrientation();
-      this.move();
+      let isEntityColliding: Boolean = this.collider.checkEntityCollision();
+      if (!isEntityColliding) {
+        this.move();
 
-      if (MathModule.isValueInThreshold(this.positionX, this.destinationX, 1) &&
-          MathModule.isValueInThreshold(this.positionY, this.destinationY, 1)) {
-        this.destinationX = this.positionX;
-        this.destinationY = this.positionY;
-        this._isMoving = false;
-      }
-      if (!this._baseSprite.anims.isPlaying || action != 'RUN' || hasOrientationUpdated) {
-        animationUpdateNeeded = true;
-        action = 'RUN';
+        if (MathModule.isValueInThreshold(this.positionX, this.destinationX, 1) &&
+            MathModule.isValueInThreshold(this.positionY, this.destinationY, 1)) {
+          this.destinationX = this.positionX;
+          this.destinationY = this.positionY;
+          this._isMoving = false;
+        }
+        if (!this._baseSprite.anims.isPlaying || action != 'RUN' || hasOrientationUpdated) {
+          animationUpdateNeeded = true;
+          action = 'RUN';
+        }
+      } else {
+        this.positionX = this._lastValidPositionX;
+        this.positionY = this._lastValidPositionY;
       }
     } else {
       if (!this._baseSprite.anims.isPlaying || action != 'IDLE' || hasOrientationUpdated) {
@@ -89,7 +96,15 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       this.collider.displayDebugGraphics();
     }
     this.collider.checkSpriteCollision();
-    this.collider.checkEntityCollision();
+    // TODO: Replace this by a behavior object
+    if (Math.floor(Math.random() * 1000) % 250 == 0) {
+      let roamingX: number = Math.random() * 1000;
+      let roamingY: number = Math.random() * 1000;
+      this.destinationX = this.positionX + Math.sin(roamingX) * 100;
+      this.destinationY = this.positionY + Math.cos(roamingY) * 100;
+    }
+    // TODO: Set this in the behavior so we don't compute this each frame
+    this.setOrientationRad(Phaser.Math.Angle.Between(this.positionX, this.positionY, this.destinationX, this.destinationY));
   }
 
   public reset(): void {

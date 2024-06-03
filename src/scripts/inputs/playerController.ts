@@ -1,5 +1,7 @@
+import { MonsterEntity } from "../entities/monsterEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import { EntityManager } from "../managers/entityManager";
+import { MathModule } from "../utilities/mathModule";
 
 export default class PlayerController {
   private player: PlayerEntity;
@@ -56,12 +58,20 @@ export default class PlayerController {
     let destinationY = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
 
     const entity = EntityManager.instance.getEntityAtPosition(destinationX, destinationY);
-    if (entity !== undefined && entity !== null) {
-      destinationX = entity.positionX;
-      destinationY = entity.positionY;
+    let isAttemptingToAttack: boolean = false;
+    if ((entity !== undefined && entity !== null) && entity !== this.player) {
+      if (MathModule.distanceBetween(this.player.positionX, this.player.positionY, entity.positionX, entity.positionY) > 100) {
+        destinationX = entity.positionX;
+        destinationY = entity.positionY;
+      } else {
+        this.attackTarget(entity as PlayerEntity | MonsterEntity);
+        isAttemptingToAttack = true;
+      }
     }
 
-    this.player.setDestination(destinationX, destinationY);
+    if (!isAttemptingToAttack) {
+      this.player.setDestination(destinationX, destinationY);
+    }
     this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, destinationX, destinationY));
   }
 
@@ -77,5 +87,9 @@ export default class PlayerController {
         this.player.setDestination(DEST_X, DEST_Y);
         this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, DEST_X, DEST_Y));
     }
+  }
+
+  public attackTarget(target: PlayerEntity | MonsterEntity): void {
+    this.player.attack(target);
   }
 }   

@@ -9,7 +9,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   public species: EntitySpecies;
   public destinationX: number;
   public destinationY: number;
-  
+
   protected _isMoving: boolean = false;
   protected _lastValidPositionX: number;
   protected _lastValidPositionY: number;
@@ -19,6 +19,8 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     scene.add.existing(this);
     this.type = 'ActiveEntity';
     this.stats = new ActiveEntityStats();
+    this.destinationX = this.positionX;
+    this.destinationY = this.positionY;
   }
 
   // Getters/Setters
