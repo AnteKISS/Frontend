@@ -16,14 +16,18 @@ export default class TileSet {
     }
   }
 
-  public addTile(x: number, y: number, type: TileType, transition: Transition | undefined = undefined): void {
-    this.tiles.set(Tile.getHash(x, y), new Tile(x, y, type, transition))
+  public addTile(x: number, y: number, type: TileType, transition: Transition | undefined = undefined): Tile {
+    const TILE = new Tile(x, y, type, transition);
+    this.tiles.set(Tile.getHash(x, y), TILE);
+    return TILE;
   }
 
-  public deleteTile(x: number, y: number): void {
-    const HASH: String = Tile.getHash(x, y);
-    if (this.tiles.get(HASH) !== undefined)
+  public deleteTile(x: number, y: number): Tile | undefined {
+    const HASH = Tile.getHash(x, y);
+    const TILE = this.tiles.get(HASH);
+    if (TILE !== undefined)
       this.tiles.delete(HASH);
+    return TILE;
   }
 
   public getTile(x: number, y: number): Tile | undefined {

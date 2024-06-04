@@ -2,11 +2,7 @@ import 'phaser'
 import Tile, { TileType } from '../tiles/tile'
 import { TileColor } from '../tiles/tiledrawer'
 import TileSet from '../tiles/tileset'
-import Area from '../tiles/area'
-import Act from '../tiles/act'
-import Campaign from '../tiles/campaign'
 import CampaignManager from '../tiles/campaignmanager'
-import CampaignJson from '../tiles/campaignserializer'
 import TextInput from '../editor/textInput'
 import TransitionForm from '../editor/transitionform'
 import ConfigureTileForm from '../editor/configuretileform'
@@ -26,91 +22,91 @@ enum SwipeMode {
 }
 
 export default class MapEditor extends Phaser.Scene {
-  static readonly MOVE_CAMERA_SPEED = 10;
-  static readonly MOVE_CAMERA_FASTER_MULTIPLIER = 2;
-  static readonly ZOOM_SPEED = 1;
-  static readonly MIN_ZOOM = 0.2;
-  static readonly MAX_ZOOM = 2;
-  static readonly MIN_BRUSH_SIZE = 0;
-  static readonly MAX_BRUSH_SIZE = 10;
+  private static readonly MOVE_CAMERA_SPEED = 10;
+  private static readonly MOVE_CAMERA_FASTER_MULTIPLIER = 2;
+  private static readonly ZOOM_SPEED = 1;
+  private static readonly MIN_ZOOM = 0.2;
+  private static readonly MAX_ZOOM = 2;
+  private static readonly MIN_BRUSH_SIZE = 0;
+  private static readonly MAX_BRUSH_SIZE = 10;
 
   // Phaser refs/objects
-  pointer: Phaser.Input.Pointer;
-  centerPoint: Point;
-  uiCamera: Phaser.Cameras.Scene2D.Camera;
+  private pointer: Phaser.Input.Pointer;
+  private centerPoint: Point;
+  private uiCamera: Phaser.Cameras.Scene2D.Camera;
 
   // Editor data / helpers
-  campaign: Campaign;
-  campaignManager: CampaignManager;
-  playerPos: Point;
-  cameraOffsetPos: Point;
-  cursorUnitPos: Point;
-  cursorTilePos: Point;
-  brushSize: number;
+  private campaignManager: CampaignManager;
+  private playerPos: Point;
+  private cameraOffsetPos: Point;
+  private cursorUnitPos: Point;
+  private cursorTilePos: Point;
+  private brushSize: number;
 
   // Editor states
-  tileMode: TileMode;
-  swipeMode: SwipeMode;
-  tileType: TileType;
-  canPlaceObject: boolean;
-  inMenu: boolean;
+  private tileMode: TileMode;
+  private swipeMode: SwipeMode;
+  private tileType: TileType;
+  private canPlaceObject: boolean;
+  private inMenu: boolean;
 
-  bruh: Phaser.GameObjects.Rectangle;
   // Texts
-  moveText: Phaser.GameObjects.Text;
-  moveFasterText: Phaser.GameObjects.Text;
-  tileModeText: Phaser.GameObjects.Text;
-  addText: Phaser.GameObjects.Text;
-  deleteText: Phaser.GameObjects.Text;
-  configureText: Phaser.GameObjects.Text;
-  swipeText: Phaser.GameObjects.Text;
-  brushSizeText: Phaser.GameObjects.Text;
-  zoomText: Phaser.GameObjects.Text;
-  changeAreaText: Phaser.GameObjects.Text;
-  renameAreaText: Phaser.GameObjects.Text;
-  newAreaText: Phaser.GameObjects.Text;
-  deleteAreaText: Phaser.GameObjects.Text;
-  changeActText: Phaser.GameObjects.Text;
-  renameActText: Phaser.GameObjects.Text;
-  newActText: Phaser.GameObjects.Text;
-  deleteActText: Phaser.GameObjects.Text;
-  createTransitionText: Phaser.GameObjects.Text;
-  deleteTransitionText: Phaser.GameObjects.Text;
-  quitText: Phaser.GameObjects.Text;
-  unitPosText: Phaser.GameObjects.Text;
-  tilePosText: Phaser.GameObjects.Text;
-  currentActText: Phaser.GameObjects.Text;
-  currentAreaText: Phaser.GameObjects.Text;
+  private moveText: Phaser.GameObjects.Text;
+  private moveFasterText: Phaser.GameObjects.Text;
+  private tileModeText: Phaser.GameObjects.Text;
+  private addText: Phaser.GameObjects.Text;
+  private deleteText: Phaser.GameObjects.Text;
+  private configureText: Phaser.GameObjects.Text;
+  private swipeText: Phaser.GameObjects.Text;
+  private brushSizeText: Phaser.GameObjects.Text;
+  private zoomText: Phaser.GameObjects.Text;
+  private changeAreaText: Phaser.GameObjects.Text;
+  private renameAreaText: Phaser.GameObjects.Text;
+  private newAreaText: Phaser.GameObjects.Text;
+  private deleteAreaText: Phaser.GameObjects.Text;
+  private changeActText: Phaser.GameObjects.Text;
+  private renameActText: Phaser.GameObjects.Text;
+  private newActText: Phaser.GameObjects.Text;
+  private deleteActText: Phaser.GameObjects.Text;
+  private createTransitionText: Phaser.GameObjects.Text;
+  private deleteTransitionText: Phaser.GameObjects.Text;
+  private quitText: Phaser.GameObjects.Text;
+  private unitPosText: Phaser.GameObjects.Text;
+  private tilePosText: Phaser.GameObjects.Text;
+  private currentActText: Phaser.GameObjects.Text;
+  private currentAreaText: Phaser.GameObjects.Text;
 
   // Forms
-  renameActInput: TextInput;
-  renameAreaInput: TextInput;
-  transitionForm: TransitionForm;
-  configureTileForm: ConfigureTileForm;
-  deleteTransitionForm: DeleteTransitionForm;
-  tileSelector: TileSelector;
+  private renameActInput: TextInput;
+  private renameAreaInput: TextInput;
+  private transitionForm: TransitionForm;
+  private configureTileForm: ConfigureTileForm;
+  private deleteTransitionForm: DeleteTransitionForm;
+  private tileSelector: TileSelector;
 
   // Input keys
-  aKey: Phaser.Input.Keyboard.Key; // Move left
-  dKey: Phaser.Input.Keyboard.Key; // Move right
-  sKey: Phaser.Input.Keyboard.Key; // Move down
-  wKey: Phaser.Input.Keyboard.Key; // Move up
-  shiftKey: Phaser.Input.Keyboard.Key; // Move faster
+  private aKey: Phaser.Input.Keyboard.Key; // Move left
+  private dKey: Phaser.Input.Keyboard.Key; // Move right
+  private sKey: Phaser.Input.Keyboard.Key; // Move down
+  private wKey: Phaser.Input.Keyboard.Key; // Move up
+  private shiftKey: Phaser.Input.Keyboard.Key; // Move faster
 
   constructor() {
     super({ key: 'MapEditor' });
   }
 
   create() {
+    this.uiCamera = this.cameras.add(0, 0, 1280, 720);
+    this.uiCamera.setName('uiCamera');
+
     this.pointer = this.input.activePointer;
     this.centerPoint = new Point(
       this.cameras.main.width / 2,
       this.cameras.main.height / 2
     );
 
-    // Tileset json import test
-    //this.campaign = new Campaign("Test campaign");
-    this.campaign = CampaignJson.import('{"name":"Test campaign","acts":[{"name":"Act I","areas":[{"name":"Default","tileset":{"tiles":[{"x":0,"y":0,"type":0,"transitionName":""},{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":"test"},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":"test"},{"x":-2,"y":3,"type":0,"transitionName":"test"},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":""},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":""},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":""},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":""},{"x":2,"y":3,"type":0,"transitionName":""},{"x":3,"y":-3,"type":0,"transitionName":"test"},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":""},{"x":3,"y":1,"type":0,"transitionName":""},{"x":3,"y":2,"type":0,"transitionName":""},{"x":3,"y":3,"type":0,"transitionName":""}]}},{"name":"New Area","tileset":{"tiles":[{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":"bruhmomento"},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":"bruhmomento"},{"x":-2,"y":3,"type":0,"transitionName":""},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":"bruhmomento"},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":0,"type":0,"transitionName":"bruhmomento"},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":"bruhmomento"},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":"bruhmomento"},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":""},{"x":2,"y":3,"type":0,"transitionName":""},{"x":3,"y":-3,"type":0,"transitionName":"bruhmomento"},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":""},{"x":3,"y":1,"type":0,"transitionName":""},{"x":3,"y":2,"type":0,"transitionName":""},{"x":3,"y":3,"type":0,"transitionName":""}]}}],"transitions":[{"name":"test","areaName":"Default","targetX":0,"targetY":0},{"name":"bruhmomento","areaName":"Default","targetX":0,"targetY":0}]},{"name":"New Act","areas":[{"name":"Default","tileset":{"tiles":[{"x":0,"y":0,"type":0,"transitionName":""},{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":""},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":""},{"x":-2,"y":3,"type":0,"transitionName":""},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":""},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":""},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":""},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":"test2"},{"x":2,"y":3,"type":0,"transitionName":"test2"},{"x":3,"y":-3,"type":0,"transitionName":""},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":"test2"},{"x":3,"y":1,"type":0,"transitionName":"test2"},{"x":3,"y":2,"type":0,"transitionName":"test2"},{"x":3,"y":3,"type":0,"transitionName":"test2"}]}}],"transitions":[{"name":"test2","areaName":"Default","targetX":0,"targetY":0}]}]}');
+    this.campaignManager = new CampaignManager(this);
+    this.campaignManager.loadCampaign('{"name":"Test campaign","acts":[{"name":"Act I","areas":[{"name":"Default","tileset":{"tiles":[{"x":0,"y":0,"type":0,"transitionName":""},{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":"test"},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":"test"},{"x":-2,"y":3,"type":0,"transitionName":"test"},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":""},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":""},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":""},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":""},{"x":2,"y":3,"type":0,"transitionName":""},{"x":3,"y":-3,"type":0,"transitionName":"test"},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":""},{"x":3,"y":1,"type":0,"transitionName":""},{"x":3,"y":2,"type":0,"transitionName":""},{"x":3,"y":3,"type":0,"transitionName":""}]}},{"name":"New Area","tileset":{"tiles":[{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":"bruhmomento"},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":"bruhmomento"},{"x":-2,"y":3,"type":0,"transitionName":""},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":"bruhmomento"},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":0,"type":0,"transitionName":"bruhmomento"},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":"bruhmomento"},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":"bruhmomento"},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":""},{"x":2,"y":3,"type":0,"transitionName":""},{"x":3,"y":-3,"type":0,"transitionName":"bruhmomento"},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":""},{"x":3,"y":1,"type":0,"transitionName":""},{"x":3,"y":2,"type":0,"transitionName":""},{"x":3,"y":3,"type":0,"transitionName":""}]}}],"transitions":[{"name":"test","areaName":"Default","targetX":0,"targetY":0},{"name":"bruhmomento","areaName":"Default","targetX":0,"targetY":0}]},{"name":"New Act","areas":[{"name":"Default","tileset":{"tiles":[{"x":0,"y":0,"type":0,"transitionName":""},{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":""},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":""},{"x":-2,"y":3,"type":0,"transitionName":""},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":""},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":""},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":""},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":"test2"},{"x":2,"y":3,"type":0,"transitionName":"test2"},{"x":3,"y":-3,"type":0,"transitionName":""},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":"test2"},{"x":3,"y":1,"type":0,"transitionName":"test2"},{"x":3,"y":2,"type":0,"transitionName":"test2"},{"x":3,"y":3,"type":0,"transitionName":"test2"}]}}],"transitions":[{"name":"test2","areaName":"Default","targetX":0,"targetY":0}]}]}');
     this.playerPos = new Point;
     this.cameraOffsetPos = new Point;
 
@@ -170,13 +166,13 @@ export default class MapEditor extends Phaser.Scene {
     this.renameAreaInput.setBackgroundVisibility(false);
     this.renameAreaInput.setPadding(0);
 
-    this.transitionForm = new TransitionForm(this, this.campaign, () => this.hideTransitionForm());
+    this.transitionForm = new TransitionForm(this, this.campaignManager.getCampaign(), () => this.hideTransitionForm());
     this.transitionForm.hide();
 
-    this.configureTileForm = new ConfigureTileForm(this, this.campaign, () => this.hideConfigureTileForm());
+    this.configureTileForm = new ConfigureTileForm(this, this.campaignManager.getCampaign(), () => this.hideConfigureTileForm());
     this.configureTileForm.hide();
 
-    this.deleteTransitionForm = new DeleteTransitionForm(this, this.campaign, () => this.hideDeleteTransitionForm());
+    this.deleteTransitionForm = new DeleteTransitionForm(this, this.campaignManager.getCampaign(), () => this.hideDeleteTransitionForm());
     this.deleteTransitionForm.hide();
 
     this.tileSelector = new TileSelector(this);
@@ -238,25 +234,21 @@ export default class MapEditor extends Phaser.Scene {
         this.tileSelector,
       ]
     );
-    this.uiCamera = this.cameras.add(0, 0, 1280, 720);
-    this.uiCamera.setName('uiCamera');
-
-    this.campaignManager = new CampaignManager(this);
-    this.campaignManager.loadCampaign('{"name":"Test campaign","acts":[{"name":"Act I","areas":[{"name":"Default","tileset":{"tiles":[{"x":0,"y":0,"type":0,"transitionName":""},{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":"test"},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":"test"},{"x":-2,"y":3,"type":0,"transitionName":"test"},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":""},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":""},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":""},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":""},{"x":2,"y":3,"type":0,"transitionName":""},{"x":3,"y":-3,"type":0,"transitionName":"test"},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":""},{"x":3,"y":1,"type":0,"transitionName":""},{"x":3,"y":2,"type":0,"transitionName":""},{"x":3,"y":3,"type":0,"transitionName":""}]}},{"name":"New Area","tileset":{"tiles":[{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":"bruhmomento"},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":"bruhmomento"},{"x":-2,"y":3,"type":0,"transitionName":""},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":"bruhmomento"},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":0,"type":0,"transitionName":"bruhmomento"},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":"bruhmomento"},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":"bruhmomento"},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":""},{"x":2,"y":3,"type":0,"transitionName":""},{"x":3,"y":-3,"type":0,"transitionName":"bruhmomento"},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":""},{"x":3,"y":1,"type":0,"transitionName":""},{"x":3,"y":2,"type":0,"transitionName":""},{"x":3,"y":3,"type":0,"transitionName":""}]}}],"transitions":[{"name":"test","areaName":"Default","targetX":0,"targetY":0},{"name":"bruhmomento","areaName":"Default","targetX":0,"targetY":0}]},{"name":"New Act","areas":[{"name":"Default","tileset":{"tiles":[{"x":0,"y":0,"type":0,"transitionName":""},{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":""},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":""},{"x":-2,"y":3,"type":0,"transitionName":""},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":""},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":""},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":""},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":"test2"},{"x":2,"y":3,"type":0,"transitionName":"test2"},{"x":3,"y":-3,"type":0,"transitionName":""},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":"test2"},{"x":3,"y":1,"type":0,"transitionName":"test2"},{"x":3,"y":2,"type":0,"transitionName":"test2"},{"x":3,"y":3,"type":0,"transitionName":"test2"}]}}],"transitions":[{"name":"test2","areaName":"Default","targetX":0,"targetY":0}]}]}');
   }
 
   update() {
     this.handleCameraMovement();
 
-    this.cursorUnitPos = this.getCursorUnitPos();
+    this.cursorUnitPos = new Phaser.Geom.Point(
+      ((this.pointer.x - this.centerPoint.x + this.playerPos.x) / this.cameras.main.zoom) + this.cameraOffsetPos.x,
+      ((this.pointer.y - this.centerPoint.y + this.playerPos.y) / this.cameras.main.zoom) + this.cameraOffsetPos.y
+    );
     this.cursorTilePos = Tile.getTilePosFromUnitPos(this.cursorUnitPos.x, this.cursorUnitPos.y);
 
     this.unitPosText.setText("Unit Pos : " + Math.round(this.cursorUnitPos.x) + ", " + Math.round(this.cursorUnitPos.y));
     this.tilePosText.setText("Tile Pos : " + this.cursorTilePos.x + ", " + this.cursorTilePos.y);
-    this.currentActText.setText("Act (" + (this.campaign.actIndex + 1) + "/" + this.campaign.acts.length + ") : "
-      + this.campaign.currentAct().name);
-    this.currentAreaText.setText("Area (" + (this.campaign.currentAct().areaIndex + 1) + "/" + this.campaign.currentAct().areas.length + ") : "
-      + this.campaign.currentArea().name);
+    this.currentActText.setText("Act (" + (this.campaignManager.getActIndex() + 1) + "/" + this.campaignManager.getActAmount() + ") : " + this.campaignManager.getActName());
+    this.currentAreaText.setText("Area (" + (this.campaignManager.getAreaIndex() + 1) + "/" + this.campaignManager.getAreaAmount() + ") : " + this.campaignManager.getAreaName());
     this.cameras.main.setScroll(
       this.playerPos.x + this.cameraOffsetPos.x - this.cameras.main.width / 2,
       this.playerPos.y + this.cameraOffsetPos.y - this.cameras.main.height / 2
@@ -270,7 +262,7 @@ export default class MapEditor extends Phaser.Scene {
     this.drawTileSet();
   }
 
-  private handleCameraMovement() {
+  private handleCameraMovement(): void {
     const MOVE_SPEED = MapEditor.MOVE_CAMERA_SPEED * (this.shiftKey.isDown ? MapEditor.MOVE_CAMERA_FASTER_MULTIPLIER : 1);
 
     if (this.inMenu) return;
@@ -292,7 +284,7 @@ export default class MapEditor extends Phaser.Scene {
       this.cameraOffsetPos.y += MOVE_SPEED;
   }
 
-  private handleKeyDown(event: KeyboardEvent) {
+  private handleKeyDown(event: KeyboardEvent): void {
     if (this.inMenu) return;
 
     const PRESSED_KEY = event.key.toLowerCase();
@@ -329,7 +321,7 @@ export default class MapEditor extends Phaser.Scene {
 
     // New act
     else if (PRESSED_KEY === 'u') {
-      this.campaign.addAct(new Act("New Act"));
+      this.campaignManager.addAct("New Act");
     }
 
     // Rename current act
@@ -338,27 +330,24 @@ export default class MapEditor extends Phaser.Scene {
       this.renameActInput.focused = true;
       this.renameActInput.visible = true;
       this.currentActText.visible = false;
-      this.renameActInput.updateInputText(this.campaign.currentAct().name);
+      this.renameActInput.updateInputText(this.campaignManager.getActName());
     }
 
     // Go to previous act
-    else if (PRESSED_KEY === 'o') {
-      this.campaign.previousAct();
-    }
+    else if (PRESSED_KEY === 'o')
+      this.campaignManager.previousAct();
 
     // Go to next act
-    else if (PRESSED_KEY === 'p') {
-      this.campaign.nextAct();
-    }
+    else if (PRESSED_KEY === 'p')
+      this.campaignManager.nextAct();
 
     // Delete current act
-    else if (PRESSED_KEY === 'delete') {
-      this.campaign.deleteCurrentAct();
-    }
+    else if (PRESSED_KEY === 'delete')
+      this.campaignManager.deleteCurrentAct();
 
     // New area
     else if (PRESSED_KEY === 'h')
-      this.campaign.currentAct().addArea(new Area("New Area"));
+      this.campaignManager.addArea("New Area");
 
     // Rename current area
     else if (PRESSED_KEY === 'j') {
@@ -366,20 +355,20 @@ export default class MapEditor extends Phaser.Scene {
       this.renameAreaInput.focused = true;
       this.renameAreaInput.visible = true;
       this.currentAreaText.visible = false;
-      this.renameAreaInput.updateInputText(this.campaign.currentArea().name);
+      this.renameAreaInput.updateInputText(this.campaignManager.getAreaName());
     }
 
     // Go to previous area
     else if (PRESSED_KEY === 'k')
-      this.campaign.currentAct().previousArea();
+      this.campaignManager.previousArea();
 
     // Go to next area
     else if (PRESSED_KEY === 'l')
-      this.campaign.currentAct().nextArea();
+      this.campaignManager.nextArea();
 
     // Delete current area
     else if (PRESSED_KEY === '~')
-      this.campaign.currentAct().deleteCurrentArea();
+      this.campaignManager.deleteCurrentArea();
 
     // Create transition
     else if (PRESSED_KEY === 't') {
@@ -394,27 +383,26 @@ export default class MapEditor extends Phaser.Scene {
     }
 
     // Exit map editor
-    else if (PRESSED_KEY === '\\') {
+    else if (PRESSED_KEY === '\\')
       this.scene.start('MainScene');
-    }
 
-    const EXPORT = CampaignJson.export(this.campaign);
+    // const EXPORT = CampaignJson.export(this.campaign);
     // console.log(EXPORT);
   }
 
-  private tileModeClick() {
+  private tileModeClick(): void {
     if (this.inMenu) return;
 
     const CURSOR_TILES_POS = TileSet.getProximityTilePos(this.cursorTilePos.x, this.cursorTilePos.y, this.brushSize);
 
     if (this.tileMode === TileMode.Add)
       for (const TILE_POS of CURSOR_TILES_POS)
-        this.campaign.currentArea().tileSet.addTile(TILE_POS.x, TILE_POS.y, this.tileType);
+        this.campaignManager.addTile(TILE_POS.x, TILE_POS.y, this.tileType);
     else if (this.tileMode === TileMode.Delete)
       for (const TILE_POS of CURSOR_TILES_POS)
-        this.campaign.currentArea().tileSet.deleteTile(TILE_POS.x, TILE_POS.y);
+        this.campaignManager.deleteTile(TILE_POS.x, TILE_POS.y);
     else if (this.tileMode === TileMode.Configure) {
-      const TILE: Tile | undefined = this.campaign.currentArea().tileSet.getTile(this.cursorTilePos.x, this.cursorTilePos.y);
+      const TILE: Tile | undefined = this.campaignManager.getTile(this.cursorTilePos.x, this.cursorTilePos.y);
       if (TILE) {
         this.inMenu = true;
         this.configureTileForm.show(TILE);
@@ -423,21 +411,17 @@ export default class MapEditor extends Phaser.Scene {
 
   }
 
-  private zoom(dy: number) {
-    let newZoom = this.cameras.main.zoom + (dy * MapEditor.ZOOM_SPEED / 1000);
-
+  private zoom(dy: number): void {
     if (this.inMenu) return;
 
+    let newZoom = this.cameras.main.zoom + (dy * MapEditor.ZOOM_SPEED / 1000);
     newZoom = Math.min(Math.max(newZoom, MapEditor.MIN_ZOOM), MapEditor.MAX_ZOOM);
     this.cameras.main.setZoom(newZoom);
   }
 
-  private drawTileSet() {
-    const CURSOR_X = (this.pointer.x + this.playerPos.x - 640) / this.cameras.main.zoom + this.cameraOffsetPos.x;
-    const CURSOR_Y = (this.pointer.y + this.playerPos.y - 360) / this.cameras.main.zoom + this.cameraOffsetPos.y;
-
+  private drawTileSet(): void {
     this.campaignManager.clearDebugTiles();
-    this.campaignManager.drawDebugTileSet(this.campaign.currentArea().tileSet);
+    this.campaignManager.drawDebugCurrentTileSet();
     this.campaignManager.drawDebugPoint(this.playerPos.x, this.playerPos.y, TileColor.Player);
     this.campaignManager.drawDebugTile(this.playerPos.x, this.playerPos.y, TileColor.Player);
 
@@ -449,50 +433,43 @@ export default class MapEditor extends Phaser.Scene {
 
     if (this.tileMode === TileMode.Configure)
       // Don't apply brush size when in "configure" mode
-      this.campaignManager.drawDebugTile(CURSOR_X, CURSOR_Y, cursorColor);
+      this.campaignManager.drawDebugTile(this.cursorUnitPos.x, this.cursorUnitPos.y, cursorColor);
     else
-      this.campaignManager.drawDebugProximityTilePos(CURSOR_X, CURSOR_Y, cursorColor, this.brushSize);
+      this.campaignManager.drawDebugProximityTilePos(this.cursorUnitPos.x, this.cursorUnitPos.y, cursorColor, this.brushSize);
   }
 
-  private renameAct() {
-    this.campaign.currentAct().name = this.renameActInput.inputText;
+  private renameAct(): void {
+    this.campaignManager.renameAct(this.renameActInput.inputText);
     this.renameActInput.focused = false;
     this.renameActInput.visible = false;
     this.currentActText.visible = true;
     this.inMenu = false;
   }
 
-  private renameArea() {
-    this.campaign.currentArea().name = this.renameAreaInput.inputText;
+  private renameArea(): void {
+    this.campaignManager.renameArea(this.renameAreaInput.inputText);
     this.renameAreaInput.focused = false;
     this.renameAreaInput.visible = false;
     this.currentAreaText.visible = true;
     this.inMenu = false;
   }
 
-  private hideTransitionForm() {
+  private hideTransitionForm(): void {
     this.inMenu = false;
     this.transitionForm.hide();
   }
 
-  private hideConfigureTileForm() {
+  private hideConfigureTileForm(): void {
     this.inMenu = false;
     this.configureTileForm.hide();
   }
 
-  private hideDeleteTransitionForm() {
+  private hideDeleteTransitionForm(): void {
     this.inMenu = false;
     this.deleteTransitionForm.hide();
   }
 
-  private getCursorUnitPos(): Point {
-    return new Point(
-      ((this.pointer.x - this.centerPoint.x + this.playerPos.x) / this.cameras.main.zoom) + this.cameraOffsetPos.x,
-      ((this.pointer.y - this.centerPoint.y + this.playerPos.y) / this.cameras.main.zoom) + this.cameraOffsetPos.y
-    );
-  }
-
-  private changeTileMode(mode: TileMode) {
+  private changeTileMode(mode: TileMode): void {
     this.tileMode = mode;
     this.tileModeText.setText("TileMode : " + mode);
   }
