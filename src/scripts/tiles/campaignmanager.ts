@@ -1,10 +1,10 @@
 import Campaign from './campaign'
 import CampaignSerializer from './campaignserializer'
 import Pathfinding from './pathfinding'
-import TileDrawer, { TileColor } from './tiledrawer'
+import TileDrawer from './tiledrawer'
 import TileSprite from './tilesprite'
 import Tile from './tile'
-import Point from '../types/point'
+import TileSet from './tileset'
 
 export default class CampaignManager {
   private scene: Phaser.Scene;
@@ -21,6 +21,10 @@ export default class CampaignManager {
     this.scene.cameras.getCamera("uiCamera").ignore(this.graphics);
   }
 
+  /******************************/
+  //       LOAD CAMPAIGN        //
+  /******************************/
+
   public loadCampaign(json: string): void {
     this.campaign = CampaignSerializer.import(json);
 
@@ -31,31 +35,42 @@ export default class CampaignManager {
     }
   }
 
-  public drawDebugCursorTile(cursorX: number, cursorY: number, playerX: number, playerY: number, zoom: number = 1, offsetX: number = 0, offsetY: number = 0) {
-    const CURSOR_X = (cursorX + playerX - 640) / zoom + offsetX;
-    const CURSOR_Y = (cursorY + playerY - 360) / zoom + offsetY;
-    const cursorTilePos = Tile.getTilePosFromUnitPos(new Point(CURSOR_X, CURSOR_Y));
-    this.tiledrawer.drawDebugTilePos(cursorTilePos.x, cursorTilePos.y, TileColor.DefaultCursor);
-  }
+  /******************************/
+  //         DEBUG DRAW         //
+  /******************************/
 
-  public drawDebugPlayerTile(playerX: number, playerY: number) {
-    const playerTile = Tile.getTilePosFromUnitPos(new Point(playerX, playerY));
-    this.tiledrawer.drawDebugTilePos(playerTile.x, playerTile.y, TileColor.Player);
-  }
-
-  public drawDebugPoint(pixelX: number, pixelY: number) {
-    this.graphics.fillStyle(TileColor.Player, 1);
+  public drawDebugPoint(pixelX: number, pixelY: number, color: number) {
+    this.graphics.fillStyle(color, 1);
     this.graphics.fillCircle(pixelX, pixelY, 4);
   }
 
-  public drawDebugPathfinding(x1: number, y1: number, x2: number, y2: number): void {
-    for (const POINT of Pathfinding.findPath(this.campaign.currentArea().tileSet, x1, y1, x2, y2))
-      this.tiledrawer.drawDebugTilePos(POINT.x, POINT.y, 0x000000);
+  public drawDebugTile(pixelX: number, pixelY: number, color: number) {
+    const TILE_POS = Tile.getTilePosFromUnitPos(pixelX, pixelY);
+    this.tiledrawer.drawDebugTilePos(TILE_POS.x, TILE_POS.y, color);
   }
 
-  public drawDebugProximityTiles(x: number, y: number, depth: number): void {
-    const proximityTiles = this.campaign.currentArea().tileSet.getProximityTileList(x, y, depth);
-    this.tiledrawer.drawDebugTileList(proximityTiles);
+  public drawDebugTileSet(tileSet: TileSet) {
+    this.tiledrawer.drawDebugTileList(tileSet.getTiles());
+  }
+
+  public drawDebugProximityTiles(pixelX: number, pixelY: number, depth: number): void {
+    const TILE_POS = Tile.getTilePosFromUnitPos(pixelX, pixelY);
+    const PROXIMITY_TILES = this.campaign.currentArea().tileSet.getProximityTileList(TILE_POS.x, TILE_POS.y, depth);
+    this.tiledrawer.drawDebugTileList(PROXIMITY_TILES);
+  }
+
+  public drawDebugProximityTilePos(pixelX: number, pixelY: number, color: number, brushSize: number) {
+    const TILE_POS = Tile.getTilePosFromUnitPos(pixelX, pixelY);
+    const TILES_POS = TileSet.getProximityTilePos(TILE_POS.x, TILE_POS.y, brushSize);
+    for (const POS of TILES_POS)
+      this.tiledrawer.drawDebugTilePos(POS.x, POS.y, color);
+  }
+
+  public drawDebugPathfinding(px1: number, py1: number, px2: number, py2: number): void {
+    const TILE_1 = Tile.getTilePosFromUnitPos(px1, py1);
+    const TILE_2 = Tile.getTilePosFromUnitPos(px2, py2);
+    for (const POINT of Pathfinding.findPath(this.campaign.currentArea().tileSet, TILE_1.x, TILE_1.y, TILE_2.x, TILE_2.y))
+      this.tiledrawer.drawDebugTilePos(POINT.x, POINT.y, 0x000000);
   }
 
   public clearDebugTiles() {

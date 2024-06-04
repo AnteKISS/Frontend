@@ -73,7 +73,6 @@ export default class TileSelector extends Phaser.GameObjects.Container {
 
     for (let i = 0; i < TileSelector.TILES_PER_ROW; i++) {
       const TILE_SPRITE_INDEX = this.row * TileSelector.TILES_PER_ROW + i;
-      console.log(TILE_SPRITE_INDEX);
 
       if (TILE_SPRITE_INDEX >= this.tileSprites.length)
         return;

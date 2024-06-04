@@ -42,9 +42,9 @@ export default class Tile {
     );
   }
 
-  public static getTilePosFromUnitPos(unitPos: Point): Point {
-    const adjustedX = unitPos.x;
-    const adjustedY = unitPos.y - Tile.HALF_HEIGHT;
+  public static getTilePosFromUnitPos(pixelX: number, pixelY: number): Point {
+    const adjustedX = pixelX;
+    const adjustedY = pixelY - Tile.HALF_HEIGHT;
 
     return new Point(
       Math.ceil(adjustedX / Tile.WIDTH + adjustedY / Tile.HEIGHT),

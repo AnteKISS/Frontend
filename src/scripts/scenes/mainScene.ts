@@ -8,8 +8,7 @@ import { MonsterEntity } from '../entities/monsterEntity';
 import { EntityManager } from '../managers/entityManager';
 import { OutlinePipeline } from '../pipelines/outlinePipeline';
 
-import Tile from '../tiles/tile'
-import TileDrawer from '../tiles/tiledrawer'
+import { TileColor } from '../tiles/tiledrawer'
 import CampaignManager from '../tiles/campaignmanager'
 import Point from '../types/point'
 
@@ -18,7 +17,6 @@ export default class MainScene extends Phaser.Scene {
   fpsText: FpsText;
   versionText: Phaser.GameObjects.Text
   campaignManager: CampaignManager;
-  tileDrawer: TileDrawer;
   pointer: Phaser.Input.Pointer;
   centerPoint: Point;
   mapEditorButton: Phaser.GameObjects.Text;
@@ -100,7 +98,7 @@ export default class MainScene extends Phaser.Scene {
     ]);
   }
 
-  update(time, deltaTime) {
+  update(time: number, deltaTime: number) {
     this.cameras.main.setScroll(
       this.playerTest.positionX - this.cameras.main.width / 2,
       this.playerTest.positionY - this.cameras.main.height / 2
@@ -111,21 +109,21 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest.update(deltaTime);
     this.monsterTest.update(deltaTime);
     this.updateGUI();
-    this.drawTileSet();
+    this.drawDebugTileSet();
 
     // Test pathfinding
-    const playerTile = Tile.getTilePosFromUnitPos(new Point(this.playerTest.positionX, this.playerTest.positionY));
-    this.campaignManager.drawDebugPathfinding(0, 0, playerTile.x, playerTile.y);
   }
 
-  drawTileSet() {
-    const playerTilePos = Tile.getTilePosFromUnitPos(new Point(this.playerTest.positionX, this.playerTest.positionY));
+  drawDebugTileSet() {
+    const CURSOR_X = this.pointer.x + this.playerTest.positionX - 640;
+    const CURSOR_Y = this.pointer.y + this.playerTest.positionY - 360;
 
     this.campaignManager.clearDebugTiles();
-    this.campaignManager.drawDebugPoint(this.playerTest.positionX, this.playerTest.positionY);
-    this.campaignManager.drawDebugProximityTiles(playerTilePos.x, playerTilePos.y, 8);
-    this.campaignManager.drawDebugPlayerTile(this.playerTest.positionX, this.playerTest.positionY);
-    this.campaignManager.drawDebugCursorTile(this.pointer.x, this.pointer.y, this.playerTest.positionX, this.playerTest.positionY);
+    this.campaignManager.drawDebugPoint(this.playerTest.positionX, this.playerTest.positionY, TileColor.Player);
+    this.campaignManager.drawDebugTile(this.playerTest.positionX, this.playerTest.positionY, TileColor.Player);
+    this.campaignManager.drawDebugProximityTiles(this.playerTest.positionX, this.playerTest.positionY, 8);
+    this.campaignManager.drawDebugTile(CURSOR_X, CURSOR_Y, TileColor.DefaultCursor);
+    this.campaignManager.drawDebugPathfinding(0, 0, this.playerTest.positionX, this.playerTest.positionY);
   }
 
   updateGUI(): void {

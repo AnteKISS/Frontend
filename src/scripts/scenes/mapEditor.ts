@@ -1,10 +1,11 @@
 import 'phaser'
 import Tile, { TileType } from '../tiles/tile'
-import TileDrawer, { TileColor } from '../tiles/tiledrawer'
+import { TileColor } from '../tiles/tiledrawer'
 import TileSet from '../tiles/tileset'
 import Area from '../tiles/area'
 import Act from '../tiles/act'
 import Campaign from '../tiles/campaign'
+import CampaignManager from '../tiles/campaignmanager'
 import CampaignJson from '../tiles/campaignserializer'
 import TextInput from '../editor/textInput'
 import TransitionForm from '../editor/transitionform'
@@ -34,14 +35,13 @@ export default class MapEditor extends Phaser.Scene {
   static readonly MAX_BRUSH_SIZE = 10;
 
   // Phaser refs/objects
-  graphics: Phaser.GameObjects.Graphics;
   pointer: Phaser.Input.Pointer;
   centerPoint: Point;
   uiCamera: Phaser.Cameras.Scene2D.Camera;
 
   // Editor data / helpers
   campaign: Campaign;
-  tileDrawer: TileDrawer;
+  campaignManager: CampaignManager;
   playerPos: Point;
   cameraOffsetPos: Point;
   cursorUnitPos: Point;
@@ -102,7 +102,6 @@ export default class MapEditor extends Phaser.Scene {
   }
 
   create() {
-    this.graphics = this.add.graphics();
     this.pointer = this.input.activePointer;
     this.centerPoint = new Point(
       this.cameras.main.width / 2,
@@ -112,7 +111,6 @@ export default class MapEditor extends Phaser.Scene {
     // Tileset json import test
     //this.campaign = new Campaign("Test campaign");
     this.campaign = CampaignJson.import('{"name":"Test campaign","acts":[{"name":"Act I","areas":[{"name":"Default","tileset":{"tiles":[{"x":0,"y":0,"type":0,"transitionName":""},{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":"test"},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":"test"},{"x":-2,"y":3,"type":0,"transitionName":"test"},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":""},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":""},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":""},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":""},{"x":2,"y":3,"type":0,"transitionName":""},{"x":3,"y":-3,"type":0,"transitionName":"test"},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":""},{"x":3,"y":1,"type":0,"transitionName":""},{"x":3,"y":2,"type":0,"transitionName":""},{"x":3,"y":3,"type":0,"transitionName":""}]}},{"name":"New Area","tileset":{"tiles":[{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":"bruhmomento"},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":"bruhmomento"},{"x":-2,"y":3,"type":0,"transitionName":""},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":"bruhmomento"},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":0,"type":0,"transitionName":"bruhmomento"},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":"bruhmomento"},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":"bruhmomento"},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":""},{"x":2,"y":3,"type":0,"transitionName":""},{"x":3,"y":-3,"type":0,"transitionName":"bruhmomento"},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":""},{"x":3,"y":1,"type":0,"transitionName":""},{"x":3,"y":2,"type":0,"transitionName":""},{"x":3,"y":3,"type":0,"transitionName":""}]}}],"transitions":[{"name":"test","areaName":"Default","targetX":0,"targetY":0},{"name":"bruhmomento","areaName":"Default","targetX":0,"targetY":0}]},{"name":"New Act","areas":[{"name":"Default","tileset":{"tiles":[{"x":0,"y":0,"type":0,"transitionName":""},{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":""},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":""},{"x":-2,"y":3,"type":0,"transitionName":""},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":""},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":""},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":""},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":"test2"},{"x":2,"y":3,"type":0,"transitionName":"test2"},{"x":3,"y":-3,"type":0,"transitionName":""},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":"test2"},{"x":3,"y":1,"type":0,"transitionName":"test2"},{"x":3,"y":2,"type":0,"transitionName":"test2"},{"x":3,"y":3,"type":0,"transitionName":"test2"}]}}],"transitions":[{"name":"test2","areaName":"Default","targetX":0,"targetY":0}]}]}');
-    this.tileDrawer = new TileDrawer(this.graphics);
     this.playerPos = new Point;
     this.cameraOffsetPos = new Point;
 
@@ -241,14 +239,17 @@ export default class MapEditor extends Phaser.Scene {
       ]
     );
     this.uiCamera = this.cameras.add(0, 0, 1280, 720);
-    this.uiCamera.ignore([this.graphics]);
+    this.uiCamera.setName('uiCamera');
+
+    this.campaignManager = new CampaignManager(this);
+    this.campaignManager.loadCampaign('{"name":"Test campaign","acts":[{"name":"Act I","areas":[{"name":"Default","tileset":{"tiles":[{"x":0,"y":0,"type":0,"transitionName":""},{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":"test"},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":"test"},{"x":-2,"y":3,"type":0,"transitionName":"test"},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":""},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":""},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":""},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":""},{"x":2,"y":3,"type":0,"transitionName":""},{"x":3,"y":-3,"type":0,"transitionName":"test"},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":""},{"x":3,"y":1,"type":0,"transitionName":""},{"x":3,"y":2,"type":0,"transitionName":""},{"x":3,"y":3,"type":0,"transitionName":""}]}},{"name":"New Area","tileset":{"tiles":[{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":"bruhmomento"},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":"bruhmomento"},{"x":-2,"y":3,"type":0,"transitionName":""},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":"bruhmomento"},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":0,"type":0,"transitionName":"bruhmomento"},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":"bruhmomento"},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":"bruhmomento"},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":""},{"x":2,"y":3,"type":0,"transitionName":""},{"x":3,"y":-3,"type":0,"transitionName":"bruhmomento"},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":""},{"x":3,"y":1,"type":0,"transitionName":""},{"x":3,"y":2,"type":0,"transitionName":""},{"x":3,"y":3,"type":0,"transitionName":""}]}}],"transitions":[{"name":"test","areaName":"Default","targetX":0,"targetY":0},{"name":"bruhmomento","areaName":"Default","targetX":0,"targetY":0}]},{"name":"New Act","areas":[{"name":"Default","tileset":{"tiles":[{"x":0,"y":0,"type":0,"transitionName":""},{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":""},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":""},{"x":-2,"y":3,"type":0,"transitionName":""},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":""},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":""},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":""},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":"test2"},{"x":2,"y":3,"type":0,"transitionName":"test2"},{"x":3,"y":-3,"type":0,"transitionName":""},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":"test2"},{"x":3,"y":1,"type":0,"transitionName":"test2"},{"x":3,"y":2,"type":0,"transitionName":"test2"},{"x":3,"y":3,"type":0,"transitionName":"test2"}]}}],"transitions":[{"name":"test2","areaName":"Default","targetX":0,"targetY":0}]}]}');
   }
 
   update() {
     this.handleCameraMovement();
 
     this.cursorUnitPos = this.getCursorUnitPos();
-    this.cursorTilePos = Tile.getTilePosFromUnitPos(this.cursorUnitPos);
+    this.cursorTilePos = Tile.getTilePosFromUnitPos(this.cursorUnitPos.x, this.cursorUnitPos.y);
 
     this.unitPosText.setText("Unit Pos : " + Math.round(this.cursorUnitPos.x) + ", " + Math.round(this.cursorUnitPos.y));
     this.tilePosText.setText("Tile Pos : " + this.cursorTilePos.x + ", " + this.cursorTilePos.y);
@@ -432,37 +433,25 @@ export default class MapEditor extends Phaser.Scene {
   }
 
   private drawTileSet() {
-    const playerTilePos = Tile.getTilePosFromUnitPos(this.playerPos);
+    const CURSOR_X = (this.pointer.x + this.playerPos.x - 640) / this.cameras.main.zoom + this.cameraOffsetPos.x;
+    const CURSOR_Y = (this.pointer.y + this.playerPos.y - 360) / this.cameras.main.zoom + this.cameraOffsetPos.y;
 
-    // Clear previous drawn lines
-    this.graphics.clear();
-
-    // Center point
-    this.graphics.fillStyle(TileColor.Player, 1);
-    this.graphics.fillCircle(this.playerPos.x, this.playerPos.y, 4);
-
-    // Draw tiles
-    this.tileDrawer.drawDebugTileList(this.campaign.currentArea().tileSet.getTiles());
-
-    // Draw player tile
-    this.tileDrawer.drawDebugTilePos(playerTilePos.x, playerTilePos.y, TileColor.Player);
+    this.campaignManager.clearDebugTiles();
+    this.campaignManager.drawDebugTileSet(this.campaign.currentArea().tileSet);
+    this.campaignManager.drawDebugPoint(this.playerPos.x, this.playerPos.y, TileColor.Player);
+    this.campaignManager.drawDebugTile(this.playerPos.x, this.playerPos.y, TileColor.Player);
 
     // Draw cursor tile
     let cursorColor = 0x000000;
-    if (this.tileMode === TileMode.Add)
-      cursorColor = TileColor.Floor;
-    else if (this.tileMode === TileMode.Delete)
-      cursorColor = TileColor.Delete;
-    else if (this.tileMode === TileMode.Configure)
-      cursorColor = TileColor.Configure;
+    if (this.tileMode === TileMode.Add) cursorColor = TileColor.Floor;
+    else if (this.tileMode === TileMode.Delete) cursorColor = TileColor.Delete;
+    else if (this.tileMode === TileMode.Configure) cursorColor = TileColor.Configure;
 
     if (this.tileMode === TileMode.Configure)
       // Don't apply brush size when in "configure" mode
-      this.tileDrawer.drawDebugTilePos(this.cursorTilePos.x, this.cursorTilePos.y, cursorColor);
-    else {
-      for (const TILE_POS of TileSet.getProximityTilePos(this.cursorTilePos.x, this.cursorTilePos.y, this.brushSize))
-        this.tileDrawer.drawDebugTilePos(TILE_POS.x, TILE_POS.y, cursorColor);
-    }
+      this.campaignManager.drawDebugTile(CURSOR_X, CURSOR_Y, cursorColor);
+    else
+      this.campaignManager.drawDebugProximityTilePos(CURSOR_X, CURSOR_Y, cursorColor, this.brushSize);
   }
 
   private renameAct() {
