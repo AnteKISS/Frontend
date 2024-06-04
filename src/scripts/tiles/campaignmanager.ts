@@ -1,8 +1,10 @@
 import Campaign from './campaign'
 import CampaignSerializer from './campaignserializer'
 import Pathfinding from './pathfinding'
-import TileDrawer from './tiledrawer'
+import TileDrawer, { TileColor } from './tiledrawer'
 import TileSprite from './tilesprite'
+import Tile from './tile'
+import Point from '../types/point'
 
 export default class CampaignManager {
   private scene: Phaser.Scene;
@@ -27,6 +29,23 @@ export default class CampaignManager {
       TILE_SPRITE.setDepth(-1);
       this.scene.cameras.getCamera("uiCamera").ignore(TILE_SPRITE);
     }
+  }
+
+  public drawDebugCursorTile(cursorX: number, cursorY: number, playerX: number, playerY: number, zoom: number = 1, offsetX: number = 0, offsetY: number = 0) {
+    const CURSOR_X = (cursorX + playerX - 640) / zoom + offsetX;
+    const CURSOR_Y = (cursorY + playerY - 360) / zoom + offsetY;
+    const cursorTilePos = Tile.getTilePosFromUnitPos(new Point(CURSOR_X, CURSOR_Y));
+    this.tiledrawer.drawDebugTilePos(cursorTilePos.x, cursorTilePos.y, TileColor.DefaultCursor);
+  }
+
+  public drawDebugPlayerTile(playerX: number, playerY: number) {
+    const playerTile = Tile.getTilePosFromUnitPos(new Point(playerX, playerY));
+    this.tiledrawer.drawDebugTilePos(playerTile.x, playerTile.y, TileColor.Player);
+  }
+
+  public drawDebugPoint(pixelX: number, pixelY: number) {
+    this.graphics.fillStyle(TileColor.Player, 1);
+    this.graphics.fillCircle(pixelX, pixelY, 4);
   }
 
   public drawDebugPathfinding(x1: number, y1: number, x2: number, y2: number): void {
