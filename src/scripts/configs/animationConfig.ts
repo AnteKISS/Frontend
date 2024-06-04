@@ -1,3 +1,4 @@
+import { ActiveEntityState } from "../entities/activeEntityState";
 import { EntityOrientation } from "../enums/entityOrientation";
 
 // ---------- player ----------
@@ -231,6 +232,7 @@ export const player_AnimationConfig = {
       { start: player_idleAnimationStartFrame + EntityOrientation.DOWN,        end: player_idleAnimationEndFrame + EntityOrientation.DOWN,        sheet: 'greatbow', orientation: EntityOrientation.DOWN },
       { start: player_idleAnimationStartFrame + EntityOrientation.DOWN_LEFT,   end: player_idleAnimationEndFrame + EntityOrientation.DOWN_LEFT,   sheet: 'greatbow', orientation: EntityOrientation.DOWN_LEFT }
     ],
+    state: ActiveEntityState.IDLE,
     frameRate: 4
   },
   run: {
@@ -396,6 +398,7 @@ export const player_AnimationConfig = {
       { start: player_runAnimationStartFrame + EntityOrientation.DOWN,        end: player_runAnimationEndFrame + EntityOrientation.DOWN,        sheet: 'greatbow', orientation: EntityOrientation.DOWN },
       { start: player_runAnimationStartFrame + EntityOrientation.DOWN_LEFT,   end: player_runAnimationEndFrame + EntityOrientation.DOWN_LEFT,   sheet: 'greatbow', orientation: EntityOrientation.DOWN_LEFT }
     ],
+    state: ActiveEntityState.RUN,
     frameRate: 8
   },
   meleeAttack: {
@@ -561,6 +564,7 @@ export const player_AnimationConfig = {
       { start: player_meleeAttackAnimationStartFrame + EntityOrientation.DOWN,        end: player_meleeAttackAnimationEndFrame + EntityOrientation.DOWN,        sheet: 'greatbow', orientation: EntityOrientation.DOWN },
       { start: player_meleeAttackAnimationStartFrame + EntityOrientation.DOWN_LEFT,   end: player_meleeAttackAnimationEndFrame + EntityOrientation.DOWN_LEFT,   sheet: 'greatbow', orientation: EntityOrientation.DOWN_LEFT }
     ],
+    state: ActiveEntityState.MELEEATTACK,
     frameRate: 4
   },
   block: {
@@ -726,6 +730,7 @@ export const player_AnimationConfig = {
       { start: player_blockAnimationStartFrame + EntityOrientation.DOWN,        end: player_blockAnimationEndFrame + EntityOrientation.DOWN,        sheet: 'greatbow', orientation: EntityOrientation.DOWN },
       { start: player_blockAnimationStartFrame + EntityOrientation.DOWN_LEFT,   end: player_blockAnimationEndFrame + EntityOrientation.DOWN_LEFT,   sheet: 'greatbow', orientation: EntityOrientation.DOWN_LEFT }
     ],
+    state: ActiveEntityState.BLOCK,
     frameRate: 4
   },
   death: {
@@ -891,6 +896,7 @@ export const player_AnimationConfig = {
       { start: player_deathAnimationStartFrame + EntityOrientation.DOWN,        end: player_deathAnimationEndFrame + EntityOrientation.DOWN,        sheet: 'greatbow', orientation: EntityOrientation.DOWN },
       { start: player_deathAnimationStartFrame + EntityOrientation.DOWN_LEFT,   end: player_deathAnimationEndFrame + EntityOrientation.DOWN_LEFT,   sheet: 'greatbow', orientation: EntityOrientation.DOWN_LEFT }
     ],
+    state: ActiveEntityState.DEATH,
     frameRate: 4
   },
   cheer: {
@@ -1056,6 +1062,7 @@ export const player_AnimationConfig = {
       { start: player_cheerAnimationStartFrame + EntityOrientation.DOWN,        end: player_cheerAnimationEndFrame + EntityOrientation.DOWN,        sheet: 'greatbow', orientation: EntityOrientation.DOWN },
       { start: player_cheerAnimationStartFrame + EntityOrientation.DOWN_LEFT,   end: player_cheerAnimationEndFrame + EntityOrientation.DOWN_LEFT,   sheet: 'greatbow', orientation: EntityOrientation.DOWN_LEFT }
     ],
+    state: ActiveEntityState.CHEER,
     frameRate: 4
   },
   bowAttack: {
@@ -1221,6 +1228,7 @@ export const player_AnimationConfig = {
       { start: player_bowAttackAnimationStartFrame + EntityOrientation.DOWN,        end: player_bowAttackAnimationEndFrame + EntityOrientation.DOWN,        sheet: 'greatbow', orientation: EntityOrientation.DOWN },
       { start: player_bowAttackAnimationStartFrame + EntityOrientation.DOWN_LEFT,   end: player_bowAttackAnimationEndFrame + EntityOrientation.DOWN_LEFT,   sheet: 'greatbow', orientation: EntityOrientation.DOWN_LEFT }
     ],
+    state: ActiveEntityState.RANGEDATTACK,
     frameRate: 4
   }
 };
@@ -1237,6 +1245,7 @@ export const zombie_0_AnimationConfig = {
       { start: zombie_0_idleAnimationStartFrame + zombie_0_downOrientationSpriteOffset,      end: zombie_0_idleAnimationEndFrame + zombie_0_downOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.DOWN },
       { start: zombie_0_idleAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_idleAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
     ],
+    state: ActiveEntityState.IDLE,
     frameRate: 4
   },
   run: {
@@ -1250,6 +1259,7 @@ export const zombie_0_AnimationConfig = {
       { start: zombie_0_runAnimationStartFrame + zombie_0_downOrientationSpriteOffset,      end: zombie_0_runAnimationEndFrame + zombie_0_downOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.DOWN },
       { start: zombie_0_runAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_runAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
     ],
+    state: ActiveEntityState.RUN,
     frameRate: 8
   },
   meleeAttackSlam: {
@@ -1263,6 +1273,7 @@ export const zombie_0_AnimationConfig = {
       { start: zombie_0_meleeAttackSlamAnimationStartFrame + zombie_0_downOrientationSpriteOffset,      end: zombie_0_meleeAttackSlamAnimationEndFrame + zombie_0_downOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.DOWN },
       { start: zombie_0_meleeAttackSlamAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_meleeAttackSlamAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
     ],
+    state: ActiveEntityState.MELEEATTACK,
     frameRate: 4
   },
   meleeAttackBite: {
@@ -1276,6 +1287,7 @@ export const zombie_0_AnimationConfig = {
       { start: zombie_0_meleeAttackBiteAnimationStartFrame + zombie_0_downOrientationSpriteOffset,      end: zombie_0_meleeAttackBiteAnimationEndFrame + zombie_0_downOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.DOWN },
       { start: zombie_0_meleeAttackBiteAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_meleeAttackBiteAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
     ],
+    state: ActiveEntityState.MELEEATTACK_2,
     frameRate: 4
   },
   block: {
@@ -1289,6 +1301,7 @@ export const zombie_0_AnimationConfig = {
       { start: zombie_0_blockAnimationStartFrame + zombie_0_downOrientationSpriteOffset,      end: zombie_0_blockAnimationEndFrame + zombie_0_downOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.DOWN },
       { start: zombie_0_blockAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_blockAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
     ],
+    state: ActiveEntityState.BLOCK,
     frameRate: 4
   },
   hitAndDeath: {
@@ -1302,6 +1315,7 @@ export const zombie_0_AnimationConfig = {
       { start: zombie_0_hitAndDeathAnimationStartFrame + zombie_0_downOrientationSpriteOffset,      end: zombie_0_hitAndDeathAnimationEndFrame + zombie_0_downOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.DOWN },
       { start: zombie_0_hitAndDeathAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_hitAndDeathAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
     ],
+    state: ActiveEntityState.DEATH,
     frameRate: 4
   },
   criticalDeath: {
@@ -1315,6 +1329,7 @@ export const zombie_0_AnimationConfig = {
       { start: zombie_0_criticalDeathAnimationStartFrame + zombie_0_downOrientationSpriteOffset,      end: zombie_0_criticalDeathAnimationEndFrame + zombie_0_downOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.DOWN },
       { start: zombie_0_criticalDeathAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_criticalDeathAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
     ],
+    state: ActiveEntityState.CRITICALDEATH,
     frameRate: 4
   }
 };

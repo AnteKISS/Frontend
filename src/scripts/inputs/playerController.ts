@@ -1,3 +1,4 @@
+import { ActiveEntityState } from "../entities/activeEntityState";
 import { MonsterEntity } from "../entities/monsterEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import { EntityManager } from "../managers/entityManager";
@@ -65,7 +66,10 @@ export default class PlayerController {
         destinationX = entity.positionX;
         destinationY = entity.positionY;
       } else {
-        if (entity instanceof MonsterEntity || entity instanceof PlayerEntity) {
+        console.log(this.player.isAttacking());
+        if (entity instanceof MonsterEntity || entity instanceof PlayerEntity && !this.player.isAttacking()) {
+          this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, entity.positionX, entity.positionY));
+          this.player.currentState = ActiveEntityState.MELEEATTACK;
           this.attackTarget(entity as PlayerEntity | MonsterEntity);
           isAttemptingToAttack = true;
         }
@@ -77,7 +81,9 @@ export default class PlayerController {
     if (!isAttemptingToAttack) {
       this.player.setDestination(destinationX, destinationY);
     }
-    this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, destinationX, destinationY));
+    if (!this.player.isAttacking()) {
+      this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, destinationX, destinationY));
+    }
   }
 
   public onPointerUp(pointer: Phaser.Input.Pointer): void {
@@ -88,7 +94,7 @@ export default class PlayerController {
     const DEST_X = pointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
     const DEST_Y = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
 
-    if (this.player.getPointerDown()) {
+    if (this.player.getPointerDown() && !this.player.isAttacking()) {
         this.player.setDestination(DEST_X, DEST_Y);
         this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, DEST_X, DEST_Y));
     }

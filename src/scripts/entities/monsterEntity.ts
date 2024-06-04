@@ -7,6 +7,7 @@ import { Physics } from '../physics/collider';
 import { IFightable } from './IFightable';
 import { BaseEntity } from './baseEntity';
 import { time } from 'console';
+import { EntityManager } from '../managers/entityManager';
 
 export class MonsterEntity extends ActiveEntity implements IFightable {
 
@@ -121,6 +122,10 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
   public damage(amount: number): void {
     // TODO: take into account gear, active effects then apply damage
+    this.stats.health -= amount;
+  }
+
+  public isAttacking(): boolean {
     throw new NotImplementedError();
   }
 

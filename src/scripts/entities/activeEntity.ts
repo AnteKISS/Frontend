@@ -2,6 +2,8 @@ import { BaseEntity } from './baseEntity';
 import NotImplementedError from '../errors/notImplementedError';
 import { ActiveEntityStats } from './activeEntityStats';
 import { EntitySpecies } from '../enums/entitySpecies';
+import { Animator } from './animator';
+import { MathModule } from '../utilities/mathModule';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
@@ -10,6 +12,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   public destinationX: number;
   public destinationY: number;
   public target: BaseEntity | null;
+  public animator: Animator;
 
   protected _isMoving: boolean = false;
   protected _lastValidPositionX: number;
@@ -86,6 +89,11 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
   public setOrientationRad(orientation: number) {
     this._orientation_rad = orientation;
+  }
+
+  protected isDestinationReached(): boolean {
+    return MathModule.isValueInThreshold(this.positionX, this.destinationX, 1) && 
+      MathModule.isValueInThreshold(this.positionY, this.destinationY, 1);
   }
 
   abstract update(deltaTime: number): void;

@@ -17,6 +17,7 @@ export class MathModule {
   }
 
   public static distanceBetween(x1: number, y1: number, x2: number, y2: number): number {
-    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    // We need to multiply the y distance by 2 because the y axis is scaled by 0.5
+    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow((y2 - y1) * 2, 2));
   }
 }
