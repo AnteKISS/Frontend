@@ -1,17 +1,49 @@
-export enum ActiveEntityState {
+export class ActiveEntityState {
 
-  IDLE = 'IDLE',
-  RUN = 'RUN',
-  MELEEATTACK = 'MELEEATTACK',
-  MELEEATTACK_2 = 'MELEEATTACK_2',
-  RANGEDATTACK = 'RANGEDATTACK',
-  RANGEDATTACK_2 = 'RANGEDATTACK_2',
-  CASTSPELL = 'CASTSPELL',
-  BLOCK = 'BLOCK',
-  CHEER = 'CHEER',
-  HIT = 'HIT',
-  DEATH = 'DEATH',
-  CRITICALDEATH = 'CRITICAL_DEATH'
+  state: ActiveEntityState.State;
+
+  constructor() {
+    this.state = ActiveEntityState.State.IDLE;
+  }
+
+  public getNonRepeatingAnimationState(): ActiveEntityState.State {
+    return {
+      MELEEATTACK: ActiveEntityState.State.MELEEATTACK,
+      MELEEATTACK_2: ActiveEntityState.State.MELEEATTACK_2,
+      RANGEDATTACK: ActiveEntityState.State.RANGEDATTACK,
+      RANGEDATTACK_2: ActiveEntityState.State.RANGEDATTACK_2,
+      CASTSPELL: ActiveEntityState.State.CASTSPELL,
+      BLOCK: ActiveEntityState.State.BLOCK,
+      CHEER: ActiveEntityState.State.CHEER,
+      HIT: ActiveEntityState.State.HIT,
+      DEATH: ActiveEntityState.State.DEATH,
+      CRITICALDEATH: ActiveEntityState.State.CRITICALDEATH
+    }[this.state];
+  }
+
+  public getRepeatingAnimationState(): ActiveEntityState.State {
+    return {
+      IDLE: ActiveEntityState.State.IDLE,
+      RUN: ActiveEntityState.State.RUN
+    }[this.state];
+  }
+}
+
+export namespace ActiveEntityState {
+  export enum State {
+    IDLE = 'IDLE',
+    RUN = 'RUN',
+    MELEEATTACK = 'MELEEATTACK',
+    MELEEATTACK_2 = 'MELEEATTACK_2',
+    RANGEDATTACK = 'RANGEDATTACK',
+    RANGEDATTACK_2 = 'RANGEDATTACK_2',
+    CASTSPELL = 'CASTSPELL',
+    BLOCK = 'BLOCK',
+    CHEER = 'CHEER',
+    HIT = 'HIT',
+    DEATH = 'DEATH',
+    CRITICALDEATH = 'CRITICAL_DEATH'
+  }
 }
 
 // export class ActiveEntityState {

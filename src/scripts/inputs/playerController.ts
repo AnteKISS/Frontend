@@ -69,7 +69,7 @@ export default class PlayerController {
         console.log(this.player.isAttacking());
         if (entity instanceof MonsterEntity || entity instanceof PlayerEntity && !this.player.isAttacking()) {
           this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, entity.positionX, entity.positionY));
-          this.player.currentState = ActiveEntityState.MELEEATTACK;
+          this.player.currentState.state = ActiveEntityState.State.MELEEATTACK;
           this.attackTarget(entity as PlayerEntity | MonsterEntity);
           isAttemptingToAttack = true;
         }

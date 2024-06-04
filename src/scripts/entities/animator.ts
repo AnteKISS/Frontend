@@ -1,5 +1,6 @@
 import { animationConfigKeys } from "../configs/animationConfig";
 import { getOrientationString } from "../enums/entityOrientation";
+import { ActiveEntity } from "./activeEntity";
 import { ActiveEntityState } from "./activeEntityState";
 import { BaseEntity } from "./baseEntity";
 import { PlayerEntity } from "./playerEntity";
@@ -44,12 +45,16 @@ export class Animator {
         if (this.parent.code === 'player') {
           const action = listener.key.split('_')[0];
           // console.log('Action:', action);
+          let activeEntity = this.parent as ActiveEntity;
+          // if (activeEntity.currentState.getRepeatingAnimationState().includes(action)) {
+          //   return;
+          // }
           if (action !== 'MELEEATTACK' && action !== 'RANGEDATTACK' && action !== 'BLOCK' && action !== 'CHEER' && action !== 'DEATH') {
             return;
           }
           // (sprite as Phaser.GameObjects.Sprite).anims.stop();
           // (this.parent as PlayerEntity).currentState = ActiveEntityState.MELEEATTACK;
-          (this.parent as PlayerEntity).currentState = ActiveEntityState.IDLE;
+          (this.parent as ActiveEntity).currentState.state = ActiveEntityState.State.IDLE;
           // console.log('Animation repeat for sprite:', listener.key);
         }
         // console.log('Animation repeat for sprite:', listener.key);

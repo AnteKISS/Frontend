@@ -17,7 +17,6 @@ import { ActiveEntityState } from './activeEntityState';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
-  public currentState: ActiveEntityState = ActiveEntityState.IDLE;
   public headSprite: Phaser.GameObjects.Sprite;
   public bodySprite: Phaser.GameObjects.Sprite;
   public meleeSprite: Phaser.GameObjects.Sprite;
@@ -101,23 +100,23 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
         break;
     }
 
-    switch(this.currentState) {
-      case ActiveEntityState.IDLE:
+    switch(this.currentState.state) {
+      case ActiveEntityState.State.IDLE:
         if (!this.isDestinationReached()) {
-          this.currentState = ActiveEntityState.RUN;
+          this.currentState.state = ActiveEntityState.State.RUN;
         }
-        if (this.headSprite.anims.isPlaying && this.headSprite.anims.currentAnim.key.split('_')[0] == ActiveEntityState.IDLE) {
+        if (this.headSprite.anims.isPlaying && this.headSprite.anims.currentAnim.key.split('_')[0] == ActiveEntityState.State.IDLE) {
           break;
         }
-        this.headSprite.play(`${this.currentState}_${getOrientationString(this.orientation)}_MALE_HEAD2`);
-        this.bodySprite.play(`${this.currentState}_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
-        this.meleeSprite.play(`${this.currentState}_${getOrientationString(this.orientation)}_LONGSWORD`);
-        this.bowSprite.play(`${this.currentState}_${getOrientationString(this.orientation)}_LONGBOW`);
+        this.headSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_MALE_HEAD2`);
+        this.bodySprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
+        this.meleeSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_LONGSWORD`);
+        this.bowSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_LONGBOW`);
         break;
-      case ActiveEntityState.RUN:
+      case ActiveEntityState.State.RUN:
         hasOrientationUpdated = this.updateOrientation();
         if (this.isDestinationReached()) {
-          this.currentState = ActiveEntityState.IDLE;
+          this.currentState.state = ActiveEntityState.State.IDLE;
           this.destinationX = this.positionX;
           this.destinationY = this.positionY;
           break;
@@ -132,37 +131,37 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
         if (this.headSprite.anims.isPlaying && this.headSprite.anims.currentAnim.key.split('_')[0] == 'RUN' && !hasOrientationUpdated) {
           break;
         }
-        this.headSprite.play(`${this.currentState}_${getOrientationString(this.orientation)}_MALE_HEAD2`);
-        this.bodySprite.play(`${this.currentState}_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
-        this.meleeSprite.play(`${this.currentState}_${getOrientationString(this.orientation)}_LONGSWORD`);
-        this.bowSprite.play(`${this.currentState}_${getOrientationString(this.orientation)}_LONGBOW`);
+        this.headSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_MALE_HEAD2`);
+        this.bodySprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
+        this.meleeSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_LONGSWORD`);
+        this.bowSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_LONGBOW`);
         // console.log('Playing animation', `${this.currentState}_$`);
         // this.animator.playAnimation(ActiveEntityState[this.currentState], getOrientationString(this.orientation));
         
         break;
-      case ActiveEntityState.MELEEATTACK:
+      case ActiveEntityState.State.MELEEATTACK:
         hasOrientationUpdated = this.updateOrientation();
         if (this.headSprite.anims.isPlaying && this.headSprite.anims.currentAnim.key.split('_')[0] == 'MELEEATTACK' && !hasOrientationUpdated) {
           break;
         }
-        this.headSprite.play(`${this.currentState}_${getOrientationString(this.orientation)}_MALE_HEAD2`);
-        this.bodySprite.play(`${this.currentState}_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
-        this.meleeSprite.play(`${this.currentState}_${getOrientationString(this.orientation)}_LONGSWORD`);
-        this.bowSprite.play(`${this.currentState}_${getOrientationString(this.orientation)}_LONGBOW`);
+        this.headSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_MALE_HEAD2`);
+        this.bodySprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
+        this.meleeSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_LONGSWORD`);
+        this.bowSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_LONGBOW`);
         break;
-      case ActiveEntityState.RANGEDATTACK_2:
+      case ActiveEntityState.State.RANGEDATTACK_2:
         break;
-      case ActiveEntityState.BLOCK:
+      case ActiveEntityState.State.BLOCK:
         break;
-      case ActiveEntityState.CHEER:
+      case ActiveEntityState.State.CHEER:
         break;
-      case ActiveEntityState.DEATH:
+      case ActiveEntityState.State.DEATH:
         break;
-      case ActiveEntityState.MELEEATTACK_2:
-      case ActiveEntityState.RANGEDATTACK_2:
-      case ActiveEntityState.CASTSPELL:
-      case ActiveEntityState.CRITICALDEATH:
-      case ActiveEntityState.HIT:
+      case ActiveEntityState.State.MELEEATTACK_2:
+      case ActiveEntityState.State.RANGEDATTACK_2:
+      case ActiveEntityState.State.CASTSPELL:
+      case ActiveEntityState.State.CRITICALDEATH:
+      case ActiveEntityState.State.HIT:
       default:
         break;
     }
@@ -230,7 +229,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   public isAttacking(): boolean {
-    return this.currentState == ActiveEntityState.MELEEATTACK;
+    return this.currentState.state == ActiveEntityState.State.MELEEATTACK;
   }
 
   // Event Handlers

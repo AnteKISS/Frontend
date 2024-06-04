@@ -4,9 +4,11 @@ import { ActiveEntityStats } from './activeEntityStats';
 import { EntitySpecies } from '../enums/entitySpecies';
 import { Animator } from './animator';
 import { MathModule } from '../utilities/mathModule';
+import { ActiveEntityState } from './activeEntityState';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
+  public currentState: ActiveEntityState;
   public stats: ActiveEntityStats;
   public species: EntitySpecies;
   public destinationX: number;
@@ -25,6 +27,8 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this.stats = new ActiveEntityStats();
     this.destinationX = this.positionX;
     this.destinationY = this.positionY;
+    this.currentState = new ActiveEntityState();
+    this.currentState.state = ActiveEntityState.State.IDLE;
   }
 
   // Getters/Setters
