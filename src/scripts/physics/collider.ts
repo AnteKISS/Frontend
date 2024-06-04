@@ -44,6 +44,11 @@ export namespace Physics {
 
       this._debugGraphics.fillStyle(this.ENTITY_ORIGIN_COLOR, 0.5);
       this._debugGraphics.fillCircle(this._parentEntity.positionX, this._parentEntity.positionY, 5);
+      if(this?._parentEntity?.scene?.cameras?.getCamera("uiCamera"))
+        {
+            this._parentEntity.scene.cameras.getCamera("uiCamera")!.ignore(this._debugGraphics);
+        }
+
     }
 
     public checkCollisions(): void {

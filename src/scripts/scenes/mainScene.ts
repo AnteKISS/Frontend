@@ -11,6 +11,8 @@ import { OutlinePipeline } from '../pipelines/outlinePipeline';
 import Tile from '../objects/map/tile'
 import TileDrawer, { TileColor } from '../objects/map/tiledrawer'
 import TileSet from '../objects/map/tileset'
+import { Physics } from '../physics/spellCollider';
+import { SpellColliderManager } from '../managers/spellColliderManager';
 
 export default class MainScene extends Phaser.Scene {
   uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -22,6 +24,7 @@ export default class MainScene extends Phaser.Scene {
   pointer: Phaser.Input.Pointer;
   centerPoint: Phaser.Geom.Point;
   mapEditorButton: Phaser.GameObjects.Text;
+  spellSpriteColliders: Physics.SpellCollider[] = []; 
 
   private playerTest: PlayerEntity;
   private monsterTest: MonsterEntity;
@@ -59,7 +62,10 @@ export default class MainScene extends Phaser.Scene {
       .setInteractive()
       .on('pointerdown', () => { this.scene.start('MapEditor'); });
 
-    this.input.mouse.disableContextMenu();
+    if (this.input && this.input.mouse)
+    {
+      this.input.mouse.disableContextMenu();
+    }
 
     this.gui = new GUI(this, 0, 0);
     this.playerTest = EntityManager.instance.createPlayer(this);
@@ -111,6 +117,7 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest.update(deltaTime);
     this.updateGUI();
     this.drawTileSet();
+    SpellColliderManager.getInstance.update();
   }
 
   drawTileSet() {

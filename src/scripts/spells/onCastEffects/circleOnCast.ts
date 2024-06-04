@@ -1,5 +1,6 @@
 import Spell from "../spell"
 import { circleSpell_AnimationConfig } from "../../configs/animationConfig";
+import { SpellColliderManager } from "../../managers/spellColliderManager";
 
 export default class CircleOnCast implements IOnCastEffect
 {
@@ -21,13 +22,13 @@ export default class CircleOnCast implements IOnCastEffect
     onCast(undefined, x: number, y: number)
     {
         const circleSprite = this.spell.spellOwner.scene.physics.add.sprite(x, y, this.sprite);
-        this.spell.spellOwner.scene.cameras.getCamera("uiCamera").ignore(circleSprite);
-
+        if(this?.spell?.spellOwner?.scene?.cameras?.getCamera("uiCamera"))
+        {
+            this.spell.spellOwner.scene.cameras.getCamera("uiCamera")!.ignore(circleSprite);
+        }
         circleSprite.anims.play(this.sprite);
 
         circleSprite.setScale(this.circleRadius * 2/circleSprite.displayWidth, this.circleRadius/circleSprite.displayHeight);
-        circleSprite.body.setCircle(this.circleRadius);
-        circleSprite.body.setOffset(-this.circleRadius, -this.circleRadius);
         circleSprite.setDepth(-1);
 
         this.spell.spellOwner.scene.time.delayedCall(this.duration*1000, () => {

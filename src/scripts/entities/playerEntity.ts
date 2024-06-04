@@ -135,6 +135,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     }
     this._collider.checkSpriteCollision();
     // this._collider.checkEntityCollision();
+    this._collider.displayDebugGraphics();
   }
 
   public reset(): void {

@@ -179,26 +179,30 @@ export default class MapEditor extends Phaser.Scene {
     this.deleteTransitionForm.hide();
 
     // Inputs
-    this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-    this.sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-    this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+    if(this.input && this.input.keyboard)
+    {
+      this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+      this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+      this.sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+      this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+      this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
 
     // Prevent DOM from handling tab key
-    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB, true);
+      this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB, true);
+    
 
-    this.input.on('pointerdown', (pointer, objects) => {
-      if (objects.length === 0) {
-        this.tileModeClick();
-        this.canPlaceObject = true;
-      }
-      else
-        this.canPlaceObject = false;
-    });
+      this.input.on('pointerdown', (pointer, objects) => {
+        if (objects.length === 0) {
+          this.tileModeClick();
+          this.canPlaceObject = true;
+        }
+        else
+          this.canPlaceObject = false;
+      });
 
     this.input.keyboard.on('keydown', (event: KeyboardEvent) => this.handleKeyDown(event));
     this.input.on('wheel', (pointer, currentlyOver, dx, dy, dz, event) => this.zoom(dy));
+  }
 
     // Handle cameras to make only specific elements affected by zoom
     this.cameras.main.ignore(

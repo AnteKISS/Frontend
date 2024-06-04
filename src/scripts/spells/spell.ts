@@ -1,3 +1,5 @@
+import { ActiveEntity } from "../entities/activeEntity";
+import { BaseEntity } from "../entities/baseEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import { CastType } from "../enums/castTypes"
 
@@ -57,7 +59,7 @@ export default class Spell
         return false;
     }
 
-    castSpell(): boolean
+    private castSpell(): boolean
     {
         const x = this.getPointerX();
         const y = this.getPointerY();
@@ -105,6 +107,14 @@ export default class Spell
                 break;
         }
         return true;
+    }
+
+    spellHit = (hitEntity: BaseEntity): void =>
+    {
+        this.onHitEffects.forEach(onHitEffect =>
+        {
+            onHitEffect.onHit(hitEntity);
+        });
     }
 
     public updateRemainingCooldown(): number
