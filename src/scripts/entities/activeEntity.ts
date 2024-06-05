@@ -2,7 +2,7 @@ import { BaseEntity } from './baseEntity';
 import NotImplementedError from '../errors/notImplementedError';
 import { ActiveEntityStats } from './activeEntityStats';
 import { EntitySpecies } from '../enums/entitySpecies';
-import { Animator } from './animator';
+import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { MathModule } from '../utilities/mathModule';
 import { ActiveEntityState } from './activeEntityState';
 
@@ -14,7 +14,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   public destinationX: number;
   public destinationY: number;
   public target: BaseEntity | null;
-  public animator: Animator;
+  public animator: ActiveEntityAnimator;
 
   protected _isMoving: boolean = false;
   protected _lastValidPositionX: number;

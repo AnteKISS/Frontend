@@ -2,7 +2,7 @@ import { ActiveEntity } from "./activeEntity";
 import { ActiveEntityState } from "./activeEntityState";
 import { BaseEntity } from "./baseEntity";
 
-export class Animator {
+export class ActiveEntityAnimator {
   public parent: BaseEntity;
 
   constructor(parent: BaseEntity) {
@@ -40,6 +40,9 @@ export class Animator {
     let activeEntity = this.parent as ActiveEntity;
     let isReapeating = ActiveEntityState.getRepeatingAnimationState().filter((state) => state === action).length > 0;
     if (isReapeating) {
+      return;
+    }
+    if (action === ActiveEntityState.State.DEATH || action === ActiveEntityState.State.CRITICALDEATH) {
       return;
     }
     activeEntity.currentState.state = ActiveEntityState.State.IDLE;

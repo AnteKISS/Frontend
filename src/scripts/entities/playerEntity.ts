@@ -12,7 +12,7 @@ import Firebolt from '../spells/craftedSpells/firebolt';
 import Quake from '../spells/craftedSpells/quake';
 import { Physics } from '../physics/collider';
 import { IFightable } from './IFightable';
-import { Animator } from './animator';
+import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { ActiveEntityState } from './activeEntityState';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
@@ -69,7 +69,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.truncatedSpriteWidth = 32 * this.bodySprite.scaleX;
     this.truncatedSpriteHeight = 64 * this.bodySprite.scaleY;
     this.collider = new Physics.Collider(this, this.bodySprite, this.onSpriteColliding, this.onEntityColliding);
-    this.animator = new Animator(this);
+    this.animator = new ActiveEntityAnimator(this);
   }
 
   // Getters/Setters
