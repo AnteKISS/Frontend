@@ -22,7 +22,7 @@ export default class TileSelector extends Phaser.GameObjects.Container {
 
     this.tileSprites = [];
     for (const BITMAP of TILE_BITMAPS)
-      for (let i = 1; i < BITMAP[1]; i++)
+      for (let i = 0; i < BITMAP[1]; i++)
         this.tileSprites.push([BITMAP[0], i]);
 
     this.row = 0;
