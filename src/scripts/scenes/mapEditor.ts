@@ -1,5 +1,5 @@
 import 'phaser'
-import Tile, { TileType } from '../tiles/tile'
+import Tile from '../tiles/tile'
 import { TileColor } from '../tiles/tiledrawer'
 import TileSet from '../tiles/tileset'
 import CampaignManager from '../tiles/campaignmanager'
@@ -43,6 +43,7 @@ export default class MapEditor extends Phaser.Scene {
   private cursorUnitPos: Point;
   private cursorTilePos: Point;
   private brushSize: number;
+  private showDebugTiles: boolean;
 
   // Editor states
   private tileMode: TileMode;
@@ -70,6 +71,7 @@ export default class MapEditor extends Phaser.Scene {
   private deleteActText: Phaser.GameObjects.Text;
   private createTransitionText: Phaser.GameObjects.Text;
   private deleteTransitionText: Phaser.GameObjects.Text;
+  private toggleDebugTiles: Phaser.GameObjects.Text;
   private quitText: Phaser.GameObjects.Text;
   private unitPosText: Phaser.GameObjects.Text;
   private tilePosText: Phaser.GameObjects.Text;
@@ -115,6 +117,7 @@ export default class MapEditor extends Phaser.Scene {
     this.canPlaceObject = true;
     this.inMenu = false;
     this.brushSize = 0;
+    this.showDebugTiles = false;
 
     // Texts
     this.moveText = this.add.text(30, 30, "Move (WASD)", { color: '#000000', fontSize: '18px' });
@@ -136,7 +139,8 @@ export default class MapEditor extends Phaser.Scene {
     this.deleteAreaText = this.add.text(30, 390, "Delete Area (~)", { color: '#000000', fontSize: '18px' });
     this.createTransitionText = this.add.text(30, 420, "New Transition (T)", { color: '#000000', fontSize: '18px' });
     this.deleteTransitionText = this.add.text(30, 440, "Delete Transition (Y)", { color: '#000000', fontSize: '18px' });
-    this.quitText = this.add.text(30, 470, "Quit (\\)", { color: '#000000', fontSize: '18px' });
+    this.toggleDebugTiles = this.add.text(30, 470, "Toggle Debug Tiles (.)", { color: '#000000', fontSize: '18px' });
+    this.quitText = this.add.text(30, 500, "Quit (\\)", { color: '#000000', fontSize: '18px' });
 
     this.unitPosText = this.add.text(1250, 30, "Unit Pos : 0,0", { color: '#000000', fontSize: '24px', align: 'right' });
     this.tilePosText = this.add.text(1250, 60, "Tile Pos : 0,0", { color: '#000000', fontSize: '24px', align: 'right' });
@@ -220,6 +224,7 @@ export default class MapEditor extends Phaser.Scene {
         this.deleteActText,
         this.createTransitionText,
         this.deleteTransitionText,
+        this.toggleDebugTiles,
         this.quitText,
         this.unitPosText,
         this.tilePosText,
@@ -381,6 +386,10 @@ export default class MapEditor extends Phaser.Scene {
       this.inMenu = true;
     }
 
+    // Toggle debug tiles
+    else if (PRESSED_KEY === '.')
+      this.showDebugTiles = !this.showDebugTiles;
+
     // Exit map editor
     else if (PRESSED_KEY === '\\')
       this.scene.start('MainScene');
@@ -420,9 +429,12 @@ export default class MapEditor extends Phaser.Scene {
 
   private drawTileSet(): void {
     this.campaignManager.clearDebugTiles();
-    this.campaignManager.drawDebugCurrentTileSet();
-    this.campaignManager.drawDebugPoint(this.playerPos.x, this.playerPos.y, TileColor.Player);
-    this.campaignManager.drawDebugTile(this.playerPos.x, this.playerPos.y, TileColor.Player);
+
+    if (this.showDebugTiles) {
+      this.campaignManager.drawDebugCurrentTileSet();
+      this.campaignManager.drawDebugPoint(this.playerPos.x, this.playerPos.y, TileColor.Player);
+      this.campaignManager.drawDebugTile(this.playerPos.x, this.playerPos.y, TileColor.Player);
+    }
 
     // Draw cursor tile
     let cursorColor = 0x000000;
