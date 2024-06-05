@@ -49,6 +49,14 @@ export default class TileSelector extends Phaser.GameObjects.Container {
     this.updateTiles();
   }
 
+  public getTileBitMap(): string {
+    return this.tileSprites[this.selectedTileIndex][0];
+  }
+
+  public getTileFrame(): number {
+    return this.tileSprites[this.selectedTileIndex][1];
+  }
+
   public previousRow() {
     this.row--;
     if (this.row < 0)

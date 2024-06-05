@@ -38,7 +38,7 @@ export default class CampaignManager {
     this.campaign = CampaignSerializer.import(json);
 
     for (const TILE of this.campaign.currentArea().tileSet.getTiles()) {
-      const TILE_SPRITE = new TileSprite(this.scene, TILE, "rocky_floor_tiles", 8).setDepth(-1);
+      const TILE_SPRITE = new TileSprite(this.scene, TILE).setDepth(-1);
       this.tileSprites.set(TILE, TILE_SPRITE);
       this.scene.cameras.getCamera("uiCamera").ignore(TILE_SPRITE);
     }
@@ -124,7 +124,7 @@ export default class CampaignManager {
     return this.campaign.currentArea().tileSet.getTile(x, y);
   }
 
-  public addTile(x: number, y: number, type: TileType): void {
+  public addTile(x: number, y: number, type: TileType, bitmap: string, frame: number): void {
     // Overwrite existing tile
     const EXISTING_TILE = this.getTile(x, y);
     if (EXISTING_TILE) {
@@ -137,8 +137,8 @@ export default class CampaignManager {
       }
     }
 
-    const TILE = this.campaign.currentArea().tileSet.addTile(x, y, type);
-    const TILE_SPRITE = new TileSprite(this.scene, TILE, "rocky_floor_tiles", 8).setDepth(-1);
+    const TILE = this.campaign.currentArea().tileSet.addTile(x, y, type, bitmap, frame);
+    const TILE_SPRITE = new TileSprite(this.scene, TILE).setDepth(-1);
     this.scene.cameras.getCamera("uiCamera").ignore(TILE_SPRITE);
     this.tileSprites.set(TILE, TILE_SPRITE);
   }

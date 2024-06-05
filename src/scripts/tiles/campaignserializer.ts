@@ -6,37 +6,39 @@ import Transition from './transition'
 import { TileType } from './tile'
 
 interface TileJson {
-  x: number
-  y: number
-  type: TileType
-  transitionName: string;
+  x: number,
+  y: number,
+  type: TileType,
+  bitmap: string,
+  frame: number,
+  transitionName: string,
 }
 
 interface TileSetJson {
-  tiles: TileJson[]
+  tiles: TileJson[],
 }
 
 interface TransitionJson {
-  name: string
-  areaName: string
-  targetX: number
-  targetY: number
+  name: string,
+  areaName: string,
+  targetX: number,
+  targetY: number,
 }
 
 interface AreaJson {
-  name: string
-  tileset: TileSetJson
+  name: string,
+  tileset: TileSetJson,
 }
 
 interface ActJson {
-  name: string
-  areas: AreaJson[]
-  transitions: TransitionJson[]
+  name: string,
+  areas: AreaJson[],
+  transitions: TransitionJson[],
 }
 
 interface CampaignJson {
-  name: string
-  acts: ActJson[]
+  name: string,
+  acts: ActJson[],
 }
 
 export default abstract class CampaignSerializer {
@@ -67,7 +69,7 @@ export default abstract class CampaignSerializer {
       for (let i = 0; i < ACT.areas.length; i++) {
         const TILESET = new TileSet(0);
         for (const TILE_JSON of ACT_JSON.areas[i].tileset.tiles)
-          TILESET.addTile(TILE_JSON.x, TILE_JSON.y, TILE_JSON.type, ACT.getTransition(TILE_JSON.transitionName));
+          TILESET.addTile(TILE_JSON.x, TILE_JSON.y, TILE_JSON.type, TILE_JSON.bitmap, TILE_JSON.frame, ACT.getTransition(TILE_JSON.transitionName));
         ACT.areas[i].tileSet = TILESET;
       }
 
@@ -118,6 +120,8 @@ export default abstract class CampaignSerializer {
             x: TILE.x,
             y: TILE.y,
             type: TILE.type,
+            bitmap: TILE.bitmap,
+            frame: TILE.frame,
             transitionName: (TILE.transition !== undefined) ? TILE.transition.name : "",
           };
           TILESET_JSON.tiles.push(TILE_JSON);

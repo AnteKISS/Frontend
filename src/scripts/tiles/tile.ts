@@ -14,13 +14,17 @@ export default class Tile {
   public readonly x: number;
   public readonly y: number;
   public readonly type: TileType;
+  public readonly bitmap: string;
+  public readonly frame: number;
 
   public transition: Transition | undefined;
 
-  public constructor(x: number, y: number, type: TileType, transition: Transition | undefined = undefined) {
+  public constructor(x: number, y: number, type: TileType, bitmap: string, frame: number, transition: Transition | undefined = undefined) {
     this.x = x;
     this.y = y;
     this.type = type;
+    this.bitmap = bitmap;
+    this.frame = frame;
     this.transition = transition;
   }
 
