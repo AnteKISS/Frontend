@@ -3,6 +3,9 @@ import Point from '../types/point'
 
 export enum TileType {
   Floor,
+  LeftWall,
+  RightWall,
+  FullWall,
 }
 
 export default class Tile {

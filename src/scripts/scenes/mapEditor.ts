@@ -47,7 +47,6 @@ export default class MapEditor extends Phaser.Scene {
   // Editor states
   private tileMode: TileMode;
   private swipeMode: SwipeMode;
-  private tileType: TileType;
   private canPlaceObject: boolean;
   private inMenu: boolean;
 
@@ -113,7 +112,6 @@ export default class MapEditor extends Phaser.Scene {
 
     this.tileMode = TileMode.Add;
     this.swipeMode = SwipeMode.Off;
-    this.tileType = TileType.Floor;
     this.canPlaceObject = true;
     this.inMenu = false;
     this.brushSize = 0;
@@ -398,7 +396,7 @@ export default class MapEditor extends Phaser.Scene {
 
     if (this.tileMode === TileMode.Add)
       for (const TILE_POS of CURSOR_TILES_POS)
-        this.campaignManager.addTile(TILE_POS.x, TILE_POS.y, this.tileType, this.tileSelector.getTileBitMap(), this.tileSelector.getTileFrame());
+        this.campaignManager.addTile(TILE_POS.x, TILE_POS.y, this.tileSelector.getTileType(), this.tileSelector.getTileBitMap(), this.tileSelector.getTileFrame());
     else if (this.tileMode === TileMode.Delete)
       for (const TILE_POS of CURSOR_TILES_POS)
         this.campaignManager.deleteTile(TILE_POS.x, TILE_POS.y);

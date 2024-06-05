@@ -1,10 +1,11 @@
-import Tile from '../tiles/tile'
+import Tile, { TileType } from '../tiles/tile'
+import { TileBitMapType } from '../tiles/tilesprite'
 
 export default class TileSelector extends Phaser.GameObjects.Container {
   private static readonly TILES_PER_ROW = 6;
   private static readonly TILE_SPACING = 100;
 
-  private tileSprites: Array<[string, number]>;
+  private tileSprites: Array<[string, number, TileType]>;
   private row: number;
   private selectedTileIndex: number;
 
@@ -18,12 +19,24 @@ export default class TileSelector extends Phaser.GameObjects.Container {
   constructor(scene: Phaser.Scene) {
     super(scene, 640, 640);
 
-    const TILE_BITMAPS = new Array<[string, number]>(['rocky_floor_tiles', 15]);
+    const TILE_BITMAPS = new Array<[string, number, TileBitMapType]>(
+      ['rocky_floor_tiles', 15, TileBitMapType.Floor],
+      ['flat_stone_lf_walls', 24, TileBitMapType.LeftRightWall],
+      ['flat_stone_full_walls', 12, TileBitMapType.FullWall],
+    );
 
     this.tileSprites = [];
     for (const BITMAP of TILE_BITMAPS)
-      for (let i = 0; i < BITMAP[1]; i++)
-        this.tileSprites.push([BITMAP[0], i]);
+      for (let i = 0; i < BITMAP[1]; i++) {
+        let tileType = TileType.Floor;
+
+        if (BITMAP[2] === TileBitMapType.LeftRightWall)
+          tileType = (i % 2) ? TileType.RightWall : TileType.LeftWall;
+        else if (BITMAP[2] === TileBitMapType.FullWall)
+          tileType = TileType.FullWall;
+
+        this.tileSprites.push([BITMAP[0], i, tileType]);
+      }
 
     this.row = 0;
     this.selectedTileIndex = 0;
@@ -57,6 +70,10 @@ export default class TileSelector extends Phaser.GameObjects.Container {
     return this.tileSprites[this.selectedTileIndex][1];
   }
 
+  public getTileType(): TileType {
+    return this.tileSprites[this.selectedTileIndex][2];
+  }
+
   public previousRow() {
     this.row--;
     if (this.row < 0)
@@ -88,7 +105,14 @@ export default class TileSelector extends Phaser.GameObjects.Container {
       const X = (i * TileSelector.TILE_SPACING) - (TileSelector.TILE_SPACING * TileSelector.TILES_PER_ROW / 2) + (TileSelector.TILE_SPACING / 2);
       const TILE = this.scene.add.sprite(X, 0, this.tileSprites[TILE_SPRITE_INDEX][0], this.tileSprites[TILE_SPRITE_INDEX][1])
         .setInteractive();
-      TILE.setScale(Tile.WIDTH / TILE.width);
+
+      if (this.tileSprites[TILE_SPRITE_INDEX][2] === TileType.Floor)
+        TILE.setScale(Tile.WIDTH / TILE.width);
+      else if (this.tileSprites[TILE_SPRITE_INDEX][2] === TileType.FullWall)
+        TILE.setScale((Tile.HEIGHT * 1.5) * 0.8 / TILE.height);
+      else
+        TILE.setScale((Tile.HEIGHT * 1.5) / TILE.height);
+
       TILE.on('pointerdown', () => {
         this.selectedTileIndex = TILE_SPRITE_INDEX;
         this.selectedTileGlow.setPosition(X, 0);
