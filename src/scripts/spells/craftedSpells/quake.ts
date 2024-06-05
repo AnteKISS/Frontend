@@ -1,7 +1,8 @@
 import { PlayerEntity } from "../../entities/playerEntity";
 import Spell from "../spell";
-import CircleOnCast from "../onCastEffects/circleOnCast"
+import GroundCircleOnCast from "../onCastEffects/groundCircleOnCast"
 import { CastType } from "../../enums/castTypes"
+import DamageOnHit from "../onHitEffects.ts/damageOnHit";
 
 
 export default class Quake extends Spell
@@ -10,7 +11,8 @@ export default class Quake extends Spell
     {
         super(3, 300, 10, 0, CastType.GroundTarget, 'Quake', 'quakeIcon', spellOwner)
         {
-            new CircleOnCast(this, 75, 2, 'greyQuake');
+            new GroundCircleOnCast(this, 75, 2, 'greyQuake');
+            new DamageOnHit(this);
         }
     }
 }

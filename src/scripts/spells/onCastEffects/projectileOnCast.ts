@@ -1,6 +1,6 @@
 import Spell from "../spell";
 import { projectile_AnimationConfig } from "../../configs/animationConfig";
-import { Physics } from "../../physics/spellCollider";
+import { ProjectileCollider } from "../../physics/projectileCollider";
 import { SpellColliderManager } from "../../managers/spellColliderManager";
 import { Projectile } from "../../physics/projectile";
 
@@ -43,7 +43,7 @@ export default class ProjectileOnCast implements IOnCastEffect
         projectileSprite.setAngle(castDirection_deg + 180);
         projectileSprite.setVelocity(this.projectileSpeed * dx, this.projectileSpeed * dy);
 
-        const collider = new Physics.SpellCollider(this.spell.spellOwner, projectileSprite, this.spell.spellHit, this.increasePierceCount);
+        const collider = new ProjectileCollider(this.spell.spellOwner, projectileSprite, this.spell.spellHit, this.increasePierceCount);
         SpellColliderManager.getInstance.addCollider(collider);
 
         this.spell.spellOwner.scene.time.delayedCall(this.spell.range / this.projectileSpeed * 1000, () => {
@@ -53,7 +53,7 @@ export default class ProjectileOnCast implements IOnCastEffect
         }, [], this);
     }
 
-    increasePierceCount = (object: Phaser.Physics.Arcade.Sprite, collider: Physics.SpellCollider): void =>
+    increasePierceCount = (object: Phaser.Physics.Arcade.Sprite, collider: ProjectileCollider): void =>
     {
         const projectileSprite = object as Projectile;
         if(projectileSprite.piercingCount >= this.piercing)

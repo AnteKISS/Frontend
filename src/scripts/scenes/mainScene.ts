@@ -11,8 +11,8 @@ import { OutlinePipeline } from '../pipelines/outlinePipeline';
 import Tile from '../objects/map/tile'
 import TileDrawer, { TileColor } from '../objects/map/tiledrawer'
 import TileSet from '../objects/map/tileset'
-import { Physics } from '../physics/spellCollider';
 import { SpellColliderManager } from '../managers/spellColliderManager';
+import { SpellCollider } from '../physics/spellCollider';
 
 export default class MainScene extends Phaser.Scene {
   uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -24,7 +24,7 @@ export default class MainScene extends Phaser.Scene {
   pointer: Phaser.Input.Pointer;
   centerPoint: Phaser.Geom.Point;
   mapEditorButton: Phaser.GameObjects.Text;
-  spellSpriteColliders: Physics.SpellCollider[] = []; 
+  spellSpriteColliders: SpellCollider[] = []; 
 
   private playerTest: PlayerEntity;
   private monsterTest: MonsterEntity;

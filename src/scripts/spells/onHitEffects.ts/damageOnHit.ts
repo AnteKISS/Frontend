@@ -18,7 +18,7 @@ export default class DamageOnHit implements IOnHitEffect
 
     public onHit(hitEntity: BaseEntity): void
     {
-        console.log('OMG A LOT OF FIRE DAMAGE');
+        console.log('HIT');
         //const totalDamage = (this.baseDamage + (this.scaling * this.spell.spellOwner.)) * this.spell.spellOwner.damageTypeBonus(this.damageType);
         //hitEntity.takeDamage(this.damageType, totalDamage);
     }

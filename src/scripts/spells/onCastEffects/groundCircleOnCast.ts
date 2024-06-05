@@ -1,8 +1,9 @@
 import Spell from "../spell"
 import { circleSpell_AnimationConfig } from "../../configs/animationConfig";
 import { SpellColliderManager } from "../../managers/spellColliderManager";
+import { GroundCircularSpellCollider } from "../../physics/groundCircularSpellCollider";
 
-export default class CircleOnCast implements IOnCastEffect
+export default class GroundCircleOnCast implements IOnCastEffect
 {
     spell: Spell;
     circleRadius: number;
@@ -31,9 +32,14 @@ export default class CircleOnCast implements IOnCastEffect
         circleSprite.setScale(this.circleRadius * 2/circleSprite.displayWidth, this.circleRadius/circleSprite.displayHeight);
         circleSprite.setDepth(-1);
 
+        const collider = new GroundCircularSpellCollider(this.spell.spellOwner, circleSprite, this.spell.spellHit);
+        SpellColliderManager.getInstance.addCollider(collider);
+
         this.spell.spellOwner.scene.time.delayedCall(this.duration*1000, () => {
             circleSprite.destroy();
-        })
+            SpellColliderManager.getInstance.removeCollider(collider);
+            collider.removeDebugGraphics();
+        });
     }
 
     initializeAnimation(): void {

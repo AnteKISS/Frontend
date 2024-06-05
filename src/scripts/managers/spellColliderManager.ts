@@ -1,10 +1,10 @@
-import { Physics } from "../physics/spellCollider";
+import { SpellCollider } from "../physics/spellCollider";
 
 
 export class SpellColliderManager
 {
     private static instance: SpellColliderManager;
-    private colliders: Physics.SpellCollider[];
+    private colliders: SpellCollider[];
 
     private constructor() 
     {
@@ -20,12 +20,12 @@ export class SpellColliderManager
         return SpellColliderManager.instance;
     }
 
-    public addCollider(collider: Physics.SpellCollider): void 
+    public addCollider(collider: SpellCollider): void 
     {
         this.colliders.push(collider);
     }
 
-    public removeCollider(collider: Physics.SpellCollider): void 
+    public removeCollider(collider: SpellCollider): void 
     {
         const index = this.colliders.indexOf(collider);
         if (index == -1) 
@@ -39,7 +39,7 @@ export class SpellColliderManager
     {
         this.colliders.forEach(collider => {
           collider.displayDebugGraphics();
-          collider.checkSpriteCollision();
+          collider.checkCollision();
         });
     }
 }
