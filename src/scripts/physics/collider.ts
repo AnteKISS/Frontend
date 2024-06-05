@@ -29,7 +29,6 @@ export namespace Physics {
       this.debugGraphics.clear();
 
       let players: PlayerEntity = EntityManager.instance.getPlayers()[0];
-      // console.log(this._parentEntity.positionX, this._parentEntity.positionY);
 
       this.debugGraphics.fillStyle(this.SPRITE_HITBOX_COLOR, 0.5);
       this.debugGraphics.fillRect(

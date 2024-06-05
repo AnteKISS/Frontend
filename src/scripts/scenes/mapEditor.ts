@@ -388,7 +388,6 @@ export default class MapEditor extends Phaser.Scene {
     }
 
     const EXPORT = CampaignJson.export(this.campaign);
-    console.log(EXPORT);
   }
 
   private tileModeClick() {

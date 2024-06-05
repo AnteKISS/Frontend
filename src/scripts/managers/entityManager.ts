@@ -61,7 +61,6 @@ export class EntityManager {
         foundEntities.push(entity);
       }
     }
-    console.log(foundEntities);
     return foundEntities;
   }
   

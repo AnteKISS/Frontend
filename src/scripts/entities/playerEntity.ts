@@ -92,7 +92,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   public update(deltaTime: number): void {
 
     let hasOrientationUpdated: boolean = false;
-    // console.log(this.destinationX, this.destinationY, this.positionX, this.positionY, this.isDestinationReached());
 
     let value = Math.random() * 100;
     switch(true) {
@@ -135,7 +134,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
         this.bodySprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
         this.meleeSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_LONGSWORD`);
         this.bowSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_LONGBOW`);
-        // console.log('Playing animation', `${this.currentState}_$`);
         // this.animator.playAnimation(ActiveEntityState[this.currentState], getOrientationString(this.orientation));
         
         break;
@@ -165,46 +163,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       default:
         break;
     }
-
-    // let hasOrientationUpdated: boolean = false;
-    // let action: string = this._headSprite.anims.currentAnim ? this._headSprite.anims.currentAnim.key.split('_')[0] : '';
-    // let animationUpdateNeeded: boolean = false;
-
-    // if ((this.positionX != this.destinationX) || (this.positionY != this.destinationY)) {
-    //   // TODO: Check if destination coords change between each update call
-    //   // so if it doesn't change, we move the same value that we moved last call
-    //   hasOrientationUpdated = this.updateOrientation();
-    //   let isEntityColliding: Boolean = this.collider.checkEntityCollision();
-    //   if (!isEntityColliding) {
-    //     this.move();
-
-    //     if (MathModule.isValueInThreshold(this.positionX, this.destinationX, 1) &&
-    //         MathModule.isValueInThreshold(this.positionY, this.destinationY, 1)) {
-    //       this.destinationX = this.positionX;
-    //       this.destinationY = this.positionY;
-    //       this._isMoving = false;
-    //     }
-    //     if (!this._headSprite.anims.isPlaying || action != 'RUN' || hasOrientationUpdated) {
-    //       animationUpdateNeeded = true;
-    //       action = 'RUN';
-    //     }
-    //   } else {
-    //     this.positionX = this._lastValidPositionX;
-    //     this.positionY = this._lastValidPositionY;
-    //   }
-    // } else {
-    //   if (!this._headSprite.anims.isPlaying || action != 'IDLE' || hasOrientationUpdated) {
-    //     animationUpdateNeeded = true;
-    //     action = 'IDLE';
-    //   }
-    // }
-    // if (animationUpdateNeeded) {
-    //   // TODO: Check gear slots for loading spritesheet name dynamically
-    //   this._headSprite.play(`${action}_${getOrientationString(this.orientation)}_MALE_HEAD2`);
-    //   this._bodySprite.play(`${action}_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
-    //   this._meleeSprite.play(`${action}_${getOrientationString(this.orientation)}_LONGSWORD`);
-    //   this._bowSprite.play(`${action}_${getOrientationString(this.orientation)}_LONGBOW`);
-    // }
 
     if (this._debugMode) {
       this.collider.displayDebugGraphics();

@@ -6,26 +6,12 @@ export class ActiveEntityState {
     this.state = ActiveEntityState.State.IDLE;
   }
 
-  public getNonRepeatingAnimationState(): ActiveEntityState.State {
-    return {
-      MELEEATTACK: ActiveEntityState.State.MELEEATTACK,
-      MELEEATTACK_2: ActiveEntityState.State.MELEEATTACK_2,
-      RANGEDATTACK: ActiveEntityState.State.RANGEDATTACK,
-      RANGEDATTACK_2: ActiveEntityState.State.RANGEDATTACK_2,
-      CASTSPELL: ActiveEntityState.State.CASTSPELL,
-      BLOCK: ActiveEntityState.State.BLOCK,
-      CHEER: ActiveEntityState.State.CHEER,
-      HIT: ActiveEntityState.State.HIT,
-      DEATH: ActiveEntityState.State.DEATH,
-      CRITICALDEATH: ActiveEntityState.State.CRITICALDEATH
-    }[this.state];
+  public static getNonRepeatingAnimationState(): string[] {
+    return ['MELEEATTACK', 'MELEEATTACK_2', 'RANGEDATTACK', 'RANGEDATTACK_2', 'CASTSPELL', 'BLOCK', 'CHEER', 'HIT', 'DEATH', 'CRITICAL_DEATH'];
   }
 
-  public getRepeatingAnimationState(): ActiveEntityState.State {
-    return {
-      IDLE: ActiveEntityState.State.IDLE,
-      RUN: ActiveEntityState.State.RUN
-    }[this.state];
+  public static getRepeatingAnimationState(): string[] {
+    return ['IDLE', 'RUN'];
   }
 }
 
@@ -45,32 +31,3 @@ export namespace ActiveEntityState {
     CRITICALDEATH = 'CRITICAL_DEATH'
   }
 }
-
-// export class ActiveEntityState {
-
-//   private states: Map<string, string>;
-
-//   constructor() {
-//     this.states = new Map<string, string>();
-//   }
-
-//   public addState(key: string, value: string): void {
-//     this.states.set(key, value);
-//   }
-
-//   public removeState(key: string): void {
-//     this.states.delete(key);
-//   }
-
-//   public getState(key: string): string | undefined {
-//     return this.states.get(key);
-//   }
-
-//   public clearStates(): void {
-//     this.states.clear();
-//   }
-
-//   public hasState(key: string): boolean {
-//     return this.states.has(key);
-//   }
-// }

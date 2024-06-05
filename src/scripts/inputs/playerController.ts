@@ -66,7 +66,6 @@ export default class PlayerController {
         destinationX = entity.positionX;
         destinationY = entity.positionY;
       } else {
-        console.log(this.player.isAttacking());
         if (entity instanceof MonsterEntity || entity instanceof PlayerEntity && !this.player.isAttacking()) {
           this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, entity.positionX, entity.positionY));
           this.player.currentState.state = ActiveEntityState.State.MELEEATTACK;
