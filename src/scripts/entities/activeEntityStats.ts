@@ -15,6 +15,8 @@ export class ActiveEntityStats {
   public criticalChance: number = 0;
   public criticalMultiplier: number = 1;
   public attackSpeed: number = 1;
+  public meleeRange: number = 100;
+  public projectileRange: number = 500;
 
   public defense: number = 0;
   public physicalResistance: number = 0;
