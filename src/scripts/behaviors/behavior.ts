@@ -39,5 +39,5 @@ export abstract class Behavior {
     ) <= this.parent.stats.projectileRange;
   }
 
-  public abstract performBehavior(): void;
+  public abstract update(deltaTime: number): void;
 }
