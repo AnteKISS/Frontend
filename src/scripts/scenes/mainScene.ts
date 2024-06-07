@@ -17,13 +17,14 @@ export default class MainScene extends Phaser.Scene {
     this.inventory = new Inventaire(10, 10);
     this.inventoryManager = new InventoryManager(this, this.inventory);
 
-    const newItem = new Item(this, "test", 4, 2);
-    console.log("Is space available:", this.inventory.isSpaceAvailable(newItem, 0, 0));
+    const stoneSword = new Item(this, "Stone Sword", 2, 4, "stone_sword_inventory");
+    console.log("Is space available:", this.inventory.isSpaceAvailable(stoneSword, 0, 0));
 
-    const ITEM_ADDED = this.inventory.addItem(newItem, 0, 0);
+    const ITEM_ADDED = this.inventory.addItem(stoneSword, 0, 0);
     console.log("Has item been added:", ITEM_ADDED);
 
-    this.inventory.addItem(new Item(this, "bonjour", 3, 3), 5, 5);
+    const woodenShield = new Item(this, "Wooden Shield", 3, 3, "wooden_shield_inventory");
+    this.inventory.addItem(woodenShield, 5, 5);
 
     /////////////////////////////////////////////////////////////////////////////
 
