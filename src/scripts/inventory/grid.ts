@@ -47,7 +47,6 @@ export default class Grid extends Phaser.GameObjects.Container {
     this.mouseX = pointer.x;
     this.mouseY = pointer.y;
     this.detectCellUnderMouse();
-
   }
 
   public detectCellUnderMouse(): [number, number] {
@@ -58,6 +57,7 @@ export default class Grid extends Phaser.GameObjects.Container {
 
     if (row >= 0 && row < this.gridHeight && col >= 0 && col < this.gridWidth) {
       const cell = this.cells[row][col];
+
       if (this.currentCell !== cell) {
 
         if (this.currentCell)
@@ -65,9 +65,9 @@ export default class Grid extends Phaser.GameObjects.Container {
 
         cell.setFillStyle(0x0000ff);
         this.currentCell = cell;
-
-        return [col, row];
       }
+
+      return [col, row];
     } else {
       if (this.currentCell) {
         this.currentCell.setFillStyle(0xffffff);

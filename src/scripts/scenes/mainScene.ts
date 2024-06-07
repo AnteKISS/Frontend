@@ -23,6 +23,8 @@ export default class MainScene extends Phaser.Scene {
     const ITEM_ADDED = this.inventory.addItem(newItem, 0, 0);
     console.log("Has item been added:", ITEM_ADDED);
 
+    this.inventory.addItem(new Item(this, "bonjour", 3, 3), 5, 5);
+
     /////////////////////////////////////////////////////////////////////////////
 
     this.fpsText = new FpsText(this);
