@@ -1,6 +1,9 @@
+import InventoryConfig from "./inventoryConfig";
+
 export default class Grid extends Phaser.GameObjects.Container {
-  private gridWidth: number;
-  private gridHeight: number;
+
+  public readonly gridWidth: number;
+  public readonly gridHeight: number;
   private cells: Phaser.GameObjects.Rectangle[][];
   private currentCell: Phaser.GameObjects.Rectangle | null;
 
@@ -34,10 +37,10 @@ export default class Grid extends Phaser.GameObjects.Container {
           row * this.cellSize,
           this.cellSize,
           this.cellSize,
-          0xffffff
+          InventoryConfig.FREE_COLOR
         );
         cell.setOrigin(0);
-        cell.setStrokeStyle(1, 0x000000); // noir pr contour
+        cell.setStrokeStyle(1, InventoryConfig.BORDER_COLOR); // noir pr contour
         this.add(cell);
         this.cells[row][col] = cell;
       }
@@ -62,16 +65,16 @@ export default class Grid extends Phaser.GameObjects.Container {
       if (this.currentCell !== cell) {
 
         if (this.currentCell)
-          this.currentCell.setFillStyle(0xffffff);
+          this.currentCell.setFillStyle(InventoryConfig.FREE_COLOR);
 
-        cell.setFillStyle(0x0000ff);
+        cell.setFillStyle(InventoryConfig.MOUSE_HOVER_COLOR);
         this.currentCell = cell;
       }
 
       return [col, row];
     } else {
       if (this.currentCell) {
-        this.currentCell.setFillStyle(0xffffff);
+        this.currentCell.setFillStyle(InventoryConfig.FREE_COLOR);
         this.currentCell = null;
         return [-1, -1];
       }

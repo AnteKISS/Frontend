@@ -1,4 +1,7 @@
 import Item from './item'
+import EquipSlot from './equipSlot'
+import { ItemType } from './itemType'
+import InventoryConfig from "./inventoryConfig";
 
 export default class Inventory {
   public occupied: boolean[][];
@@ -6,12 +9,15 @@ export default class Inventory {
   public gridHeight: number;
   private indexFound = -1;
 
+  private weapon1: EquipSlot;
+
   private infoItems: [Item, number, number][] = []; // [item,posx,posy]
 
-  constructor(gridWidth: number, gridHeight: number) {
+  constructor(scene: Phaser.Scene, gridWidth: number, gridHeight: number) {
     this.gridWidth = gridWidth;
     this.gridHeight = gridHeight;
     this.occupied = Array.from({ length: gridHeight }, () => Array(gridWidth).fill(false)); // true = occupe
+    this.weapon1 = new EquipSlot(scene, ItemType.WEAPON, 500, 180, InventoryConfig.CELL_SIZE * 3, InventoryConfig.CELL_SIZE * 4);
   }
 
   public isSpaceAvailable(item: Item, startX: number, startY: number): boolean {
@@ -56,7 +62,11 @@ export default class Inventory {
     return true;
   }
 
-  getItems(): [Item, number, number][] {
+  getItemsInfo(): [Item, number, number][] {
     return this.infoItems;
+  }
+
+  getEquipSlots(): [EquipSlot] {
+    return [this.weapon1];
   }
 }

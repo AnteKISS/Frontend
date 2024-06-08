@@ -10,17 +10,27 @@ export default class InventoryManager {
   private selectedItemData: [Item, number, number] | null = null;
 
   private isDragging: boolean = false;
+  private mouseX: number;
+  private mouseY: number;
 
   constructor(scene: Phaser.Scene, inventory: Inventory) {
     this.inventory = inventory;
-    this.grid = new Grid(scene, 100, 100, InventoryConfig.CELL_SIZE);
+    this.grid = new Grid(scene, 480, 340, InventoryConfig.CELL_SIZE);
 
     scene.input.on('pointermove', this.onPointerMove, this);
     scene.input.on('pointerdown', this.onPointerDown, this);
   }
 
   public updateItems() {
-    for (const [item, startX, startY] of this.inventory.getItems()) {
+    // Update item sprites inside equip slots
+    for (const EQUIP_SLOT of this.inventory.getEquipSlots()) {
+      const EQUIP_SLOT_ITEM = EQUIP_SLOT.getItem();
+      if (EQUIP_SLOT_ITEM)
+        EQUIP_SLOT_ITEM.setPosition(EQUIP_SLOT.x - EQUIP_SLOT_ITEM.width / 2, EQUIP_SLOT.y - EQUIP_SLOT_ITEM.height / 2);
+    }
+
+    // Update item sprites inside inventory
+    for (const [item, startX, startY] of this.inventory.getItemsInfo()) {
       item.setSize(item.inventoryWidth * this.grid.cellSize, item.inventoryHeight * this.grid.cellSize);
 
       if (!(item === this.selectedItem && this.isDragging))
@@ -31,17 +41,30 @@ export default class InventoryManager {
   private onPointerMove(pointer: Phaser.Input.Pointer): void {
     if (this.isDragging && this.selectedItem)
       this.selectedItem.setPosition(pointer.x, pointer.y);
+
+    this.mouseX = pointer.x;
+    this.mouseY = pointer.y;
   }
 
   private onPointerDown(pointer: Phaser.Input.Pointer): void {
     if (this.isDragging && this.selectedItem)
       this.dropItem();
-    else
-      for (let [item, startX, startY] of this.inventory.getItems())
+    else {
+      // Check if equip slot clicked
+      for (const EQUIP_SLOT of this.inventory.getEquipSlots())
+        if (Phaser.Geom.Rectangle.Contains(EQUIP_SLOT.getBounds(), this.mouseX, this.mouseY)) {
+          this.selectedItem = EQUIP_SLOT.unequipItem();
+          this.isDragging = true;
+          return;
+        }
+
+      // Check if item in inventory clicked
+      for (let [item, startX, startY] of this.inventory.getItemsInfo())
         if (this.mouseIsOverItem(item, startX, startY)) {
           this.pickUpItem(item, startX, startY);
           return;
         }
+    }
   }
 
   private pickUpItem(item: Item, startX: number, startY: number): void {
@@ -54,6 +77,24 @@ export default class InventoryManager {
 
   private dropItem(): void {
     if (this.selectedItem && this.selectedItemData) {
+      // Check if dropped in equip slot
+      for (const EQUIP_SLOT of this.inventory.getEquipSlots()) {
+        if (Phaser.Geom.Rectangle.Contains(EQUIP_SLOT.getBounds(), this.mouseX, this.mouseY)) {
+          const UNEQUIPPED_ITEM = EQUIP_SLOT.equipItem(this.selectedItem);
+          if (UNEQUIPPED_ITEM) {
+            this.selectedItem = UNEQUIPPED_ITEM;
+            this.selectedItemData = null;
+          }
+          else {
+            this.selectedItem = null;
+            this.selectedItemData = null;
+            this.isDragging = false;
+          }
+          return;
+        }
+      }
+
+      // Check if dropped in inventory grid
       const [gridX, gridY] = this.grid.detectCellUnderMouse();
 
       if (this.inventory.isSpaceAvailable(this.selectedItem, gridX, gridY)) {
