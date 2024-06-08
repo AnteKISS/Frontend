@@ -13,14 +13,16 @@ import Quake from '../spells/craftedSpells/quake';
 import { Physics } from '../physics/collider';
 import { IFightable } from './IFightable';
 import { ActiveEntityAnimator } from './activeEntityAnimator';
-import { ActiveEntityState } from './activeEntityState';
+import { ActiveEntityAnimationState } from './entityState';
+import { InventorySprite } from './inventorySprite';
+import { InventorySlots } from '../enums/inventorySlots';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
-  public headSprite: Phaser.GameObjects.Sprite;
-  public bodySprite: Phaser.GameObjects.Sprite;
-  public meleeSprite: Phaser.GameObjects.Sprite;
-  public bowSprite: Phaser.GameObjects.Sprite;
+  public headSprite: InventorySprite;
+  public bodySprite: InventorySprite;
+  public mainHandSprite: InventorySprite;
+  public offHandSprite: InventorySprite;
 
   private _pointerDown: boolean = false;
   maxMana: number = 150; //Pour test
@@ -33,18 +35,26 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     scene.add.existing(this);
     this.type = 'PlayerEntity';
     this.code = "player";
-    this.headSprite = scene.add.sprite(0, 0, 'headTexture');
+    this.headSprite = scene.add.sprite(0, 0, 'helmetTexture');
+    this.headSprite.textureName = 'MALE_HEAD2';
+    this.headSprite.slot = InventorySlots.HELMET;
     this.headSprite.scale = 1.5;
-    this.bodySprite = scene.add.sprite(0, 0, 'bodyTexture');
+    this.bodySprite = scene.add.sprite(0, 0, 'chestplateTexture');
+    this.bodySprite.textureName = 'STEEL_ARMOR';
+    this.bodySprite.slot = InventorySlots.CHESTPLATE;
     this.bodySprite.scale = 1.5;
-    this.meleeSprite = scene.add.sprite(0, 0, 'meleeTexture');
-    this.meleeSprite.scale = 1.5;
-    this.bowSprite = scene.add.sprite(0, 0, 'bowTexture');
-    this.bowSprite.scale = 1.5;
+    this.mainHandSprite = scene.add.sprite(0, 0, 'mainHandTexture');
+    this.mainHandSprite.textureName = 'LONGSWORD';
+    this.mainHandSprite.slot = InventorySlots.MAINHAND;
+    this.mainHandSprite.scale = 1.5;
+    this.offHandSprite = scene.add.sprite(0, 0, 'offHandTexture');
+    this.offHandSprite.textureName = 'LONGBOW';
+    this.offHandSprite.slot = InventorySlots.OFFHAND;
+    this.offHandSprite.scale = 1.5;
     this.add(this.headSprite);
     this.add(this.bodySprite);
-    this.add(this.meleeSprite);
-    this.add(this.bowSprite);
+    this.add(this.mainHandSprite);
+    this.add(this.offHandSprite);
     this.initializeAnimations();
 
     this.positionX = this.scene.cameras.main.width / 2;
@@ -62,8 +72,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
     this.headSprite.setOrigin(0.5, 0.75);
     this.bodySprite.setOrigin(0.5, 0.75);
-    this.meleeSprite.setOrigin(0.5, 0.75);
-    this.bowSprite.setOrigin(0.5, 0.75);
+    this.mainHandSprite.setOrigin(0.5, 0.75);
+    this.offHandSprite.setOrigin(0.5, 0.75);
 
     this.setDepth(0);
     this.truncatedSpriteWidth = 32 * this.bodySprite.scaleX;
@@ -91,78 +101,14 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   // Methods
   public update(deltaTime: number): void {
 
-    let hasOrientationUpdated: boolean = false;
-
     let value = Math.random() * 100;
     switch(true) {
       case value > 1:
         break;
     }
 
-    switch(this.currentState.state) {
-      case ActiveEntityState.State.IDLE:
-        if (!this.isDestinationReached()) {
-          this.currentState.state = ActiveEntityState.State.RUN;
-        }
-        if (this.headSprite.anims.isPlaying && this.headSprite.anims.currentAnim.key.split('_')[0] == ActiveEntityState.State.IDLE) {
-          break;
-        }
-        this.headSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_MALE_HEAD2`);
-        this.bodySprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
-        this.meleeSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_LONGSWORD`);
-        this.bowSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_LONGBOW`);
-        break;
-      case ActiveEntityState.State.RUN:
-        hasOrientationUpdated = this.updateOrientation();
-        if (this.isDestinationReached()) {
-          this.currentState.state = ActiveEntityState.State.IDLE;
-          this.destinationX = this.positionX;
-          this.destinationY = this.positionY;
-          break;
-        }
-        let isEntityColliding: Boolean = this.collider.checkEntityCollision();
-        if (!isEntityColliding) {
-          this.move();
-        } else {
-          this.positionX = this._lastValidPositionX;
-          this.positionY = this._lastValidPositionY;
-        }
-        if (this.headSprite.anims.isPlaying && this.headSprite.anims.currentAnim.key.split('_')[0] == 'RUN' && !hasOrientationUpdated) {
-          break;
-        }
-        this.headSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_MALE_HEAD2`);
-        this.bodySprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
-        this.meleeSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_LONGSWORD`);
-        this.bowSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_LONGBOW`);
-        // this.animator.playAnimation(ActiveEntityState[this.currentState], getOrientationString(this.orientation));
-        
-        break;
-      case ActiveEntityState.State.MELEEATTACK:
-        hasOrientationUpdated = this.updateOrientation();
-        if (this.headSprite.anims.isPlaying && this.headSprite.anims.currentAnim.key.split('_')[0] == 'MELEEATTACK' && !hasOrientationUpdated) {
-          break;
-        }
-        this.headSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_MALE_HEAD2`);
-        this.bodySprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_STEEL_ARMOR`);
-        this.meleeSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_LONGSWORD`);
-        this.bowSprite.play(`${this.currentState.state}_${getOrientationString(this.orientation)}_LONGBOW`);
-        break;
-      case ActiveEntityState.State.RANGEDATTACK_2:
-        break;
-      case ActiveEntityState.State.BLOCK:
-        break;
-      case ActiveEntityState.State.CHEER:
-        break;
-      case ActiveEntityState.State.DEATH:
-        break;
-      case ActiveEntityState.State.MELEEATTACK_2:
-      case ActiveEntityState.State.RANGEDATTACK_2:
-      case ActiveEntityState.State.CASTSPELL:
-      case ActiveEntityState.State.CRITICALDEATH:
-      case ActiveEntityState.State.HIT:
-      default:
-        break;
-    }
+    this.updatePosition();
+    this.animator.update(deltaTime);
 
     if (this._debugMode) {
       this.collider.displayDebugGraphics();
@@ -187,7 +133,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   public isAttacking(): boolean {
-    return this.currentState.state == ActiveEntityState.State.MELEEATTACK;
+    // TODO: Add a boolean attribute that is set if the player is attacking instead of validating with an animation state
+    return this.currentAnimationState.state == ActiveEntityAnimationState.State.MELEEATTACK;
   }
 
   // Event Handlers
@@ -235,7 +182,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       return;
     }
     let selfHeight: number = this.positionY + this.bodySprite.displayHeight;
-    let otherHeight: number = hitEntity.positionY + (hitEntity.list.at(0) as Phaser.GameObjects.Sprite).displayHeight;
+    let otherHeight: number = hitEntity.positionY + (hitEntity.list.at(0) as InventorySprite).displayHeight;
     if (selfHeight < otherHeight) {
       this.depth = 0;
       hitEntity.depth = 1;

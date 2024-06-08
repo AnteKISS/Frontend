@@ -4,21 +4,22 @@ import { ActiveEntityStats } from './activeEntityStats';
 import { EntitySpecies } from '../enums/entitySpecies';
 import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { MathModule } from '../utilities/mathModule';
-import { ActiveEntityState } from './activeEntityState';
+import { ActiveEntityAnimationState } from './entityState';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
-  public currentState: ActiveEntityState;
+  public currentAnimationState: ActiveEntityAnimationState;
   public stats: ActiveEntityStats;
   public species: EntitySpecies;
   public destinationX: number;
   public destinationY: number;
   public target: BaseEntity | null;
   public animator: ActiveEntityAnimator;
-
+  public lastValidPositionX: number;
+  public lastValidPositionY: number;
+  
   protected _isMoving: boolean = false;
-  protected _lastValidPositionX: number;
-  protected _lastValidPositionY: number;
+  currentState: any;
   
   constructor(scene) {
     super(scene);
@@ -27,8 +28,8 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this.stats = new ActiveEntityStats();
     this.destinationX = this.positionX;
     this.destinationY = this.positionY;
-    this.currentState = new ActiveEntityState();
-    this.currentState.state = ActiveEntityState.State.IDLE;
+    this.currentAnimationState = new ActiveEntityAnimationState();
+    this.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;
   }
 
   // Getters/Setters
@@ -52,15 +53,43 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this.setY(v);
   }
 
-  public move(): void {
+  public updatePosition(): void {
+
+    if (this.isDestinationReached()) {
+      this.destinationX = this.positionX;
+      this.destinationY = this.positionY;
+      return;
+    }
+    let isEntityColliding: Boolean = this.collider.checkEntityCollision();
+    if (isEntityColliding) {
+      this.positionX = this.lastValidPositionX;
+      this.positionY = this.lastValidPositionY;
+      return;
+    }
+
+    // hasOrientationUpdated = this.parent.updateOrientation();
+    // if (this.parent.isDestinationReached()) {
+    //   this.parent.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;
+    //   // this.parent.destinationX = this.parent.positionX;
+    //   // this.parent.destinationY = this.parent.positionY;
+    //   break;
+    // }
+    // // let isEntityColliding: Boolean = this.parent.collider.checkEntityCollision();
+    // // if (!isEntityColliding) {
+    // //   this.parent.move();
+    // // } else {
+    // //   this.parent.positionX = this.parent.lastValidPositionX;
+    // //   this.parent.positionY = this.parent.lastValidPositionY;
+    // // }
+
     this._isMoving = true;
     let distance: number = this.stats.movementSpeed * (window['deltaTime'] / 1000);
     let distanceMultiplier: number = 1 - (Math.abs(Math.sin(this._orientation_rad)) / 2);
     distance *= distanceMultiplier;
     let deltaX: number = distance * Math.cos(this._orientation_rad);
     let deltaY: number = distance * Math.sin(this._orientation_rad);
-    this._lastValidPositionX = this._positionX;
-    this._lastValidPositionY = this._positionY;
+    this.lastValidPositionX = this._positionX;
+    this.lastValidPositionY = this._positionY;
     this._positionX += deltaX;
     this.setX(this.x + deltaX);
     this._positionY += deltaY;
@@ -95,7 +124,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this._orientation_rad = orientation;
   }
 
-  protected isDestinationReached(): boolean {
+  public isDestinationReached(): boolean {
     return MathModule.isValueInThreshold(this.positionX, this.destinationX, 1) && 
       MathModule.isValueInThreshold(this.positionY, this.destinationY, 1);
   }

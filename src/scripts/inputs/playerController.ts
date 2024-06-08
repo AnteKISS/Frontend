@@ -1,4 +1,4 @@
-import { ActiveEntityState } from "../entities/activeEntityState";
+import { ActiveEntityAnimationState } from "../entities/entityState";
 import { MonsterEntity } from "../entities/monsterEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import { EntityManager } from "../managers/entityManager";
@@ -59,7 +59,6 @@ export default class PlayerController {
     let destinationY = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
 
     const entity = EntityManager.instance.getEntityAtPosition(destinationX, destinationY);
-    let isAttemptingToAttack: boolean = false;
     if ((entity !== undefined && entity !== null) && entity !== this.player) {
       this.player.target = entity;
       if (MathModule.distanceBetween(this.player.positionX, this.player.positionY, entity.positionX, entity.positionY) > 100) {
@@ -68,19 +67,17 @@ export default class PlayerController {
       } else {
         if (entity instanceof MonsterEntity || entity instanceof PlayerEntity && !this.player.isAttacking()) {
           this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, entity.positionX, entity.positionY));
-          this.player.currentState.state = ActiveEntityState.State.MELEEATTACK;
+          this.player.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
           this.attackTarget(entity as PlayerEntity | MonsterEntity);
-          isAttemptingToAttack = true;
+          this.player.setDestination(this.player.positionX, this.player.positionY);
         }
       }
     } else {
       this.player.target = null;
     }
 
-    if (!isAttemptingToAttack) {
-      this.player.setDestination(destinationX, destinationY);
-    }
     if (!this.player.isAttacking()) {
+      this.player.setDestination(destinationX, destinationY);
       this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, destinationX, destinationY));
     }
   }
