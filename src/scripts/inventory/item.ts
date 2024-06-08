@@ -1,3 +1,5 @@
+import InventoryConfig from './inventoryConfig'
+
 export default class Item extends Phaser.GameObjects.Sprite {
   name: string;
   inventoryWidth: number;
@@ -10,7 +12,7 @@ export default class Item extends Phaser.GameObjects.Sprite {
     this.inventoryHeight = height;
 
     this.setOrigin(0, 0);
-    this.setScale(width * 32 / this.width);
+    this.setScale(width * InventoryConfig.CELL_SIZE / this.width);
 
     scene.add.existing(this);
   }

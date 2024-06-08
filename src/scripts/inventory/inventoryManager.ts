@@ -1,4 +1,5 @@
-import Inventory from "./inventory"
+import Inventory from './inventory'
+import InventoryConfig from './inventoryConfig'
 import Grid from './grid'
 import Item from './item'
 
@@ -12,7 +13,7 @@ export default class InventoryManager {
 
   constructor(scene: Phaser.Scene, inventory: Inventory) {
     this.inventory = inventory;
-    this.grid = new Grid(scene, 100, 100, 32);
+    this.grid = new Grid(scene, 100, 100, InventoryConfig.CELL_SIZE);
 
     scene.input.on('pointermove', this.onPointerMove, this);
     scene.input.on('pointerdown', this.onPointerDown, this);
@@ -20,18 +21,16 @@ export default class InventoryManager {
 
   public updateItems() {
     for (const [item, startX, startY] of this.inventory.getItems()) {
-      item.setSize(item.inventoryWidth * 32, item.inventoryHeight * 32);
+      item.setSize(item.inventoryWidth * this.grid.cellSize, item.inventoryHeight * this.grid.cellSize);
 
       if (!(item === this.selectedItem && this.isDragging))
-        item.setPosition(this.grid.x + startX * 32, this.grid.y + startY * 32);
+        item.setPosition(this.grid.x + startX * this.grid.cellSize, this.grid.y + startY * this.grid.cellSize);
     }
   }
 
   private onPointerMove(pointer: Phaser.Input.Pointer): void {
-    if (this.isDragging && this.selectedItem) {
+    if (this.isDragging && this.selectedItem)
       this.selectedItem.setPosition(pointer.x, pointer.y);
-      // console.log(`item en main à (${this.grid.mouseX}, ${this.grid.mouseY})`); // position du cirseur avec objet
-    }
   }
 
   private onPointerDown(pointer: Phaser.Input.Pointer): void {

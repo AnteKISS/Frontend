@@ -1,11 +1,12 @@
 export default class Grid extends Phaser.GameObjects.Container {
-  private cellSize: number;
   private gridWidth: number;
   private gridHeight: number;
-  public mouseX: number;
-  public mouseY: number;
   private cells: Phaser.GameObjects.Rectangle[][];
   private currentCell: Phaser.GameObjects.Rectangle | null;
+
+  public readonly cellSize: number;
+  public mouseX: number;
+  public mouseY: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number, cellSize: number) {
     super(scene, x, y);
