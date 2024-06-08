@@ -60,27 +60,13 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
       this.destinationY = this.positionY;
       return;
     }
+    
     let isEntityColliding: Boolean = this.collider.checkEntityCollision();
     if (isEntityColliding) {
       this.positionX = this.lastValidPositionX;
       this.positionY = this.lastValidPositionY;
       return;
     }
-
-    // hasOrientationUpdated = this.parent.updateOrientation();
-    // if (this.parent.isDestinationReached()) {
-    //   this.parent.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;
-    //   // this.parent.destinationX = this.parent.positionX;
-    //   // this.parent.destinationY = this.parent.positionY;
-    //   break;
-    // }
-    // // let isEntityColliding: Boolean = this.parent.collider.checkEntityCollision();
-    // // if (!isEntityColliding) {
-    // //   this.parent.move();
-    // // } else {
-    // //   this.parent.positionX = this.parent.lastValidPositionX;
-    // //   this.parent.positionY = this.parent.lastValidPositionY;
-    // // }
 
     this._isMoving = true;
     let distance: number = this.stats.movementSpeed * (window['deltaTime'] / 1000);

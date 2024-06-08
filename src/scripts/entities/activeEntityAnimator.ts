@@ -38,17 +38,8 @@ export class ActiveEntityAnimator {
         hasOrientationUpdated = this.parent.updateOrientation();
         if (this.parent.isDestinationReached()) {
           this.parent.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;
-          // this.parent.destinationX = this.parent.positionX;
-          // this.parent.destinationY = this.parent.positionY;
           break;
         }
-        // let isEntityColliding: Boolean = this.parent.collider.checkEntityCollision();
-        // if (!isEntityColliding) {
-        //   this.parent.move();
-        // } else {
-        //   this.parent.positionX = this.parent.lastValidPositionX;
-        //   this.parent.positionY = this.parent.lastValidPositionY;
-        // }
         if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'RUN' && !hasOrientationUpdated) {
           break;
         }
