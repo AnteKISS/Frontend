@@ -30,6 +30,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this.destinationY = this.positionY;
     this.currentAnimationState = new ActiveEntityAnimationState();
     this.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;
+    this.isTargetable = true;
   }
 
   // Getters/Setters
@@ -60,7 +61,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
       this.destinationY = this.positionY;
       return;
     }
-    
+
     let isEntityColliding: Boolean = this.collider.checkEntityCollision();
     if (isEntityColliding) {
       this.positionX = this.lastValidPositionX;

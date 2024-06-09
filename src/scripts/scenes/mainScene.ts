@@ -8,6 +8,7 @@ import { OutlinePipeline } from '../pipelines/outlinePipeline';
 import Tile from '../objects/map/tile'
 import TileDrawer, { TileColor } from '../objects/map/tiledrawer'
 import TileSet from '../objects/map/tileset'
+import { EntityHealthBar } from '../uielements/entityHealthBar';
 
 export default class MainScene extends Phaser.Scene {
   uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -23,6 +24,7 @@ export default class MainScene extends Phaser.Scene {
   private playerTest: PlayerEntity;
   private monsterTest: MonsterEntity;
   private monsterTest2: MonsterEntity;
+  private entityHealthBar: EntityHealthBar;
   private gui: GUI;
 
   constructor() {
@@ -75,6 +77,8 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest2.name = 'Zombie 2';
     this.monsterTest2.positionX = this.monsterTest.positionX;
     this.monsterTest2.positionY = this.monsterTest.positionY - 30;
+    this.entityHealthBar = new EntityHealthBar(this);
+    this.entityHealthBar.entity = this.monsterTest;
     this.gui.spellBar.setSpellBook(this.playerTest.mySpellBook);
 
     this.input.setDefaultCursor('default');
@@ -96,6 +100,9 @@ export default class MainScene extends Phaser.Scene {
         this.versionText,
         this.mapEditorButton,
         this.gui,
+        this.entityHealthBar.graphics,
+        this.entityHealthBar.lblEntityName,
+        this.entityHealthBar.lblEntityDescription
       ]
     );
     this.uiCamera = this.cameras.add(0, 0, 1280, 720, false, "uiCamera");
@@ -127,6 +134,7 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest2.update(deltaTime);
     this.updateGUI();
     this.drawTileSet();
+    this.entityHealthBar.update();
   }
 
   drawTileSet() {

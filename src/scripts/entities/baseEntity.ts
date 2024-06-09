@@ -10,6 +10,7 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
   public truncatedSpriteWidth: number;
   public truncatedSpriteHeight: number;
   public collider: Physics.Collider;
+  public isTargetable: boolean = false;
 
   protected _positionX: number = 0;
   protected _positionY: number = 0;

@@ -16,6 +16,8 @@ import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { ActiveEntityAnimationState } from './entityState';
 import { InventorySprite } from './inventorySprite';
 import { InventorySlots } from '../enums/inventorySlots';
+import { castToType } from '../utilities/typeCast';
+import { InactiveEntity } from './inactiveEntity';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -114,6 +116,18 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       this.collider.displayDebugGraphics();
     }
     this.collider.checkSpriteCollision();
+
+    if (this.target !== null && this.target !== undefined) {
+      this.setOrientationRad(Phaser.Math.Angle.Between(this.positionX, this.positionY, this.target.positionX, this.target.positionY));
+      if (MathModule.distanceBetween(this.positionX, this.positionY, this.target.positionX, this.target.positionY) <= 100) {
+        if (this.target.isTargetable) {
+          this.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
+          (this.target as unknown as IFightable).damage(25);
+        }
+        this.setDestination(this.positionX, this.positionY);
+        this.target = null;
+      }
+    }
   }
 
   public reset(): void {

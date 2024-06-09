@@ -69,7 +69,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     }
     this.collider.checkSpriteCollision();
 
-    if (Math.floor(Math.random() * 1000) % 250 == 0) {
+    if (Math.floor(Math.random() * 1000) % 150 == 0) {
       let roamingX: number = Math.random() * 1000;
       let roamingY: number = Math.random() * 1000;
       this.destinationX = this.positionX + Math.sin(roamingX) * 100;

@@ -67,9 +67,11 @@ export default class PlayerController {
       } else {
         if (entity instanceof MonsterEntity || entity instanceof PlayerEntity && !this.player.isAttacking()) {
           this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, entity.positionX, entity.positionY));
-          this.player.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
-          this.attackTarget(entity as PlayerEntity | MonsterEntity);
-          this.player.setDestination(this.player.positionX, this.player.positionY);
+          if (entity.isTargetable) {
+            this.player.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
+            this.attackTarget(entity as PlayerEntity | MonsterEntity);
+            this.player.setDestination(this.player.positionX, this.player.positionY);
+          }
         }
       }
     } else {

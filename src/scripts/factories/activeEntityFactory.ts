@@ -92,7 +92,7 @@ export class ActiveEntityFactory {
       lightningAbsorption: 0,
       poisonAbsorption: 0,
       baseMovementSpeed: 1,
-      movementSpeed: 50,
+      movementSpeed: 150,
       level: 1,
       experience: 0,
       isInvincible: false,
