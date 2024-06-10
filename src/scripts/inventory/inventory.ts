@@ -3,21 +3,45 @@ import EquipSlot from './equipSlot'
 import { ItemType } from './itemType'
 import InventoryConfig from "./inventoryConfig";
 
-export default class Inventory {
+export default class Inventory extends Phaser.GameObjects.Container {
   public occupied: boolean[][];
   public gridWidth: number;
   public gridHeight: number;
   private indexFound = -1;
 
+  private helmet: EquipSlot;
+  private armor: EquipSlot;
+  private amulet: EquipSlot;
   private weapon1: EquipSlot;
+  private weapon2: EquipSlot;
+  private ring1: EquipSlot;
+  private ring2: EquipSlot;
+  private belt: EquipSlot;
+  private gloves: EquipSlot;
+  private boots: EquipSlot;
 
   private infoItems: [Item, number, number][] = []; // [item,posx,posy]
 
   constructor(scene: Phaser.Scene, gridWidth: number, gridHeight: number) {
+    super(scene, 640, 360);
+
     this.gridWidth = gridWidth;
     this.gridHeight = gridHeight;
     this.occupied = Array.from({ length: gridHeight }, () => Array(gridWidth).fill(false)); // true = occupe
-    this.weapon1 = new EquipSlot(scene, ItemType.WEAPON, 500, 180, InventoryConfig.CELL_SIZE * 3, InventoryConfig.CELL_SIZE * 4);
+
+    this.helmet = new EquipSlot(scene, ItemType.HELMET, 0, -268, InventoryConfig.CELL_SIZE * 3, InventoryConfig.CELL_SIZE * 3);
+    this.armor = new EquipSlot(scene, ItemType.ARMOR, 0, -133, InventoryConfig.CELL_SIZE * 3, InventoryConfig.CELL_SIZE * 4);
+    this.amulet = new EquipSlot(scene, ItemType.AMULET, 75, -181, InventoryConfig.CELL_SIZE * 1, InventoryConfig.CELL_SIZE * 1);
+    this.weapon1 = new EquipSlot(scene, ItemType.WEAPON, -150, -150, InventoryConfig.CELL_SIZE * 3, InventoryConfig.CELL_SIZE * 5);
+    this.weapon2 = new EquipSlot(scene, ItemType.WEAPON, 150, -150, InventoryConfig.CELL_SIZE * 3, InventoryConfig.CELL_SIZE * 5);
+    this.ring1 = new EquipSlot(scene, ItemType.RING, -75, -32, InventoryConfig.CELL_SIZE * 1, InventoryConfig.CELL_SIZE * 1);
+    this.ring2 = new EquipSlot(scene, ItemType.RING, 75, -32, InventoryConfig.CELL_SIZE * 1, InventoryConfig.CELL_SIZE * 1);
+    this.belt = new EquipSlot(scene, ItemType.BELT, 0, -32, InventoryConfig.CELL_SIZE * 3, InventoryConfig.CELL_SIZE * 1);
+    this.gloves = new EquipSlot(scene, ItemType.GLOVES, -150, 0, InventoryConfig.CELL_SIZE * 3, InventoryConfig.CELL_SIZE * 3);
+    this.boots = new EquipSlot(scene, ItemType.BOOTS, 150, 0, InventoryConfig.CELL_SIZE * 3, InventoryConfig.CELL_SIZE * 3);
+
+    this.add([this.helmet, this.armor, this.amulet, this.weapon1, this.weapon2, this.ring1, this.ring2, this.belt, this.gloves, this.boots]);
+    this.scene.add.existing(this);
   }
 
   public isSpaceAvailable(item: Item, startX: number, startY: number): boolean {

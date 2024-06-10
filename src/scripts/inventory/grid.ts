@@ -11,11 +11,11 @@ export default class Grid extends Phaser.GameObjects.Container {
   public mouseX: number;
   public mouseY: number;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, cellSize: number) {
+  constructor(scene: Phaser.Scene, x: number, y: number, gridWidth: number, gridHeight: number, cellSize: number) {
     super(scene, x, y);
     this.cellSize = cellSize;
-    this.gridWidth = 10;
-    this.gridHeight = 10;
+    this.gridWidth = gridWidth;
+    this.gridHeight = gridHeight;
 
     this.mouseX = 0;
     this.mouseY = 0;
@@ -29,9 +29,9 @@ export default class Grid extends Phaser.GameObjects.Container {
   }
 
   private createGrid(): void {
-    for (let row = 0; row < this.gridWidth; row++) {
+    for (let row = 0; row < this.gridHeight; row++) {
       this.cells[row] = [];
-      for (let col = 0; col < this.gridHeight; col++) {
+      for (let col = 0; col < this.gridWidth; col++) {
         const cell = this.scene.add.rectangle(
           col * this.cellSize,
           row * this.cellSize,
