@@ -78,7 +78,7 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest2.positionX = this.monsterTest.positionX;
     this.monsterTest2.positionY = this.monsterTest.positionY - 30;
     this.entityHealthBar = new EntityHealthBar(this);
-    this.entityHealthBar.entity = this.monsterTest;
+    // this.entityHealthBar.entity = this.monsterTest;
     this.gui.spellBar.setSpellBook(this.playerTest.mySpellBook);
 
     this.input.setDefaultCursor('default');

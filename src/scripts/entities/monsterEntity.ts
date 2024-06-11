@@ -14,6 +14,7 @@ import { ActiveEntityAnimator } from './activeEntityAnimator';
 export class MonsterEntity extends ActiveEntity implements IFightable {
 
   public baseSprite: InventorySprite;
+  public hitArea: Phaser.Geom.Rectangle;
 
   constructor(scene, monsterCode) {
     super(scene);
@@ -26,6 +27,11 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     this.add(this.baseSprite);
     this.initializeAnimations();
 
+    this.baseSprite.setOrigin(0.5, 0.75);
+    this.setDepth(0);
+    this.truncatedSpriteWidth = 32 * this.baseSprite.scaleX;
+    this.truncatedSpriteHeight = 64 * this.baseSprite.scaleY;
+
     this.positionX = this.scene.cameras.main.width / 2;
     this.positionY = this.scene.cameras.main.height / 2;
 
@@ -37,20 +43,16 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
     const offsetX = (scaledWidth - spriteWidth) / 2;
     const offsetY = (scaledHeight - spriteHeight) / 2;
-    const hitArea = new Phaser.Geom.Rectangle(spriteWidth * 2, spriteHeight * 2, spriteWidth, spriteHeight * 2);
 
-    this.baseSprite.setInteractive({ hitArea, hitAreaCallback: Phaser.Geom.Rectangle.Contains });
-    
-    this.baseSprite.on('pointerover', () => {
-      
-    });
-    this.baseSprite.on('pointerout', () => {
+    this.baseSprite.setInteractive({ hitArea: new Phaser.Geom.Rectangle(this.truncatedSpriteWidth, this.truncatedSpriteHeight * this.originY, 32, 64), hitAreaCallback: Phaser.Geom.Rectangle.Contains });
 
+    this.baseSprite.on('pointerover', (pointer: Phaser.Input.Pointer) => {
+      window['selectedMonster'] = this;
     });
-    this.baseSprite.setOrigin(0.5, 0.75);
-    this.setDepth(0);
-    this.truncatedSpriteWidth = 32 * this.baseSprite.scaleX;
-    this.truncatedSpriteHeight = 64 * this.baseSprite.scaleY;
+    this.baseSprite.on('pointerout', (pointer: Phaser.Input.Pointer) => {
+      window['selectedMonster'] = null;
+    });
+
     this.collider = new Physics.Collider(this, this.baseSprite, this.onSpriteColliding, this.onEntityColliding);
     this.animator = new ActiveEntityAnimator(this);
   }
@@ -60,9 +62,14 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
   // Methods
   public update(deltaTime: number): void {
-
+    
     this.updatePosition();
     this.animator.update(deltaTime);
+
+    // this.hitArea.setPosition(
+    //   (this.positionX - this.scene.cameras.main.scrollX) / 2,
+    //   (this.positionY - this.scene.cameras.main.scrollY) / this.originY
+    // );
 
     if (this._debugMode) {
       this.collider.displayDebugGraphics();
@@ -93,6 +100,9 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
   public damage(amount: number): void {
     // TODO: take into account gear, active effects then apply damage
     this.stats.health -= amount;
+    if (this.stats.health < 0) {
+      this.stats.health = 0;
+    }
   }
 
   public isAttacking(): boolean {

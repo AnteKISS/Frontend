@@ -122,7 +122,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       if (MathModule.distanceBetween(this.positionX, this.positionY, this.target.positionX, this.target.positionY) <= 100) {
         if (this.target.isTargetable) {
           this.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
-          (this.target as unknown as IFightable).damage(25);
+          this.attack(this.target as unknown as IFightable);
         }
         this.setDestination(this.positionX, this.positionY);
         this.target = null;
