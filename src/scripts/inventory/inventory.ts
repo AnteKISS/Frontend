@@ -20,6 +20,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
   private gloves: EquipSlot;
   private boots: EquipSlot;
 
+  private equipSlots: EquipSlot[];
   private infoItems: [Item, number, number][] = []; // [item,posx,posy]
 
   constructor(scene: Phaser.Scene, gridWidth: number, gridHeight: number) {
@@ -39,6 +40,8 @@ export default class Inventory extends Phaser.GameObjects.Container {
     this.belt = new EquipSlot(scene, ItemType.BELT, 0, -32, InventoryConfig.CELL_SIZE * 3, InventoryConfig.CELL_SIZE * 1);
     this.gloves = new EquipSlot(scene, ItemType.GLOVES, -150, 0, InventoryConfig.CELL_SIZE * 3, InventoryConfig.CELL_SIZE * 3);
     this.boots = new EquipSlot(scene, ItemType.BOOTS, 150, 0, InventoryConfig.CELL_SIZE * 3, InventoryConfig.CELL_SIZE * 3);
+
+    this.equipSlots = [this.helmet, this.armor, this.amulet, this.weapon1, this.weapon2, this.ring1, this.ring2, this.belt, this.gloves, this.boots];
 
     this.add([this.helmet, this.armor, this.amulet, this.weapon1, this.weapon2, this.ring1, this.ring2, this.belt, this.gloves, this.boots]);
     this.scene.add.existing(this);
@@ -90,7 +93,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
     return this.infoItems;
   }
 
-  getEquipSlots(): [EquipSlot] {
-    return [this.weapon1];
+  getEquipSlots(): EquipSlot[] {
+    return this.equipSlots;
   }
 }

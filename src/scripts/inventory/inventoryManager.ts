@@ -26,7 +26,7 @@ export default class InventoryManager {
     for (const EQUIP_SLOT of this.inventory.getEquipSlots()) {
       const EQUIP_SLOT_ITEM = EQUIP_SLOT.getItem();
       if (EQUIP_SLOT_ITEM)
-        EQUIP_SLOT_ITEM.setPosition(EQUIP_SLOT.x - EQUIP_SLOT_ITEM.width / 2, EQUIP_SLOT.y - EQUIP_SLOT_ITEM.height / 2);
+        EQUIP_SLOT_ITEM.setPosition(this.inventory.x + EQUIP_SLOT.x - EQUIP_SLOT_ITEM.width / 2, this.inventory.y + EQUIP_SLOT.y - EQUIP_SLOT_ITEM.height / 2);
     }
 
     // Update item sprites inside inventory
@@ -81,11 +81,14 @@ export default class InventoryManager {
       for (const EQUIP_SLOT of this.inventory.getEquipSlots()) {
         if (Phaser.Geom.Rectangle.Contains(EQUIP_SLOT.getBounds(), this.mouseX, this.mouseY)) {
           const UNEQUIPPED_ITEM = EQUIP_SLOT.equipItem(this.selectedItem);
-          if (UNEQUIPPED_ITEM) {
+          if (UNEQUIPPED_ITEM === this.selectedItem) // Couldn't place item
+            return;
+
+          if (UNEQUIPPED_ITEM) { // Replaced item in equip slot
             this.selectedItem = UNEQUIPPED_ITEM;
             this.selectedItemData = null;
           }
-          else {
+          else { // No item was in equip slot
             this.selectedItem = null;
             this.selectedItemData = null;
             this.isDragging = false;
