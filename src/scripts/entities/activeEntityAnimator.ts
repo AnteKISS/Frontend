@@ -64,6 +64,16 @@ export class ActiveEntityAnimator {
       case ActiveEntityAnimationState.State.CHEER:
         break;
       case ActiveEntityAnimationState.State.DEATH:
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'DEATH' && !hasOrientationUpdated) {
+          break;
+        }
+        console.log('Playing death animation');
+        for (const sprite of this.sprites) {
+          sprite.play(`${this.parent.currentAnimationState.state}_${getOrientationString(this.parent.orientation)}_${sprite.textureName.toUpperCase()}`);
+        }
+        this.parent.currentAnimationState.state = ActiveEntityAnimationState.State.DEAD;
+        break;
+      case ActiveEntityAnimationState.State.DEAD:
         break;
       case ActiveEntityAnimationState.State.MELEEATTACK_2:
       case ActiveEntityAnimationState.State.RANGEDATTACK_2:
@@ -109,7 +119,9 @@ export class ActiveEntityAnimator {
     if (isReapeating) {
       return;
     }
-    if (action === ActiveEntityAnimationState.State.DEATH || action === ActiveEntityAnimationState.State.CRITICALDEATH) {
+    // console.log(action);
+    if (action.toUpperCase() == ActiveEntityAnimationState.State.DEATH || action.toUpperCase() == ActiveEntityAnimationState.State.CRITICALDEATH) {
+      // this.parent.currentAnimationState.state = ActiveEntityAnimationState.State.DEAD;
       return;
     }
     activeEntity.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;

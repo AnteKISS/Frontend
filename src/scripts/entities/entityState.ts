@@ -7,7 +7,7 @@ export class ActiveEntityAnimationState {
   }
 
   public static getNonRepeatingAnimationState(): string[] {
-    return ['MELEEATTACK', 'MELEEATTACK_2', 'RANGEDATTACK', 'RANGEDATTACK_2', 'CASTSPELL', 'BLOCK', 'CHEER', 'HIT', 'DEATH', 'CRITICAL_DEATH'];
+    return ['MELEEATTACK', 'MELEEATTACK_2', 'RANGEDATTACK', 'RANGEDATTACK_2', 'CASTSPELL', 'BLOCK', 'CHEER', 'HIT', 'DEATH', 'CRITICAL_DEATH', 'DEAD'];
   }
 
   public static getRepeatingAnimationState(): string[] {
@@ -28,6 +28,7 @@ export namespace ActiveEntityAnimationState {
     CHEER = 'CHEER',
     HIT = 'HIT',
     DEATH = 'DEATH',
+    DEAD = 'DEAD',
     CRITICALDEATH = 'CRITICAL_DEATH'
   }
 }

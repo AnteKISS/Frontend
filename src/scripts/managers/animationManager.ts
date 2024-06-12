@@ -16,12 +16,21 @@ export class AnimationManager {
           let animExists: Boolean = container.scene.anims.exists(frameKey);
 
           if (!animExists) {
-            container.scene.anims.create({
-              key: frameKey,
-              frames: container.scene.anims.generateFrameNumbers(sheet, { start, end }),
-              frameRate: frameRate,
-              repeat: -1
-            });
+            if (action == 'death' || action == 'death2') {
+              container.scene.anims.create({
+                key: frameKey,
+                frames: container.scene.anims.generateFrameNumbers(sheet, { start, end }),
+                frameRate: frameRate,
+                repeat: 0,
+              });
+            } else {
+              container.scene.anims.create({
+                key: frameKey,
+                frames: container.scene.anims.generateFrameNumbers(sheet, { start, end }),
+                frameRate: frameRate,
+                repeat: -1,
+              });
+            }
           }
       });
     }

@@ -10,6 +10,7 @@ import { time } from 'console';
 import { EntityManager } from '../managers/entityManager';
 import { InventorySprite } from './inventorySprite';
 import { ActiveEntityAnimator } from './activeEntityAnimator';
+import { ActiveEntityAnimationState } from './entityState';
 
 export class MonsterEntity extends ActiveEntity implements IFightable {
 
@@ -35,15 +36,6 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     this.positionX = this.scene.cameras.main.width / 2;
     this.positionY = this.scene.cameras.main.height / 2;
 
-    const spriteWidth = this.baseSprite.width / 5;
-    const spriteHeight = this.baseSprite.height / 5;
-
-    const scaledWidth = spriteWidth * this.baseSprite.scaleX;
-    const scaledHeight = spriteHeight * this.baseSprite.scaleY;
-
-    const offsetX = (scaledWidth - spriteWidth) / 2;
-    const offsetY = (scaledHeight - spriteHeight) / 2;
-
     this.baseSprite.setInteractive({ hitArea: new Phaser.Geom.Rectangle(this.truncatedSpriteWidth, this.truncatedSpriteHeight * this.originY, 32, 64), hitAreaCallback: Phaser.Geom.Rectangle.Contains });
 
     this.baseSprite.on('pointerover', (pointer: Phaser.Input.Pointer) => {
@@ -66,21 +58,18 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     this.updatePosition();
     this.animator.update(deltaTime);
 
-    // this.hitArea.setPosition(
-    //   (this.positionX - this.scene.cameras.main.scrollX) / 2,
-    //   (this.positionY - this.scene.cameras.main.scrollY) / this.originY
-    // );
-
     if (this._debugMode) {
       this.collider.displayDebugGraphics();
     }
     this.collider.checkSpriteCollision();
 
-    if (Math.floor(Math.random() * 1000) % 150 == 0) {
-      let roamingX: number = Math.random() * 1000;
-      let roamingY: number = Math.random() * 1000;
-      this.destinationX = this.positionX + Math.sin(roamingX) * 100;
-      this.destinationY = this.positionY + Math.cos(roamingY) * 100;
+    if (this.stats.health > 0) {
+      if (Math.floor(Math.random() * 1000) % 150 == 0) {
+        let roamingX: number = Math.random() * 1000;
+        let roamingY: number = Math.random() * 1000;
+        this.destinationX = this.positionX + Math.sin(roamingX) * 100;
+        this.destinationY = this.positionY + Math.cos(roamingY) * 100;
+      }
     }
     this.setOrientationRad(Phaser.Math.Angle.Between(this.positionX, this.positionY, this.destinationX, this.destinationY));
   }
@@ -99,9 +88,15 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
   public damage(amount: number): void {
     // TODO: take into account gear, active effects then apply damage
+    if (this.stats.health == 0) {
+      return;
+    }
     this.stats.health -= amount;
-    if (this.stats.health < 0) {
+    if (this.stats.health <= 0) {
       this.stats.health = 0;
+      this.destinationX = this.positionX;
+      this.destinationY = this.positionY;
+      this.currentAnimationState.state = ActiveEntityAnimationState.State.DEATH;
     }
   }
 
@@ -110,7 +105,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
   }
 
   public onPointerOver(): void {
-    console.log('pointerover');
+    // console.log('pointerover');
   }
 
   onSpriteColliding = (hitEntity: BaseEntity): void => {

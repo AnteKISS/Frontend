@@ -1304,7 +1304,7 @@ export const zombie_0_AnimationConfig = {
     state: ActiveEntityAnimationState.State.BLOCK,
     frameRate: 4
   },
-  hitAndDeath: {
+  death: {
     frames: [
       { start: zombie_0_hitAndDeathAnimationStartFrame + zombie_0_leftOrientationSpriteOffset,      end: zombie_0_hitAndDeathAnimationEndFrame + zombie_0_leftOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.LEFT },
       { start: zombie_0_hitAndDeathAnimationStartFrame + zombie_0_upLeftOrientationSpriteOffset,    end: zombie_0_hitAndDeathAnimationEndFrame + zombie_0_upLeftOrientationSpriteOffset,    sheet: 'zombie_0', orientation: EntityOrientation.UP_LEFT },
@@ -1316,9 +1316,9 @@ export const zombie_0_AnimationConfig = {
       { start: zombie_0_hitAndDeathAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_hitAndDeathAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.DEATH,
-    frameRate: 4
+    frameRate: 8
   },
-  criticalDeath: {
+  death2: {
     frames: [
       { start: zombie_0_criticalDeathAnimationStartFrame + zombie_0_leftOrientationSpriteOffset,      end: zombie_0_criticalDeathAnimationEndFrame + zombie_0_leftOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.LEFT },
       { start: zombie_0_criticalDeathAnimationStartFrame + zombie_0_upLeftOrientationSpriteOffset,    end: zombie_0_criticalDeathAnimationEndFrame + zombie_0_upLeftOrientationSpriteOffset,    sheet: 'zombie_0', orientation: EntityOrientation.UP_LEFT },
@@ -1330,7 +1330,7 @@ export const zombie_0_AnimationConfig = {
       { start: zombie_0_criticalDeathAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_criticalDeathAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.CRITICALDEATH,
-    frameRate: 4
+    frameRate: 8
   }
 };
 

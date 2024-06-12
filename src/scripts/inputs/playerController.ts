@@ -69,7 +69,7 @@ export default class PlayerController {
           this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, entity.positionX, entity.positionY));
           if (entity.isTargetable) {
             this.player.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
-            this.attackTarget(entity as PlayerEntity | MonsterEntity);
+            // this.attackTarget(entity as PlayerEntity | MonsterEntity);
             this.player.setDestination(this.player.positionX, this.player.positionY);
           }
         }
