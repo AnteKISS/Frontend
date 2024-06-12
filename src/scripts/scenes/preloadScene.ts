@@ -9,6 +9,22 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');
 		this.load.image('stone_sword_inventory', 'assets/inventory/stone_sword.png');
 		this.load.image('wooden_shield_inventory', 'assets/inventory/wooden_shield.png');
+
+		this.load.image('helmet_slot', 'assets/inventory/slots/helmet_slot.png');
+		this.load.image('amulet_slot', 'assets/inventory/slots/amulet_slot.png');
+		this.load.image('armor_slot', 'assets/inventory/slots/armor_slot.png');
+		this.load.image('mainhand_slot', 'assets/inventory/slots/mainhand_slot.png');
+		this.load.image('offhand_slot', 'assets/inventory/slots/offhand_slot.png');
+		this.load.image('ring_slot', 'assets/inventory/slots/ring_slot.png');
+		this.load.image('gloves_slot', 'assets/inventory/slots/gloves_slot.png');
+		this.load.image('boots_slot', 'assets/inventory/slots/boots_slot.png');
+		this.load.image('belt_slot', 'assets/inventory/slots/belt_slot.png');
+
+		this.load.image('1x1_slot', 'assets/inventory/slots/1x1_slot.png');
+		this.load.image('3x1_slot', 'assets/inventory/slots/3x1_slot.png');
+		this.load.image('3x3_slot', 'assets/inventory/slots/3x3_slot.png');
+		this.load.image('3x4_slot', 'assets/inventory/slots/3x4_slot.png');
+		this.load.image('3x5_slot', 'assets/inventory/slots/3x5_slot.png');
 	}
 
 	create() {

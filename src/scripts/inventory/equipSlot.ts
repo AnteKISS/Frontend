@@ -2,13 +2,20 @@ import { ItemType } from "./itemType";
 import InventoryConfig from "./inventoryConfig";
 import Item from "./item";
 
-export default class EquipSlot extends Phaser.GameObjects.Rectangle {
+export default class EquipSlot extends Phaser.GameObjects.Sprite {
   private itemType: ItemType;
   private item: Item | null;
+  private emptySlotSpritePath: string;
+  private filledSlotSpritePath: string;
 
-  public constructor(scene: Phaser.Scene, itemType: ItemType, x: number, y: number, width: number, height: number) {
-    super(scene, x, y, width, height, InventoryConfig.MOUSE_HOVER_COLOR);
+  public constructor(scene: Phaser.Scene, itemType: ItemType, x: number, y: number, emptySlotSpritePath: string, filledSlotSpritePath: string) {
+    super(scene, x, y, emptySlotSpritePath);
     this.itemType = itemType;
+    this.emptySlotSpritePath = emptySlotSpritePath;
+    this.filledSlotSpritePath = filledSlotSpritePath;
+
+    const SPRITE_CELL_SIZE = 100;
+    this.setScale(InventoryConfig.CELL_SIZE / SPRITE_CELL_SIZE);
 
     scene.add.existing(this);
   }
@@ -20,6 +27,7 @@ export default class EquipSlot extends Phaser.GameObjects.Rectangle {
   public unequipItem(): Item | null {
     const UNEQUIPPED_ITEM = this.item;
     this.item = null;
+    this.setTexture(this.emptySlotSpritePath);
     return UNEQUIPPED_ITEM;
   }
 
@@ -29,6 +37,7 @@ export default class EquipSlot extends Phaser.GameObjects.Rectangle {
 
     const LAST_ITEM = this.item;
     this.item = item;
+    this.setTexture(this.filledSlotSpritePath);
     return LAST_ITEM;
   }
 }
