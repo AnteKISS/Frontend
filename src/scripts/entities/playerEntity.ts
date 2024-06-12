@@ -151,6 +151,10 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     return this.currentAnimationState.state == ActiveEntityAnimationState.State.MELEEATTACK;
   }
 
+  public isDead(): boolean {
+    return this.stats.health <= 0;
+  }
+
   // Event Handlers
   public onSpellKeyDown(key: string): void {
     switch (key) {

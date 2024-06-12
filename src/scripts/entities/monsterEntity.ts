@@ -114,6 +114,10 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     return this.currentAnimationState.state == ActiveEntityAnimationState.State.MELEEATTACK || this.currentAnimationState.state == ActiveEntityAnimationState.State.MELEEATTACK_2;
   }
 
+  public isDead(): boolean {
+    return this.stats.health <= 0;
+  }
+
   public onPointerOver(): void {
     // console.log('pointerover');
   }

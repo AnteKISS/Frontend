@@ -118,7 +118,7 @@ export default class MainScene extends Phaser.Scene {
         this.monsterTest2.collider.debugGraphics,
       ]
     );
-    EntityManager.instance.setDebugMode(true);
+    // EntityManager.instance.setDebugMode(true);
   }
 
   update(time, deltaTime) {
