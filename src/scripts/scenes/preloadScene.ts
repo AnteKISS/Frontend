@@ -19,6 +19,7 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.image('gloves_slot', 'assets/inventory/slots/gloves_slot.png');
 		this.load.image('boots_slot', 'assets/inventory/slots/boots_slot.png');
 		this.load.image('belt_slot', 'assets/inventory/slots/belt_slot.png');
+		this.load.image('inventory_slot', 'assets/inventory/slots/inventory_slot.png');
 
 		this.load.image('1x1_slot', 'assets/inventory/slots/1x1_slot.png');
 		this.load.image('3x1_slot', 'assets/inventory/slots/3x1_slot.png');

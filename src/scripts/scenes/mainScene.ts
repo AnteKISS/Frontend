@@ -25,7 +25,7 @@ export default class MainScene extends Phaser.Scene {
     console.log("Has item been added:", ITEM_ADDED);
 
     const woodenShield = new Item(this, "Wooden Shield", ItemType.WEAPON, 3, 3, "wooden_shield_inventory");
-    this.inventory.addItem(woodenShield, 5, 3);
+    this.inventory.addItem(woodenShield, 5, 1);
 
     /////////////////////////////////////////////////////////////////////////////
 

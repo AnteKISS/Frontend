@@ -4,8 +4,8 @@ export default class Grid extends Phaser.GameObjects.Container {
 
   public readonly gridWidth: number;
   public readonly gridHeight: number;
-  private cells: Phaser.GameObjects.Rectangle[][];
-  private currentCell: Phaser.GameObjects.Rectangle | null;
+  private cells: Phaser.GameObjects.Sprite[][];
+  private currentCell: Phaser.GameObjects.Sprite | null;
 
   public readonly cellSize: number;
   public mouseX: number;
@@ -32,15 +32,8 @@ export default class Grid extends Phaser.GameObjects.Container {
     for (let row = 0; row < this.gridHeight; row++) {
       this.cells[row] = [];
       for (let col = 0; col < this.gridWidth; col++) {
-        const cell = this.scene.add.rectangle(
-          col * this.cellSize,
-          row * this.cellSize,
-          this.cellSize,
-          this.cellSize,
-          InventoryConfig.FREE_COLOR
-        );
+        const cell = this.scene.add.sprite(col * this.cellSize, row * this.cellSize, 'inventory_slot');
         cell.setOrigin(0);
-        cell.setStrokeStyle(1, InventoryConfig.BORDER_COLOR); // noir pr contour
         this.add(cell);
         this.cells[row][col] = cell;
       }
@@ -65,16 +58,16 @@ export default class Grid extends Phaser.GameObjects.Container {
       if (this.currentCell !== cell) {
 
         if (this.currentCell)
-          this.currentCell.setFillStyle(InventoryConfig.FREE_COLOR);
+          this.currentCell.clearTint();
 
-        cell.setFillStyle(InventoryConfig.MOUSE_HOVER_COLOR);
+        cell.tint = InventoryConfig.MOUSE_HOVER_COLOR;
         this.currentCell = cell;
       }
 
       return [col, row];
     } else {
       if (this.currentCell) {
-        this.currentCell.setFillStyle(InventoryConfig.FREE_COLOR);
+        this.currentCell.clearTint();
         this.currentCell = null;
         return [-1, -1];
       }
