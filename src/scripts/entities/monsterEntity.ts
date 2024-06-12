@@ -64,14 +64,23 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     this.collider.checkSpriteCollision();
 
     if (this.stats.health > 0) {
-      if (Math.floor(Math.random() * 1000) % 150 == 0) {
-        let roamingX: number = Math.random() * 1000;
-        let roamingY: number = Math.random() * 1000;
-        this.destinationX = this.positionX + Math.sin(roamingX) * 100;
-        this.destinationY = this.positionY + Math.cos(roamingY) * 100;
-      }
+      // TODO: Put this in behavior state machine
+      // if (Math.floor(Math.random() * 1000) % 150 == 0) {
+      //   let roamingX: number = Math.random() * 1000;
+      //   let roamingY: number = Math.random() * 1000;
+      //   this.destinationX = this.positionX + Math.sin(roamingX) * 100;
+      //   this.destinationY = this.positionY + Math.cos(roamingY) * 100;
+      // }
     }
     this.setOrientationRad(Phaser.Math.Angle.Between(this.positionX, this.positionY, this.destinationX, this.destinationY));
+    // TODO: Put this in behavior state machine
+    // if (this.isAttacking()) {
+    //   return;
+    // }
+    // if (Math.floor(Math.random() * 1000) % 500 == 0) {
+    //   this.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
+    //   this.setDestination(this.positionX, this.positionY);
+    // }
   }
 
   public reset(): void {
@@ -101,7 +110,8 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
   }
 
   public isAttacking(): boolean {
-    throw new NotImplementedError();
+    // TODO: Add a boolean attribute that is set if the player is attacking instead of validating with an animation state
+    return this.currentAnimationState.state == ActiveEntityAnimationState.State.MELEEATTACK || this.currentAnimationState.state == ActiveEntityAnimationState.State.MELEEATTACK_2;
   }
 
   public onPointerOver(): void {

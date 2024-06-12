@@ -1262,7 +1262,7 @@ export const zombie_0_AnimationConfig = {
     state: ActiveEntityAnimationState.State.RUN,
     frameRate: 8
   },
-  meleeAttackSlam: {
+  meleeAttack: {
     frames: [
       { start: zombie_0_meleeAttackSlamAnimationStartFrame + zombie_0_leftOrientationSpriteOffset,      end: zombie_0_meleeAttackSlamAnimationEndFrame + zombie_0_leftOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.LEFT },
       { start: zombie_0_meleeAttackSlamAnimationStartFrame + zombie_0_upLeftOrientationSpriteOffset,    end: zombie_0_meleeAttackSlamAnimationEndFrame + zombie_0_upLeftOrientationSpriteOffset,    sheet: 'zombie_0', orientation: EntityOrientation.UP_LEFT },
@@ -1276,7 +1276,7 @@ export const zombie_0_AnimationConfig = {
     state: ActiveEntityAnimationState.State.MELEEATTACK,
     frameRate: 4
   },
-  meleeAttackBite: {
+  meleeAttack2: {
     frames: [
       { start: zombie_0_meleeAttackBiteAnimationStartFrame + zombie_0_leftOrientationSpriteOffset,      end: zombie_0_meleeAttackBiteAnimationEndFrame + zombie_0_leftOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.LEFT },
       { start: zombie_0_meleeAttackBiteAnimationStartFrame + zombie_0_upLeftOrientationSpriteOffset,    end: zombie_0_meleeAttackBiteAnimationEndFrame + zombie_0_upLeftOrientationSpriteOffset,    sheet: 'zombie_0', orientation: EntityOrientation.UP_LEFT },
