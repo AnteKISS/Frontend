@@ -25,6 +25,8 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.image('3x3_slot', 'assets/inventory/slots/3x3_slot.png');
 		this.load.image('3x4_slot', 'assets/inventory/slots/3x4_slot.png');
 		this.load.image('3x5_slot', 'assets/inventory/slots/3x5_slot.png');
+
+		this.load.image('black_rock_background', 'assets/inventory/background/black_rock_background.png');
 	}
 
 	create() {

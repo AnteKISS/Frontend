@@ -15,7 +15,7 @@ export default class InventoryManager {
 
   constructor(scene: Phaser.Scene, inventory: Inventory) {
     this.inventory = inventory;
-    this.grid = new Grid(scene, 416, 460, 14, 6, InventoryConfig.CELL_SIZE);
+    this.grid = new Grid(scene, 390, 460, 10, 4, InventoryConfig.CELL_SIZE);
 
     scene.input.on('pointermove', this.onPointerMove, this);
     scene.input.on('pointerdown', this.onPointerDown, this);

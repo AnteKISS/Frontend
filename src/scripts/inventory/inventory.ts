@@ -1,13 +1,14 @@
 import Item from './item'
 import EquipSlot from './equipSlot'
 import { ItemType } from './itemType'
-import InventoryConfig from "./inventoryConfig";
 
 export default class Inventory extends Phaser.GameObjects.Container {
   public occupied: boolean[][];
   public gridWidth: number;
   public gridHeight: number;
   private indexFound = -1;
+
+  private background: Phaser.GameObjects.Sprite;
 
   private helmet: EquipSlot;
   private armor: EquipSlot;
@@ -30,6 +31,8 @@ export default class Inventory extends Phaser.GameObjects.Container {
     this.gridHeight = gridHeight;
     this.occupied = Array.from({ length: gridHeight }, () => Array(gridWidth).fill(false)); // true = occupe
 
+    this.background = new Phaser.GameObjects.Sprite(scene, 0, 0, 'black_rock_background');
+
     this.helmet = new EquipSlot(scene, ItemType.HELMET, 0, -268, 'helmet_slot', '3x3_slot');
     this.armor = new EquipSlot(scene, ItemType.ARMOR, 0, -133, 'armor_slot', '3x4_slot');
     this.amulet = new EquipSlot(scene, ItemType.AMULET, 75, -181, 'amulet_slot', '1x1_slot');
@@ -43,7 +46,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
 
     this.equipSlots = [this.helmet, this.armor, this.amulet, this.weapon1, this.weapon2, this.ring1, this.ring2, this.belt, this.gloves, this.boots];
 
-    this.add([this.helmet, this.armor, this.amulet, this.weapon1, this.weapon2, this.ring1, this.ring2, this.belt, this.gloves, this.boots]);
+    this.add([this.background, ...this.equipSlots]);
     this.scene.add.existing(this);
   }
 
