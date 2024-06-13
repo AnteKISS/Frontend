@@ -7,7 +7,7 @@ export default class InventoryManager {
   private inventory: Inventory;
   private grid: Grid;
   private selectedItem: Item | null = null;
-  private selectedItemData: [Item, number, number] | null = null;
+  
 
   private isDragging: boolean = false;
   private mouseX: number;
@@ -15,7 +15,7 @@ export default class InventoryManager {
 
   constructor(scene: Phaser.Scene, inventory: Inventory) {
     this.inventory = inventory;
-    this.grid = new Grid(scene, 390, 460, 10, 4, InventoryConfig.CELL_SIZE);
+    this.grid = new Grid(scene, 390, 460, InventoryConfig.INVENTORY_GRID_WIDTH, InventoryConfig.INVENTORY_GRID_HEIGHT, InventoryConfig.CELL_SIZE);
 
     scene.input.on('pointermove', this.onPointerMove, this);
     scene.input.on('pointerdown', this.onPointerDown, this);
@@ -69,14 +69,13 @@ export default class InventoryManager {
 
   private pickUpItem(item: Item, startX: number, startY: number): void {
     this.selectedItem = item;
-    this.selectedItemData = [item, startX, startY];
     this.isDragging = true;
     this.inventory.removeItem(item, startX, startY);
     console.log(`Picked up item: ${item.name}`);
   }
 
   private dropItem(): void {
-    if (this.selectedItem && this.selectedItemData) {
+    if (this.selectedItem) {
       // Check if dropped in equip slot
       for (const EQUIP_SLOT of this.inventory.getEquipSlots()) {
         if (Phaser.Geom.Rectangle.Contains(EQUIP_SLOT.getBounds(), this.mouseX, this.mouseY)) {
@@ -86,11 +85,9 @@ export default class InventoryManager {
 
           if (UNEQUIPPED_ITEM) { // Replaced item in equip slot
             this.selectedItem = UNEQUIPPED_ITEM;
-            this.selectedItemData = null;
           }
           else { // No item was in equip slot
             this.selectedItem = null;
-            this.selectedItemData = null;
             this.isDragging = false;
           }
           return;
@@ -100,18 +97,22 @@ export default class InventoryManager {
       // Check if dropped in inventory grid
       const [gridX, gridY] = this.grid.detectCellUnderMouse();
 
-      if (this.inventory.isSpaceAvailable(this.selectedItem, gridX, gridY)) {
+      if(gridX == -1 && gridY == -1){
+        this.selectedItem.destroy();
+        this.selectedItem = null;
+        this.isDragging = false;
+      }
+      else if (this.inventory.isSpaceAvailable(this.selectedItem, gridX, gridY)) {
         this.inventory.addItem(this.selectedItem, gridX, gridY);
         console.log(`Dropped item: ${this.selectedItem.name} at (${gridX}, ${gridY})`);
-      } else {
+        this.selectedItem = null;
+        this.isDragging = false;
+      } 
+      else {
         console.log("Cannot drop item here, space is occupied.");
-        const [item, startX, startY] = this.selectedItemData;
-        console.log("Space occupied add item result:", this.inventory.addItem(item, startX, startY));
-        console.log(startX, startY, this.inventory.occupied);
+        console.log("Space occupied add item result:");
       }
-      this.selectedItem = null;
-      this.selectedItemData = null;
-      this.isDragging = false;
+      
     }
   }
 

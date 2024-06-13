@@ -52,9 +52,10 @@ export default class Inventory extends Phaser.GameObjects.Container {
 
   public isSpaceAvailable(item: Item, startX: number, startY: number): boolean {
     // verif si il y a assez d espace
-    if (startX + item.inventoryWidth > this.gridWidth || startY + item.inventoryHeight > this.gridHeight)
+    console.log(startY,item.inventoryHeight,this.gridHeight);
+    if (startX + item.inventoryWidth > this.gridWidth || startY + item.inventoryHeight > this.gridHeight){
       return false;
-
+    }
     // verif de dispo
     for (let y = startY; y < startY + item.inventoryHeight; y++)
       for (let x = startX; x < startX + item.inventoryWidth; x++)
@@ -62,6 +63,16 @@ export default class Inventory extends Phaser.GameObjects.Container {
           return false;
 
     return true;
+  }
+
+  autoLoot(item: Item): void{
+    for(let x = 0; x < item.inventoryWidth; x++){
+      for(let y = 0; y < item.inventoryHeight; y++){
+        if(this.addItem(item , x, y)){
+          return;
+        }
+      }
+    }
   }
 
   addItem(item: Item, startX: number, startY: number): boolean {
