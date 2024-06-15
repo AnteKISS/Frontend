@@ -16,16 +16,16 @@ export default class MainScene extends Phaser.Scene {
   }
 
   create() {
-    this.inventory = new Inventaire(this, InventoryConfig.INVENTORY_GRID_WIDTH , InventoryConfig.INVENTORY_GRID_HEIGHT);
+    this.inventory = new Inventaire(this, InventoryConfig.INVENTORY_GRID_WIDTH, InventoryConfig.INVENTORY_GRID_HEIGHT);
     this.inventoryManager = new InventoryManager(this, this.inventory);
 
-    const stoneSword = new Item(this, "Stone Sword", ItemType.WEAPON, 2, 4, "stone_sword_inventory");
+    const stoneSword = new Item(this, "Stone Sword", ItemType.WEAPON, 1, 2, "stone_sword_inventory");
     console.log("Is space available:", this.inventory.isSpaceAvailable(stoneSword, 0, 0));
 
     const ITEM_ADDED = this.inventory.addItem(stoneSword, 0, 0);
     console.log("Has item been added:", ITEM_ADDED);
 
-    const woodenShield = new Item(this, "Wooden Shield", ItemType.WEAPON, 3, 3, "wooden_shield_inventory");
+    const woodenShield = new Item(this, "Wooden Shield", ItemType.WEAPON, 2, 2, "wooden_shield_inventory");
     this.inventory.autoLoot(woodenShield);
 
     /////////////////////////////////////////////////////////////////////////////
