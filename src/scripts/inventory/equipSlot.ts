@@ -15,7 +15,7 @@ export default class EquipSlot extends Phaser.GameObjects.Sprite {
     this.filledSlotSpritePath = filledSlotSpritePath;
 
     const SPRITE_CELL_SIZE = 100;
-    this.setScale(InventoryConfig.CELL_SIZE / SPRITE_CELL_SIZE);
+    this.setScale(InventoryConfig.CELL_SIZE * 1.05 / SPRITE_CELL_SIZE);
 
     scene.add.existing(this);
   }
