@@ -9,6 +9,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
   private indexFound = -1;
 
   private background: Phaser.GameObjects.Sprite;
+  private closeButton: Phaser.GameObjects.Sprite;
 
   private helmet: EquipSlot;
   private armor: EquipSlot;
@@ -32,6 +33,8 @@ export default class Inventory extends Phaser.GameObjects.Container {
     this.occupied = Array.from({ length: gridHeight }, () => Array(gridWidth).fill(false)); // true = occupe
 
     this.background = new Phaser.GameObjects.Sprite(scene, 0, 0, 'black_rock_background');
+    this.closeButton = new Phaser.GameObjects.Sprite(scene, 243, -327, 'close_button')
+      .setInteractive();
 
     this.helmet = new EquipSlot(scene, ItemType.HELMET, 0, -268, 'helmet_slot', '3x3_slot');
     this.armor = new EquipSlot(scene, ItemType.ARMOR, 0, -133, 'armor_slot', '3x4_slot');
@@ -46,14 +49,16 @@ export default class Inventory extends Phaser.GameObjects.Container {
 
     this.equipSlots = [this.helmet, this.armor, this.amulet, this.weapon1, this.weapon2, this.ring1, this.ring2, this.belt, this.gloves, this.boots];
 
-    this.add([this.background, ...this.equipSlots]);
+    this.closeButton.on('pointerdown', () => console.log("Closing inventory..."));
+
+    this.add([this.background, this.closeButton, ...this.equipSlots]);
     this.scene.add.existing(this);
   }
 
   public isSpaceAvailable(item: Item, startX: number, startY: number): boolean {
     // verif si il y a assez d espace
-    console.log(startY,item.inventoryHeight,this.gridHeight);
-    if (startX + item.inventoryWidth > this.gridWidth || startY + item.inventoryHeight > this.gridHeight){
+    console.log(startY, item.inventoryHeight, this.gridHeight);
+    if (startX + item.inventoryWidth > this.gridWidth || startY + item.inventoryHeight > this.gridHeight) {
       return false;
     }
     // verif de dispo
@@ -65,10 +70,10 @@ export default class Inventory extends Phaser.GameObjects.Container {
     return true;
   }
 
-  autoLoot(item: Item): void{
-    for(let x = 0; x < item.inventoryWidth; x++){
-      for(let y = 0; y < item.inventoryHeight; y++){
-        if(this.addItem(item , x, y)){
+  autoLoot(item: Item): void {
+    for (let x = 0; x < item.inventoryWidth; x++) {
+      for (let y = 0; y < item.inventoryHeight; y++) {
+        if (this.addItem(item, x, y)) {
           return;
         }
       }
