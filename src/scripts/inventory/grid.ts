@@ -24,8 +24,6 @@ export default class Grid extends Phaser.GameObjects.Container {
 
     this.createGrid();
     scene.add.existing(this);
-
-    scene.input.on('pointermove', this.handleMouseMove, this);
   }
 
   private createGrid(): void {
@@ -40,15 +38,9 @@ export default class Grid extends Phaser.GameObjects.Container {
     }
   }
 
-  private handleMouseMove(pointer: Phaser.Input.Pointer): void {
-    this.mouseX = pointer.x;
-    this.mouseY = pointer.y;
-    this.detectCellUnderMouse();
-  }
-
-  public detectCellUnderMouse(): [number, number] {
-    const adjustedX = this.mouseX - this.x;
-    const adjustedY = this.mouseY - this.y;
+  public detectCellUnderMouse(mouseX: number, mouseY: number): [number, number] {
+    const adjustedX = mouseX - this.x - 640; // TODO: Remove absolute values
+    const adjustedY = mouseY - this.y - 360;
     const col = Math.floor(adjustedX / this.cellSize);
     const row = Math.floor(adjustedY / this.cellSize);
 

@@ -1,24 +1,27 @@
 import Inventory from './inventory'
-import InventoryConfig from './inventoryConfig'
-import Grid from './grid'
 import Item from './item'
 
-export default class InventoryManager {
+export default class InventoryManager extends Phaser.GameObjects.Container {
   private inventory: Inventory;
-  private grid: Grid;
   private selectedItem: Item | null = null;
-  
+  private closeButton: Phaser.GameObjects.Sprite;
 
   private isDragging: boolean = false;
   private mouseX: number;
   private mouseY: number;
 
   constructor(scene: Phaser.Scene, inventory: Inventory) {
+    super(scene, 0, 0);
     this.inventory = inventory;
-    this.grid = new Grid(scene, 390, 460, InventoryConfig.INVENTORY_GRID_WIDTH, InventoryConfig.INVENTORY_GRID_HEIGHT, InventoryConfig.CELL_SIZE);
+
+    this.closeButton = new Phaser.GameObjects.Sprite(scene, 883, 37, 'close_button').setInteractive();
+    this.closeButton.on('pointerdown', () => console.log(this.setVisible(false)));
 
     scene.input.on('pointermove', this.onPointerMove, this);
     scene.input.on('pointerdown', this.onPointerDown, this);
+
+    this.add([this.inventory, this.closeButton]);
+    scene.add.existing(this);
   }
 
   public updateItems() {
@@ -26,24 +29,25 @@ export default class InventoryManager {
     for (const EQUIP_SLOT of this.inventory.getEquipSlots()) {
       const EQUIP_SLOT_ITEM = EQUIP_SLOT.getItem();
       if (EQUIP_SLOT_ITEM)
-        EQUIP_SLOT_ITEM.setPosition(this.inventory.x + EQUIP_SLOT.x - EQUIP_SLOT_ITEM.width / 2, this.inventory.y + EQUIP_SLOT.y - EQUIP_SLOT_ITEM.height / 2);
+        EQUIP_SLOT_ITEM.setPosition(EQUIP_SLOT.x - EQUIP_SLOT_ITEM.width / 2, EQUIP_SLOT.y - EQUIP_SLOT_ITEM.height / 2);
     }
 
     // Update item sprites inside inventory
     for (const [item, startX, startY] of this.inventory.getItemsInfo()) {
-      item.setSize(item.inventoryWidth * this.grid.cellSize, item.inventoryHeight * this.grid.cellSize);
+      item.setSize(item.inventoryWidth * this.inventory.getGrid().cellSize, item.inventoryHeight * this.inventory.getGrid().cellSize);
 
       if (!(item === this.selectedItem && this.isDragging))
-        item.setPosition(this.grid.x + startX * this.grid.cellSize, this.grid.y + startY * this.grid.cellSize);
+        item.setPosition(this.inventory.getGrid().x + startX * this.inventory.getGrid().cellSize, this.inventory.getGrid().y + startY * this.inventory.getGrid().cellSize);
     }
   }
 
   private onPointerMove(pointer: Phaser.Input.Pointer): void {
     if (this.isDragging && this.selectedItem)
-      this.selectedItem.setPosition(pointer.x, pointer.y);
+      this.selectedItem.setPosition(pointer.x - 640, pointer.y - 360); // TODO: Remove absolute values
 
     this.mouseX = pointer.x;
     this.mouseY = pointer.y;
+    this.inventory.getGrid().detectCellUnderMouse(this.mouseX, this.mouseY);
   }
 
   private onPointerDown(pointer: Phaser.Input.Pointer): void {
@@ -95,9 +99,9 @@ export default class InventoryManager {
       }
 
       // Check if dropped in inventory grid
-      const [gridX, gridY] = this.grid.detectCellUnderMouse();
+      const [gridX, gridY] = this.inventory.getGrid().detectCellUnderMouse(this.mouseX, this.mouseY);
 
-      if(gridX == -1 && gridY == -1){
+      if (gridX == -1 && gridY == -1) {
         this.selectedItem.destroy();
         this.selectedItem = null;
         this.isDragging = false;
@@ -107,17 +111,17 @@ export default class InventoryManager {
         console.log(`Dropped item: ${this.selectedItem.name} at (${gridX}, ${gridY})`);
         this.selectedItem = null;
         this.isDragging = false;
-      } 
+      }
       else {
         console.log("Cannot drop item here, space is occupied.");
         console.log("Space occupied add item result:");
       }
-      
+
     }
   }
 
   private mouseIsOverItem(item: Item, startX: number, startY: number): boolean {
-    const [gridX, gridY] = this.grid.detectCellUnderMouse();
+    const [gridX, gridY] = this.inventory.getGrid().detectCellUnderMouse(this.mouseX, this.mouseY);
     return gridX >= startX && gridX < startX + item.inventoryWidth
       && gridY >= startY && gridY < startY + item.inventoryHeight;
   }

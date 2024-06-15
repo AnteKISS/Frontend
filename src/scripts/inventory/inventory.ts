@@ -1,5 +1,7 @@
 import Item from './item'
 import EquipSlot from './equipSlot'
+import Grid from './grid'
+import InventoryConfig from './inventoryConfig'
 import { ItemType } from './itemType'
 
 export default class Inventory extends Phaser.GameObjects.Container {
@@ -9,18 +11,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
   private indexFound = -1;
 
   private background: Phaser.GameObjects.Sprite;
-  private closeButton: Phaser.GameObjects.Sprite;
-
-  private helmet: EquipSlot;
-  private armor: EquipSlot;
-  private amulet: EquipSlot;
-  private weapon1: EquipSlot;
-  private weapon2: EquipSlot;
-  private ring1: EquipSlot;
-  private ring2: EquipSlot;
-  private belt: EquipSlot;
-  private gloves: EquipSlot;
-  private boots: EquipSlot;
+  private grid: Grid;
 
   private equipSlots: EquipSlot[];
   private infoItems: [Item, number, number][] = []; // [item,posx,posy]
@@ -30,29 +21,30 @@ export default class Inventory extends Phaser.GameObjects.Container {
 
     this.gridWidth = gridWidth;
     this.gridHeight = gridHeight;
+    this.grid = new Grid(scene, -250, 100, InventoryConfig.INVENTORY_GRID_WIDTH, InventoryConfig.INVENTORY_GRID_HEIGHT, InventoryConfig.CELL_SIZE);
     this.occupied = Array.from({ length: gridHeight }, () => Array(gridWidth).fill(false)); // true = occupe
 
     this.background = new Phaser.GameObjects.Sprite(scene, 0, 0, 'black_rock_background');
-    this.closeButton = new Phaser.GameObjects.Sprite(scene, 243, -327, 'close_button')
-      .setInteractive();
 
-    this.helmet = new EquipSlot(scene, ItemType.HELMET, 0, -270, 'helmet_slot', '3x3_slot');
-    this.armor = new EquipSlot(scene, ItemType.ARMOR, 0, -125, 'armor_slot', '3x4_slot');
-    this.amulet = new EquipSlot(scene, ItemType.AMULET, 100, -175, 'amulet_slot', '1x1_slot');
-    this.weapon1 = new EquipSlot(scene, ItemType.WEAPON, -200, -150, 'mainhand_slot', '3x5_slot');
-    this.weapon2 = new EquipSlot(scene, ItemType.WEAPON, 200, -150, 'offhand_slot', '3x5_slot');
-    this.ring1 = new EquipSlot(scene, ItemType.RING, -100, -5, 'ring_slot', '1x1_slot');
-    this.ring2 = new EquipSlot(scene, ItemType.RING, 100, -5, 'ring_slot', '1x1_slot');
-    this.belt = new EquipSlot(scene, ItemType.BELT, 0, -5, 'belt_slot', '3x1_slot');
-    this.gloves = new EquipSlot(scene, ItemType.GLOVES, -200, 20, 'gloves_slot', '3x3_slot');
-    this.boots = new EquipSlot(scene, ItemType.BOOTS, 200, 20, 'boots_slot', '3x3_slot');
+    this.equipSlots = [
+      new EquipSlot(scene, ItemType.HELMET, 0, -270, 'helmet_slot', '3x3_slot'),
+      new EquipSlot(scene, ItemType.ARMOR, 0, -125, 'armor_slot', '3x4_slot'),
+      new EquipSlot(scene, ItemType.AMULET, 100, -175, 'amulet_slot', '1x1_slot'),
+      new EquipSlot(scene, ItemType.WEAPON, -200, -150, 'mainhand_slot', '3x5_slot'),
+      new EquipSlot(scene, ItemType.WEAPON, 200, -150, 'offhand_slot', '3x5_slot'),
+      new EquipSlot(scene, ItemType.RING, -100, -5, 'ring_slot', '1x1_slot'),
+      new EquipSlot(scene, ItemType.RING, 100, -5, 'ring_slot', '1x1_slot'),
+      new EquipSlot(scene, ItemType.BELT, 0, -5, 'belt_slot', '3x1_slot'),
+      new EquipSlot(scene, ItemType.GLOVES, -200, 20, 'gloves_slot', '3x3_slot'),
+      new EquipSlot(scene, ItemType.BOOTS, 200, 20, 'boots_slot', '3x3_slot')
+    ];
 
-    this.equipSlots = [this.helmet, this.armor, this.amulet, this.weapon1, this.weapon2, this.ring1, this.ring2, this.belt, this.gloves, this.boots];
-
-    this.closeButton.on('pointerdown', () => console.log("Closing inventory..."));
-
-    this.add([this.background, this.closeButton, ...this.equipSlots]);
+    this.add([this.background, this.grid, ...this.equipSlots]);
     this.scene.add.existing(this);
+  }
+
+  public getGrid(): Grid {
+    return this.grid;
   }
 
   public isSpaceAvailable(item: Item, startX: number, startY: number): boolean {
@@ -91,6 +83,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
         this.occupied[startY + y][startX + x] = true;
 
     this.infoItems.push([item, startX, startY]);
+    this.add(item);
     return true;
   }
 
