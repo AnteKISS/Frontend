@@ -107,7 +107,6 @@ export default class MainScene extends Phaser.Scene {
         this.entityHealthBar.lblEntityDescription
       ]
     );
-    this.uiCamera = this.cameras.add(0, 0, 1280, 720, false, "uiCamera");
     // TODO: Find a way to make the ignore list more dynamic
     this.uiCamera.ignore(
       [
