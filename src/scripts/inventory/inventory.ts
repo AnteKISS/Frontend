@@ -1,111 +1,125 @@
-import Item from './item'
-import EquipSlot from './equipSlot'
-import Grid from './grid'
+import PlayerEquipment from './playerEquipment'
+import ItemStorage from './itemStorage'
 import InventoryConfig from './inventoryConfig'
-import { ItemType } from './itemType'
+import Item from './item'
 
 export default class Inventory extends Phaser.GameObjects.Container {
-  public occupied: boolean[][];
-  public gridWidth: number;
-  public gridHeight: number;
-  private indexFound = -1;
-
+  private closeButton: Phaser.GameObjects.Sprite;
   private background: Phaser.GameObjects.Sprite;
-  private grid: Grid;
 
-  private equipSlots: EquipSlot[];
-  private infoItems: [Item, number, number][] = []; // [item,posx,posy]
+  private playerEquipment: PlayerEquipment;
+  private itemStorage: ItemStorage;
 
-  constructor(scene: Phaser.Scene, gridWidth: number, gridHeight: number) {
-    super(scene, 640, 360);
+  private selectedItem: Item | null = null;
+  private isDragging: boolean = false;
+  private mouseX: number;
+  private mouseY: number;
 
-    this.gridWidth = gridWidth;
-    this.gridHeight = gridHeight;
-    this.grid = new Grid(scene, -250, 100, InventoryConfig.INVENTORY_GRID_WIDTH, InventoryConfig.INVENTORY_GRID_HEIGHT, InventoryConfig.CELL_SIZE);
-    this.occupied = Array.from({ length: gridHeight }, () => Array(gridWidth).fill(false)); // true = occupe
+  constructor(scene: Phaser.Scene) {
+    super(scene, 640, 0);
+    this.playerEquipment = new PlayerEquipment(scene);
+    this.itemStorage = new ItemStorage(scene, -250, 470, InventoryConfig.INVENTORY_GRID_WIDTH, InventoryConfig.INVENTORY_GRID_HEIGHT, InventoryConfig.CELL_SIZE);
 
-    this.background = new Phaser.GameObjects.Sprite(scene, 0, 0, 'black_rock_background');
+    this.background = new Phaser.GameObjects.Sprite(scene, 0, 360, 'black_rock_background');
+    this.closeButton = new Phaser.GameObjects.Sprite(scene, 243, 37, 'close_button').setInteractive();
 
-    this.equipSlots = [
-      new EquipSlot(scene, ItemType.HELMET, 0, -270, 'helmet_slot', '2x2_slot'),
-      new EquipSlot(scene, ItemType.ARMOR, 0, -125, 'armor_slot', '2x3_slot'),
-      new EquipSlot(scene, ItemType.AMULET, 100, -175, 'amulet_slot', '1x1_slot'),
-      new EquipSlot(scene, ItemType.WEAPON, -200, -150, 'mainhand_slot', '2x4_slot'),
-      new EquipSlot(scene, ItemType.WEAPON, 200, -150, 'offhand_slot', '2x4_slot'),
-      new EquipSlot(scene, ItemType.RING, -100, -5, 'ring_slot', '1x1_slot'),
-      new EquipSlot(scene, ItemType.RING, 100, -5, 'ring_slot', '1x1_slot'),
-      new EquipSlot(scene, ItemType.BELT, 0, -5, 'belt_slot', '2x1_slot'),
-      new EquipSlot(scene, ItemType.GLOVES, -200, 20, 'gloves_slot', '2x2_slot'),
-      new EquipSlot(scene, ItemType.BOOTS, 200, 20, 'boots_slot', '2x2_slot')
-    ];
+    this.closeButton.on('pointerdown', () => this.setVisible(false));
+    scene.input.on('pointermove', this.onPointerMove, this);
+    scene.input.on('pointerdown', this.onPointerDown, this);
 
-    this.add([this.background, this.grid, ...this.equipSlots]);
-    this.scene.add.existing(this);
+    this.add([this.background, this.closeButton, this.itemStorage, this.playerEquipment]);
+    scene.add.existing(this);
   }
 
-  public getGrid(): Grid {
-    return this.grid;
+  public getPlayerEquipment(): PlayerEquipment {
+    return this.playerEquipment;
   }
 
-  public isSpaceAvailable(item: Item, startX: number, startY: number): boolean {
-    // verif si il y a assez d espace
-    console.log(startY, item.inventoryHeight, this.gridHeight);
-    if (startX + item.inventoryWidth > this.gridWidth || startY + item.inventoryHeight > this.gridHeight) {
-      return false;
-    }
-    // verif de dispo
-    for (let y = startY; y < startY + item.inventoryHeight; y++)
-      for (let x = startX; x < startX + item.inventoryWidth; x++)
-        if (this.occupied[y][x])
-          return false;
-
-    return true;
+  public getItemStorage(): ItemStorage {
+    return this.itemStorage;
   }
 
-  autoLoot(item: Item): void {
-    for (let x = 0; x < item.inventoryWidth; x++) {
-      for (let y = 0; y < item.inventoryHeight; y++) {
-        if (this.addItem(item, x, y)) {
+  private onPointerMove(pointer: Phaser.Input.Pointer): void {
+    if (this.isDragging && this.selectedItem)
+      this.selectedItem.setPosition(pointer.x, pointer.y); // TODO: Remove absolute values
+
+    this.mouseX = pointer.x;
+    this.mouseY = pointer.y;
+  }
+
+  private onPointerDown(pointer: Phaser.Input.Pointer): void {
+    if (this.isDragging && this.selectedItem)
+      this.dropItem();
+    else {
+      // Check if equip slot clicked
+      for (const EQUIP_SLOT of this.playerEquipment.getEquipSlots())
+        if (Phaser.Geom.Rectangle.Contains(EQUIP_SLOT.getBounds(), this.mouseX, this.mouseY)) {
+          this.selectedItem = EQUIP_SLOT.unequipItem();
+          this.isDragging = true;
           return;
         }
+
+      // Check if item in inventory clicked
+      for (let [item, startX, startY] of this.itemStorage.getItemsInfo())
+        if (this.mouseIsOverItem(item, startX, startY)) {
+          this.pickUpItem(item, startX, startY);
+          return;
+        }
+    }
+  }
+
+  private pickUpItem(item: Item, startX: number, startY: number): void {
+    this.selectedItem = item;
+    this.isDragging = true;
+    this.itemStorage.removeItem(item, startX, startY);
+    console.log(`Picked up item: ${item.name}`);
+  }
+
+  private dropItem(): void {
+    if (this.selectedItem) {
+      // Check if dropped in equip slot
+      for (const EQUIP_SLOT of this.playerEquipment.getEquipSlots()) {
+        if (Phaser.Geom.Rectangle.Contains(EQUIP_SLOT.getBounds(), this.mouseX, this.mouseY)) {
+          const UNEQUIPPED_ITEM = EQUIP_SLOT.equipItem(this.selectedItem);
+          if (UNEQUIPPED_ITEM === this.selectedItem) // Couldn't place item
+            return;
+
+          if (UNEQUIPPED_ITEM) { // Replaced item in equip slot
+            this.selectedItem = UNEQUIPPED_ITEM;
+          }
+          else { // No item was in equip slot
+            this.selectedItem = null;
+            this.isDragging = false;
+          }
+          return;
+        }
+      }
+
+      // Check if dropped in inventory grid
+      const [gridX, gridY] = this.itemStorage.getCurrentCellPosition();
+
+      if (gridX == -1 && gridY == -1) {
+        this.selectedItem.destroy();
+        this.selectedItem = null;
+        this.isDragging = false;
+      }
+      else if (this.itemStorage.isSpaceAvailable(this.selectedItem, gridX, gridY)) {
+        this.itemStorage.addItem(this.selectedItem, gridX, gridY);
+        console.log(`Dropped item: ${this.selectedItem.name} at (${gridX}, ${gridY})`);
+        this.selectedItem = null;
+        this.isDragging = false;
+      }
+      else {
+        console.log("Cannot drop item here, space is occupied.");
+        console.log("Space occupied add item result:");
       }
     }
   }
 
-  addItem(item: Item, startX: number, startY: number): boolean {
-    //verif si la place est libre
-    if (!this.isSpaceAvailable(item, startX, startY))
-      return false;
-
-    //occupe la place
-    for (let y = 0; y < item.inventoryHeight; y++)
-      for (let x = 0; x < item.inventoryWidth; x++)
-        this.occupied[startY + y][startX + x] = true;
-
-    this.infoItems.push([item, startX, startY]);
-    this.add(item);
-    return true;
-  }
-
-  removeItem(item: Item, selectedX: number, selectedY: number): boolean {
-    //libere la place
-    for (let y = 0; y < item.inventoryHeight; y++)
-      for (let x = 0; x < item.inventoryWidth; x++)
-        this.occupied[selectedY + y][selectedX + x] = false;
-    console.log(selectedX, selectedY, "occupied after remove:", this.occupied);
-
-    // eneleve l item du tableau
-    this.indexFound = this.infoItems.findIndex((itemInfo) => item === itemInfo[0]);
-
-    this.infoItems.splice(this.indexFound, 1);
-    return true;
-  }
-
-  getItemsInfo(): [Item, number, number][] {
-    return this.infoItems;
-  }
-
-  getEquipSlots(): EquipSlot[] {
-    return this.equipSlots;
+  private mouseIsOverItem(item: Item, startX: number, startY: number): boolean {
+    const [gridX, gridY] = this.itemStorage.getCurrentCellPosition();
+    return gridX >= startX && gridX < startX + item.inventoryWidth
+      && gridY >= startY && gridY < startY + item.inventoryHeight;
   }
 }
+
