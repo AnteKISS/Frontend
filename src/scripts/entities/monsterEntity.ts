@@ -132,8 +132,8 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       hitEntity.depth = 0;
     }
   }
-  
+
   onEntityColliding = (hitEntity: BaseEntity): void => {
-    
+
   }
 }

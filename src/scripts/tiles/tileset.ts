@@ -1,32 +1,41 @@
 import Tile, { TileType } from './tile'
 import Transition from './transition'
+import Point from '../types/point'
 
 export default class TileSet {
-  tiles: Map<String, Tile>
+  private tiles: Map<String, Tile>
 
-  constructor(size: number = 30) {
+  public constructor(size: number = 30) {
     this.tiles = new Map();
 
     for (let i = -size; i <= size; i++) {
       for (let j = -size; j <= size; j++) {
-        let tile = new Tile(i, j, TileType.Floor);
+        let tile = new Tile(i, j, TileType.Floor, "rocky_floor_tiles", 8);
         this.tiles.set(Tile.getHash(tile.x, tile.y), tile);
       }
     }
   }
 
-  public addTile(x: number, y: number, type: TileType, transition: Transition | undefined = undefined) {
-    this.tiles.set(Tile.getHash(x, y), new Tile(x, y, type, transition))
+  public addTile(x: number, y: number, type: TileType, bitmap: string, frame: number, transition: Transition | undefined = undefined): Tile {
+    const TILE = new Tile(x, y, type, bitmap, frame, transition);
+    this.tiles.set(Tile.getHash(x, y), TILE);
+    return TILE;
   }
 
-  public deleteTile(x: number, y: number) {
-    const HASH: String = Tile.getHash(x, y);
-    if (this.tiles.get(HASH) !== undefined)
+  public deleteTile(x: number, y: number): Tile | undefined {
+    const HASH = Tile.getHash(x, y);
+    const TILE = this.tiles.get(HASH);
+    if (TILE !== undefined)
       this.tiles.delete(HASH);
+    return TILE;
   }
 
   public getTile(x: number, y: number): Tile | undefined {
     return this.tiles.get(Tile.getHash(x, y));
+  }
+
+  public getTiles(): IterableIterator<Tile> {
+    return this.tiles.values();
   }
 
   public getProximityTileList(x: number, y: number, proximity: number): Tile[] {
@@ -48,8 +57,8 @@ export default class TileSet {
     return tileList;
   }
 
-  public static getProximityTilePos(x: number, y: number, proximity: number): Phaser.Geom.Point[] {
-    const posList: Phaser.Geom.Point[] = [];
+  public static getProximityTilePos(x: number, y: number, proximity: number): Point[] {
+    const posList: Point[] = [];
     const P2: number = proximity * proximity;
 
     // Select tiles in a circle, column by column
@@ -58,20 +67,10 @@ export default class TileSet {
       const X2: number = Math.pow((x - cx), 2);
       const Y_DIST: number = Math.floor(Math.sqrt(P2 - X2));
       for (let cy = y - Y_DIST; cy <= y + Y_DIST; cy++) {
-        posList.push(new Phaser.Geom.Point(cx, cy));
+        posList.push(new Point(cx, cy));
       }
     }
 
     return posList;
-  }
-
-  public static getTilePosFromUnitPos(unitPos: Phaser.Geom.Point): Phaser.Geom.Point {
-    const adjustedX = unitPos.x;
-    const adjustedY = unitPos.y - Tile.HALF_HEIGHT;
-
-    return new Phaser.Geom.Point(
-      Math.ceil(adjustedX / Tile.WIDTH + adjustedY / Tile.HEIGHT),
-      Math.floor(adjustedX / Tile.WIDTH - adjustedY / Tile.HEIGHT)
-    );
   }
 }

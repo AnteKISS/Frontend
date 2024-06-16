@@ -11,15 +11,14 @@ export enum TileColor {
 }
 
 export default class TileDrawer {
-  graphics: Phaser.GameObjects.Graphics
+  private graphics: Phaser.GameObjects.Graphics
 
-  constructor(graphics: Phaser.GameObjects.Graphics) {
+  public constructor(graphics: Phaser.GameObjects.Graphics) {
     this.graphics = graphics;
   }
 
-  public drawDebugTileList(tiles: Iterable<Tile>, lineWidth: number) {
+  public drawDebugTileList(tiles: Iterable<Tile>): void {
     for (const tile of tiles) {
-      const points = Tile.getPointsFromTilePos(tile.x, tile.y);
       let lineColor = 0x000000;
 
       if (tile.type === TileType.Floor) {
@@ -29,18 +28,13 @@ export default class TileDrawer {
           lineColor = TileColor.Floor;
       }
 
-      this.drawDebugTilePoints(points, lineColor);
+      this.drawDebugTilePos(tile.x, tile.y, lineColor);
     }
   }
 
-  public drawDebugTilePosList(tilesPos: Iterable<Phaser.Geom.Point>, lineWidth: number, fillColor: number) {
-    for (const pos of tilesPos) {
-      const points = Tile.getPointsFromTilePos(pos.x, pos.y);
-      this.drawDebugTilePoints(points, fillColor);
-    }
-  }
+  public drawDebugTilePos(tileX: number, tileY: number, fillColor: number): void {
+    const points = Tile.getPointsFromTilePos(tileX, tileY);
 
-  public drawDebugTilePoints(points: Phaser.Geom.Point[], fillColor: number) {
     this.graphics.lineStyle(2, 0x000000);
     this.graphics.fillStyle(fillColor, 0.5);
     this.graphics.beginPath();

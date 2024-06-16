@@ -31,6 +31,6 @@ export class ShrineEntity extends InactiveEntity {
   }
 
   initializeAnimations(): void {
-    
+
   }
 }

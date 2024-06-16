@@ -7,7 +7,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('game-logo', 'assets/img/rat_474x278.png');
     this.load.image('sphereTexture', 'assets/gui/infobars/itsmars_orb_fill.png');
     this.load.image('bigContour', 'assets/gui/infobars/itsmars_orb_back1.png');
-    this.load.image('fillTexture', 'assets/gui/infobars/itsmars_scroll_fill.png' );
+    this.load.image('fillTexture', 'assets/gui/infobars/itsmars_scroll_fill.png');
     this.load.image('contour', 'assets/gui/infobars/itsmars_orb_border.png');
     this.load.image('shadow', 'assets/gui/infobars/itsmars_orb_shadow.png');
     this.load.image('highlight', 'assets/gui/infobars/itsmars_orb_highlight.png');
@@ -22,9 +22,12 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('quakeIcon', 'assets/gui/icons/quakeIcon.png');
     this.load.image('iceShardIcon', 'assets/gui/icons/iceShardIcon.png');
     this.load.image('fireboltIcon', 'assets/gui/icons/fireboltIcon.png');
+    this.load.image('arrowLeft', 'assets/gui/editor/arrows/Arrow_W0001.png');
+    this.load.image('arrowRight', 'assets/gui/editor/arrows/Arrow_E0001.png');
+    this.load.image('whiteGlow', 'assets/gui/editor/white_glow.png');
 
-	  this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
-	  this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');
+    this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
+    this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');
 
     this.initializeSpritesheets();
 
@@ -80,9 +83,12 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.spritesheet('staff', 'assets/sprites/player/staff.png', { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet('wand', 'assets/sprites/player/wand.png', { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet('zombie_0', 'assets/sprites/monster/zombie_0.png', { frameWidth: 128, frameHeight: 128 });
-    this.load.spritesheet('icicle', 'assets/sprites/spell/icicle.png', { frameWidth: 64, frameHeight: 64});
-    this.load.spritesheet('firebolt', 'assets/sprites/spell/firebolt.png', { frameWidth: 64, frameHeight: 64});
-    this.load.spritesheet('quake', 'assets/sprites/spell/quake.png', { frameWidth: 256, frameHeight: 128});
+    this.load.spritesheet('icicle', 'assets/sprites/spell/icicle.png', { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('firebolt', 'assets/sprites/spell/firebolt.png', { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('quake', 'assets/sprites/spell/quake.png', { frameWidth: 256, frameHeight: 128 });
+    this.load.spritesheet('rocky_floor_tiles', 'assets/sprites/tiles/rocky.png', { frameWidth: 256, frameHeight: 128 });
+    this.load.spritesheet('flat_stone_lf_walls', 'assets/sprites/tiles/flat_stone_walls.png', { frameWidth: 128, frameHeight: 192 });
+    this.load.spritesheet('flat_stone_full_walls', 'assets/sprites/tiles/flat_stone_walls.png', { frameWidth: 256, frameHeight: 192 });
   }
 }
 

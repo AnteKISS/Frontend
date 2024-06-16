@@ -1,15 +1,15 @@
 import 'phaser'
-import Tile, { TileType } from '../objects/map/tile'
-import TileDrawer, { TileColor } from '../objects/map/tiledrawer'
-import TileSet from '../objects/map/tileset'
-import Area from '../objects/map/area'
-import Act from '../objects/map/act'
-import Campaign from '../objects/map/campaign'
-import CampaignJson from '../objects/map/campaignjson'
-import TextInput from '../objects/textInput'
-import TransitionForm from '../objects/map/transitionform'
-import ConfigureTileForm from '../objects/map/configuretileform'
-import DeleteTransitionForm from '../objects/map/deletetransitionform'
+import Tile from '../tiles/tile'
+import { TileColor } from '../tiles/tiledrawer'
+import TileSet from '../tiles/tileset'
+import CampaignManager from '../tiles/campaignmanager'
+import CampaignSerializer from '../tiles/campaignserializer'
+import TextInput from '../editor/textInput'
+import TransitionForm from '../editor/transitionform'
+import ConfigureTileForm from '../editor/configuretileform'
+import DeleteTransitionForm from '../editor/deletetransitionform'
+import TileSelector from '../editor/tileSelector'
+import Point from '../types/point'
 
 enum TileMode {
   Add = "Add",
@@ -23,102 +23,101 @@ enum SwipeMode {
 }
 
 export default class MapEditor extends Phaser.Scene {
-  static readonly MOVE_CAMERA_SPEED = 10;
-  static readonly MOVE_CAMERA_FASTER_MULTIPLIER = 2;
-  static readonly ZOOM_SPEED = 1;
-  static readonly MIN_ZOOM = 0.2;
-  static readonly MAX_ZOOM = 2;
-  static readonly MIN_BRUSH_SIZE = 0;
-  static readonly MAX_BRUSH_SIZE = 10;
+  private static readonly MOVE_CAMERA_SPEED = 10;
+  private static readonly MOVE_CAMERA_FASTER_MULTIPLIER = 2;
+  private static readonly ZOOM_SPEED = 1;
+  private static readonly MIN_ZOOM = 0.2;
+  private static readonly MAX_ZOOM = 2;
+  private static readonly MIN_BRUSH_SIZE = 0;
+  private static readonly MAX_BRUSH_SIZE = 10;
 
   // Phaser refs/objects
-  graphics: Phaser.GameObjects.Graphics;
-  pointer: Phaser.Input.Pointer;
-  centerPoint: Phaser.Geom.Point;
-  uiCamera: Phaser.Cameras.Scene2D.Camera;
+  private pointer: Phaser.Input.Pointer;
+  private centerPoint: Point;
+  private uiCamera: Phaser.Cameras.Scene2D.Camera;
 
   // Editor data / helpers
-  campaign: Campaign;
-  tileDrawer: TileDrawer;
-  playerPos: Phaser.Geom.Point;
-  cameraOffsetPos: Phaser.Geom.Point;
-  cursorUnitPos: Phaser.Geom.Point;
-  cursorTilePos: Phaser.Geom.Point;
-  brushSize: number;
+  private campaignManager: CampaignManager;
+  private playerPos: Point;
+  private cameraOffsetPos: Point;
+  private cursorUnitPos: Point;
+  private cursorTilePos: Point;
+  private brushSize: number;
+  private showDebugTiles: boolean;
 
   // Editor states
-  tileMode: TileMode;
-  swipeMode: SwipeMode;
-  tileType: TileType;
-  canPlaceObject: boolean;
-  inMenu: boolean;
+  private tileMode: TileMode;
+  private swipeMode: SwipeMode;
+  private canPlaceObject: boolean;
+  private inMenu: boolean;
 
-  bruh: Phaser.GameObjects.Rectangle;
   // Texts
-  moveText: Phaser.GameObjects.Text;
-  moveFasterText: Phaser.GameObjects.Text;
-  tileModeText: Phaser.GameObjects.Text;
-  addText: Phaser.GameObjects.Text;
-  deleteText: Phaser.GameObjects.Text;
-  configureText: Phaser.GameObjects.Text;
-  swipeText: Phaser.GameObjects.Text;
-  brushSizeText: Phaser.GameObjects.Text;
-  zoomText: Phaser.GameObjects.Text;
-  changeAreaText: Phaser.GameObjects.Text;
-  renameAreaText: Phaser.GameObjects.Text;
-  newAreaText: Phaser.GameObjects.Text;
-  deleteAreaText: Phaser.GameObjects.Text;
-  changeActText: Phaser.GameObjects.Text;
-  renameActText: Phaser.GameObjects.Text;
-  newActText: Phaser.GameObjects.Text;
-  deleteActText: Phaser.GameObjects.Text;
-  createTransitionText: Phaser.GameObjects.Text;
-  deleteTransitionText: Phaser.GameObjects.Text;
-  quitText: Phaser.GameObjects.Text;
-  unitPosText: Phaser.GameObjects.Text;
-  tilePosText: Phaser.GameObjects.Text;
-  currentActText: Phaser.GameObjects.Text;
-  currentAreaText: Phaser.GameObjects.Text;
+  private moveText: Phaser.GameObjects.Text;
+  private moveFasterText: Phaser.GameObjects.Text;
+  private tileModeText: Phaser.GameObjects.Text;
+  private addText: Phaser.GameObjects.Text;
+  private deleteText: Phaser.GameObjects.Text;
+  private configureText: Phaser.GameObjects.Text;
+  private swipeText: Phaser.GameObjects.Text;
+  private brushSizeText: Phaser.GameObjects.Text;
+  private zoomText: Phaser.GameObjects.Text;
+  private changeAreaText: Phaser.GameObjects.Text;
+  private renameAreaText: Phaser.GameObjects.Text;
+  private newAreaText: Phaser.GameObjects.Text;
+  private deleteAreaText: Phaser.GameObjects.Text;
+  private changeActText: Phaser.GameObjects.Text;
+  private renameActText: Phaser.GameObjects.Text;
+  private newActText: Phaser.GameObjects.Text;
+  private deleteActText: Phaser.GameObjects.Text;
+  private createTransitionText: Phaser.GameObjects.Text;
+  private deleteTransitionText: Phaser.GameObjects.Text;
+  private toggleDebugTiles: Phaser.GameObjects.Text;
+  private quitText: Phaser.GameObjects.Text;
+  private unitPosText: Phaser.GameObjects.Text;
+  private tilePosText: Phaser.GameObjects.Text;
+  private currentActText: Phaser.GameObjects.Text;
+  private currentAreaText: Phaser.GameObjects.Text;
 
   // Forms
-  renameActInput: TextInput;
-  renameAreaInput: TextInput;
-  transitionForm: TransitionForm;
-  configureTileForm: ConfigureTileForm;
-  deleteTransitionForm: DeleteTransitionForm;
+  private renameActInput: TextInput;
+  private renameAreaInput: TextInput;
+  private transitionForm: TransitionForm;
+  private configureTileForm: ConfigureTileForm;
+  private deleteTransitionForm: DeleteTransitionForm;
+  private tileSelector: TileSelector;
 
   // Input keys
-  aKey: Phaser.Input.Keyboard.Key; // Move left
-  dKey: Phaser.Input.Keyboard.Key; // Move right
-  sKey: Phaser.Input.Keyboard.Key; // Move down
-  wKey: Phaser.Input.Keyboard.Key; // Move up
-  shiftKey: Phaser.Input.Keyboard.Key; // Move faster
+  private aKey: Phaser.Input.Keyboard.Key; // Move left
+  private dKey: Phaser.Input.Keyboard.Key; // Move right
+  private sKey: Phaser.Input.Keyboard.Key; // Move down
+  private wKey: Phaser.Input.Keyboard.Key; // Move up
+  private shiftKey: Phaser.Input.Keyboard.Key; // Move faster
 
   constructor() {
     super({ key: 'MapEditor' });
   }
 
   create() {
-    this.graphics = this.add.graphics();
+    this.uiCamera = this.cameras.add(0, 0, 1280, 720);
+    this.uiCamera.setName('uiCamera');
+
     this.pointer = this.input.activePointer;
-    this.centerPoint = new Phaser.Geom.Point(
+    this.centerPoint = new Point(
       this.cameras.main.width / 2,
       this.cameras.main.height / 2
     );
 
-    // Tileset json import test
-    //this.campaign = new Campaign("Test campaign");
-    this.campaign = CampaignJson.import('{"name":"Test campaign","acts":[{"name":"Act I","areas":[{"name":"Default","tileset":{"tiles":[{"x":0,"y":0,"type":0,"transitionName":""},{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":"test"},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":"test"},{"x":-2,"y":3,"type":0,"transitionName":"test"},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":""},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":""},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":""},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":""},{"x":2,"y":3,"type":0,"transitionName":""},{"x":3,"y":-3,"type":0,"transitionName":"test"},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":""},{"x":3,"y":1,"type":0,"transitionName":""},{"x":3,"y":2,"type":0,"transitionName":""},{"x":3,"y":3,"type":0,"transitionName":""}]}},{"name":"New Area","tileset":{"tiles":[{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":"bruhmomento"},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":"bruhmomento"},{"x":-2,"y":3,"type":0,"transitionName":""},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":"bruhmomento"},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":0,"type":0,"transitionName":"bruhmomento"},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":"bruhmomento"},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":"bruhmomento"},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":""},{"x":2,"y":3,"type":0,"transitionName":""},{"x":3,"y":-3,"type":0,"transitionName":"bruhmomento"},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":""},{"x":3,"y":1,"type":0,"transitionName":""},{"x":3,"y":2,"type":0,"transitionName":""},{"x":3,"y":3,"type":0,"transitionName":""}]}}],"transitions":[{"name":"test","areaName":"Default","targetX":0,"targetY":0},{"name":"bruhmomento","areaName":"Default","targetX":0,"targetY":0}]},{"name":"New Act","areas":[{"name":"Default","tileset":{"tiles":[{"x":0,"y":0,"type":0,"transitionName":""},{"x":-3,"y":-3,"type":0,"transitionName":""},{"x":-3,"y":-2,"type":0,"transitionName":""},{"x":-3,"y":-1,"type":0,"transitionName":""},{"x":-3,"y":0,"type":0,"transitionName":""},{"x":-3,"y":1,"type":0,"transitionName":""},{"x":-3,"y":2,"type":0,"transitionName":""},{"x":-3,"y":3,"type":0,"transitionName":""},{"x":-2,"y":-3,"type":0,"transitionName":""},{"x":-2,"y":-2,"type":0,"transitionName":""},{"x":-2,"y":-1,"type":0,"transitionName":""},{"x":-2,"y":0,"type":0,"transitionName":""},{"x":-2,"y":1,"type":0,"transitionName":""},{"x":-2,"y":2,"type":0,"transitionName":""},{"x":-2,"y":3,"type":0,"transitionName":""},{"x":-1,"y":-3,"type":0,"transitionName":""},{"x":-1,"y":-2,"type":0,"transitionName":""},{"x":-1,"y":-1,"type":0,"transitionName":""},{"x":-1,"y":0,"type":0,"transitionName":""},{"x":-1,"y":1,"type":0,"transitionName":""},{"x":-1,"y":2,"type":0,"transitionName":""},{"x":-1,"y":3,"type":0,"transitionName":""},{"x":0,"y":-3,"type":0,"transitionName":""},{"x":0,"y":-2,"type":0,"transitionName":""},{"x":0,"y":-1,"type":0,"transitionName":""},{"x":0,"y":1,"type":0,"transitionName":""},{"x":0,"y":2,"type":0,"transitionName":""},{"x":0,"y":3,"type":0,"transitionName":""},{"x":1,"y":-3,"type":0,"transitionName":""},{"x":1,"y":-2,"type":0,"transitionName":""},{"x":1,"y":-1,"type":0,"transitionName":""},{"x":1,"y":0,"type":0,"transitionName":""},{"x":1,"y":1,"type":0,"transitionName":""},{"x":1,"y":2,"type":0,"transitionName":""},{"x":1,"y":3,"type":0,"transitionName":""},{"x":2,"y":-3,"type":0,"transitionName":""},{"x":2,"y":-2,"type":0,"transitionName":""},{"x":2,"y":-1,"type":0,"transitionName":""},{"x":2,"y":0,"type":0,"transitionName":""},{"x":2,"y":1,"type":0,"transitionName":""},{"x":2,"y":2,"type":0,"transitionName":"test2"},{"x":2,"y":3,"type":0,"transitionName":"test2"},{"x":3,"y":-3,"type":0,"transitionName":""},{"x":3,"y":-2,"type":0,"transitionName":""},{"x":3,"y":-1,"type":0,"transitionName":""},{"x":3,"y":0,"type":0,"transitionName":"test2"},{"x":3,"y":1,"type":0,"transitionName":"test2"},{"x":3,"y":2,"type":0,"transitionName":"test2"},{"x":3,"y":3,"type":0,"transitionName":"test2"}]}}],"transitions":[{"name":"test2","areaName":"Default","targetX":0,"targetY":0}]}]}');
-    this.tileDrawer = new TileDrawer(this.graphics);
-    this.playerPos = new Phaser.Geom.Point;
-    this.cameraOffsetPos = new Phaser.Geom.Point;
+    this.campaignManager = new CampaignManager(this);
+    this.campaignManager.loadCampaign('{"name":"Default Campaign","acts":[{"name":"Act I","areas":[{"name":"Default","tileset":{"tiles":[{"x":-6,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-5,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-5,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-5,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-5,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-5,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-5,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-5,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-4,"y":-4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-4,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-4,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-4,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-4,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-4,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-4,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-4,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-4,"y":4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-3,"y":-5,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-3,"y":-4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-3,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-3,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-3,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-3,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-3,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-3,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-3,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-3,"y":4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-3,"y":5,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-2,"y":-5,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-2,"y":-4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-2,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-2,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-2,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-2,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-2,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-2,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-2,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-2,"y":4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-2,"y":5,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-1,"y":-5,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-1,"y":-4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-1,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-1,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-1,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-1,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-1,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-1,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-1,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-1,"y":4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":-1,"y":5,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":0,"y":-6,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":0,"y":-5,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":0,"y":-4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":0,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":0,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":0,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":0,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":0,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":0,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":0,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":0,"y":4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":0,"y":5,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":0,"y":6,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":1,"y":-5,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":1,"y":-4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":1,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":1,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":1,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":1,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":1,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":1,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":1,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":1,"y":4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":1,"y":5,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":2,"y":-5,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":2,"y":-4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":2,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":2,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":2,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":2,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":2,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":2,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":2,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":2,"y":4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":2,"y":5,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":3,"y":-5,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":3,"y":-4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":3,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":3,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":3,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":3,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":3,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":3,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":3,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":3,"y":4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":3,"y":5,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":4,"y":-4,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":4,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":4,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":4,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":4,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":4,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":4,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":4,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":4,"y":4,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":5,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":5,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":5,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":5,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":5,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":5,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":5,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":6,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":1,"transitionName":""},{"x":4,"y":5,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":4,"y":6,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":5,"y":4,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":5,"y":5,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":5,"y":6,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":5,"y":7,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":6,"y":4,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":6,"y":5,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":6,"y":6,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":7,"y":5,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":6,"y":7,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":6,"y":8,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":7,"y":6,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":7,"y":7,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":7,"y":8,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":7,"y":9,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":8,"y":6,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":8,"y":7,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":8,"y":8,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":9,"y":7,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":8,"y":9,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":8,"y":10,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":9,"y":8,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":9,"y":9,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":9,"y":10,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":9,"y":11,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":10,"y":8,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":10,"y":9,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":10,"y":10,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":11,"y":9,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":7,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":8,"y":11,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":8,"y":12,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":8,"y":13,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":8,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":8,"y":15,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":8,"y":16,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":8,"y":17,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":9,"y":12,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":9,"y":13,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":9,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":9,"y":15,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":9,"y":16,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":9,"y":17,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":9,"y":18,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":10,"y":11,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":10,"y":12,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":10,"y":13,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":10,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":10,"y":15,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":10,"y":16,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":10,"y":17,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":10,"y":18,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":10,"y":19,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":11,"y":8,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":11,"y":10,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":11,"y":11,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":11,"y":12,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":11,"y":13,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":11,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":11,"y":15,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":11,"y":16,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":11,"y":17,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":11,"y":18,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":11,"y":19,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":11,"y":20,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":12,"y":8,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":12,"y":9,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":12,"y":10,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":12,"y":11,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":12,"y":12,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":12,"y":13,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":12,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":12,"y":15,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":12,"y":16,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":12,"y":17,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":12,"y":18,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":12,"y":19,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":12,"y":20,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":13,"y":8,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":13,"y":9,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":13,"y":10,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":13,"y":11,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":13,"y":12,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":13,"y":13,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":13,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":13,"y":15,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":13,"y":16,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":13,"y":17,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":13,"y":18,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":13,"y":19,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":13,"y":20,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":7,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":8,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":9,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":10,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":11,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":12,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":13,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":15,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":16,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":17,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":18,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":19,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":20,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":14,"y":21,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":15,"y":8,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":15,"y":9,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":15,"y":10,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":15,"y":11,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":15,"y":12,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":15,"y":13,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":15,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":15,"y":15,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":15,"y":16,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":15,"y":17,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":15,"y":18,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":15,"y":19,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":15,"y":20,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":16,"y":8,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":16,"y":9,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":16,"y":10,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":16,"y":11,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":16,"y":12,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":16,"y":13,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":16,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":16,"y":15,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":16,"y":16,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":16,"y":17,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":16,"y":18,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":16,"y":19,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":16,"y":20,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":17,"y":8,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":17,"y":9,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":17,"y":10,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":17,"y":11,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":17,"y":12,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":17,"y":13,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":17,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":17,"y":15,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":17,"y":16,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":17,"y":17,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":17,"y":18,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":17,"y":19,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":17,"y":20,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":18,"y":9,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":18,"y":10,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":18,"y":11,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":18,"y":12,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":18,"y":13,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":18,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":18,"y":15,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":18,"y":16,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":18,"y":17,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":18,"y":18,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":18,"y":19,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":19,"y":10,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":19,"y":11,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":19,"y":12,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":19,"y":13,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":19,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":19,"y":15,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":19,"y":16,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":19,"y":17,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":19,"y":18,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":20,"y":11,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":20,"y":12,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":20,"y":13,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":20,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":20,"y":15,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":20,"y":16,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":20,"y":17,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":21,"y":14,"type":0,"bitmap":"rocky_floor_tiles","frame":10,"transitionName":""},{"x":6,"y":20,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":7,"y":19,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":7,"y":20,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":7,"y":21,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":8,"y":18,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":8,"y":19,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":8,"y":20,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":8,"y":21,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":8,"y":22,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":9,"y":19,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":9,"y":20,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":9,"y":21,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":10,"y":20,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":4,"y":22,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":5,"y":21,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":5,"y":22,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":5,"y":23,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":6,"y":21,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":6,"y":22,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":6,"y":23,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":6,"y":24,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":7,"y":22,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":7,"y":23,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":2,"y":24,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":3,"y":23,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":3,"y":24,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":3,"y":25,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":4,"y":23,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":4,"y":24,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":4,"y":25,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":4,"y":26,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":5,"y":24,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":5,"y":25,"type":0,"bitmap":"rocky_floor_tiles","frame":12,"transitionName":""},{"x":-4,"y":28,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-3,"y":26,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-3,"y":27,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-3,"y":28,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-3,"y":29,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-3,"y":30,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-2,"y":25,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-2,"y":26,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-2,"y":27,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-2,"y":28,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-2,"y":29,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-2,"y":30,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-2,"y":31,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-1,"y":25,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-1,"y":26,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-1,"y":27,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-1,"y":28,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-1,"y":29,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-1,"y":30,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":-1,"y":31,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":0,"y":24,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":0,"y":25,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":0,"y":26,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":0,"y":27,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":0,"y":28,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":0,"y":29,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":0,"y":30,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":0,"y":31,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":0,"y":32,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":1,"y":25,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":1,"y":26,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":1,"y":27,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":1,"y":28,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":1,"y":29,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":1,"y":30,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":1,"y":31,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":2,"y":25,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":2,"y":26,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":2,"y":27,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":2,"y":28,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":2,"y":29,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":2,"y":30,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":2,"y":31,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":3,"y":26,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":3,"y":27,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":3,"y":28,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":3,"y":29,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":3,"y":30,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""},{"x":4,"y":28,"type":0,"bitmap":"rocky_floor_tiles","frame":13,"transitionName":""}]}}],"transitions":[]}]}');
+    this.playerPos = new Point;
+    this.cameraOffsetPos = new Point;
 
     this.tileMode = TileMode.Add;
     this.swipeMode = SwipeMode.Off;
-    this.tileType = TileType.Floor;
     this.canPlaceObject = true;
     this.inMenu = false;
     this.brushSize = 0;
+    this.showDebugTiles = false;
 
     // Texts
     this.moveText = this.add.text(30, 30, "Move (WASD)", { color: '#000000', fontSize: '18px' });
@@ -140,7 +139,8 @@ export default class MapEditor extends Phaser.Scene {
     this.deleteAreaText = this.add.text(30, 390, "Delete Area (~)", { color: '#000000', fontSize: '18px' });
     this.createTransitionText = this.add.text(30, 420, "New Transition (T)", { color: '#000000', fontSize: '18px' });
     this.deleteTransitionText = this.add.text(30, 440, "Delete Transition (Y)", { color: '#000000', fontSize: '18px' });
-    this.quitText = this.add.text(30, 470, "Quit (\\)", { color: '#000000', fontSize: '18px' });
+    this.toggleDebugTiles = this.add.text(30, 470, "Toggle Debug Tiles (.)", { color: '#000000', fontSize: '18px' });
+    this.quitText = this.add.text(30, 500, "Quit (\\)", { color: '#000000', fontSize: '18px' });
 
     this.unitPosText = this.add.text(1250, 30, "Unit Pos : 0,0", { color: '#000000', fontSize: '24px', align: 'right' });
     this.tilePosText = this.add.text(1250, 60, "Tile Pos : 0,0", { color: '#000000', fontSize: '24px', align: 'right' });
@@ -169,14 +169,16 @@ export default class MapEditor extends Phaser.Scene {
     this.renameAreaInput.setBackgroundVisibility(false);
     this.renameAreaInput.setPadding(0);
 
-    this.transitionForm = new TransitionForm(this, this.campaign, () => this.hideTransitionForm());
+    this.transitionForm = new TransitionForm(this, this.campaignManager.getCampaign(), () => this.hideTransitionForm());
     this.transitionForm.hide();
 
-    this.configureTileForm = new ConfigureTileForm(this, this.campaign, () => this.hideConfigureTileForm());
+    this.configureTileForm = new ConfigureTileForm(this, this.campaignManager.getCampaign(), () => this.hideConfigureTileForm());
     this.configureTileForm.hide();
 
-    this.deleteTransitionForm = new DeleteTransitionForm(this, this.campaign, () => this.hideDeleteTransitionForm());
+    this.deleteTransitionForm = new DeleteTransitionForm(this, this.campaignManager.getCampaign(), () => this.hideDeleteTransitionForm());
     this.deleteTransitionForm.hide();
+
+    this.tileSelector = new TileSelector(this);
 
     // Inputs
     this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -222,6 +224,7 @@ export default class MapEditor extends Phaser.Scene {
         this.deleteActText,
         this.createTransitionText,
         this.deleteTransitionText,
+        this.toggleDebugTiles,
         this.quitText,
         this.unitPosText,
         this.tilePosText,
@@ -232,24 +235,24 @@ export default class MapEditor extends Phaser.Scene {
         this.transitionForm,
         this.deleteTransitionForm,
         this.configureTileForm,
+        this.tileSelector,
       ]
     );
-    this.uiCamera = this.cameras.add(0, 0, 1280, 720);
-    this.uiCamera.ignore([this.graphics]);
   }
 
   update() {
     this.handleCameraMovement();
 
-    this.cursorUnitPos = this.getCursorUnitPos();
-    this.cursorTilePos = TileSet.getTilePosFromUnitPos(this.cursorUnitPos);
+    this.cursorUnitPos = new Phaser.Geom.Point(
+      ((this.pointer.x - this.centerPoint.x + this.playerPos.x) / this.cameras.main.zoom) + this.cameraOffsetPos.x,
+      ((this.pointer.y - this.centerPoint.y + this.playerPos.y) / this.cameras.main.zoom) + this.cameraOffsetPos.y
+    );
+    this.cursorTilePos = Tile.getTilePosFromUnitPos(this.cursorUnitPos.x, this.cursorUnitPos.y);
 
     this.unitPosText.setText("Unit Pos : " + Math.round(this.cursorUnitPos.x) + ", " + Math.round(this.cursorUnitPos.y));
     this.tilePosText.setText("Tile Pos : " + this.cursorTilePos.x + ", " + this.cursorTilePos.y);
-    this.currentActText.setText("Act (" + (this.campaign.actIndex + 1) + "/" + this.campaign.acts.length + ") : "
-      + this.campaign.currentAct().name);
-    this.currentAreaText.setText("Area (" + (this.campaign.currentAct().areaIndex + 1) + "/" + this.campaign.currentAct().areas.length + ") : "
-      + this.campaign.currentArea().name);
+    this.currentActText.setText("Act (" + (this.campaignManager.getActIndex() + 1) + "/" + this.campaignManager.getActAmount() + ") : " + this.campaignManager.getActName());
+    this.currentAreaText.setText("Area (" + (this.campaignManager.getAreaIndex() + 1) + "/" + this.campaignManager.getAreaAmount() + ") : " + this.campaignManager.getAreaName());
     this.cameras.main.setScroll(
       this.playerPos.x + this.cameraOffsetPos.x - this.cameras.main.width / 2,
       this.playerPos.y + this.cameraOffsetPos.y - this.cameras.main.height / 2
@@ -263,7 +266,7 @@ export default class MapEditor extends Phaser.Scene {
     this.drawTileSet();
   }
 
-  private handleCameraMovement() {
+  private handleCameraMovement(): void {
     const MOVE_SPEED = MapEditor.MOVE_CAMERA_SPEED * (this.shiftKey.isDown ? MapEditor.MOVE_CAMERA_FASTER_MULTIPLIER : 1);
 
     if (this.inMenu) return;
@@ -285,19 +288,25 @@ export default class MapEditor extends Phaser.Scene {
       this.cameraOffsetPos.y += MOVE_SPEED;
   }
 
-  private handleKeyDown(event: KeyboardEvent) {
+  private handleKeyDown(event: KeyboardEvent): void {
     if (this.inMenu) return;
 
     const PRESSED_KEY = event.key.toLowerCase();
 
-    if (PRESSED_KEY === 'z')
+    if (PRESSED_KEY === 'z') {
       this.changeTileMode(TileMode.Add);
+      this.tileSelector.setVisible(true);
+    }
 
-    else if (PRESSED_KEY === 'x')
+    else if (PRESSED_KEY === 'x') {
       this.changeTileMode(TileMode.Delete);
+      this.tileSelector.setVisible(false);
+    }
 
-    else if (PRESSED_KEY === 'c')
+    else if (PRESSED_KEY === 'c') {
       this.changeTileMode(TileMode.Configure);
+      this.tileSelector.setVisible(false);
+    }
 
     else if (PRESSED_KEY === ' ') {
       this.swipeMode = (this.swipeMode === SwipeMode.Off ? SwipeMode.On : SwipeMode.Off);
@@ -316,7 +325,7 @@ export default class MapEditor extends Phaser.Scene {
 
     // New act
     else if (PRESSED_KEY === 'u') {
-      this.campaign.addAct(new Act("New Act"));
+      this.campaignManager.addAct("New Act");
     }
 
     // Rename current act
@@ -325,27 +334,24 @@ export default class MapEditor extends Phaser.Scene {
       this.renameActInput.focused = true;
       this.renameActInput.visible = true;
       this.currentActText.visible = false;
-      this.renameActInput.updateInputText(this.campaign.currentAct().name);
+      this.renameActInput.updateInputText(this.campaignManager.getActName());
     }
 
     // Go to previous act
-    else if (PRESSED_KEY === 'o') {
-      this.campaign.previousAct();
-    }
+    else if (PRESSED_KEY === 'o')
+      this.campaignManager.previousAct();
 
     // Go to next act
-    else if (PRESSED_KEY === 'p') {
-      this.campaign.nextAct();
-    }
+    else if (PRESSED_KEY === 'p')
+      this.campaignManager.nextAct();
 
     // Delete current act
-    else if (PRESSED_KEY === 'delete') {
-      this.campaign.deleteCurrentAct();
-    }
+    else if (PRESSED_KEY === 'delete')
+      this.campaignManager.deleteCurrentAct();
 
     // New area
     else if (PRESSED_KEY === 'h')
-      this.campaign.currentAct().addArea(new Area("New Area"));
+      this.campaignManager.addArea("New Area");
 
     // Rename current area
     else if (PRESSED_KEY === 'j') {
@@ -353,20 +359,20 @@ export default class MapEditor extends Phaser.Scene {
       this.renameAreaInput.focused = true;
       this.renameAreaInput.visible = true;
       this.currentAreaText.visible = false;
-      this.renameAreaInput.updateInputText(this.campaign.currentArea().name);
+      this.renameAreaInput.updateInputText(this.campaignManager.getAreaName());
     }
 
     // Go to previous area
     else if (PRESSED_KEY === 'k')
-      this.campaign.currentAct().previousArea();
+      this.campaignManager.previousArea();
 
     // Go to next area
     else if (PRESSED_KEY === 'l')
-      this.campaign.currentAct().nextArea();
+      this.campaignManager.nextArea();
 
     // Delete current area
     else if (PRESSED_KEY === '~')
-      this.campaign.currentAct().deleteCurrentArea();
+      this.campaignManager.deleteCurrentArea();
 
     // Create transition
     else if (PRESSED_KEY === 't') {
@@ -380,29 +386,31 @@ export default class MapEditor extends Phaser.Scene {
       this.inMenu = true;
     }
 
-    // Exit map editor
-    else if (PRESSED_KEY === '\\') {
-      this.scene.setVisible(false, 'MapEditor');
-      this.scene.setVisible(true, 'MainScene');
-      this.scene.resume('MainScene');
-    }
+    // Toggle debug tiles
+    else if (PRESSED_KEY === '.')
+      this.showDebugTiles = !this.showDebugTiles;
 
-    const EXPORT = CampaignJson.export(this.campaign);
+    // Exit map editor
+    else if (PRESSED_KEY === '\\')
+      this.scene.start('MainScene');
+
+    const EXPORT = CampaignSerializer.export(this.campaignManager.getCampaign());
+    console.log(EXPORT);
   }
 
-  private tileModeClick() {
+  private tileModeClick(): void {
     if (this.inMenu) return;
 
     const CURSOR_TILES_POS = TileSet.getProximityTilePos(this.cursorTilePos.x, this.cursorTilePos.y, this.brushSize);
 
     if (this.tileMode === TileMode.Add)
       for (const TILE_POS of CURSOR_TILES_POS)
-        this.campaign.currentArea().tileSet.addTile(TILE_POS.x, TILE_POS.y, this.tileType);
+        this.campaignManager.addTile(TILE_POS.x, TILE_POS.y, this.tileSelector.getTileType(), this.tileSelector.getTileBitMap(), this.tileSelector.getTileFrame());
     else if (this.tileMode === TileMode.Delete)
       for (const TILE_POS of CURSOR_TILES_POS)
-        this.campaign.currentArea().tileSet.deleteTile(TILE_POS.x, TILE_POS.y);
+        this.campaignManager.deleteTile(TILE_POS.x, TILE_POS.y);
     else if (this.tileMode === TileMode.Configure) {
-      const TILE: Tile | undefined = this.campaign.currentArea().tileSet.getTile(this.cursorTilePos.x, this.cursorTilePos.y);
+      const TILE: Tile | undefined = this.campaignManager.getTile(this.cursorTilePos.x, this.cursorTilePos.y);
       if (TILE) {
         this.inMenu = true;
         this.configureTileForm.show(TILE);
@@ -411,91 +419,68 @@ export default class MapEditor extends Phaser.Scene {
 
   }
 
-  private zoom(dy: number) {
-    let newZoom = this.cameras.main.zoom + (dy * MapEditor.ZOOM_SPEED / 1000);
-
+  private zoom(dy: number): void {
     if (this.inMenu) return;
 
+    let newZoom = this.cameras.main.zoom + (dy * MapEditor.ZOOM_SPEED / 1000);
     newZoom = Math.min(Math.max(newZoom, MapEditor.MIN_ZOOM), MapEditor.MAX_ZOOM);
     this.cameras.main.setZoom(newZoom);
   }
 
-  private drawTileSet() {
-    const playerTilePos = TileSet.getTilePosFromUnitPos(this.playerPos);
+  private drawTileSet(): void {
+    this.campaignManager.clearDebugTiles();
 
-    // Clear previous drawn lines
-    this.graphics.clear();
-
-    // Center point
-    this.graphics.fillStyle(TileColor.Player, 1);
-    this.graphics.fillCircle(this.playerPos.x, this.playerPos.y, 4);
-
-    // Draw tiles
-    this.tileDrawer.drawDebugTileList(this.campaign.currentArea().tileSet.tiles.values(), 2);
-
-    // Draw player tile
-    const PLAYER_TILE_POINTS = Tile.getPointsFromTilePos(playerTilePos.x, playerTilePos.y);
-    this.tileDrawer.drawDebugTilePoints(PLAYER_TILE_POINTS, TileColor.Player);
+    if (this.showDebugTiles) {
+      this.campaignManager.drawDebugCurrentTileSet();
+      this.campaignManager.drawDebugPoint(this.playerPos.x, this.playerPos.y, TileColor.Player);
+      this.campaignManager.drawDebugTile(this.playerPos.x, this.playerPos.y, TileColor.Player);
+    }
 
     // Draw cursor tile
     let cursorColor = 0x000000;
-    if (this.tileMode === TileMode.Add)
-      cursorColor = TileColor.Floor;
-    else if (this.tileMode === TileMode.Delete)
-      cursorColor = TileColor.Delete;
-    else if (this.tileMode === TileMode.Configure)
-      cursorColor = TileColor.Configure;
+    if (this.tileMode === TileMode.Add) cursorColor = TileColor.Floor;
+    else if (this.tileMode === TileMode.Delete) cursorColor = TileColor.Delete;
+    else if (this.tileMode === TileMode.Configure) cursorColor = TileColor.Configure;
 
-    if (this.tileMode === TileMode.Configure) {
+    if (this.tileMode === TileMode.Configure)
       // Don't apply brush size when in "configure" mode
-      const CURSOR_TILE_POINTS = Tile.getPointsFromTilePos(this.cursorTilePos.x, this.cursorTilePos.y);
-      this.tileDrawer.drawDebugTilePoints(CURSOR_TILE_POINTS, cursorColor);
-    }
-    else {
-      const CURSOR_TILES_POS = TileSet.getProximityTilePos(this.cursorTilePos.x, this.cursorTilePos.y, this.brushSize);
-      this.tileDrawer.drawDebugTilePosList(CURSOR_TILES_POS, 2, cursorColor);
-    }
+      this.campaignManager.drawDebugTile(this.cursorUnitPos.x, this.cursorUnitPos.y, cursorColor);
+    else
+      this.campaignManager.drawDebugProximityTilePos(this.cursorUnitPos.x, this.cursorUnitPos.y, cursorColor, this.brushSize);
   }
 
-  private renameAct() {
-    this.campaign.currentAct().name = this.renameActInput.inputText;
+  private renameAct(): void {
+    this.campaignManager.renameAct(this.renameActInput.inputText);
     this.renameActInput.focused = false;
     this.renameActInput.visible = false;
     this.currentActText.visible = true;
     this.inMenu = false;
   }
 
-  private renameArea() {
-    this.campaign.currentArea().name = this.renameAreaInput.inputText;
+  private renameArea(): void {
+    this.campaignManager.renameArea(this.renameAreaInput.inputText);
     this.renameAreaInput.focused = false;
     this.renameAreaInput.visible = false;
     this.currentAreaText.visible = true;
     this.inMenu = false;
   }
 
-  private hideTransitionForm() {
+  private hideTransitionForm(): void {
     this.inMenu = false;
     this.transitionForm.hide();
   }
 
-  private hideConfigureTileForm() {
+  private hideConfigureTileForm(): void {
     this.inMenu = false;
     this.configureTileForm.hide();
   }
 
-  private hideDeleteTransitionForm() {
+  private hideDeleteTransitionForm(): void {
     this.inMenu = false;
     this.deleteTransitionForm.hide();
   }
 
-  private getCursorUnitPos(): Phaser.Geom.Point {
-    return new Phaser.Geom.Point(
-      ((this.pointer.x - this.centerPoint.x + this.playerPos.x) / this.cameras.main.zoom) + this.cameraOffsetPos.x,
-      ((this.pointer.y - this.centerPoint.y + this.playerPos.y) / this.cameras.main.zoom) + this.cameraOffsetPos.y
-    );
-  }
-
-  private changeTileMode(mode: TileMode) {
+  private changeTileMode(mode: TileMode): void {
     this.tileMode = mode;
     this.tileModeText.setText("TileMode : " + mode);
   }
