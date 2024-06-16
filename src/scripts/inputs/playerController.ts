@@ -1,3 +1,4 @@
+import { IFightable } from "../entities/IFightable";
 import { ActiveEntityAnimationState } from "../entities/entityState";
 import { MonsterEntity } from "../entities/monsterEntity";
 import { PlayerEntity } from "../entities/playerEntity";
@@ -60,17 +61,19 @@ export default class PlayerController {
 
     const entity = EntityManager.instance.getEntityAtPosition(destinationX, destinationY);
     if ((entity !== undefined && entity !== null) && entity !== this.player) {
-      this.player.target = entity;
-      if (MathModule.distanceBetween(this.player.positionX, this.player.positionY, entity.positionX, entity.positionY) > 100) {
-        destinationX = entity.positionX;
-        destinationY = entity.positionY;
-      } else {
-        if (entity instanceof MonsterEntity || entity instanceof PlayerEntity && !this.player.isAttacking()) {
-          this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, entity.positionX, entity.positionY));
-          if (entity.isTargetable) {
-            this.player.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
-            // this.attackTarget(entity as PlayerEntity | MonsterEntity);
-            this.player.setDestination(this.player.positionX, this.player.positionY);
+      if (!(entity as unknown as IFightable).isDead()) {
+        this.player.target = entity;
+        if (MathModule.distanceBetween(this.player.positionX, this.player.positionY, entity.positionX, entity.positionY) > 100) {
+          destinationX = entity.positionX;
+          destinationY = entity.positionY;
+        } else {
+          if (entity instanceof MonsterEntity || entity instanceof PlayerEntity && !this.player.isAttacking()) {
+            this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, entity.positionX, entity.positionY));
+            if (entity.isTargetable) {
+              this.player.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
+              // this.attackTarget(entity as PlayerEntity | MonsterEntity);
+              this.player.setDestination(this.player.positionX, this.player.positionY);
+            }
           }
         }
       }

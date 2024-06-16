@@ -1,3 +1,4 @@
+import { IFightable } from "../entities/IFightable";
 import { BaseEntity } from "../entities/baseEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import { EntityManager } from "../managers/entityManager";
@@ -94,6 +95,9 @@ export namespace Physics {
 
       for (let index = 0; index < entities.length; index++) {
         if (entities[index] === this.parentEntity) {
+          continue;
+        }
+        if ((entities[index] as unknown as IFightable).isDead()) {
           continue;
         }
         if (!(positionX + (truncatedSpriteWidth / 2) > entities[index].positionX - (entities[index].truncatedSpriteWidth / 2))) {
