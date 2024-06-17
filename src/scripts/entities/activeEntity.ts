@@ -19,7 +19,6 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   public lastValidPositionY: number;
   
   protected _isMoving: boolean = false;
-  currentState: any;
   
   constructor(scene) {
     super(scene);

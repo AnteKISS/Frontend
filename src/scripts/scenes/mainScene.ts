@@ -21,7 +21,7 @@ export default class MainScene extends Phaser.Scene {
 
   private playerTest: PlayerEntity;
   private monsterTest: MonsterEntity;
-  private monsterTest2: MonsterEntity;
+  // private monsterTest2: MonsterEntity;
   private entityHealthBar: EntityHealthBar;
   private gui: GUI;
 
@@ -71,14 +71,17 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest = EntityManager.instance.createPlayer(this);
     this.playerTest.positionX = 0;
     this.playerTest.positionY = 0;
+    this.playerTest.area = this.campaignManager.getCampaign().currentArea();
     this.monsterTest = EntityManager.instance.createMonster(this, 'zombie_0');
     this.monsterTest.name = 'Zombie 1';
     this.monsterTest.positionX = this.cameras.main.width / 4;
     this.monsterTest.positionY = this.cameras.main.height / 4;
-    this.monsterTest2 = EntityManager.instance.createMonster(this, 'zombie_0');
-    this.monsterTest2.name = 'Zombie 2';
-    this.monsterTest2.positionX = this.monsterTest.positionX;
-    this.monsterTest2.positionY = this.monsterTest.positionY - 30;
+    this.monsterTest.area = this.campaignManager.getCampaign().currentArea();
+    // this.monsterTest2 = EntityManager.instance.createMonster(this, 'zombie_0');
+    // this.monsterTest2.name = 'Zombie 2';
+    // this.monsterTest2.positionX = this.monsterTest.positionX;
+    // this.monsterTest2.positionY = this.monsterTest.positionY - 30;
+    // this.monsterTest2.area = this.campaignManager.getCampaign().currentArea();
     this.entityHealthBar = new EntityHealthBar(this);
     // this.entityHealthBar.entity = this.monsterTest;
     this.gui.spellBar.setSpellBook(this.playerTest.mySpellBook);
@@ -112,10 +115,10 @@ export default class MainScene extends Phaser.Scene {
       [
         this.playerTest,
         this.monsterTest,
-        this.monsterTest2,
+        // this.monsterTest2,
         this.playerTest.collider.debugGraphics,
         this.monsterTest.collider.debugGraphics,
-        this.monsterTest2.collider.debugGraphics,
+        // this.monsterTest2.collider.debugGraphics,
       ]
     );
     // EntityManager.instance.setDebugMode(true);
@@ -131,7 +134,7 @@ export default class MainScene extends Phaser.Scene {
     this.fpsText.update();
     this.playerTest.update(deltaTime);
     this.monsterTest.update(deltaTime);
-    this.monsterTest2.update(deltaTime);
+    // this.monsterTest2.update(deltaTime);
     this.updateGUI();
     //this.drawTileSet();
     this.entityHealthBar.update();

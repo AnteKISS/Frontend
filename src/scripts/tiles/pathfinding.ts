@@ -66,7 +66,7 @@ export default abstract class Pathfinding {
   */
   public static findPath(tileset: TileSet, x1: number, y1: number, x2: number, y2: number): Point[] {
     if (tileset.getTile(x1, y1) === undefined || tileset.getTile(x2, y2) === undefined) {
-      console.error("Pathfinding::findPath - Couldn't find path, start or end tile isn't in tileset.");
+      // console.error("Pathfinding::findPath - Couldn't find path, start or end tile isn't in tileset.");
       return [];
     }
 

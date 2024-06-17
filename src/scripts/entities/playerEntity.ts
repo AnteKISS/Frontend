@@ -85,18 +85,15 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   // Getters/Setters
-  public equipSpell(index, spell: Spell): void
-  {
+  public equipSpell(index, spell: Spell): void {
     this.equippedSpells[index] = spell;
   }
 
-  public setPointerDown(state: boolean): void
-  {
+  public setPointerDown(state: boolean): void {
     this._pointerDown = state;
   }
 
-  public getPointerDown(): boolean
-  {
+  public getPointerDown(): boolean {
     return this._pointerDown;
   }
 
@@ -119,7 +116,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
     if (this.target !== null && this.target !== undefined) {
       this.setOrientationRad(Phaser.Math.Angle.Between(this.positionX, this.positionY, this.target.positionX, this.target.positionY));
-      if (MathModule.distanceBetween(this.positionX, this.positionY, this.target.positionX, this.target.positionY) <= 100) {
+      if (MathModule.scaledDistanceBetween(this.positionX, this.positionY, this.target.positionX, this.target.positionY) <= 100) {
         if (this.target.isTargetable) {
           this.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
           this.attack(this.target as unknown as IFightable);

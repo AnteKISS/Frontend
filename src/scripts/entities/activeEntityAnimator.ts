@@ -85,6 +85,10 @@ export class ActiveEntityAnimator {
     }
   }
 
+  public setAnimatorState(state: ActiveEntityAnimationState.State): void {
+    this.parent.currentAnimationState.state = state;
+  }
+
   private initialize(): void {
     this.sprites = this.parent.getAll().filter(gameObject => gameObject instanceof Phaser.GameObjects.Sprite) as InventorySprite[];
     const test = this.parent.getAll();

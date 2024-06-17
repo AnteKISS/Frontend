@@ -1,5 +1,6 @@
 import { EntityOrientation } from '../enums/entityOrientation';
 import { Physics } from '../physics/collider';
+import Area from '../tiles/area';
 
 export abstract class BaseEntity extends Phaser.GameObjects.Container {
 
@@ -11,6 +12,7 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
   public truncatedSpriteHeight: number;
   public collider: Physics.Collider;
   public isTargetable: boolean = false;
+  public area: Area;
 
   protected _positionX: number = 0;
   protected _positionY: number = 0;

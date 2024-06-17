@@ -63,7 +63,7 @@ export default class PlayerController {
     if ((entity !== undefined && entity !== null) && entity !== this.player) {
       if (!(entity as unknown as IFightable).isDead()) {
         this.player.target = entity;
-        if (MathModule.distanceBetween(this.player.positionX, this.player.positionY, entity.positionX, entity.positionY) > 100) {
+        if (MathModule.scaledDistanceBetween(this.player.positionX, this.player.positionY, entity.positionX, entity.positionY) > 100) {
           destinationX = entity.positionX;
           destinationY = entity.positionY;
         } else {

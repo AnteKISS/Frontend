@@ -10,12 +10,16 @@ import { time } from 'console';
 import { EntityManager } from '../managers/entityManager';
 import { InventorySprite } from './inventorySprite';
 import { ActiveEntityAnimator } from './activeEntityAnimator';
-import { ActiveEntityAnimationState } from './entityState';
+import { ActiveEntityAnimationState, ActiveEntityBehaviorState } from './entityState';
+import { Behavior } from '../behaviors/behavior';
+import { RusherBehavior } from '../behaviors/rusherBehavior';
 
 export class MonsterEntity extends ActiveEntity implements IFightable {
 
   public baseSprite: InventorySprite;
   public hitArea: Phaser.Geom.Rectangle;
+  public currentBehaviorState: ActiveEntityBehaviorState;
+  public behavior: Behavior;
 
   constructor(scene, monsterCode) {
     super(scene);
@@ -45,8 +49,12 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       window['selectedMonster'] = null;
     });
 
+    this.currentBehaviorState = new ActiveEntityBehaviorState();
+    this.currentBehaviorState.state = ActiveEntityBehaviorState.State.IDLE;
+
     this.collider = new Physics.Collider(this, this.baseSprite, this.onSpriteColliding, this.onEntityColliding);
     this.animator = new ActiveEntityAnimator(this);
+    this.behavior = new RusherBehavior(this);
   }
 
   // Getters/Setters
@@ -57,6 +65,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     
     this.updatePosition();
     this.animator.update(deltaTime);
+    this.behavior.update(deltaTime);
 
     if (this._debugMode) {
       this.collider.displayDebugGraphics();
