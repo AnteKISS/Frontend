@@ -24,7 +24,10 @@ export default class PlayerEquipment extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
-  getEquipSlots(): EquipSlot[] {
-    return this.equipSlots;
+  public getEquipSlotUnderMouse(pointer: Phaser.Input.Pointer): EquipSlot | null {
+    for (const SLOT of this.equipSlots)
+      if (Phaser.Geom.Rectangle.Contains(SLOT.getBounds(), pointer.x, pointer.y))
+        return SLOT;
+    return null;
   }
 }

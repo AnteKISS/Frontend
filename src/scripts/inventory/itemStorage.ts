@@ -13,7 +13,7 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
   private currentCell: Phaser.GameObjects.Sprite | null;
   private currentCellPosition: [number, number]; // TODO: Replace with "Point" type when merged to main branch
 
-  constructor(scene: Phaser.Scene, x: number, y: number, gridWidth: number, gridHeight: number, cellSize: number) {
+  constructor(scene: Phaser.Scene, x: number, y: number, gridWidth: number, gridHeight: number) {
     super(scene, x, y);
     this.gridWidth = gridWidth;
     this.gridHeight = gridHeight;
@@ -68,7 +68,6 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
     for (let y = 0; y < item.inventoryHeight; y++)
       for (let x = 0; x < item.inventoryWidth; x++)
         this.occupied[selectedY + y][selectedX + x] = false;
-    console.log(selectedX, selectedY, "occupied after remove:", this.occupied);
 
     // eneleve l item du tableau
     this.indexFound = this.infoItems.findIndex((itemInfo) => item === itemInfo[0]);

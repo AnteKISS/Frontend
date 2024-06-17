@@ -19,9 +19,7 @@ export default class MainScene extends Phaser.Scene {
     this.input.keyboard.on('keydown-ESC', () => this.inventory.hide());
 
     const stoneSword = new Item(this, "Stone Sword", ItemType.WEAPON, 1, 2, "stone_sword_inventory");
-
-    const ITEM_ADDED = this.inventory.getItemStorage().addItem(stoneSword, 0, 0);
-    console.log("Has item been added:", ITEM_ADDED);
+    this.inventory.getItemStorage().addItem(stoneSword, 0, 0);
 
     const woodenShield = new Item(this, "Wooden Shield", ItemType.WEAPON, 2, 2, "wooden_shield_inventory");
     this.inventory.getItemStorage().autoLoot(woodenShield);
