@@ -76,7 +76,7 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
     this._debugMode = enableDebugMode;
   }
 
-  abstract update(deltaTime: number): void;
+  abstract update(time: number, deltaTime: number): void;
   abstract reset(): void;
   abstract initializeAnimations(): void;
   abstract onSpriteColliding(hitEntity: BaseEntity): void;

@@ -14,7 +14,7 @@ export class ShrineEntity extends InactiveEntity {
 
 
   // Methods
-  public update(deltaTime: number): void {
+  public update(time: number, deltaTime: number): void {
     throw new NotImplementedError();
   }
 

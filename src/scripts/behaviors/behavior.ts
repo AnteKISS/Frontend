@@ -14,6 +14,8 @@ export abstract class Behavior {
   public factors: BehaviorFactors;
   // public monsterPack: MonsterPack;
 
+  protected delayBetweenRoam: number = 10000;
+
   public constructor(parent: ActiveEntity) {
     this.parent = parent;
   }
@@ -93,5 +95,5 @@ export abstract class Behavior {
 
   // public abstract getFactors(): BehaviorFactors;
   public abstract selectTarget(): void;
-  public abstract update(deltaTime: number): void;
+  public abstract update(time: number, deltaTime: number): void;
 }

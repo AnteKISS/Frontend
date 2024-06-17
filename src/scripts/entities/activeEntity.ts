@@ -115,7 +115,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
       MathModule.isValueInThreshold(this.positionY, this.destinationY, 1);
   }
 
-  abstract update(deltaTime: number): void;
+  abstract update(time: number, deltaTime: number): void;
   abstract reset(): void;
   abstract initializeAnimations(): void;
 }

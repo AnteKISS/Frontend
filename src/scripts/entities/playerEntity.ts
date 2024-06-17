@@ -98,7 +98,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   // Methods
-  public update(deltaTime: number): void {
+  public update(time: number, deltaTime: number): void {
 
     let value = Math.random() * 100;
     switch(true) {
@@ -107,7 +107,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     }
 
     this.updatePosition();
-    this.animator.update(deltaTime);
+    this.animator.update(time, deltaTime);
 
     if (this._debugMode) {
       this.collider.displayDebugGraphics();

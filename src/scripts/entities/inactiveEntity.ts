@@ -15,7 +15,7 @@ export abstract class InactiveEntity extends BaseEntity {
   // Getters/Setters
 
   // Methods
-  abstract update(deltaTime: number): void;
+  abstract update(time: number, deltaTime: number): void;
   abstract reset(): void;
   abstract initializeAnimations(): void;
 }

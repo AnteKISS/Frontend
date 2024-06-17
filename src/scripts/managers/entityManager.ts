@@ -30,9 +30,9 @@ export class EntityManager {
     this._entities.splice(index, 1);
   }
 
-  public update(deltaTime: number): void {
+  public update(time: number, deltaTime: number): void {
     this._entities.forEach(entity => {
-      entity.update(deltaTime);
+      entity.update(time, deltaTime);
     });
 }
 

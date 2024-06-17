@@ -18,7 +18,7 @@ export class ActiveEntityAnimator {
     this.initialize();
   }
 
-  public update(deltaTime: number): void {
+  public update(time: number, deltaTime: number): void {
 
     let hasOrientationUpdated: Boolean = false;
 
@@ -67,7 +67,6 @@ export class ActiveEntityAnimator {
         if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'DEATH' && !hasOrientationUpdated) {
           break;
         }
-        console.log('Playing death animation');
         for (const sprite of this.sprites) {
           sprite.play(`${this.parent.currentAnimationState.state}_${getOrientationString(this.parent.orientation)}_${sprite.textureName.toUpperCase()}`);
         }

@@ -6,7 +6,7 @@ export class RoamerBehavior extends Behavior {
 
   }
 
-  public update(deltaTime: number): void {
+  public update(time: number, deltaTime: number): void {
 
   }
 }

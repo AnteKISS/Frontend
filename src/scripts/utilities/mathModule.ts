@@ -28,12 +28,12 @@ export class MathModule {
   }
 
   public static getRandomPointInCircle(parentX: number, parentY: number, radius: number): Point {
-      let point: Point = { x: 0, y: 0 };
+      let point: Point = { x: parentX, y: parentY };
       const randomAngle_rad = Math.random() * 2 * Math.PI;
       const randomRadius = Math.random() * radius;
   
-      point.x = randomRadius * Math.cos(randomAngle_rad);
-      point.y = randomRadius * Math.sin(randomAngle_rad);
+      point.x += randomRadius * Math.cos(randomAngle_rad);
+      point.y += randomRadius * Math.sin(randomAngle_rad);
       return point;
   }
 }

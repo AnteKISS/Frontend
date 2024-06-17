@@ -61,11 +61,11 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
 
   // Methods
-  public update(deltaTime: number): void {
+  public update(time: number, deltaTime: number): void {
     
     this.updatePosition();
-    this.animator.update(deltaTime);
-    this.behavior.update(deltaTime);
+    this.animator.update(time, deltaTime);
+    this.behavior.update(time, deltaTime);
 
     if (this._debugMode) {
       this.collider.displayDebugGraphics();
@@ -115,6 +115,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       this.destinationX = this.positionX;
       this.destinationY = this.positionY;
       this.currentAnimationState.state = ActiveEntityAnimationState.State.DEATH;
+      this.currentBehaviorState.state = ActiveEntityBehaviorState.State.DEATH;
     }
   }
 

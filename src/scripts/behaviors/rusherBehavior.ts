@@ -30,13 +30,16 @@ export class RusherBehavior extends Behavior {
     this.setBehaviorState(ActiveEntityBehaviorState.State.CHARGING);
   }
 
-  public update(deltaTime: number): void {
+  public update(time: number, deltaTime: number): void {
     const factor: number = Math.random();
     const monster = this.parent as MonsterEntity;
     
     switch (monster.currentBehaviorState.state) {
       case ActiveEntityBehaviorState.State.IDLE:
-        if (this.factors.roamFactor >= factor) {
+        if (this.factors.roamFactor <= 0) {
+
+        }
+        if (time % Math.ceil(this.delayBetweenRoam * this.factors.roamFactor) == 0) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.ROAMING);
         }
         if (!this.isTargetValid()) {
@@ -44,16 +47,14 @@ export class RusherBehavior extends Behavior {
         }
         break;
       case ActiveEntityBehaviorState.State.CHARGING:
-        if (!this.isTargetValid()) {
-          // this.parent.target = null;
-          this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
-        }
-        if (!this.isTargetInRange(this.parent.stats.sightDistance)) {
+        if (!this.isTargetValid() || !this.isTargetInRange(this.parent.stats.sightDistance)) {
           this.parent.target = null;
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         }
-        if (this.isTargetValid()) {
+        else if (this.isTargetValid() && !this.isEntityInMeleeRange()) {
           this.parent.setDestination(this.parent.target!.positionX, this.parent.target!.positionY);
+        } else {
+          this.setBehaviorState(ActiveEntityBehaviorState.State.MELEE_ATTACKING);
         }
         break;        
       case ActiveEntityBehaviorState.State.RUN:
@@ -61,23 +62,28 @@ export class RusherBehavior extends Behavior {
         break;
       case ActiveEntityBehaviorState.State.ROAMING:
         // console.log(this.parent.name + " is roaming");
-        if (factor >= this.factors.roamFactor) {
-          this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
-        }
+        // if (factor >= this.factors.roamFactor) {
+        //   this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
+        // }
         const roamPoint = MathModule.getRandomPointInCircle(this.parent.positionX, this.parent.positionY, 100);
+        console.log("Roaming to: ", roamPoint);
         this.parent.setDestination(roamPoint.x, roamPoint.y);
+        this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         break;
       case ActiveEntityBehaviorState.State.MELEE_ATTACKING:
         if (!this.isTargetValid()) {
           // this.parent.target = null;
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
-        }
-        if (factor >= 0.5) {
-          this.parent.animator.setAnimatorState(ActiveEntityAnimationState.State.MELEEATTACK);
+        } else if (!this.isEntityInMeleeRange()) {
+          this.setBehaviorState(ActiveEntityBehaviorState.State.CHARGING);
         } else {
-          this.parent.animator.setAnimatorState(ActiveEntityAnimationState.State.MELEEATTACK_2);
+          if (factor >= 0.5) {
+            this.parent.animator.setAnimatorState(ActiveEntityAnimationState.State.MELEEATTACK);
+          } else {
+            this.parent.animator.setAnimatorState(ActiveEntityAnimationState.State.MELEEATTACK_2);
+          }
+          console.log(this.parent.name + " is attacking in melee");
         }
-        console.log(this.parent.name + " is attacking in melee");
         break;
       case ActiveEntityBehaviorState.State.RANGED_ATTACKING:
         if (!this.isTargetValid()) {
