@@ -15,6 +15,9 @@ export default class MainScene extends Phaser.Scene {
   create() {
     this.inventory = new Inventory(this);
 
+    this.input.keyboard.on('keydown-I', () => this.inventory.show());
+    this.input.keyboard.on('keydown-ESC', () => this.inventory.hide());
+
     const stoneSword = new Item(this, "Stone Sword", ItemType.WEAPON, 1, 2, "stone_sword_inventory");
 
     const ITEM_ADDED = this.inventory.getItemStorage().addItem(stoneSword, 0, 0);
