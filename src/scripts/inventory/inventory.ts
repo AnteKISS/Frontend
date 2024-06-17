@@ -31,14 +31,6 @@ export default class Inventory extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
-  public getPlayerEquipment(): PlayerEquipment {
-    return this.playerEquipment;
-  }
-
-  public getItemStorage(): ItemStorage {
-    return this.itemStorage;
-  }
-
   private onPointerMove(pointer: Phaser.Input.Pointer): void {
     if (this.isDragging && this.selectedItem)
       this.selectedItem.setPosition(pointer.x, pointer.y); // TODO: Remove absolute values
@@ -53,7 +45,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
     else {
       // Check if equip slot clicked
       for (const EQUIP_SLOT of this.playerEquipment.getEquipSlots())
-        if (Phaser.Geom.Rectangle.Contains(EQUIP_SLOT.getBounds(), this.mouseX, this.mouseY)) {
+        if (Phaser.Geom.Rectangle.Contains(EQUIP_SLOT.getBounds(), pointer.x, pointer.y)) {
           this.selectedItem = EQUIP_SLOT.unequipItem();
           this.isDragging = true;
           return;
@@ -61,11 +53,19 @@ export default class Inventory extends Phaser.GameObjects.Container {
 
       // Check if item in inventory clicked
       for (let [item, startX, startY] of this.itemStorage.getItemsInfo())
-        if (this.mouseIsOverItem(item, startX, startY)) {
+        if (this.itemStorage.mouseIsOverItem(item, startX, startY)) {
           this.pickUpItem(item, startX, startY);
           return;
         }
     }
+  }
+
+  public getPlayerEquipment(): PlayerEquipment {
+    return this.playerEquipment;
+  }
+
+  public getItemStorage(): ItemStorage {
+    return this.itemStorage;
   }
 
   private pickUpItem(item: Item, startX: number, startY: number): void {
@@ -114,12 +114,6 @@ export default class Inventory extends Phaser.GameObjects.Container {
         console.log("Space occupied add item result:");
       }
     }
-  }
-
-  private mouseIsOverItem(item: Item, startX: number, startY: number): boolean {
-    const [gridX, gridY] = this.itemStorage.getCurrentCellPosition();
-    return gridX >= startX && gridX < startX + item.inventoryWidth
-      && gridY >= startY && gridY < startY + item.inventoryHeight;
   }
 }
 

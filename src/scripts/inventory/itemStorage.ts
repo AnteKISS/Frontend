@@ -59,7 +59,6 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
     this.infoItems.push([item, startX, startY]);
     this.add(item);
     item.setSize(item.inventoryWidth * InventoryConfig.CELL_SIZE, item.inventoryHeight * InventoryConfig.CELL_SIZE);
-    console.log(item.width, item.height);
     item.setPosition(startX * InventoryConfig.CELL_SIZE, startY * InventoryConfig.CELL_SIZE);
     return true;
   }
@@ -81,7 +80,6 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
 
   public isSpaceAvailable(item: Item, startX: number, startY: number): boolean {
     // verif si il y a assez d espace
-    console.log(startY, item.inventoryHeight, this.gridHeight);
     if (startX + item.inventoryWidth > this.gridWidth || startY + item.inventoryHeight > this.gridHeight) {
       return false;
     }
@@ -92,6 +90,12 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
           return false;
 
     return true;
+  }
+
+  public mouseIsOverItem(item: Item, startX: number, startY: number): boolean {
+    const [gridX, gridY] = this.currentCellPosition;
+    return gridX >= startX && gridX < startX + item.inventoryWidth
+      && gridY >= startY && gridY < startY + item.inventoryHeight;
   }
 
   public getItemsInfo(): [Item, number, number][] {

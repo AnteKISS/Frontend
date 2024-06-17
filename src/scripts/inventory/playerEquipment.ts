@@ -24,15 +24,6 @@ export default class PlayerEquipment extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
-  // TODO: Ideally we shouldn't have to do this every frame, also this doesn't work right now
-  public updateItems(): void {
-    for (const EQUIP_SLOT of this.equipSlots) {
-      const EQUIP_SLOT_ITEM = EQUIP_SLOT.getItem();
-      if (EQUIP_SLOT_ITEM)
-        EQUIP_SLOT_ITEM.setPosition(0, 0);
-    }
-  }
-
   getEquipSlots(): EquipSlot[] {
     return this.equipSlots;
   }
