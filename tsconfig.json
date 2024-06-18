@@ -15,8 +15,11 @@
     "strictPropertyInitialization": false,
 
     "moduleResolution": "node",
-    "lib": ["dom", "esnext"]
+    "lib": ["dom", "esnext"],
+
+    // CUSTOM OPTIONS
+    "outDir": "./build",
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "typings/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

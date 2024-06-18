@@ -3,12 +3,12 @@ export default class GameLogo extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, 'game-logo');
     scene.add.existing(this);
 		
-	this.scene.tweens.add({
-		targets: this,
-		angle: 360,
-		duration: 2000,
-		repeat: -1
-	});
+    this.scene.tweens.add({
+      targets: this,
+      angle: 360,
+      duration: 2000,
+      repeat: -1
+    });
 	
     //scene.physics.add.existing(this)
 

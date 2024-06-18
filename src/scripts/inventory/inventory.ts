@@ -12,7 +12,6 @@ export default class Inventory extends Phaser.GameObjects.Container {
   private itemStorage: ItemStorage;
 
   private selectedItem: Item | null = null;
-  private isDragging: boolean = false;
 
   constructor(scene: Phaser.Scene) {
     super(scene, 640, 0);
@@ -40,7 +39,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
       return;
 
     // If holding item, try dropping it
-    if (this.isDragging && this.selectedItem) {
+    if (this.selectedItem) {
       this.releaseHeldItem(pointer);
       return;
     }
@@ -48,8 +47,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
     // Check if clicking an equip slot
     const EQUIP_SLOT = this.playerEquipment.getEquipSlotUnderMouse(pointer);
     if (EQUIP_SLOT) {
-      this.selectedItem = EQUIP_SLOT.unequipItem();
-      this.isDragging = true;
+      this.setSelectedItem(EQUIP_SLOT.unequipItem());
       this.updateSelectedItemPosition(pointer);
       return;
     }
@@ -74,15 +72,15 @@ export default class Inventory extends Phaser.GameObjects.Container {
 
   public dropHeldItem(): void {
     if (this.selectedItem) {
+      // TODO: Instead of destroying item, drop it onto ground of game area
       this.selectedItem.destroy();
       this.selectedItem = null;
-      this.isDragging = false;
     }
   }
 
   public updateSelectedItemPosition(pointer: Phaser.Input.Pointer): void {
-    if (this.isDragging && this.selectedItem)
-      this.selectedItem.setPosition(pointer.x, pointer.y);
+    if (this.selectedItem)
+      this.selectedItem.setPosition(pointer.x - this.x, pointer.y - this.y);
   }
 
   public getPlayerEquipment(): PlayerEquipment {
@@ -94,8 +92,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
   }
 
   private pickUpItem(item: Item, startX: number, startY: number): void {
-    this.selectedItem = item;
-    this.isDragging = true;
+    this.setSelectedItem(item);
     this.itemStorage.removeItem(item, startX, startY);
   }
 
@@ -123,13 +120,10 @@ export default class Inventory extends Phaser.GameObjects.Container {
     if (UNEQUIPPED_ITEM === this.selectedItem) // Couldn't place item
       return false;
 
-    if (UNEQUIPPED_ITEM) { // Replaced item in equip slot
-      this.selectedItem = UNEQUIPPED_ITEM;
-    }
-    else { // No item was in equip slot
-      this.selectedItem = null;
-      this.isDragging = false;
-    }
+    if (UNEQUIPPED_ITEM) // Replaced item in equip slot
+      this.setSelectedItem(UNEQUIPPED_ITEM);
+    else // No item was in equip slot
+      this.setSelectedItem(null);
 
     return true;
   }
@@ -147,12 +141,19 @@ export default class Inventory extends Phaser.GameObjects.Container {
 
     if (this.itemStorage.isSpaceAvailable(this.selectedItem, gridX, gridY)) {
       this.itemStorage.addItem(this.selectedItem, gridX, gridY);
-      this.selectedItem = null;
-      this.isDragging = false;
+      this.setSelectedItem(null);
       return true;
     }
 
     return false;
+  }
+
+  private setSelectedItem(item: Item | null): void {
+    if (this.selectedItem)
+      this.remove(this.selectedItem);
+    this.selectedItem = item;
+    if (this.selectedItem)
+      this.add(this.selectedItem);
   }
 }
 

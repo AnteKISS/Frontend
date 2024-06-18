@@ -3,13 +3,32 @@ export default class PreloadScene extends Phaser.Scene {
 		super({ key: 'PreloadScene' });
 	}
 
-	preload() {
-		this.load.image('game-logo', 'assets/img/rat_474x278.png');
-		this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
-		this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');
+  preload() {
+    this.load.image('game-logo', 'assets/img/rat_474x278.png');
+    this.load.image('sphereTexture', 'assets/gui/infobars/itsmars_orb_fill.png');
+    this.load.image('bigContour', 'assets/gui/infobars/itsmars_orb_back1.png');
+    this.load.image('fillTexture', 'assets/gui/infobars/itsmars_scroll_fill.png');
+    this.load.image('contour', 'assets/gui/infobars/itsmars_orb_border.png');
+    this.load.image('shadow', 'assets/gui/infobars/itsmars_orb_shadow.png');
+    this.load.image('highlight', 'assets/gui/infobars/itsmars_orb_highlight.png');
+    this.load.image('spellBar', 'assets/gui/infobars/ManaPanel.png');
+    this.load.image('spellSlot', 'assets/gui/infobars/52x52 SpellSlotBorder.png');
+    this.load.image('attack', 'assets/gui/icons/28.png');
+    this.load.image('expFill', 'assets/gui/infobars/itsmars_exp_fill.png');
+    this.load.image('expBack', 'assets/gui/infobars/itsmars_exp_back.png');
+    this.load.image('expHighlight', 'assets/gui/infobars/itsmars_exp_highlight.png');
+    this.load.image('expShadow', 'assets/gui/infobars/itsmars_exp_shadow.png');
+    this.load.image('leftInfoBar', 'assets/gui/infobars/HealthPanel.png');
+    this.load.image('quakeIcon', 'assets/gui/icons/quakeIcon.png');
+    this.load.image('iceShardIcon', 'assets/gui/icons/iceShardIcon.png');
+    this.load.image('fireboltIcon', 'assets/gui/icons/fireboltIcon.png');
+    this.load.image('arrowLeft', 'assets/gui/editor/arrows/Arrow_W0001.png');
+    this.load.image('arrowRight', 'assets/gui/editor/arrows/Arrow_E0001.png');
+    this.load.image('whiteGlow', 'assets/gui/editor/white_glow.png');
+
+    // INVENTORY
 		this.load.image('stone_sword_inventory', 'assets/inventory/stone_sword.png');
 		this.load.image('wooden_shield_inventory', 'assets/inventory/wooden_shield.png');
-
 		this.load.image('helmet_slot', 'assets/inventory/slots/helmet_slot.png');
 		this.load.image('amulet_slot', 'assets/inventory/slots/amulet_slot.png');
 		this.load.image('armor_slot', 'assets/inventory/slots/armor_slot.png');
@@ -20,33 +39,68 @@ export default class PreloadScene extends Phaser.Scene {
 		this.load.image('boots_slot', 'assets/inventory/slots/boots_slot.png');
 		this.load.image('belt_slot', 'assets/inventory/slots/belt_slot.png');
 		this.load.image('inventory_slot', 'assets/inventory/slots/inventory_slot.png');
-
 		this.load.image('1x1_slot', 'assets/inventory/slots/1x1_slot.png');
 		this.load.image('2x1_slot', 'assets/inventory/slots/2x1_slot.png');
 		this.load.image('2x2_slot', 'assets/inventory/slots/2x2_slot.png');
 		this.load.image('2x3_slot', 'assets/inventory/slots/2x3_slot.png');
 		this.load.image('2x4_slot', 'assets/inventory/slots/2x4_slot.png');
-
 		this.load.image('close_button', 'assets/inventory/buttons/close_button.png');
-
 		this.load.image('black_rock_background', 'assets/inventory/background/black_rock_background.png');
+
+    // AUDIO
+    this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
+    this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');
+
+    this.initializeSpritesheets();
+
+    // this.load.image('sky', 'assets/sky.png');
+    // this.load.image('ground', 'assets/platform.png');
+    // this.load.image('star', 'assets/star.png');
+    // this.load.image('bomb', 'assets/bomb.png');
+    // this.load.spritesheet('dude',
+    //     'assets/dude.png',
+    //     { frameWidth: 32, frameHeight: 48 }
+    // );
+
 	}
 
 	create() {
 		this.scene.start('MainScene');
+  }
 
-		/**
-		 * This is how you would dynamically import the mainScene class (with code splitting),
-		 * add the mainScene to the Scene Manager
-		 * and start the scene.
-		 * The name of the chunk would be 'mainScene.chunk.js
-		 * Find more about code splitting here: https://webpack.js.org/guides/code-splitting/
-		 */
-		// let someCondition = true
-		// if (someCondition)
-		//   import(/* webpackChunkName: "mainScene" */ './mainScene').then(mainScene => {
-		//     this.scene.add('MainScene', mainScene.default, true)
-		//   })
-		// else console.log('The mainScene class will not even be loaded by the browser')
-	}
+  initializeSpritesheets(): void {
+    // TODO: Load all spritesheets dynamically within the sprites folder?
+    // Create this method in AnimationManager class
+    this.load.spritesheet('steel_armor', 'assets/sprites/player/steel_armor.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('buckler', 'assets/sprites/player/buckler.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('clothes', 'assets/sprites/player/clothes.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('dagger', 'assets/sprites/player/dagger.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('greatbow', 'assets/sprites/player/greatbow.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('greatstaff', 'assets/sprites/player/greatstaff.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('greatsword', 'assets/sprites/player/greatsword.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('leather_armor', 'assets/sprites/player/leather_armor.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('longbow', 'assets/sprites/player/longbow.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('male_head1', 'assets/sprites/player/male_head1.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('male_head2', 'assets/sprites/player/male_head2.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('male_head3', 'assets/sprites/player/male_head3.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('rod', 'assets/sprites/player/rod.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('shield', 'assets/sprites/player/shield.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('shortbow', 'assets/sprites/player/shortbow.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('shortsword', 'assets/sprites/player/shortsword.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('longsword', 'assets/sprites/player/longsword.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('slingshot', 'assets/sprites/player/slingshot.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('staff', 'assets/sprites/player/staff.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('wand', 'assets/sprites/player/wand.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('zombie_0', 'assets/sprites/monster/zombie_0.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('icicle', 'assets/sprites/spell/icicle.png', { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('firebolt', 'assets/sprites/spell/firebolt.png', { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('quake', 'assets/sprites/spell/quake.png', { frameWidth: 256, frameHeight: 128 });
+    this.load.spritesheet('rocky_floor_tiles', 'assets/sprites/tiles/rocky.png', { frameWidth: 256, frameHeight: 128 });
+    this.load.spritesheet('flat_stone_lf_walls', 'assets/sprites/tiles/flat_stone_walls.png', { frameWidth: 128, frameHeight: 192 });
+    this.load.spritesheet('flat_stone_full_walls', 'assets/sprites/tiles/flat_stone_walls.png', { frameWidth: 256, frameHeight: 192 });
+  }
+}
+
+if ((module as any).hot) {
+  (module as any).hot.accept();
 }
