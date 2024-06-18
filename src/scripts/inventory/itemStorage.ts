@@ -58,6 +58,7 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
 
     this.infoItems.push([item, startX, startY]);
     this.add(item);
+    item.changeToInventorySprite();
     item.setSize(item.inventoryWidth * InventoryConfig.CELL_SIZE, item.inventoryHeight * InventoryConfig.CELL_SIZE);
     item.setPosition(startX * InventoryConfig.CELL_SIZE, startY * InventoryConfig.CELL_SIZE);
     return true;

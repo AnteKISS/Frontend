@@ -73,7 +73,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
 
   public dropHeldItem(): void {
     if (this.selectedItem) {
-      EntityManager.instance.createItem(this.scene, this.selectedItem);
+      EntityManager.instance.createItem(this.selectedItem);
       this.setSelectedItem(null);
     }
   }
