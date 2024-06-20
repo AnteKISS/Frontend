@@ -13,7 +13,7 @@ export class ActiveEntityFactory {
       dexterity: 0,
       vitality: 0,
       energy: 0,
-      mana: 2150,
+      mana: 150,
       health: 100,
       maxHealth: 1,
       healthRegeneration: 0,
