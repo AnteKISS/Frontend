@@ -6,7 +6,7 @@ import NoSpriteFoundError from "../errors/noSpriteFoundError";
 import { getOrientationString } from "../enums/entityOrientation";
 import { InventorySprite } from "./inventorySprite";
 import { InventorySlots } from "../enums/inventorySlots";
-import { Signal } from "../events/event";
+import { Signal } from "../events/signal";
 
 export class ActiveEntityAnimator {
   public parent: ActiveEntity;

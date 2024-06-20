@@ -4,7 +4,7 @@ import { ActiveEntityAnimationState, ActiveEntityBehaviorState } from "../entiti
 import { MonsterEntity } from "../entities/monsterEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import NotImplementedError from "../errors/notImplementedError";
-import { SignalHandler } from "../events/event";
+import { SignalHandler } from "../events/signal";
 import { EntityManager } from "../managers/entityManager";
 import { MathModule } from "../utilities/mathModule";
 import { nameOf } from "../utilities/nameOf";
@@ -22,13 +22,11 @@ export abstract class Behavior {
 
   public constructor(parent: ActiveEntity) {
     this.parent = parent;
-    // parent.animator.onNonRepeatingAnimationComplete.addHandler(this.onNonRepeatingAnimationEnd.bind(this));
     const animationHandler: SignalHandler = {
       callback: this.onNonRepeatingAnimationEnd.bind(this),
       parameters: [this.parent.currentAnimationState]
     }
     this.parent.animator.onNonRepeatingAnimationComplete.addHandler(animationHandler);
-    // parent.animator.onNonRepeatingAnimationComplete.addHandler(() => {});
   }
 
   protected isTargetInRange(distance: number): boolean {
