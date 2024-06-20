@@ -40,6 +40,6 @@ export default class Item extends Phaser.GameObjects.Container {
 
   public changeToEntitySprite() {
     this.sprite.setTexture(this.entitySprite);
-    this.sprite.setScale(1);
+    this.sprite.setScale(0.5);
   }
 }

@@ -17,11 +17,11 @@ export default class ItemEntity extends InactiveEntity {
     const PLAYERS = EntityManager.instance.getPlayers(); // TODO: Get actual player who dropped the item (pass player ref to inventory?)
     if (PLAYERS.length > 0) {
       const P1 = PLAYERS[0];
-      this.item.setPosition(P1.x - this.item.width / 2, P1.y - this.item.width / 2);
+      this.setPosition(P1.x - this.item.width / 2, P1.y - this.item.width / 2);
     }
 
     this.label = new Label(this.scene, this.item.name);
-    this.label.setPosition(this.item.x + this.item.getWidth() / 2, this.item.y);
+    this.label.setPosition(this.item.getWidth() / 2, 0);
 
     this.add([this.item, this.label]);
     this.scene.cameras.getCamera("uiCamera").ignore(this); // TODO: Maybe add this line to base entity
