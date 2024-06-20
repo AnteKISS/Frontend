@@ -71,7 +71,6 @@ export class RusherBehavior extends Behavior {
         break;
       case ActiveEntityBehaviorState.State.ROAMING:
         const roamPoint = MathModule.getRandomPointInCircle(this.parent.positionX, this.parent.positionY, 100);
-        console.log("Roaming to: ", roamPoint);
         this.parent.setDestination(roamPoint.x, roamPoint.y);
         this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         break;
@@ -91,7 +90,6 @@ export class RusherBehavior extends Behavior {
           } else {
             this.parent.animator.setAnimatorState(ActiveEntityAnimationState.State.MELEEATTACK_2);
           }
-          console.log(this.parent.name + " is attacking in melee");
         }
         break;
       case ActiveEntityBehaviorState.State.RANGED_ATTACKING:
@@ -124,5 +122,9 @@ export class RusherBehavior extends Behavior {
       case ActiveEntityBehaviorState.State.DEATH:
         break;
     }
+  }
+
+  public onNonRepeatingAnimationEnd(animationState: ActiveEntityAnimationState): void {
+    console.log("RusherBehavior: Non-repeating animation ended: " + animationState.state);
   }
 }
