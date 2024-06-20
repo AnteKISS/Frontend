@@ -125,6 +125,18 @@ export class RusherBehavior extends Behavior {
   }
 
   public onNonRepeatingAnimationEnd(animationState: ActiveEntityAnimationState): void {
+    // if (ActiveEntityAnimationState.getNonRepeatingAnimationState().includes(animationState.state)) {
+    //   this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
+    // }
+    switch (animationState.state) {
+      case ActiveEntityAnimationState.State.MELEEATTACK:
+      case ActiveEntityAnimationState.State.MELEEATTACK_2:
+        // this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
+        if (this.isTargetValid() && this.isEntityInMeleeRange()) {
+          (this.parent.target! as MonsterEntity).damage(this.parent.stats.basePhysicalDamage);
+        }
+        break;
+    }
     console.log("RusherBehavior: Non-repeating animation ended: " + animationState.state);
   }
 }

@@ -140,7 +140,16 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
   public damage(amount: number): void {
     // TODO: take into account gear, active effects then apply damage
-    throw new NotImplementedError();
+    if (this.stats.health == 0) {
+      return;
+    }
+    this.stats.health -= amount;
+    if (this.stats.health <= 0) {
+      this.stats.health = 0;
+      this.destinationX = this.positionX;
+      this.destinationY = this.positionY;
+      this.currentAnimationState.state = ActiveEntityAnimationState.State.DEATH;
+    }
   }
 
   public isAttacking(): boolean {
