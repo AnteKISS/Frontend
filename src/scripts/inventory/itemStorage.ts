@@ -1,30 +1,36 @@
-import Item from './item'
+import InventoryItem from './inventoryItem'
 import InventoryConfig from './inventoryConfig'
+import Point from '../types/point'
 
 export default class ItemStorage extends Phaser.GameObjects.Container {
   public readonly gridWidth: number;
   public readonly gridHeight: number;
 
-  private infoItems: [Item, number, number][] = []; // [item,posx,posy]
+  private infoItems: [InventoryItem, number, number][] = []; // [item,posx,posy]
   private indexFound = -1;
 
   public occupied: boolean[][];
   private cells: Phaser.GameObjects.Sprite[][];
   private currentCell: Phaser.GameObjects.Sprite | null;
-  private currentCellPosition: [number, number]; // TODO: Replace with "Point" type when merged to main branch
+  private currentCellPosition: Point;
 
   constructor(scene: Phaser.Scene, x: number, y: number, gridWidth: number, gridHeight: number) {
     super(scene, x, y);
     this.gridWidth = gridWidth;
     this.gridHeight = gridHeight;
-    this.currentCellPosition = [-1, -1];
+    this.currentCellPosition = new Point(-1, -1);
 
     this.occupied = Array.from({ length: gridHeight }, () => Array(gridWidth).fill(false)); // true = occupe
     this.cells = [];
 
-    scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.updateCurrentCell(pointer));
+    scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
     this.createGrid();
     scene.add.existing(this);
+  }
+
+  public onPointerMove(pointer: Phaser.Input.Pointer): void {
+    this.updateCurrentCell(pointer);
+    this.infoItems.forEach((infoItem) => infoItem[0].update(pointer));
   }
 
   public createGrid(): void {
@@ -39,35 +45,35 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
     }
   }
 
-  public autoLoot(item: Item): void {
-    for (let x = 0; x < item.inventoryWidth; x++)
-      for (let y = 0; y < item.inventoryHeight; y++)
+  public autoLoot(item: InventoryItem): void {
+    for (let x = 0; x < item.getItem().inventoryWidth; x++)
+      for (let y = 0; y < item.getItem().inventoryHeight; y++)
         if (this.addItem(item, x, y))
           return;
   }
 
-  public addItem(item: Item, startX: number, startY: number): boolean {
+  public addItem(item: InventoryItem, startX: number, startY: number): boolean {
     //verif si la place est libre
     if (!this.isSpaceAvailable(item, startX, startY))
       return false;
 
     //occupe la place
-    for (let y = 0; y < item.inventoryHeight; y++)
-      for (let x = 0; x < item.inventoryWidth; x++)
+    for (let y = 0; y < item.getItem().inventoryHeight; y++)
+      for (let x = 0; x < item.getItem().inventoryWidth; x++)
         this.occupied[startY + y][startX + x] = true;
 
     this.infoItems.push([item, startX, startY]);
     this.add(item);
-    item.changeToInventorySprite();
-    item.setSize(item.inventoryWidth * InventoryConfig.CELL_SIZE, item.inventoryHeight * InventoryConfig.CELL_SIZE);
+    item.getItem().changeToInventorySprite();
+    item.setSize(item.getItem().inventoryWidth * InventoryConfig.CELL_SIZE, item.getItem().inventoryHeight * InventoryConfig.CELL_SIZE);
     item.setPosition(startX * InventoryConfig.CELL_SIZE, startY * InventoryConfig.CELL_SIZE);
     return true;
   }
 
-  public removeItem(item: Item, selectedX: number, selectedY: number): boolean {
+  public removeItem(item: InventoryItem, selectedX: number, selectedY: number): boolean {
     //libere la place
-    for (let y = 0; y < item.inventoryHeight; y++)
-      for (let x = 0; x < item.inventoryWidth; x++)
+    for (let y = 0; y < item.getItem().inventoryHeight; y++)
+      for (let x = 0; x < item.getItem().inventoryWidth; x++)
         this.occupied[selectedY + y][selectedX + x] = false;
 
     // eneleve l item du tableau
@@ -78,31 +84,32 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
     return true;
   }
 
-  public isSpaceAvailable(item: Item, startX: number, startY: number): boolean {
+  public isSpaceAvailable(item: InventoryItem, startX: number, startY: number): boolean {
     // verif si il y a assez d espace
-    if (startX + item.inventoryWidth > this.gridWidth || startY + item.inventoryHeight > this.gridHeight) {
+    if (startX + item.getItem().inventoryWidth > this.gridWidth || startY + item.getItem().inventoryHeight > this.gridHeight) {
       return false;
     }
     // verif de dispo
-    for (let y = startY; y < startY + item.inventoryHeight; y++)
-      for (let x = startX; x < startX + item.inventoryWidth; x++)
+    for (let y = startY; y < startY + item.getItem().inventoryHeight; y++)
+      for (let x = startX; x < startX + item.getItem().inventoryWidth; x++)
         if (this.occupied[y][x])
           return false;
 
     return true;
   }
 
-  public mouseIsOverItem(item: Item, startX: number, startY: number): boolean {
-    const [gridX, gridY] = this.currentCellPosition;
-    return gridX >= startX && gridX < startX + item.inventoryWidth
-      && gridY >= startY && gridY < startY + item.inventoryHeight;
+  public mouseIsOverItem(item: InventoryItem, startX: number, startY: number): boolean {
+    const gridX = this.currentCellPosition.x;
+    const gridY = this.currentCellPosition.y;
+    return gridX >= startX && gridX < startX + item.getItem().inventoryWidth
+      && gridY >= startY && gridY < startY + item.getItem().inventoryHeight;
   }
 
-  public getItemsInfo(): [Item, number, number][] {
+  public getItemsInfo(): [InventoryItem, number, number][] {
     return this.infoItems;
   }
 
-  public getCurrentCellPosition(): [number, number] {
+  public getCurrentCellPosition(): Point {
     return this.currentCellPosition;
   }
 
@@ -119,7 +126,7 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
         this.currentCell.clearTint();
         this.currentCell = null;
       }
-      this.currentCellPosition = [-1, -1];
+      this.currentCellPosition = new Point(-1, -1);
       return;
     }
 
@@ -133,6 +140,6 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
       this.currentCell = cell;
     }
 
-    this.currentCellPosition = [col, row];
+    this.currentCellPosition = new Point(col, row);
   }
 }

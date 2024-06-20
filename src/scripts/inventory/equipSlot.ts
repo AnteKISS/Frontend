@@ -1,9 +1,9 @@
 import { ItemType } from "./itemType";
 import InventoryConfig from "./inventoryConfig";
-import Item from "./item";
+import InventoryItem from './inventoryItem';
 
 export default class EquipSlot extends Phaser.GameObjects.Container {
-  private item: Item | null;
+  private item: InventoryItem | null;
   private itemType: ItemType;
 
   private slot: Phaser.GameObjects.Sprite;
@@ -25,11 +25,13 @@ export default class EquipSlot extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
-  public getItem(): Item | null {
-    return this.item;
+  public getItem(): InventoryItem | null {
+    if (this.item)
+      return this.item;
+    return null;
   }
 
-  public unequipItem(): Item | null {
+  public unequipItem(): InventoryItem | null {
     if (this.item === null)
       return null;
 
@@ -40,8 +42,8 @@ export default class EquipSlot extends Phaser.GameObjects.Container {
     return UNEQUIPPED_ITEM;
   }
 
-  public equipItem(item: Item): Item | null {
-    if (item.itemType !== this.itemType)
+  public equipItem(item: InventoryItem): InventoryItem | null {
+    if (item.getItem().itemType !== this.itemType)
       return item;
 
     const LAST_ITEM = this.item;

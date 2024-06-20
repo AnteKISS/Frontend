@@ -23,29 +23,23 @@ export default class Item extends Phaser.GameObjects.Container {
 
     this.sprite = new Phaser.GameObjects.Sprite(scene, 0, 0, inventorySprite);
     this.sprite.setOrigin(0, 0);
-    this.sprite.setScale(width * InventoryConfig.CELL_SIZE / this.sprite.width);
-    console.log(this.sprite);
+    this.changeToInventorySprite();
 
     this.add(this.sprite);
     scene.add.existing(this);
   }
 
+  public getWidth(): number {
+    return this.sprite.displayWidth;
+  }
+
   public changeToInventorySprite() {
     this.sprite.setTexture(this.inventorySprite);
+    this.sprite.setScale(this.inventoryWidth * InventoryConfig.CELL_SIZE / this.sprite.width);
   }
 
   public changeToEntitySprite() {
     this.sprite.setTexture(this.entitySprite);
-    // this.scene.cameras.getCamera("uiCamera").ignore(this);
-    // this.scene.cameras.getCamera("uiCamera").addToRenderList(this);
-  }
-
-  private changeSprite(texture: string): void {
-    // Used to reset camera ignore properties, since once you do "camera.ignore" on a gameobject, it seems non-reversible
-    // Otherwise we wouldn't have to destroy and reinstantiate the whole object
-    this.remove(this.sprite);
-    this.sprite.destroy();
-    this.sprite = new Phaser.GameObjects.Sprite(this.scene, 0, 0, texture);
-    this.add(this.sprite);
+    this.sprite.setScale(1);
   }
 }

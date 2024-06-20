@@ -21,7 +21,12 @@ export default class PlayerEquipment extends Phaser.GameObjects.Container {
     ];
 
     this.add([...this.equipSlots]);
+    this.scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.updateEquipSlotItems(pointer));
     scene.add.existing(this);
+  }
+
+  public updateEquipSlotItems(pointer: Phaser.Input.Pointer) {
+    this.equipSlots.forEach((equipSlot: EquipSlot) => equipSlot.getItem()?.update(pointer));
   }
 
   public getEquipSlotUnderMouse(pointer: Phaser.Input.Pointer): EquipSlot | null {

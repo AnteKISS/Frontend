@@ -1,8 +1,9 @@
 import PlayerEquipment from './playerEquipment'
 import ItemStorage from './itemStorage'
 import InventoryConfig from './inventoryConfig'
-import Item from './item'
+import InventoryItem from './inventoryItem'
 import EquipSlot from './equipSlot'
+import Tooltip from '../label/tooltip'
 import { EntityManager } from '../managers/entityManager'
 
 export default class Inventory extends Phaser.GameObjects.Container {
@@ -12,7 +13,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
   private playerEquipment: PlayerEquipment;
   private itemStorage: ItemStorage;
 
-  private selectedItem: Item | null = null;
+  private selectedItem: InventoryItem | null = null;
 
   constructor(scene: Phaser.Scene) {
     super(scene, 640, 0);
@@ -73,14 +74,20 @@ export default class Inventory extends Phaser.GameObjects.Container {
 
   public dropHeldItem(): void {
     if (this.selectedItem) {
-      EntityManager.instance.createItem(this.scene, this.selectedItem);
+      EntityManager.instance.createItem(this.scene, this.selectedItem.getItem());
       this.setSelectedItem(null);
     }
   }
 
   public updateSelectedItemPosition(pointer: Phaser.Input.Pointer): void {
-    if (this.selectedItem)
+    if (this.selectedItem) {
       this.selectedItem.setPosition(pointer.x - this.x, pointer.y - this.y);
+      this.selectedItem.update(pointer);
+    }
+  }
+
+  public isItemPickedUp(): boolean {
+    return !!this.selectedItem;
   }
 
   public getPlayerEquipment(): PlayerEquipment {
@@ -91,7 +98,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
     return this.itemStorage;
   }
 
-  private pickUpItem(item: Item, startX: number, startY: number): void {
+  private pickUpItem(item: InventoryItem, startX: number, startY: number): void {
     this.setSelectedItem(item);
     this.itemStorage.removeItem(item, startX, startY);
   }
@@ -132,15 +139,15 @@ export default class Inventory extends Phaser.GameObjects.Container {
     if (!this.selectedItem)
       return false;
 
-    const [gridX, gridY] = this.itemStorage.getCurrentCellPosition();
+    const gridPos = this.itemStorage.getCurrentCellPosition();
 
-    if (gridX == -1 && gridY == -1) {
+    if (gridPos.x == -1 && gridPos.y == -1) {
       this.dropHeldItem();
       return true;
     }
 
-    if (this.itemStorage.isSpaceAvailable(this.selectedItem, gridX, gridY)) {
-      this.itemStorage.addItem(this.selectedItem, gridX, gridY);
+    if (this.itemStorage.isSpaceAvailable(this.selectedItem, gridPos.x, gridPos.y)) {
+      this.itemStorage.addItem(this.selectedItem, gridPos.x, gridPos.y);
       this.setSelectedItem(null);
       return true;
     }
@@ -148,7 +155,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
     return false;
   }
 
-  private setSelectedItem(item: Item | null): void {
+  private setSelectedItem(item: InventoryItem | null): void {
     if (this.selectedItem)
       this.remove(this.selectedItem);
     this.selectedItem = item;
