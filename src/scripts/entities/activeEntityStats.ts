@@ -4,6 +4,7 @@ export class ActiveEntityStats {
   public vitality: number = 0;
   public energy: number = 0;
   public mana: number = 0;
+  public maxMana: number = 0;
   
   public health: number = 1;
   public maxHealth: number = 1;
