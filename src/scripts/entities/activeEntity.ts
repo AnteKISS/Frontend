@@ -5,6 +5,7 @@ import { EntitySpecies } from '../enums/entitySpecies';
 import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { MathModule } from '../utilities/mathModule';
 import { ActiveEntityAnimationState } from './entityState';
+import { EntityOrientation } from '../enums/entityOrientation';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
@@ -80,6 +81,33 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this.setX(this.x + deltaX);
     this._positionY += deltaY;
     this.setY(this.y + deltaY);
+  }
+
+  public updateOrientationWithTarget(): boolean {
+    if (this.target == null) {
+      return false;
+    }
+    this.setOrientationRad(Phaser.Math.Angle.Between(this.positionX, this.positionY, this.target.positionX, this.target.positionY));
+    let orientation_deg = Phaser.Math.RadToDeg(this._orientation_rad);
+    let currentOrientation = this.orientation;
+    if ((orientation_deg >= -22.5 && orientation_deg < 0) || (orientation_deg >= 0 && orientation_deg < 22.5)) {
+      this.orientation = EntityOrientation.RIGHT;
+    } else if (orientation_deg >= 22.5 && orientation_deg < 67.5) {
+      this.orientation = EntityOrientation.DOWN_RIGHT;
+    } else if (orientation_deg >= 67.5 && orientation_deg < 112.5) {
+      this.orientation = EntityOrientation.DOWN;
+    } else if (orientation_deg >= 112.5 && orientation_deg < 157.5) {
+      this.orientation = EntityOrientation.DOWN_LEFT;
+    } else if ((orientation_deg >= 157.5 && orientation_deg <= 180) || (orientation_deg >= -180 && orientation_deg < -157.5)) {
+      this.orientation = EntityOrientation.LEFT;
+    } else if (orientation_deg >= -157.5 && orientation_deg < -112.5) {
+      this.orientation = EntityOrientation.UP_LEFT;
+    } else if (orientation_deg >= -112.5 && orientation_deg < -67.5) {
+      this.orientation = EntityOrientation.UP;
+    } else if (orientation_deg >= -67.5 && orientation_deg < -22.5) {
+      this.orientation = EntityOrientation.UP_RIGHT;
+    }
+    return currentOrientation != this.orientation;
   }
 
   public setDestination(x: number, y: number): void {

@@ -4,4 +4,5 @@ export interface BehaviorFactors {
   meleeAttackFactor: number;
   rangeAttackFactor: number;
   castFactor: number;
+  attackCooldownFactor: number;
 }

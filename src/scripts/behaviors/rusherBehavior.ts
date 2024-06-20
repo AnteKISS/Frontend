@@ -11,6 +11,7 @@ class RusherBehaviorFactors implements BehaviorFactors {
   meleeAttackFactor: number = 1.00;
   rangeAttackFactor: number = 0.00;
   castFactor: number = 0.00;
+  attackCooldownFactor: number = 0.25;
 }
 
 export class RusherBehavior extends Behavior {
@@ -33,20 +34,28 @@ export class RusherBehavior extends Behavior {
   public update(time: number, deltaTime: number): void {
     const factor: number = Math.random();
     const monster = this.parent as MonsterEntity;
+
+    this.attackCooldown_ms -= deltaTime;
+    this.roamCooldown_ms -= deltaTime;
     
     switch (monster.currentBehaviorState.state) {
       case ActiveEntityBehaviorState.State.IDLE:
         if (this.factors.roamFactor <= 0) {
 
         }
-        if (time % Math.ceil(this.delayBetweenRoam * this.factors.roamFactor) == 0) {
+        if (this.roamCooldown_ms <= 0) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.ROAMING);
+          this.roamCooldown_ms = this.delayBetweenRoam * this.factors.roamFactor;
         }
         if (!this.isTargetValid()) {
           this.selectTarget();
         }
         break;
       case ActiveEntityBehaviorState.State.CHARGING:
+        this.parent.animator.setFutureAnimatorState(ActiveEntityAnimationState.State.RUN);
+        if (this.parent.animator.isNonReapeatingAnimationPlaying()) {
+          return;
+        }
         if (!this.isTargetValid() || !this.isTargetInRange(this.parent.stats.sightDistance)) {
           this.parent.target = null;
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
@@ -61,22 +70,22 @@ export class RusherBehavior extends Behavior {
         // Might not be necessary
         break;
       case ActiveEntityBehaviorState.State.ROAMING:
-        // console.log(this.parent.name + " is roaming");
-        // if (factor >= this.factors.roamFactor) {
-        //   this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
-        // }
         const roamPoint = MathModule.getRandomPointInCircle(this.parent.positionX, this.parent.positionY, 100);
         console.log("Roaming to: ", roamPoint);
         this.parent.setDestination(roamPoint.x, roamPoint.y);
         this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         break;
       case ActiveEntityBehaviorState.State.MELEE_ATTACKING:
+        if (this.attackCooldown_ms > 0) {
+          return;
+        }
+        this.attackCooldown_ms = this.delayBetweenAttack * this.factors.attackCooldownFactor;
         if (!this.isTargetValid()) {
-          // this.parent.target = null;
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         } else if (!this.isEntityInMeleeRange()) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.CHARGING);
         } else {
+          this.parent.setDestination(this.parent.positionX, this.parent.positionY);
           if (factor >= 0.5) {
             this.parent.animator.setAnimatorState(ActiveEntityAnimationState.State.MELEEATTACK);
           } else {
@@ -86,11 +95,15 @@ export class RusherBehavior extends Behavior {
         }
         break;
       case ActiveEntityBehaviorState.State.RANGED_ATTACKING:
+        if (this.attackCooldown_ms > 0) {
+          return;
+        }
+        this.attackCooldown_ms = this.delayBetweenAttack * this.factors.attackCooldownFactor;
         if (!this.isTargetValid()) {
-          // this.parent.target = null;
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         }
         if (factor >= 0.5) {
+          this.parent.setDestination(this.parent.positionX, this.parent.positionY);
           this.parent.animator.setAnimatorState(ActiveEntityAnimationState.State.RANGEDATTACK);
         } else {
           this.parent.animator.setAnimatorState(ActiveEntityAnimationState.State.RANGEDATTACK_2);
@@ -99,7 +112,6 @@ export class RusherBehavior extends Behavior {
         break;
       case ActiveEntityBehaviorState.State.CASTING_SPELL:
         if (!this.isTargetValid()) {
-          // this.parent.target = null;
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         }
         this.parent.animator.setAnimatorState(ActiveEntityAnimationState.State.CASTSPELL);
