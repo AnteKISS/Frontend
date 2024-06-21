@@ -36,14 +36,19 @@ export namespace Physics {
       this.debugGraphics.clear();
 
       let players: PlayerEntity = EntityManager.instance.getPlayers()[0];
-
       this.debugGraphics.fillStyle(this.SPRITE_HITBOX_COLOR, 0.5);
-      this.debugGraphics.fillRect(
-        this.parentEntity.positionX - (this.parentEntity.truncatedSpriteWidth / 2), 
-        this.parentEntity.positionY - (this.parentEntity.truncatedSpriteWidth / 4), 
-        this.parentEntity.truncatedSpriteWidth, 
-        this.parentEntity.truncatedSpriteWidth / 2
+
+      const radiusX = this.parentEntity.truncatedSpriteWidth;
+      const radiusY = this.parentEntity.truncatedSpriteWidth / 2;
+      
+      this.debugGraphics.beginPath();
+      this.debugGraphics.fillEllipse(
+        this.parentEntity.positionX, 
+        this.parentEntity.positionY, 
+        radiusX, 
+        radiusY
       );
+      this.debugGraphics.fillPath();
 
       this.debugGraphics.lineStyle(2, this.ENTITY_HITBOX_COLOR, 0.5);
       this.debugGraphics.strokeRect(
@@ -100,7 +105,7 @@ export namespace Physics {
       const positionX: number = this.parentEntity.positionX;
       const positionY: number = this.parentEntity.positionY;
       const truncatedSpriteWidth: number = this.parentEntity.truncatedSpriteWidth;
-
+    
       for (let index = 0; index < entities.length; index++) {
         if (entities[index] === this.parentEntity) {
           continue;
@@ -108,20 +113,16 @@ export namespace Physics {
         if ((entities[index] as unknown as IFightable).isDead()) {
           continue;
         }
-        if (!(positionX + (truncatedSpriteWidth / 2) > entities[index].positionX - (entities[index].truncatedSpriteWidth / 2))) {
-          continue;
+    
+        const radiusX = truncatedSpriteWidth;
+        const radiusY = truncatedSpriteWidth / 2;
+    
+        const dx = positionX - entities[index].positionX;
+        const dy = positionY - entities[index].positionY;
+        if ((dx * dx) / (radiusX * radiusX) + (dy * dy) / (radiusY * radiusY) <= 1) {
+          this._collidingEntityCallback(entities[index]);
+          return entities[index];
         }
-        if (!(positionX - (truncatedSpriteWidth / 2) < entities[index].positionX + (entities[index].truncatedSpriteWidth / 2))) {
-          continue;
-        }
-        if (!(positionY - (truncatedSpriteWidth / 4) < entities[index].positionY + (entities[index].truncatedSpriteWidth / 4))) {
-          continue;
-        }
-        if (!(positionY + (truncatedSpriteWidth / 4) > entities[index].positionY - (entities[index].truncatedSpriteWidth / 4))) {
-          continue;
-        }
-        this._collidingEntityCallback(entities[index]);
-        return entities[index];
       }
       return null;
     }
