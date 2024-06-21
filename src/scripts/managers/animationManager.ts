@@ -1,4 +1,4 @@
-import { animationConfigKeys } from '../configs/animationConfig';
+import { animationConfigKeys, minotaur_0_AnimationConfig } from '../configs/animationConfig';
 import { EntityOrientation, getOrientationString } from '../enums/entityOrientation';
 
 export class AnimationManager {
@@ -22,6 +22,14 @@ export class AnimationManager {
                 frames: container.scene.anims.generateFrameNumbers(sheet, { start, end }),
                 frameRate: frameRate,
                 repeat: 0,
+              });
+            } else if (action == 'idle') {
+              container.scene.anims.create({
+                key: frameKey,
+                frames: container.scene.anims.generateFrameNumbers(sheet, { start, end }),
+                frameRate: frameRate,
+                repeat: -1,
+                yoyo: true
               });
             } else {
               container.scene.anims.create({

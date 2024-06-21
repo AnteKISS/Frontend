@@ -43,21 +43,6 @@ const zombie_0_hitAndDeathAnimationEndFrame = 27;
 const zombie_0_criticalDeathAnimationStartFrame = 28;
 const zombie_0_criticalDeathAnimationEndFrame = 35;
 
-const icicle_AnimationStartFrame = 0;
-const icicle_AnimationEndFrame = 7; 
-
-const firebolt_AnimationStartFrame = 0;
-const firebolt_AnimationEndFrame = 7; 
-
-const greyQuake_AnimationStartFrame = 0;
-const greyQuake_AnimationEndFrame = 5;
-
-const redQuake_AnimationStartFrame = 6;
-const redQuake_AnimationEndFrame = 11;
-
-const blueQuake_AnimationStartFrame = 12;
-const blueQuake_AnimationEndFrame = 17;
-
 const zombie_0_leftOrientationSpriteOffset = 0;
 const zombie_0_upLeftOrientationSpriteOffset = 36;
 const zombie_0_upOrientationSpriteOffset = 72;
@@ -66,7 +51,29 @@ const zombie_0_rightOrientationSpriteOffset = 144;
 const zombie_0_downRightOrientationSpriteOffset = 180;
 const zombie_0_downOrientationSpriteOffset = 216;
 const zombie_0_downLeftOrientationSpriteOffset = 252;
-// ------------------------------
+// --------------------------------
+
+// ---------- minotaur_0 ----------
+const minotaur_0_idleAnimationStartFrame = 0;
+const minotaur_0_idleAnimationEndFrame = 3;
+const minotaur_0_runAnimationStartFrame = 4;
+const minotaur_0_runAnimationEndFrame = 11;
+const minotaur_0_meleeAttackAnimationStartFrame = 12;
+const minotaur_0_meleeAttackAnimationEndFrame = 15;
+const minotaur_0_blockAnimationStartFrame = 16;
+const minotaur_0_blockAnimationEndFrame = 17;
+const minotaur_0_hitAndDeathAnimationStartFrame = 18;
+const minotaur_0_hitAndDeathAnimationEndFrame = 23;
+
+const minotaur_0_leftOrientationSpriteOffset = 0;
+const minotaur_0_upLeftOrientationSpriteOffset = 24;
+const minotaur_0_upOrientationSpriteOffset = 48;
+const minotaur_0_upRightOrientationSpriteOffset = 72;
+const minotaur_0_rightOrientationSpriteOffset = 96;
+const minotaur_0_downRightOrientationSpriteOffset = 120;
+const minotaur_0_downOrientationSpriteOffset = 144;
+const minotaur_0_downLeftOrientationSpriteOffset = 168;
+// --------------------------------
 
 export const player_AnimationConfig = {
   idle: {
@@ -1334,6 +1341,96 @@ export const zombie_0_AnimationConfig = {
   }
 };
 
+export const minotaur_0_AnimationConfig = {
+  idle: {
+    frames: [
+      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_leftOrientationSpriteOffset,      end: minotaur_0_idleAnimationEndFrame + minotaur_0_leftOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.LEFT },
+      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_upLeftOrientationSpriteOffset,    end: minotaur_0_idleAnimationEndFrame + minotaur_0_upLeftOrientationSpriteOffset,    sheet: 'minotaur_0', orientation: EntityOrientation.UP_LEFT },
+      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_upOrientationSpriteOffset,        end: minotaur_0_idleAnimationEndFrame + minotaur_0_upOrientationSpriteOffset,        sheet: 'minotaur_0', orientation: EntityOrientation.UP },
+      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_upRightOrientationSpriteOffset,   end: minotaur_0_idleAnimationEndFrame + minotaur_0_upRightOrientationSpriteOffset,   sheet: 'minotaur_0', orientation: EntityOrientation.UP_RIGHT },
+      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_rightOrientationSpriteOffset,     end: minotaur_0_idleAnimationEndFrame + minotaur_0_rightOrientationSpriteOffset,     sheet: 'minotaur_0', orientation: EntityOrientation.RIGHT },
+      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_downRightOrientationSpriteOffset, end: minotaur_0_idleAnimationEndFrame + minotaur_0_downRightOrientationSpriteOffset, sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_downOrientationSpriteOffset,      end: minotaur_0_idleAnimationEndFrame + minotaur_0_downOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.DOWN },
+      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_downLeftOrientationSpriteOffset,  end: minotaur_0_idleAnimationEndFrame + minotaur_0_downLeftOrientationSpriteOffset,  sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.IDLE,
+    frameRate: 6
+  },
+  run: {
+    frames: [
+      { start: minotaur_0_runAnimationStartFrame + minotaur_0_leftOrientationSpriteOffset,      end: minotaur_0_runAnimationEndFrame + minotaur_0_leftOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.LEFT },
+      { start: minotaur_0_runAnimationStartFrame + minotaur_0_upLeftOrientationSpriteOffset,    end: minotaur_0_runAnimationEndFrame + minotaur_0_upLeftOrientationSpriteOffset,    sheet: 'minotaur_0', orientation: EntityOrientation.UP_LEFT },
+      { start: minotaur_0_runAnimationStartFrame + minotaur_0_upOrientationSpriteOffset,        end: minotaur_0_runAnimationEndFrame + minotaur_0_upOrientationSpriteOffset,        sheet: 'minotaur_0', orientation: EntityOrientation.UP },
+      { start: minotaur_0_runAnimationStartFrame + minotaur_0_upRightOrientationSpriteOffset,   end: minotaur_0_runAnimationEndFrame + minotaur_0_upRightOrientationSpriteOffset,   sheet: 'minotaur_0', orientation: EntityOrientation.UP_RIGHT },
+      { start: minotaur_0_runAnimationStartFrame + minotaur_0_rightOrientationSpriteOffset,     end: minotaur_0_runAnimationEndFrame + minotaur_0_rightOrientationSpriteOffset,     sheet: 'minotaur_0', orientation: EntityOrientation.RIGHT },
+      { start: minotaur_0_runAnimationStartFrame + minotaur_0_downRightOrientationSpriteOffset, end: minotaur_0_runAnimationEndFrame + minotaur_0_downRightOrientationSpriteOffset, sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: minotaur_0_runAnimationStartFrame + minotaur_0_downOrientationSpriteOffset,      end: minotaur_0_runAnimationEndFrame + minotaur_0_downOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.DOWN },
+      { start: minotaur_0_runAnimationStartFrame + minotaur_0_downLeftOrientationSpriteOffset,  end: minotaur_0_runAnimationEndFrame + minotaur_0_downLeftOrientationSpriteOffset,  sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.RUN,
+    frameRate: 8
+  },
+  meleeAttack: {
+    frames: [
+      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_leftOrientationSpriteOffset,      end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_leftOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.LEFT },
+      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_upLeftOrientationSpriteOffset,    end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_upLeftOrientationSpriteOffset,    sheet: 'minotaur_0', orientation: EntityOrientation.UP_LEFT },
+      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_upOrientationSpriteOffset,        end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_upOrientationSpriteOffset,        sheet: 'minotaur_0', orientation: EntityOrientation.UP },
+      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_upRightOrientationSpriteOffset,   end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_upRightOrientationSpriteOffset,   sheet: 'minotaur_0', orientation: EntityOrientation.UP_RIGHT },
+      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_rightOrientationSpriteOffset,     end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_rightOrientationSpriteOffset,     sheet: 'minotaur_0', orientation: EntityOrientation.RIGHT },
+      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_downRightOrientationSpriteOffset, end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_downRightOrientationSpriteOffset, sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_downOrientationSpriteOffset,      end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_downOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.DOWN },
+      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_downLeftOrientationSpriteOffset,  end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_downLeftOrientationSpriteOffset,  sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.MELEEATTACK,
+    frameRate: 8
+  },
+  block: {
+    frames: [
+      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_leftOrientationSpriteOffset,      end: minotaur_0_blockAnimationEndFrame + minotaur_0_leftOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.LEFT },
+      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_upLeftOrientationSpriteOffset,    end: minotaur_0_blockAnimationEndFrame + minotaur_0_upLeftOrientationSpriteOffset,    sheet: 'minotaur_0', orientation: EntityOrientation.UP_LEFT },
+      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_upOrientationSpriteOffset,        end: minotaur_0_blockAnimationEndFrame + minotaur_0_upOrientationSpriteOffset,        sheet: 'minotaur_0', orientation: EntityOrientation.UP },
+      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_upRightOrientationSpriteOffset,   end: minotaur_0_blockAnimationEndFrame + minotaur_0_upRightOrientationSpriteOffset,   sheet: 'minotaur_0', orientation: EntityOrientation.UP_RIGHT },
+      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_rightOrientationSpriteOffset,     end: minotaur_0_blockAnimationEndFrame + minotaur_0_rightOrientationSpriteOffset,     sheet: 'minotaur_0', orientation: EntityOrientation.RIGHT },
+      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_downRightOrientationSpriteOffset, end: minotaur_0_blockAnimationEndFrame + minotaur_0_downRightOrientationSpriteOffset, sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_downOrientationSpriteOffset,      end: minotaur_0_blockAnimationEndFrame + minotaur_0_downOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.DOWN },
+      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_downLeftOrientationSpriteOffset,  end: minotaur_0_blockAnimationEndFrame + minotaur_0_downLeftOrientationSpriteOffset,  sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.BLOCK,
+    frameRate: 8
+  },
+  death: {
+    frames: [
+      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_leftOrientationSpriteOffset,      end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_leftOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.LEFT },
+      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_upLeftOrientationSpriteOffset,    end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_upLeftOrientationSpriteOffset,    sheet: 'minotaur_0', orientation: EntityOrientation.UP_LEFT },
+      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_upOrientationSpriteOffset,        end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_upOrientationSpriteOffset,        sheet: 'minotaur_0', orientation: EntityOrientation.UP },
+      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_upRightOrientationSpriteOffset,   end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_upRightOrientationSpriteOffset,   sheet: 'minotaur_0', orientation: EntityOrientation.UP_RIGHT },
+      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_rightOrientationSpriteOffset,     end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_rightOrientationSpriteOffset,     sheet: 'minotaur_0', orientation: EntityOrientation.RIGHT },
+      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_downRightOrientationSpriteOffset, end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_downRightOrientationSpriteOffset, sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_downOrientationSpriteOffset,      end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_downOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.DOWN },
+      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_downLeftOrientationSpriteOffset,  end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_downLeftOrientationSpriteOffset,  sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.DEATH,
+    frameRate: 8
+  }
+};
+
+const icicle_AnimationStartFrame = 0;
+const icicle_AnimationEndFrame = 7; 
+
+const firebolt_AnimationStartFrame = 0;
+const firebolt_AnimationEndFrame = 7; 
+
+const greyQuake_AnimationStartFrame = 0;
+const greyQuake_AnimationEndFrame = 5;
+
+const redQuake_AnimationStartFrame = 6;
+const redQuake_AnimationEndFrame = 11;
+
+const blueQuake_AnimationStartFrame = 12;
+const blueQuake_AnimationEndFrame = 17;
+
+// ------------------------------
+
 export const projectile_AnimationConfig = {
   icicle: {
     frames:{ start: icicle_AnimationStartFrame, end: icicle_AnimationEndFrame, sheet: 'icicle' },
@@ -1370,5 +1467,6 @@ export const circleSpell_AnimationConfig = {
 
 export const animationConfigKeys = {
   "player_AnimationConfig": player_AnimationConfig,
-  "zombie_0_AnimationConfig": zombie_0_AnimationConfig
+  "zombie_0_AnimationConfig": zombie_0_AnimationConfig,
+  "minotaur_0_AnimationConfig": minotaur_0_AnimationConfig
 };

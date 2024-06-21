@@ -28,7 +28,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     this.type = 'MonsterEntity';
     this.baseSprite = scene.add.sprite(0, 0, 'baseTexture');
     this.baseSprite.scale = 1.5;
-    this.baseSprite.textureName = 'ZOMBIE_0';
+    this.baseSprite.textureName = monsterCode.toUpperCase();
     this.add(this.baseSprite);
     this.initializeAnimations();
 
