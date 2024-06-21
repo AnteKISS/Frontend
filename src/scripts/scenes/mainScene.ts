@@ -22,6 +22,7 @@ export default class MainScene extends Phaser.Scene {
   private playerTest: PlayerEntity;
   private monsterTest: MonsterEntity;
   private monsterTest2: MonsterEntity;
+  private monsterTest3: MonsterEntity;
   private entityHealthBar: EntityHealthBar;
   private gui: GUI;
 
@@ -82,6 +83,11 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest2.positionX = this.monsterTest.positionX;
     this.monsterTest2.positionY = this.monsterTest.positionY - 60;
     this.monsterTest2.area = this.campaignManager.getCampaign().currentArea();
+    this.monsterTest3 = EntityManager.instance.createMonster(this, 'skeleton_0');
+    this.monsterTest3.name = 'Skeletenotaur';
+    this.monsterTest3.positionX = this.monsterTest.positionX - 250;
+    this.monsterTest3.positionY = this.monsterTest.positionY + 120;
+    this.monsterTest3.area = this.campaignManager.getCampaign().currentArea();
     this.entityHealthBar = new EntityHealthBar(this);
     // this.entityHealthBar.entity = this.monsterTest;
     this.gui.spellBar.setSpellBook(this.playerTest.mySpellBook);
@@ -116,9 +122,11 @@ export default class MainScene extends Phaser.Scene {
         this.playerTest,
         this.monsterTest,
         this.monsterTest2,
+        this.monsterTest3,
         this.playerTest.collider.debugGraphics,
         this.monsterTest.collider.debugGraphics,
         this.monsterTest2.collider.debugGraphics,
+        this.monsterTest3.collider.debugGraphics,
       ]
     );
     // EntityManager.instance.setDebugMode(true);
@@ -135,6 +143,7 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest.update(time, deltaTime);
     this.monsterTest.update(time, deltaTime);
     this.monsterTest2.update(time, deltaTime);
+    this.monsterTest3.update(time, deltaTime);
     this.updateGUI();
     //this.drawTileSet();
     this.entityHealthBar.update();
