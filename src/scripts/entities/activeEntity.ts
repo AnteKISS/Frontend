@@ -6,6 +6,7 @@ import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { MathModule } from '../utilities/mathModule';
 import { ActiveEntityAnimationState } from './entityState';
 import { EntityOrientation } from '../enums/entityOrientation';
+import { Physics } from '../physics/collider';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
@@ -62,10 +63,13 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
       return;
     }
 
-    let isEntityColliding: Boolean = this.collider.checkEntityCollision();
+    let collisionInfo: Physics.CollisionInformation = this.collider.checkCollisions();
+    let isEntityColliding: Boolean = collisionInfo.collidingEntity !== null;
     if (isEntityColliding) {
-      this.positionX = this.lastValidPositionX;
-      this.positionY = this.lastValidPositionY;
+      // Get angle between the entity and the colliding entity and make the entity move in the opposite direction
+      let angle = Math.atan2(this.positionY - collisionInfo.collidingEntity!.positionY, this.positionX - collisionInfo.collidingEntity!.positionX);
+      this.positionX += Math.cos(angle) * 2;
+      this.positionY += Math.sin(angle) * 2;
       return;
     }
 

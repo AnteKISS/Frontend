@@ -1,9 +1,15 @@
 import { IFightable } from "../entities/IFightable";
 import { BaseEntity } from "../entities/baseEntity";
+import { InventorySprite } from "../entities/inventorySprite";
 import { PlayerEntity } from "../entities/playerEntity";
 import { EntityManager } from "../managers/entityManager";
 
 export namespace Physics {
+
+  export type CollisionInformation = {
+    collidingEntity: BaseEntity | null;
+    collidingSprite: Phaser.GameObjects.Sprite | null;
+  }
 
   export class Collider {
     
@@ -51,12 +57,14 @@ export namespace Physics {
       this.debugGraphics.fillCircle(this.parentEntity.positionX, this.parentEntity.positionY, 5);
     }
 
-    public checkCollisions(): void {
-      this.checkSpriteCollision();
-      this.checkEntityCollision();
+    public checkCollisions(): CollisionInformation {
+      let collisionInfo: CollisionInformation = {collidingEntity: null, collidingSprite: null};
+      collisionInfo.collidingSprite = this.checkSpriteCollision();
+      collisionInfo.collidingEntity = this.checkEntityCollision();
+      return collisionInfo;
     }
 
-    public checkSpriteCollision(): boolean {
+    public checkSpriteCollision(): Phaser.GameObjects.Sprite | null {
       const entities: BaseEntity[] = EntityManager.instance.getEntities();
       const positionX: number = this.parentEntity.positionX;
       const positionY: number = this.parentEntity.positionY;
@@ -82,12 +90,12 @@ export namespace Physics {
           continue;
         }
         this._collidingSpriteCallback(entities[index]);
-        return true;
+        return entities[index].getAll()[0] as InventorySprite;
       }
-      return false;
+      return null;
     }
 
-    public checkEntityCollision(): boolean {
+    public checkEntityCollision(): BaseEntity | null {
       const entities: BaseEntity[] = EntityManager.instance.getEntities();
       const positionX: number = this.parentEntity.positionX;
       const positionY: number = this.parentEntity.positionY;
@@ -113,9 +121,9 @@ export namespace Physics {
           continue;
         }
         this._collidingEntityCallback(entities[index]);
-        return true;
+        return entities[index];
       }
-      return false;
+      return null;
     }
   }
 }
