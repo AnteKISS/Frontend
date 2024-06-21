@@ -26,7 +26,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   public mainHandSprite: InventorySprite;
   public offHandSprite: InventorySprite;
 
-  private _pointerDown: boolean = false;
   maxMana: number = 150; //Pour test
   mySpellBook: SpellBook;
   private equippedSpells: Spell[] = [];
@@ -89,23 +88,10 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.equippedSpells[index] = spell;
   }
 
-  public setPointerDown(state: boolean): void {
-    this._pointerDown = state;
-  }
-
-  public getPointerDown(): boolean {
-    return this._pointerDown;
-  }
-
   // Methods
   public update(time: number, deltaTime: number): void {
 
-    let value = Math.random() * 100;
-    switch(true) {
-      case value > 1:
-        break;
-    }
-
+    this.controller.update(time, deltaTime);
     this.updatePosition();
     this.animator.update(time, deltaTime);
 

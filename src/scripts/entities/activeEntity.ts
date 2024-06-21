@@ -70,6 +70,8 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
       let angle = Math.atan2(this.positionY - collisionInfo.collidingEntity!.positionY, this.positionX - collisionInfo.collidingEntity!.positionX);
       this.positionX += Math.cos(angle) * 2;
       this.positionY += Math.sin(angle) * 2;
+      collisionInfo.collidingEntity!.positionX -= Math.cos(angle) * 2;
+      collisionInfo.collidingEntity!.positionY -= Math.sin(angle) * 2;
       return;
     }
 

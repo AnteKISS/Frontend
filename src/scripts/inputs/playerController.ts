@@ -6,12 +6,23 @@ import { EntityManager } from "../managers/entityManager";
 import { MathModule } from "../utilities/mathModule";
 
 export default class PlayerController {
+  public pointerDown: boolean = false;
+  
   private player: PlayerEntity;
 
   constructor(scene: Phaser.Scene, player: PlayerEntity) {
     this.player = player;
     this.initSpellBarInput();
     this.initPlayerMovementInput();
+  }
+
+  public update(time: number, deltaTime: number): void {
+    if (this.pointerDown && !this.player.isAttacking()) {
+      const destinationX: number = this.player.scene.input.mousePointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
+      const destinationY: number = this.player.scene.input.mousePointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
+      this.player.setDestination(destinationX, destinationY);
+      console.log('Holding mouse down');
+    }
   }
 
   private initSpellBarInput(): void {
@@ -55,7 +66,7 @@ export default class PlayerController {
   }
 
   public onPointerDown(pointer: Phaser.Input.Pointer): void {
-    this.player.setPointerDown(true);
+    this.pointerDown = true;
     let destinationX = pointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
     let destinationY = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
 
@@ -88,16 +99,16 @@ export default class PlayerController {
   }
 
   public onPointerUp(pointer: Phaser.Input.Pointer): void {
-    this.player.setPointerDown(false);
+    this.pointerDown = false;
   }
 
   public onPointerMove(pointer: Phaser.Input.Pointer): void {
-    const DEST_X = pointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
-    const DEST_Y = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
+    const destinationX: number = pointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
+    const destinationY: number = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
 
-    if (this.player.getPointerDown() && !this.player.isAttacking()) {
-        this.player.setDestination(DEST_X, DEST_Y);
-        this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, DEST_X, DEST_Y));
+    if (this.pointerDown && !this.player.isAttacking()) {
+        this.player.setDestination(destinationX, destinationY);
+        this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, destinationX, destinationY));
     }
   }
 

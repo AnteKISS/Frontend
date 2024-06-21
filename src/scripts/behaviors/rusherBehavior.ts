@@ -106,14 +106,14 @@ export class RusherBehavior extends Behavior {
         } else {
           this.parent.animator.setAnimatorState(ActiveEntityAnimationState.State.RANGEDATTACK_2);
         }
-        console.log(this.parent.name + " is attacking from a range");
+        // console.log(this.parent.name + " is attacking from a range");
         break;
       case ActiveEntityBehaviorState.State.CASTING_SPELL:
         if (!this.isTargetValid()) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         }
         this.parent.animator.setAnimatorState(ActiveEntityAnimationState.State.CASTSPELL);
-        console.log(this.parent.name + " is attacking with a spell");
+        // console.log(this.parent.name + " is attacking with a spell");
         break;
       case ActiveEntityBehaviorState.State.BLOCKING:
         break;
@@ -137,6 +137,6 @@ export class RusherBehavior extends Behavior {
         }
         break;
     }
-    console.log("RusherBehavior: Non-repeating animation ended: " + animationState.state);
+    // console.log("RusherBehavior: Non-repeating animation ended: " + animationState.state);
   }
 }
