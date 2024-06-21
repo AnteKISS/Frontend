@@ -21,7 +21,6 @@ export default class PlayerController {
       const destinationX: number = this.player.scene.input.mousePointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
       const destinationY: number = this.player.scene.input.mousePointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
       this.player.setDestination(destinationX, destinationY);
-      console.log('Holding mouse down');
     }
   }
 
