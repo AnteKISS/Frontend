@@ -1,6 +1,6 @@
 {
   "name": "game",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Projet S3i de la team AntéKISS",
   "homepage": "https://github.com/AnteKISS/NameTBD?tab=readme-ov-file#nametbd",
   "main": "index.js",
