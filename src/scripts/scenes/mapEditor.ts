@@ -181,11 +181,13 @@ export default class MapEditor extends Phaser.Scene {
     this.tileSelector = new TileSelector(this);
 
     // Inputs
-    this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-    this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-    this.sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
-    this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-    this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+    if (this.input.keyboard) {
+      this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+      this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+      this.sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+      this.wKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+      this.shiftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
+    }
 
     // Prevent DOM from handling tab key
     this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB, true);

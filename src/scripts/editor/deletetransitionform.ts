@@ -36,7 +36,8 @@ export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
 
     this.focused = false;
 
-    scene.input.keyboard.on('keydown', (event: KeyboardEvent) => this.handleKeyDown(event));
+    if (scene.input.keyboard)
+      scene.input.keyboard.on('keydown', (event: KeyboardEvent) => this.handleKeyDown(event));
 
     this.updateTransitionText();
   }
