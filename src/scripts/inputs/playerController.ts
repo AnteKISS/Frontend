@@ -41,7 +41,6 @@ export default class PlayerController {
       }
     }
     if (!this.player.isAttacking()) {
-      // this.player.setDestination(destinationX, destinationY);
       this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, destinationX, destinationY));
     }
   }

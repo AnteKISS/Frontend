@@ -76,10 +76,6 @@ export class RusherBehavior extends Behavior {
         this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         break;
       case ActiveEntityBehaviorState.State.MELEE_ATTACKING:
-        // if (this.attackCooldown_ms > 0) {
-        //   //this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
-        //   return;
-        // }
         this.attackCooldown_ms = this.delayBetweenAttack * this.factors.attackCooldownFactor;
         if (!this.isTargetValid()) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
@@ -95,10 +91,6 @@ export class RusherBehavior extends Behavior {
         }
         break;
       case ActiveEntityBehaviorState.State.RANGED_ATTACKING:
-        // if (this.attackCooldown_ms > 0) {
-        //   //this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
-        //   return;
-        // }
         this.attackCooldown_ms = this.delayBetweenAttack * this.factors.attackCooldownFactor;
         if (!this.isTargetValid()) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
@@ -109,14 +101,12 @@ export class RusherBehavior extends Behavior {
         } else {
           this.parent.animator.setAnimatorState(ActiveEntityAnimationState.State.RANGEDATTACK_2);
         }
-        // console.log(this.parent.name + " is attacking from a range");
         break;
       case ActiveEntityBehaviorState.State.CASTING_SPELL:
         if (!this.isTargetValid()) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         }
         this.parent.animator.setAnimatorState(ActiveEntityAnimationState.State.CASTSPELL);
-        // console.log(this.parent.name + " is attacking with a spell");
         break;
       case ActiveEntityBehaviorState.State.BLOCKING:
         break;
@@ -128,35 +118,17 @@ export class RusherBehavior extends Behavior {
   }
 
   public onNonRepeatingAnimationEnd(animationState: ActiveEntityAnimationState): void {
-    // // if (ActiveEntityAnimationState.getNonRepeatingAnimationState().includes(animationState.state)) {
-    // //   this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
-    // // }
-    // switch (animationState.state) {
-    //   case ActiveEntityAnimationState.State.MELEEATTACK:
-    //   case ActiveEntityAnimationState.State.MELEEATTACK_2:
-    //     // this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
-    //     if (this.isTargetValid() && this.isEntityInMeleeRange()) {
-    //       (this.parent.target! as MonsterEntity).damage(this.parent.stats.basePhysicalDamage);
-    //     }
-    //     break;
-    // }
-    // // console.log("RusherBehavior: Non-repeating animation ended: " + animationState.state);
+
   }
 
   public onYoyoAnimationMiddleFrame(animationState: ActiveEntityAnimationState): void {
-        // if (ActiveEntityAnimationState.getNonRepeatingAnimationState().includes(animationState.state)) {
-    //   this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
-    // }
     switch (animationState.state) {
       case ActiveEntityAnimationState.State.MELEEATTACK:
       case ActiveEntityAnimationState.State.MELEEATTACK_2:
-        // this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         if (this.isTargetValid() && this.isEntityInMeleeRange()) {
-          console.log("RusherBehavior: Melee attack hit");
           (this.parent.target! as PlayerEntity).damage(this.parent.stats.basePhysicalDamage);
         }
         break;
     }
-    // console.log("RusherBehavior: Non-repeating animation ended: " + animationState.state);
   }
 }

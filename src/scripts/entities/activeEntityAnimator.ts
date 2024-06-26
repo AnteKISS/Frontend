@@ -96,14 +96,6 @@ export class ActiveEntityAnimator {
       default:
         break;
     }
-    // if (this.currentFrameIndex != this.spriteReference.anims.currentFrame.index) {
-    //   this.currentFrameIndex = this.spriteReference.anims.currentFrame.index;
-    //   if (this.spriteReference.anims.currentFrame.index == this.spriteReference.anims.currentAnim.frames.length) {
-    //     this.onYoyoAnimationMiddleFrame.raise(() => {
-    //       this.parent.currentAnimationState
-    //     });
-    //   }
-    // }
   }
 
   public setAnimatorState(state: ActiveEntityAnimationState.State): void {
