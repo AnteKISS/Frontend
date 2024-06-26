@@ -43,6 +43,12 @@ export class SkillTree
         this.nodes.push(node);
     }
 
+    public levelUp(): void
+    {
+        this.totalSkillPoint += 1;
+        this.updateAvailableSkillPoint();
+    }
+
     public getTotalSkillPoint(): number
     {
         return this.totalSkillPoint;

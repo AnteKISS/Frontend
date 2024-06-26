@@ -14,7 +14,6 @@ export class Exp
         this.totalExp = 0;
         this.currentExpToMax = 0;
         this.levelExpToMax = 0;
-        this.addExp(30000000);
         this.updateLevelExpToMax();
     }
 
@@ -39,9 +38,6 @@ export class Exp
             this.player.levelUp();
             this.currentExpToMax = this.currentExpToMax - this.levelExpToMax;
             this.updateLevelExpToMax();
-            console.log(this.currentExpToMax);
-            console.log(this.levelExpToMax);
-            console.log(this.totalExp);
         }
     }
 

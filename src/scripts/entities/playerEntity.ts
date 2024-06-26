@@ -15,6 +15,7 @@ import { IFightable } from './IFightable';
 import { Exp } from '../progression/exp';
 import { SkillTree } from '../progression/skillTree';
 import { Console } from 'console';
+import { AttributeAllocation } from '../progression/attributeAllocation';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -29,6 +30,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   private controller: PlayerController;
   public exp: Exp;
   private skillTree: SkillTree;
+  private attributeAllocation: AttributeAllocation;
 
   constructor(scene) {
     super(scene);
@@ -57,6 +59,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.controller = new PlayerController(scene, this);
     this.exp = new Exp(this);
     this.skillTree = new SkillTree(this);
+    this.attributeAllocation = new AttributeAllocation(this);
   
     this.mySpellBook = new SpellBook(this);
     this.mySpellBook.addSpell(new Firebolt(this));
@@ -253,9 +256,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   public levelUp()
   {
     this.stats.level ++;
-    this.skillTree.setTotalSkillPoint(this.skillTree.getTotalSkillPoint() + 1);
-    console.log(this.stats.level);
-
+    this.skillTree.levelUp();
+    this.attributeAllocation.levelUp();
   }
 
   onSpriteColliding = (hitEntity: BaseEntity): void => {

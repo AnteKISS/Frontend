@@ -12,6 +12,11 @@ export class AttributeAllocation
     public vitality: number = 0;
     public intelligence: number = 0;
 
+    constructor(player: PlayerEntity)
+    {
+        this.player = player;
+    }
+
     public allocateStrenghtPoint()
     {
         if(this.availableAttributePoint > 0)
@@ -50,6 +55,12 @@ export class AttributeAllocation
             this.allocatedAttributePoint ++;
             this.updateAvailableAttributePoint();
         }
+    }
+
+    public levelUp(): void 
+    {
+        this.totalAttributePoint += 5;
+        this.updateAvailableAttributePoint();
     }
 
     public updateAvailableAttributePoint(): void
