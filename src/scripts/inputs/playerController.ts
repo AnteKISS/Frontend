@@ -17,6 +17,9 @@ export default class PlayerController {
   }
 
   public update(time: number, deltaTime: number): void {
+    if (this.player.isDead()) {
+      return;
+    }
     if (this.pointerDown && !this.player.isAttacking()) {
       const destinationX: number = this.player.scene.input.mousePointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
       const destinationY: number = this.player.scene.input.mousePointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
@@ -83,10 +86,18 @@ export default class PlayerController {
     scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
     scene.input.on('pointerup', (pointer: Phaser.Input.Pointer) => this.onPointerUp(pointer));
     scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
+    scene.input.keyboard.on('keydown-ESC', () => {
+      if (this.player.isDead()) {
+        this.player.scene.scene.restart();
+      }
+    });
   }
 
   public onPointerDown(pointer: Phaser.Input.Pointer): void {
     this.pointerDown = true;
+    if (this.player.isDead()) {
+      return;
+    }
     let destinationX = pointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
     let destinationY = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
 
@@ -110,6 +121,9 @@ export default class PlayerController {
   }
 
   public onPointerMove(pointer: Phaser.Input.Pointer): void {
+    if (this.player.isDead()) {
+      return;
+    }
     const destinationX: number = pointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
     const destinationY: number = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
 

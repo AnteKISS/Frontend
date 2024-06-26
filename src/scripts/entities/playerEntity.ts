@@ -18,7 +18,7 @@ import { InventorySprite } from './inventorySprite';
 import { InventorySlots } from '../enums/inventorySlots';
 import { castToType } from '../utilities/typeCast';
 import { InactiveEntity } from './inactiveEntity';
-import { SignalHandler } from '../events/signal';
+import { Signal, SignalHandler } from '../events/signal';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -26,6 +26,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   public bodySprite: InventorySprite;
   public mainHandSprite: InventorySprite;
   public offHandSprite: InventorySprite;
+  public onPlayerDeath: Signal = new Signal();
 
   maxMana: number = 150; //Pour test
   mySpellBook: SpellBook;
@@ -131,6 +132,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       this.destinationX = this.positionX;
       this.destinationY = this.positionY;
       this.currentAnimationState.state = ActiveEntityAnimationState.State.DEATH;
+      this.onPlayerDeath.raise();
     }
   }
 

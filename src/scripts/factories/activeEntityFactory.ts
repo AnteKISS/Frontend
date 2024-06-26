@@ -73,7 +73,7 @@ export class ActiveEntityFactory {
       health: 100,
       maxHealth: 100,
       healthRegeneration: 0,
-      basePhysicalDamage: 1,
+      basePhysicalDamage: 5,
       baseMagicalDamage: 0,
       attackAccuracy: 0,
       criticalChance: 0,

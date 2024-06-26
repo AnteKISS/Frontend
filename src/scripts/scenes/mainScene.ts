@@ -9,6 +9,7 @@ import { TileColor } from '../tiles/tiledrawer'
 import CampaignManager from '../tiles/campaignmanager'
 import Point from '../types/point'
 import { EntityHealthBar } from '../uielements/entityHealthBar';
+import { SignalHandler } from '../events/signal';
 
 export default class MainScene extends Phaser.Scene {
   uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -73,6 +74,13 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest.positionX = 0;
     this.playerTest.positionY = 0;
     this.playerTest.area = this.campaignManager.getCampaign().currentArea();
+
+    const playerDeathHandler: SignalHandler = {
+      callback: this.onPlayerDeath.bind(this),
+      parameters: []
+    }
+    this.playerTest.onPlayerDeath.addHandler(playerDeathHandler);
+
     this.monsterTest = EntityManager.instance.createMonster(this, 'zombie_0');
     this.monsterTest.name = 'Zembie';
     this.monsterTest.positionX = this.cameras.main.width / 4;
@@ -172,5 +180,18 @@ export default class MainScene extends Phaser.Scene {
     this.gui.healthBar.setMaxValue(this.playerTest.stats.maxHealth);
     this.gui.spellBar.updateSlots();
     //ajouter les autres barres
+  }
+
+  public onPlayerDeath(): void {
+    let background = this.add.graphics({ fillStyle: { color: 0x0F0000, alpha: 0.8 } });
+    background.fillRect(0, 0, this.sys.game.config.width as number, this.sys.game.config.height as number);
+  
+    let deathText = this.add.text(this.sys.game.config.width as number / 2, this.sys.game.config.height as number / 2, 'You are deader than dead\n Press  \'ESC\' to continue', {
+      fontSize: '64px',
+      color: '#ff0000',
+      fontFamily: 'Doodle'
+    });
+    deathText.setOrigin(0.5, 0.5);
+    this.cameras.main.ignore([background, deathText]);
   }
 }

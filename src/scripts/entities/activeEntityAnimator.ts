@@ -16,7 +16,6 @@ export class ActiveEntityAnimator {
   
   private futureState: ActiveEntityAnimationState.State | null = null;
   private spriteReference: InventorySprite;
-  private currentFrameIndex: number = -1;
 
   constructor(parent: ActiveEntity) {
     this.parent = parent;
