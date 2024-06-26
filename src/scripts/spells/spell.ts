@@ -63,24 +63,26 @@ export default class Spell
     {
         const x = this.getPointerX();
         const y = this.getPointerY();
+        const centerX = this.spellOwner.scene.cameras.main.width / 2;
+        const centerY = this.spellOwner.scene.cameras.main.height / 2;
 
         switch (this.castType) {
             case CastType.SkillShot:
                 setTimeout(() => {
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
-                        onCastEffect.onCast(Phaser.Math.Angle.Between(this.spellOwner.scene.cameras.main.width / 2, this.spellOwner.scene.cameras.main.height / 2, x, y)); // TODO : fix bad code
+                        onCastEffect.onCast(Phaser.Math.Angle.Between(centerX, centerY, x, y)); // TODO : fix bad code
                     });
                 }, this.castTime*1000);
                     break;
 
             case CastType.GroundTarget:
-                if(Phaser.Math.Distance.Between(this.spellOwner.positionX, this.spellOwner.positionY, x + this.spellOwner.positionX - this.spellOwner.scene.cameras.main.width / 2, y + this.spellOwner.positionY - this.spellOwner.scene.cameras.main.height / 2) > this.range) // TODO : fix
+                if(Phaser.Math.Distance.Between(this.spellOwner.positionX, this.spellOwner.positionY, x + this.spellOwner.positionX - centerX, y + this.spellOwner.positionY - centerY) > this.range) // TODO : fix
                     return false;
                 setTimeout(() => {
                 this.onCastEffects.forEach(onCastEffect =>  
                     {
-                            onCastEffect.onCast(undefined, x + this.spellOwner.positionX - this.spellOwner.scene.cameras.main.width / 2, y + this.spellOwner.positionY - this.spellOwner.scene.cameras.main.height / 2); // TODO : fix code mettre calcul dans constante stp
+                            onCastEffect.onCast(undefined, x + this.spellOwner.positionX - centerX, y + this.spellOwner.positionY - centerY); // TODO : fix code mettre calcul dans constante stp
                     });
                 }, this.castTime*1000);
                     break;

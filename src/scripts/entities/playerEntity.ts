@@ -12,6 +12,9 @@ import Firebolt from '../spells/craftedSpells/firebolt';
 import Quake from '../spells/craftedSpells/quake';
 import { Physics } from '../physics/collider';
 import { IFightable } from './IFightable';
+import { Exp } from '../progression/exp';
+import { SkillTree } from '../progression/skillTree';
+import { Console } from 'console';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -24,6 +27,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   mySpellBook: SpellBook;
   private equippedSpells: Spell[] = [];
   private controller: PlayerController;
+  public exp: Exp;
+  private skillTree: SkillTree;
 
   constructor(scene) {
     super(scene);
@@ -50,6 +55,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     scene.add.existing(this);
     
     this.controller = new PlayerController(scene, this);
+    this.exp = new Exp(this);
+    this.skillTree = new SkillTree(this);
   
     this.mySpellBook = new SpellBook(this);
     this.mySpellBook.addSpell(new Firebolt(this));
@@ -129,6 +136,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       this._meleeSprite.play(`${action}_${getOrientationString(this.orientation)}_LONGSWORD`);
       this._bowSprite.play(`${action}_${getOrientationString(this.orientation)}_LONGBOW`);
     }
+
+    this.exp.update();
 
     if (this._debugMode) {
       this._collider.displayDebugGraphics();
@@ -239,6 +248,14 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     default:
       break;
     }
+  }
+
+  public levelUp()
+  {
+    this.stats.level ++;
+    this.skillTree.setTotalSkillPoint(this.skillTree.getTotalSkillPoint() + 1);
+    console.log(this.stats.level);
+
   }
 
   onSpriteColliding = (hitEntity: BaseEntity): void => {
