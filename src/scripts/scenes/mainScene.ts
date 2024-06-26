@@ -1,4 +1,9 @@
 import FpsText from '../objects/fpsText'
+import Inventory from '../inventory/inventory'
+import Item from '../inventory/item'
+import InventoryItem from '../inventory/inventoryItem'
+import { ItemType } from '../inventory/itemType'
+
 import GUI from '../objects/gui'
 import { PlayerEntity } from '../entities/playerEntity';
 import { MonsterEntity } from '../entities/monsterEntity';
@@ -10,6 +15,8 @@ import CampaignManager from '../tiles/campaignmanager'
 import Point from '../types/point'
 import { EntityHealthBar } from '../uielements/entityHealthBar';
 import { SignalHandler } from '../events/signal';
+import Label from '../label/label'
+import Tooltip from '../label/tooltip'
 
 export default class MainScene extends Phaser.Scene {
   uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -27,7 +34,9 @@ export default class MainScene extends Phaser.Scene {
   private entityHealthBar: EntityHealthBar;
   private gui: GUI;
 
-  constructor() {
+  private inventory: Inventory;
+
+  public constructor() {
     super({ key: 'MainScene' });
   }
 
@@ -40,7 +49,8 @@ export default class MainScene extends Phaser.Scene {
     }
   }
 
-  create() {
+  public create() {
+    this.fpsText = new FpsText(this);
     this.uiCamera = this.cameras.add(0, 0, 1280, 720, false, "uiCamera");
 
     // new GameLogo(this, this.cameras.main.width / 2, this.cameras.main.height / 2);
@@ -103,6 +113,23 @@ export default class MainScene extends Phaser.Scene {
 
     this.input.setDefaultCursor('default');
 
+    // Setup inventory test
+    this.inventory = new Inventory(this);
+    this.input.keyboard.on('keydown-I', () => this.inventory.show());
+    this.input.keyboard.on('keydown-ESC', () => this.inventory.hide());
+
+    const stoneSword = new Item(this, "Stone Sword", ItemType.WEAPON, 1, 2, "stone_sword_inventory", "dropped_sword");
+    this.inventory.getItemStorage().addItem(new InventoryItem(this, stoneSword), 0, 0);
+
+    const woodenShield = new Item(this, "Wooden Shield", ItemType.WEAPON, 2, 2, "wooden_shield_inventory", "dropped_shield");
+    this.inventory.getItemStorage().autoLoot(new InventoryItem(this, woodenShield));
+
+    Tooltip.init(this);
+    this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+      Tooltip.updateVisible();
+      Tooltip.updatePosition(pointer);
+    });
+
     // display the Phaser.VERSION
     this.versionText = this.add
       .text(1250, 30, `Phaser v${Phaser.VERSION}`, {
@@ -122,7 +149,8 @@ export default class MainScene extends Phaser.Scene {
         this.gui,
         this.entityHealthBar.graphics,
         this.entityHealthBar.lblEntityName,
-        this.entityHealthBar.lblEntityDescription
+        this.entityHealthBar.lblEntityDescription,
+        this.inventory
       ]
     );
     // TODO: Find a way to make the ignore list more dynamic
@@ -141,7 +169,7 @@ export default class MainScene extends Phaser.Scene {
     // EntityManager.instance.setDebugMode(true);
   }
 
-  update(time: number, deltaTime: number) {
+  public update(time: number, deltaTime: number) {
     this.cameras.main.setScroll(
       this.playerTest.positionX - this.cameras.main.width / 2,
       this.playerTest.positionY - this.cameras.main.height / 2
@@ -157,11 +185,17 @@ export default class MainScene extends Phaser.Scene {
     //this.drawTileSet();
     this.entityHealthBar.update();
     this.drawDebugTileSet();
-
-    // Test pathfinding
   }
 
-  drawDebugTileSet() {
+  public isInventoryOpen(): boolean {
+    return this.inventory.visible;
+  }
+
+  public isItemPickedUp(): boolean {
+    return this.inventory.isItemPickedUp();
+  }
+
+  private drawDebugTileSet(): void {
     const CURSOR_X = this.pointer.x + this.playerTest.positionX - 640;
     const CURSOR_Y = this.pointer.y + this.playerTest.positionY - 360;
 
@@ -173,7 +207,7 @@ export default class MainScene extends Phaser.Scene {
     this.campaignManager.drawDebugPathfinding(0, 0, this.playerTest.positionX, this.playerTest.positionY);
   }
 
-  updateGUI(): void {
+  private updateGUI(): void {
     this.gui.manaBar.setCurrentValue(this.playerTest.stats.mana);
     this.gui.manaBar.setMaxValue(this.playerTest.maxMana);
     this.gui.healthBar.setCurrentValue(this.playerTest.stats.health);

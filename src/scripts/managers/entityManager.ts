@@ -2,6 +2,9 @@ import { PlayerEntity } from "../entities/playerEntity";
 import { MonsterEntity } from "../entities/monsterEntity";
 import { BaseEntity } from "../entities/baseEntity";
 import { ActiveEntityFactory } from "../factories/activeEntityFactory";
+import Item from "../inventory/item";
+import ItemEntity from "../entities/itemEntity";
+import NotImplementedError from "../errors/notImplementedError";
 
 export class EntityManager {
   private static _instance: EntityManager;
@@ -13,7 +16,7 @@ export class EntityManager {
 
   public static get instance(): EntityManager {
     if (!EntityManager._instance) {
-        EntityManager._instance = new EntityManager();
+      EntityManager._instance = new EntityManager();
     }
     return EntityManager._instance;
   }
@@ -34,12 +37,12 @@ export class EntityManager {
     this._entities.forEach(entity => {
       entity.update(time, deltaTime);
     });
-}
+  }
 
   public resetEntities(): void {
     this._entities.forEach(entity => {
       if (entity.isResetReady) {
-        entity.reset();              
+        entity.reset();
       }
     });
   }
@@ -110,6 +113,13 @@ export class EntityManager {
     let monster: MonsterEntity = ActiveEntityFactory.createMonster(scene, monsterCode);
     this.addEntity(monster);
     return monster;
+  }
+
+  public createItem(scene: Phaser.Scene, item: Item): ItemEntity {
+    item.changeToEntitySprite();
+    let itemEntity: ItemEntity = new ItemEntity(scene, item);
+    this.addEntity(itemEntity);
+    return itemEntity;
   }
 
   // TODO: Add function to create npc
