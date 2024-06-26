@@ -21,8 +21,7 @@ export default class ProjectileOnCast implements IOnCastEffect {
     onCast(castDirection: number) {
         const projectileSprite = this.spell.spellOwner.scene.physics.add.sprite(this.spell.spellOwner.x, this.spell.spellOwner.y, this.sprite);
 
-        if (this.spell.spellOwner.scene.cameras.getCamera("uiCamera"))
-            this.spell.spellOwner.scene.cameras.getCamera("uiCamera").ignore(projectileSprite);
+        this.spell.spellOwner.scene.cameras.getCamera("uiCamera")!.ignore(projectileSprite);
 
         projectileSprite.anims.play(this.sprite);
 

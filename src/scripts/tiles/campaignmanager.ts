@@ -22,8 +22,7 @@ export default class CampaignManager {
     this.campaign = new Campaign("Default Campaign");
     this.tileSprites = new Map();
 
-    if (this.scene.cameras.getCamera("uiCamera"))
-      this.scene.cameras.getCamera("uiCamera").ignore(this.graphics);
+    this.scene.cameras.getCamera("uiCamera")!.ignore(this.graphics);
   }
 
   // TODO: Remove this
@@ -41,8 +40,7 @@ export default class CampaignManager {
     for (const TILE of this.campaign.currentArea().tileSet.getTiles()) {
       const TILE_SPRITE = new TileSprite(this.scene, TILE).setDepth(-1);
       this.tileSprites.set(TILE, TILE_SPRITE);
-      if (this.scene.cameras.getCamera("uiCamera"))
-        this.scene.cameras.getCamera("uiCamera").ignore(TILE_SPRITE);
+      this.scene.cameras.getCamera("uiCamera")!.ignore(TILE_SPRITE);
     }
   }
 
@@ -141,8 +139,7 @@ export default class CampaignManager {
 
     const TILE = this.campaign.currentArea().tileSet.addTile(x, y, type, bitmap, frame);
     const TILE_SPRITE = new TileSprite(this.scene, TILE).setDepth(-1);
-    if (this.scene.cameras.getCamera("uiCamera"))
-      this.scene.cameras.getCamera("uiCamera").ignore(TILE_SPRITE);
+    this.scene.cameras.getCamera("uiCamera")!.ignore(TILE_SPRITE);
     this.tileSprites.set(TILE, TILE_SPRITE);
   }
 

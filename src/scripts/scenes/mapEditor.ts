@@ -190,7 +190,7 @@ export default class MapEditor extends Phaser.Scene {
     }
 
     // Prevent DOM from handling tab key
-    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB, true);
+    this.input!.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.TAB, true);
 
     this.input.on('pointerdown', (pointer, objects) => {
       if (objects.length === 0) {
@@ -201,7 +201,7 @@ export default class MapEditor extends Phaser.Scene {
         this.canPlaceObject = false;
     });
 
-    this.input.keyboard.on('keydown', (event: KeyboardEvent) => this.handleKeyDown(event));
+    this.input!.keyboard!.on('keydown', (event: KeyboardEvent) => this.handleKeyDown(event));
     this.input.on('wheel', (pointer, currentlyOver, dx, dy, dz, event) => this.zoom(dy));
 
     // Handle cameras to make only specific elements affected by zoom

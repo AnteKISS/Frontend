@@ -19,8 +19,7 @@ export default class CircleOnCast implements IOnCastEffect {
     onCast(undefined, x: number, y: number) {
         const circleSprite = this.spell.spellOwner.scene.physics.add.sprite(x, y, this.sprite);
 
-        if (this.spell.spellOwner.scene.cameras.getCamera("uiCamera"))
-            this.spell.spellOwner.scene.cameras.getCamera("uiCamera").ignore(circleSprite);
+        this.spell.spellOwner.scene.cameras.getCamera("uiCamera")!.ignore(circleSprite);
 
         circleSprite.anims.play(this.sprite);
 
