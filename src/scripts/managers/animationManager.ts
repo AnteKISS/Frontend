@@ -23,13 +23,14 @@ export class AnimationManager {
                 frameRate: frameRate,
                 repeat: 0,
               });
-            } else if (action == 'idle') {
+            } else if (action == 'idle' || action == 'meleeAttack' || action == 'meleeAttack_2' || action == 'block') {
               container.scene.anims.create({
                 key: frameKey,
                 frames: container.scene.anims.generateFrameNumbers(sheet, { start, end }),
                 frameRate: frameRate,
                 repeat: -1,
-                yoyo: true
+                yoyo: true,
+                skipMissedFrames: false
               });
             } else {
               container.scene.anims.create({

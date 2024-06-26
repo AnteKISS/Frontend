@@ -82,6 +82,7 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest2.name = 'Menotaur';
     this.monsterTest2.positionX = this.monsterTest.positionX;
     this.monsterTest2.positionY = this.monsterTest.positionY - 60;
+    this.monsterTest2.stats.movementSpeed = 150;
     this.monsterTest2.area = this.campaignManager.getCampaign().currentArea();
     this.monsterTest3 = EntityManager.instance.createMonster(this, 'skeleton_0');
     this.monsterTest3.name = 'Skeletenotaur';

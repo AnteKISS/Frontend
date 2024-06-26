@@ -1,6 +1,7 @@
 import { ActiveEntity } from "../entities/activeEntity";
 import { ActiveEntityAnimationState, ActiveEntityBehaviorState } from "../entities/entityState";
 import { MonsterEntity } from "../entities/monsterEntity";
+import { PlayerEntity } from "../entities/playerEntity";
 import { MathModule } from "../utilities/mathModule";
 import { Behavior } from "./behavior";
 import { BehaviorFactors } from "./behaviorFactors";
@@ -75,9 +76,10 @@ export class RusherBehavior extends Behavior {
         this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         break;
       case ActiveEntityBehaviorState.State.MELEE_ATTACKING:
-        if (this.attackCooldown_ms > 0) {
-          return;
-        }
+        // if (this.attackCooldown_ms > 0) {
+        //   //this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
+        //   return;
+        // }
         this.attackCooldown_ms = this.delayBetweenAttack * this.factors.attackCooldownFactor;
         if (!this.isTargetValid()) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
@@ -93,9 +95,10 @@ export class RusherBehavior extends Behavior {
         }
         break;
       case ActiveEntityBehaviorState.State.RANGED_ATTACKING:
-        if (this.attackCooldown_ms > 0) {
-          return;
-        }
+        // if (this.attackCooldown_ms > 0) {
+        //   //this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
+        //   return;
+        // }
         this.attackCooldown_ms = this.delayBetweenAttack * this.factors.attackCooldownFactor;
         if (!this.isTargetValid()) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
@@ -125,7 +128,23 @@ export class RusherBehavior extends Behavior {
   }
 
   public onNonRepeatingAnimationEnd(animationState: ActiveEntityAnimationState): void {
-    // if (ActiveEntityAnimationState.getNonRepeatingAnimationState().includes(animationState.state)) {
+    // // if (ActiveEntityAnimationState.getNonRepeatingAnimationState().includes(animationState.state)) {
+    // //   this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
+    // // }
+    // switch (animationState.state) {
+    //   case ActiveEntityAnimationState.State.MELEEATTACK:
+    //   case ActiveEntityAnimationState.State.MELEEATTACK_2:
+    //     // this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
+    //     if (this.isTargetValid() && this.isEntityInMeleeRange()) {
+    //       (this.parent.target! as MonsterEntity).damage(this.parent.stats.basePhysicalDamage);
+    //     }
+    //     break;
+    // }
+    // // console.log("RusherBehavior: Non-repeating animation ended: " + animationState.state);
+  }
+
+  public onYoyoAnimationMiddleFrame(animationState: ActiveEntityAnimationState): void {
+        // if (ActiveEntityAnimationState.getNonRepeatingAnimationState().includes(animationState.state)) {
     //   this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
     // }
     switch (animationState.state) {
@@ -133,7 +152,8 @@ export class RusherBehavior extends Behavior {
       case ActiveEntityAnimationState.State.MELEEATTACK_2:
         // this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         if (this.isTargetValid() && this.isEntityInMeleeRange()) {
-          (this.parent.target! as MonsterEntity).damage(this.parent.stats.basePhysicalDamage);
+          console.log("RusherBehavior: Melee attack hit");
+          (this.parent.target! as PlayerEntity).damage(this.parent.stats.basePhysicalDamage);
         }
         break;
     }

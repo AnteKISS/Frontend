@@ -1,3 +1,4 @@
+import { ActiveEntityAnimationState } from "../entities/entityState";
 import { Behavior } from "./behavior";
 
 export class SkirmisherBehavior extends Behavior {
@@ -10,7 +11,11 @@ export class SkirmisherBehavior extends Behavior {
 
   }
 
-  public onNonRepeatingAnimationEnd(): void {
+  public onNonRepeatingAnimationEnd(animationState: ActiveEntityAnimationState): void {
     console.log("SkirmisherBehavior: Non-repeating animation ended");
+  }
+
+  public onYoyoAnimationMiddleFrame(animationState: ActiveEntityAnimationState): void {
+    
   }
 }

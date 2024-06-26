@@ -1,3 +1,4 @@
+import { ActiveEntityAnimationState } from "../entities/entityState";
 import { Behavior } from "./behavior";
 
 export class RoamerBehavior extends Behavior {
@@ -10,7 +11,11 @@ export class RoamerBehavior extends Behavior {
 
   }
 
-  public onNonRepeatingAnimationEnd(): void {
+  public onNonRepeatingAnimationEnd(animationState: ActiveEntityAnimationState): void {
     console.log("RoamerBehavior: Non-repeating animation ended");
+  }
+
+  public onYoyoAnimationMiddleFrame(animationState: ActiveEntityAnimationState): void {
+    
   }
 }

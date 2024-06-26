@@ -12,9 +12,11 @@ export class ActiveEntityAnimator {
   public parent: ActiveEntity;
   public sprites: InventorySprite[] = [];
   public onNonRepeatingAnimationComplete: Signal = new Signal();
+  public onYoyoAnimationMiddleFrame: Signal = new Signal();
   
   private futureState: ActiveEntityAnimationState.State | null = null;
   private spriteReference: InventorySprite;
+  private currentFrameIndex: number = -1;
 
   constructor(parent: ActiveEntity) {
     this.parent = parent;
@@ -94,6 +96,14 @@ export class ActiveEntityAnimator {
       default:
         break;
     }
+    // if (this.currentFrameIndex != this.spriteReference.anims.currentFrame.index) {
+    //   this.currentFrameIndex = this.spriteReference.anims.currentFrame.index;
+    //   if (this.spriteReference.anims.currentFrame.index == this.spriteReference.anims.currentAnim.frames.length) {
+    //     this.onYoyoAnimationMiddleFrame.raise(() => {
+    //       this.parent.currentAnimationState
+    //     });
+    //   }
+    // }
   }
 
   public setAnimatorState(state: ActiveEntityAnimationState.State): void {
@@ -132,7 +142,11 @@ export class ActiveEntityAnimator {
   }
 
   onAnimationUpdate = (listener): void => {
-
+    if (this.spriteReference.anims.currentFrame.index == this.spriteReference.anims.currentAnim.frames.length && this.spriteReference.anims.isPlaying && this.spriteReference.anims.forward == true) {
+      this.onYoyoAnimationMiddleFrame.raise(() => {
+        this.parent.currentAnimationState
+      });
+    }
   }
 
   onAnimationRepeat = (listener): void => {

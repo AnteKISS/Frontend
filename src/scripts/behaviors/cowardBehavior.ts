@@ -1,3 +1,4 @@
+import { ActiveEntityAnimationState } from "../entities/entityState";
 import { Behavior } from "./behavior";
 
 export class CowardBehavior extends Behavior {
@@ -10,7 +11,11 @@ export class CowardBehavior extends Behavior {
 
   }
 
-  public onNonRepeatingAnimationEnd(): void {
+  public onNonRepeatingAnimationEnd(animationState: ActiveEntityAnimationState): void {
     console.log("CowardBehavior: Non-repeating animation ended");
+  }
+
+  public onYoyoAnimationMiddleFrame(animationState: ActiveEntityAnimationState): void {
+    
   }
 }

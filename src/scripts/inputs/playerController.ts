@@ -22,6 +22,28 @@ export default class PlayerController {
       const destinationY: number = this.player.scene.input.mousePointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
       this.player.setDestination(destinationX, destinationY);
     }
+    let destinationX: number = this.player.destinationX;
+    let destinationY: number = this.player.destinationY;
+    if (this.player.target !== null && this.player.target !== undefined) {
+      if (!(this.player.target as unknown as IFightable).isDead()) {
+        if (MathModule.scaledDistanceBetween(this.player.positionX, this.player.positionY, this.player.target.positionX, this.player.target.positionY) > 100) {
+          destinationX = this.player.target.positionX;
+          destinationY = this.player.target.positionY;
+        } else {
+          if (this.player.target instanceof MonsterEntity || this.player.target instanceof PlayerEntity && !this.player.isAttacking()) {
+            this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, this.player.target.positionX, this.player.target.positionY));
+            if (this.player.target.isTargetable) {
+              this.player.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
+              this.player.setDestination(this.player.positionX, this.player.positionY);
+            }
+          }
+        }
+      }
+    }
+    if (!this.player.isAttacking()) {
+      // this.player.setDestination(destinationX, destinationY);
+      this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, destinationX, destinationY));
+    }
   }
 
   private initSpellBarInput(): void {
@@ -73,19 +95,6 @@ export default class PlayerController {
     if ((entity !== undefined && entity !== null) && entity !== this.player) {
       if (!(entity as unknown as IFightable).isDead()) {
         this.player.target = entity;
-        if (MathModule.scaledDistanceBetween(this.player.positionX, this.player.positionY, entity.positionX, entity.positionY) > 100) {
-          destinationX = entity.positionX;
-          destinationY = entity.positionY;
-        } else {
-          if (entity instanceof MonsterEntity || entity instanceof PlayerEntity && !this.player.isAttacking()) {
-            this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, entity.positionX, entity.positionY));
-            if (entity.isTargetable) {
-              this.player.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
-              // this.attackTarget(entity as PlayerEntity | MonsterEntity);
-              this.player.setDestination(this.player.positionX, this.player.positionY);
-            }
-          }
-        }
       }
     } else {
       this.player.target = null;

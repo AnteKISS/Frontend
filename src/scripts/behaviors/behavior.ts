@@ -22,11 +22,16 @@ export abstract class Behavior {
 
   public constructor(parent: ActiveEntity) {
     this.parent = parent;
-    const animationHandler: SignalHandler = {
+    const animationCompleteHandler: SignalHandler = {
       callback: this.onNonRepeatingAnimationEnd.bind(this),
       parameters: [this.parent.currentAnimationState]
     }
-    this.parent.animator.onNonRepeatingAnimationComplete.addHandler(animationHandler);
+    this.parent.animator.onNonRepeatingAnimationComplete.addHandler(animationCompleteHandler);
+    const animationYoyoMiddleFrameHandler: SignalHandler = {
+      callback: this.onYoyoAnimationMiddleFrame.bind(this),
+      parameters: [this.parent.currentAnimationState]
+    }
+    this.parent.animator.onYoyoAnimationMiddleFrame.addHandler(animationYoyoMiddleFrameHandler);
   }
 
   protected isTargetInRange(distance: number): boolean {
@@ -105,4 +110,5 @@ export abstract class Behavior {
   public abstract selectTarget(): void;
   public abstract update(time: number, deltaTime: number): void;
   public abstract onNonRepeatingAnimationEnd(animationState: ActiveEntityAnimationState): void;
+  public abstract onYoyoAnimationMiddleFrame(animationState: ActiveEntityAnimationState): void;
 }

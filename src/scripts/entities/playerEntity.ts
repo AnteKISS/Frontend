@@ -18,6 +18,7 @@ import { InventorySprite } from './inventorySprite';
 import { InventorySlots } from '../enums/inventorySlots';
 import { castToType } from '../utilities/typeCast';
 import { InactiveEntity } from './inactiveEntity';
+import { SignalHandler } from '../events/signal';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -81,6 +82,16 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.truncatedSpriteHeight = 64 * this.bodySprite.scaleY;
     this.collider = new Physics.Collider(this, this.bodySprite, this.onSpriteColliding, this.onEntityColliding);
     this.animator = new ActiveEntityAnimator(this);
+    const animationCompleteHandler: SignalHandler = {
+      callback: this.onNonRepeatingAnimationEnd.bind(this),
+      parameters: [this.currentAnimationState]
+    }
+    this.animator.onNonRepeatingAnimationComplete.addHandler(animationCompleteHandler);
+    const animationYoyoMiddleFrameHandler: SignalHandler = {
+      callback: this.onYoyoAnimationMiddleFrame.bind(this),
+      parameters: [this.currentAnimationState]
+    }
+    this.animator.onYoyoAnimationMiddleFrame.addHandler(animationYoyoMiddleFrameHandler);
   }
 
   // Getters/Setters
@@ -99,18 +110,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       this.collider.displayDebugGraphics();
     }
     this.collider.checkSpriteCollision();
-
-    if (this.target !== null && this.target !== undefined) {
-      this.setOrientationRad(Phaser.Math.Angle.Between(this.positionX, this.positionY, this.target.positionX, this.target.positionY));
-      if (MathModule.scaledDistanceBetween(this.positionX, this.positionY, this.target.positionX, this.target.positionY) <= 100) {
-        if (this.target.isTargetable) {
-          this.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
-          this.attack(this.target as unknown as IFightable);
-        }
-        this.setDestination(this.positionX, this.positionY);
-        this.target = null;
-      }
-    }
   }
 
   public reset(): void {
@@ -118,10 +117,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   public attack(target: IFightable): void {
-    // console.log('Player attacking target', target);
-    // console.log('Target life before:', (target as unknown as ActiveEntity).stats.health);
     target.damage(10);
-    // console.log('Target life after:', (target as unknown as ActiveEntity).stats.health);
   }
 
   public damage(amount: number): void {
@@ -208,6 +204,42 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
   public initializeAnimations(): void {
     AnimationManager.createAnimations(this, `${this.code}_AnimationConfig`);
+  }
+
+  public onNonRepeatingAnimationEnd(animationState: ActiveEntityAnimationState): void {
+    // switch (animationState.state) {
+    //   case ActiveEntityAnimationState.State.MELEEATTACK:
+    //   case ActiveEntityAnimationState.State.MELEEATTACK_2:
+    //     if (this.target !== null && this.target !== undefined) {
+    //       this.setOrientationRad(Phaser.Math.Angle.Between(this.positionX, this.positionY, this.target.positionX, this.target.positionY));
+    //       if (MathModule.scaledDistanceBetween(this.positionX, this.positionY, this.target.positionX, this.target.positionY) <= 100) {
+    //         if (this.target.isTargetable) {
+    //           this.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
+    //           this.attack(this.target as unknown as IFightable);
+    //         }
+    //         this.setDestination(this.positionX, this.positionY);
+    //         this.target = null;
+    //       }
+    //     }
+    // }
+  }
+
+  public onYoyoAnimationMiddleFrame(animationState: ActiveEntityAnimationState): void {
+    switch (animationState.state) {
+      case ActiveEntityAnimationState.State.MELEEATTACK:
+      case ActiveEntityAnimationState.State.MELEEATTACK_2:
+        if (this.target !== null && this.target !== undefined) {
+          this.setOrientationRad(Phaser.Math.Angle.Between(this.positionX, this.positionY, this.target.positionX, this.target.positionY));
+          if (MathModule.scaledDistanceBetween(this.positionX, this.positionY, this.target.positionX, this.target.positionY) <= 100) {
+            if (this.target.isTargetable) {
+              this.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
+              this.attack(this.target as unknown as IFightable);
+            }
+            this.setDestination(this.positionX, this.positionY);
+            this.target = null;
+          }
+        }
+    }
   }
 }
 
