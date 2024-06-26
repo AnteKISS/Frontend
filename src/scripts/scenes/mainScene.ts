@@ -67,7 +67,7 @@ export default class MainScene extends Phaser.Scene {
         this.scene.setVisible(false, 'MainScene'); 
       });
 
-    this.input.mouse.disableContextMenu();
+    this.input!.mouse!.disableContextMenu();
 
     this.gui = new GUI(this, 0, 0);
     this.playerTest = EntityManager.instance.createPlayer(this);
