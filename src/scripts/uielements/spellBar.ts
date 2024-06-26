@@ -126,6 +126,8 @@ export default class SpellBar extends Phaser.GameObjects.Container
 
         this.spellSlots[slot].addSpell(spell);
         this.add([this.spellSlots[slot].spellSprite, this.spellSlots[slot].cdMask]); // sketch
+        this.remove([...this.spellSlots, ...this.spellTexts]); 
+        this.add([...this.spellSlots, ...this.spellTexts]); // louche
         spell.spellOwner.equipSpell(slot, spell);
     }
 

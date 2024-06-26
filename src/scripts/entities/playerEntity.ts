@@ -1,5 +1,4 @@
 import { ActiveEntity } from './activeEntity';
-import { getOrientationString } from '../enums/entityOrientation';
 import NotImplementedError from '../errors/notImplementedError';
 import { AnimationManager } from '../managers/animationManager';
 import { BaseEntity } from './baseEntity';
@@ -16,9 +15,10 @@ import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { ActiveEntityAnimationState } from './entityState';
 import { InventorySprite } from './inventorySprite';
 import { InventorySlots } from '../enums/inventorySlots';
-import { castToType } from '../utilities/typeCast';
-import { InactiveEntity } from './inactiveEntity';
 import { Signal, SignalHandler } from '../events/signal';
+import { Exp } from '../progression/exp';
+import { SkillTree } from '../progression/skillTree';
+import { AttributeAllocation } from '../progression/attributeAllocation';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -32,6 +32,9 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   mySpellBook: SpellBook;
   private equippedSpells: Spell[] = [];
   private controller: PlayerController;
+  public exp: Exp;
+  private skillTree: SkillTree;
+  private attributeAllocation: AttributeAllocation;
 
   constructor(scene) {
     super(scene);
@@ -64,6 +67,9 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.positionY = this.scene.cameras.main.height / 2;
     
     this.controller = new PlayerController(scene, this);
+    this.exp = new Exp(this);
+    this.skillTree = new SkillTree(this);
+    this.attributeAllocation = new AttributeAllocation(this);
   
     this.mySpellBook = new SpellBook(this);
     this.mySpellBook.addSpell(new Firebolt(this));
@@ -106,6 +112,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.controller.update(time, deltaTime);
     this.updatePosition();
     this.animator.update(time, deltaTime);
+
+    this.exp.update();
 
     if (this._debugMode) {
       this.collider.displayDebugGraphics();
@@ -183,6 +191,13 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     default:
       break;
     }
+  }
+
+  public levelUp()
+  {
+    this.stats.level ++;
+    this.skillTree.levelUp();
+    this.attributeAllocation.levelUp();
   }
 
   onSpriteColliding = (hitEntity: BaseEntity): void => {

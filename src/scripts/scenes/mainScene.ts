@@ -15,8 +15,9 @@ import CampaignManager from '../tiles/campaignmanager'
 import Point from '../types/point'
 import { EntityHealthBar } from '../uielements/entityHealthBar';
 import { SignalHandler } from '../events/signal';
-import Label from '../label/label'
 import Tooltip from '../label/tooltip'
+import { SpellCollider } from '../physics/spellCollider';
+import { SpellColliderManager } from '../managers/spellColliderManager'
 
 export default class MainScene extends Phaser.Scene {
   uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -26,6 +27,7 @@ export default class MainScene extends Phaser.Scene {
   pointer: Phaser.Input.Pointer;
   centerPoint: Point;
   mapEditorButton: Phaser.GameObjects.Text;
+  spellSpriteColliders: SpellCollider[] = []; 
 
   private playerTest: PlayerEntity;
   private monsterTest: MonsterEntity;
@@ -182,9 +184,9 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest2.update(time, deltaTime);
     this.monsterTest3.update(time, deltaTime);
     this.updateGUI();
-    //this.drawTileSet();
     this.entityHealthBar.update();
     this.drawDebugTileSet();
+    SpellColliderManager.getInstance.update();
   }
 
   public isInventoryOpen(): boolean {
@@ -213,7 +215,8 @@ export default class MainScene extends Phaser.Scene {
     this.gui.healthBar.setCurrentValue(this.playerTest.stats.health);
     this.gui.healthBar.setMaxValue(this.playerTest.stats.maxHealth);
     this.gui.spellBar.updateSlots();
-    //ajouter les autres barres
+    this.gui.expBar.setMaxExp(this.playerTest.exp.getLevelExpToMax());
+    this.gui.expBar.setCurrentExp(this.playerTest.exp.getcurrentExpToMax());
   }
 
   public onPlayerDeath(): void {

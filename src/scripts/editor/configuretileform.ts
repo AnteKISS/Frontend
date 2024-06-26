@@ -38,9 +38,10 @@ export default class ConfigureTileForm extends Phaser.GameObjects.Container {
     this.add([this.background, this.title, this.transitionSelect, this.nextTransitionText, this.cancelText, this.confirmText]);
     this.scene.add.existing(this);
 
-    if (scene.input.keyboard)
+    if(scene && scene.input && scene.input.keyboard)
+    {
       scene.input.keyboard.on('keydown', (event: KeyboardEvent) => this.handleKeyDown(event));
-
+    }
     this.focused = false;
 
     this.updateTransitionText();

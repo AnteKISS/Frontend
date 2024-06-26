@@ -1,9 +1,11 @@
+import { ActiveEntity } from "../../entities/activeEntity";
+import { BaseEntity } from "../../entities/baseEntity";
 import Spell from "../spell"
 
-class DamageOnHit implements IOnHitEffect
+export default class DamageOnHit implements IOnHitEffect
 {
     spell: Spell;
-    damageType = DamageType;
+    damageType: DamageType;
     baseDamage: number;
     scaling: number;
     scalingStat;
@@ -14,11 +16,12 @@ class DamageOnHit implements IOnHitEffect
         spell.addOnHitEffect(this);
     }
 
-    //public onHit(hitEntity: entity, castDirection, movementDirection): void
-    //{
-    //    const totalDamage = (this.baseDamage + (this.scaling * this.spell.spellOwner.getStat(scalingStat))) * this.spell.spellOwner.damageTypeBonus(this.damageType);
-    //    hitEntity.takeDamage(this.damageType, totalDamage);
-    //}
+    public onHit(hitEntity: BaseEntity): void
+    {
+        console.log('HIT');
+        //const totalDamage = (this.baseDamage + (this.scaling * this.spell.spellOwner.)) * this.spell.spellOwner.damageTypeBonus(this.damageType);
+        //hitEntity.takeDamage(this.damageType, totalDamage);
+    }
 
     public onMaxRange(position: any, castDirection: any, movementDirection: any): void {
         

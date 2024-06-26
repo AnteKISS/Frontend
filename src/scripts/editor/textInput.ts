@@ -44,10 +44,10 @@ export default class TextInput extends Phaser.GameObjects.Container {
 
     this.label = label;
     this.inputText = '';
-
-    if (this.scene.input.keyboard)
+    if(this.scene && this.scene.input && this.scene.input.keyboard)
+    {
       this.scene.input.keyboard.on('keydown', (event: KeyboardEvent) => this.handleInput(event));
-
+    }
     this.updateInputText("");
     this.scene.add.existing(this);
   }
