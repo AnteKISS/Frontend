@@ -12,6 +12,7 @@ export default class ItemEntity extends InactiveEntity {
     super(scene);
     this.item = item;
     this.item.changeToEntitySprite();
+    this.type = 'ItemEntity';
 
     // Position item to player
     const PLAYERS = EntityManager.instance.getPlayers(); // TODO: Get actual player who dropped the item (pass player ref to inventory?)

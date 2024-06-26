@@ -110,7 +110,11 @@ export namespace Physics {
         if (entities[index] === this.parentEntity) {
           continue;
         }
-        if ((entities[index] as unknown as IFightable).isDead()) {
+        let entity = (entities[index] as unknown as IFightable);
+        if (entities[index].type == "ItemEntity") {
+          continue;
+        }
+        if (entity.isDead()) {
           continue;
         }
     
