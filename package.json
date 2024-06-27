@@ -8,9 +8,7 @@
     "start": "webpack serve --config webpack/webpack.dev.js",
     "build": "rimraf dist && webpack --config webpack/webpack.prod.js",
     "bundle": "npm run build",
-    "serve": "serve dist",
-    "format": "prettier --check src/scripts/**",
-    "format:write": "prettier --write src/scripts/**"
+    "serve": "serve dist"
   },
   "keywords": [
     "Phaser",
@@ -43,7 +41,6 @@
     "phaser": "^3.55.2"
   },
   "devDependencies": {
-    "@yandeu/prettier-config": "^0.0.3",
     "copy-webpack-plugin": "^10.1.0",
     "html-webpack-plugin": "^5.5.0",
     "javascript-obfuscator": "^4.0.0",
