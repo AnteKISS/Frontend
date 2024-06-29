@@ -132,8 +132,7 @@ export default class MainScene extends Phaser.Scene {
 
     Tooltip.init(this);
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
-      Tooltip.updateVisible();
-      Tooltip.updatePosition(pointer);
+      Tooltip.update(pointer);
     });
 
     // display the Phaser.VERSION
