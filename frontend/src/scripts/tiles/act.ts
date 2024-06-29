@@ -50,6 +50,17 @@ export default class Act {
     this.transitions.delete(name);
   }
 
+  public transition(area: Area): boolean {
+    const newAreaIndex = this.areas.indexOf(area);
+
+    // If area not in act
+    if (newAreaIndex === -1)
+      return false;
+
+    this.areaIndex = newAreaIndex;
+    return true;
+  }
+
   public deleteCurrentArea(): void {
     this.areas.splice(this.areaIndex, 1);
 

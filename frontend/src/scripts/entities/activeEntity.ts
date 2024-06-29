@@ -8,7 +8,7 @@ import { ActiveEntityAnimationState } from './entityState';
 import { EntityOrientation } from '../enums/entityOrientation';
 import { Physics } from '../physics/collider';
 import CampaignManager from '../tiles/campaignmanager';
-import { TileType } from '../tiles/tile';
+import Tile, { TileType } from '../tiles/tile';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
@@ -22,7 +22,8 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   public lastValidPositionX: number;
   public lastValidPositionY: number;
 
-  private static campaignManager: CampaignManager | null = null;
+  protected currentTile: Tile | undefined;
+  protected static campaignManager: CampaignManager | null = null;
 
   protected _isMoving: boolean = false;
 
@@ -99,6 +100,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
       this.setX(NEW_X);
       this._positionY += deltaY;
       this.setY(NEW_Y);
+      this.currentTile = ActiveEntity.campaignManager?.getTileFromPixelPosition(NEW_X, NEW_Y);
     }
   }
 
@@ -167,8 +169,8 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
       console.error("ActiveEntity class' campaign manager ref is null, use ActiveEntity.setCampaignManager() to enable floor collision/detection.");
       return true
     }
-    console.log(x, y, ActiveEntity.campaignManager.getTileFromPixelPosition(x, y));
-    return ActiveEntity.campaignManager.getTileFromPixelPosition(x, y)?.type === TileType.Floor;
+    const newPositionTile = ActiveEntity.campaignManager.getTileFromPixelPosition(x, y);
+    return newPositionTile?.type === TileType.Floor;
   }
 
   abstract update(time: number, deltaTime: number): void;
