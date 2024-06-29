@@ -27,7 +27,7 @@ export default class MainScene extends Phaser.Scene {
   pointer: Phaser.Input.Pointer;
   centerPoint: Point;
   mapEditorButton: Phaser.GameObjects.Text;
-  spellSpriteColliders: SpellCollider[] = []; 
+  spellSpriteColliders: SpellCollider[] = [];
 
   private playerTest: PlayerEntity;
   private monsterTest: MonsterEntity;
@@ -72,11 +72,11 @@ export default class MainScene extends Phaser.Scene {
         fontSize: '24px'
       })
       .setInteractive()
-      .on('pointerdown', (pointer, localX, localY, event) => { 
-        event.stopPropagation(); 
-        this.scene.launch('MapEditor'); 
-        this.scene.pause('MainScene'); 
-        this.scene.setVisible(false, 'MainScene'); 
+      .on('pointerdown', (pointer, localX, localY, event) => {
+        event.stopPropagation();
+        this.scene.launch('MapEditor');
+        this.scene.pause('MainScene');
+        this.scene.setVisible(false, 'MainScene');
       });
 
     this.input!.mouse!.disableContextMenu();
@@ -125,6 +125,12 @@ export default class MainScene extends Phaser.Scene {
 
     const woodenShield = new Item(this, "Wooden Shield", ItemType.WEAPON, 2, 2, "wooden_shield_inventory", "dropped_shield");
     this.inventory.getItemStorage().autoLoot(new InventoryItem(this, woodenShield));
+
+    const chainmailHood = new Item(this, "Chainmail Hood", ItemType.HELMET, 2, 2, "chainmail_hood_inventory", "dropped_chainmail_hood");
+    this.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailHood));
+
+    const chainmailGloves = new Item(this, "Chainmail Gloves", ItemType.GLOVES, 2, 2, "chainmail_gloves_inventory", "dropped_chainmail_gloves");
+    this.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailGloves));
 
     Tooltip.init(this);
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
@@ -222,7 +228,7 @@ export default class MainScene extends Phaser.Scene {
   public onPlayerDeath(): void {
     let background = this.add.graphics({ fillStyle: { color: 0x0F0000, alpha: 0.8 } });
     background.fillRect(0, 0, this.sys.game.config.width as number, this.sys.game.config.height as number);
-  
+
     let deathText = this.add.text(this.sys.game.config.width as number / 2, this.sys.game.config.height as number / 2, 'You are deader than dead\n Press  \'ESC\' to continue', {
       fontSize: '64px',
       color: '#ff0000',

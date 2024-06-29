@@ -46,8 +46,8 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
   }
 
   public autoLoot(item: InventoryItem): void {
-    for (let x = 0; x < item.getItem().inventoryWidth; x++)
-      for (let y = 0; y < item.getItem().inventoryHeight; y++)
+    for (let y = 0; y < this.gridHeight; y++)
+      for (let x = 0; x < this.gridWidth; x++)
         if (this.addItem(item, x, y))
           return;
   }

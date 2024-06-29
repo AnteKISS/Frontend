@@ -29,6 +29,8 @@ export default class PreloadScene extends Phaser.Scene {
     // INVENTORY
     this.load.image('stone_sword_inventory', 'assets/inventory/stone_sword.png');
     this.load.image('wooden_shield_inventory', 'assets/inventory/wooden_shield.png');
+    this.load.image('chainmail_hood_inventory', 'assets/inventory/chainmail_hood.png');
+    this.load.image('chainmail_gloves_inventory', 'assets/inventory/chainmail_gloves.png');
     this.load.image('helmet_slot', 'assets/inventory/slots/helmet_slot.png');
     this.load.image('amulet_slot', 'assets/inventory/slots/amulet_slot.png');
     this.load.image('armor_slot', 'assets/inventory/slots/armor_slot.png');
@@ -50,6 +52,8 @@ export default class PreloadScene extends Phaser.Scene {
     // ITEMS
     this.load.image('dropped_sword', 'assets/dropped_items/dropped_sword.png');
     this.load.image('dropped_shield', 'assets/dropped_items/dropped_shield.png');
+    this.load.image('dropped_chainmail_hood', 'assets/dropped_items/dropped_chainmail_hood.png');
+    this.load.image('dropped_chainmail_gloves', 'assets/dropped_items/dropped_chainmail_gloves.png');
 
     // AUDIO
     this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
