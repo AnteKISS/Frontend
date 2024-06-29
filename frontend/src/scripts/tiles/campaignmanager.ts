@@ -124,6 +124,11 @@ export default class CampaignManager {
     return this.campaign.currentArea().tileSet.getTile(x, y);
   }
 
+  public getTileFromPixelPosition(pixelX: number, pixelY: number): Tile | undefined {
+    const PIXEL_POS = Tile.getTilePosFromUnitPos(pixelX, pixelY);
+    return this.getTile(PIXEL_POS.x, PIXEL_POS.y);
+  }
+
   public addTile(x: number, y: number, type: TileType, bitmap: string, frame: number): void {
     // Overwrite existing tile
     const EXISTING_TILE = this.getTile(x, y);

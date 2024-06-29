@@ -7,6 +7,8 @@ import { MathModule } from '../utilities/mathModule';
 import { ActiveEntityAnimationState } from './entityState';
 import { EntityOrientation } from '../enums/entityOrientation';
 import { Physics } from '../physics/collider';
+import CampaignManager from '../tiles/campaignmanager';
+import { TileType } from '../tiles/tile';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
@@ -19,10 +21,12 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   public animator: ActiveEntityAnimator;
   public lastValidPositionX: number;
   public lastValidPositionY: number;
-  
+
+  private static campaignManager: CampaignManager | null = null;
+
   protected _isMoving: boolean = false;
-  
-  constructor(scene) {
+
+  constructor(scene: Phaser.Scene) {
     super(scene);
     scene.add.existing(this);
     this.type = 'ActiveEntity';
@@ -55,6 +59,10 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this.setY(v);
   }
 
+  public static setCampaignManager(cm: CampaignManager) {
+    ActiveEntity.campaignManager = cm;
+  }
+
   public updatePosition(): void {
 
     if (this.isDestinationReached()) {
@@ -83,10 +91,15 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     let deltaY: number = distance * Math.sin(this._orientation_rad);
     this.lastValidPositionX = this._positionX;
     this.lastValidPositionY = this._positionY;
-    this._positionX += deltaX;
-    this.setX(this.x + deltaX);
-    this._positionY += deltaY;
-    this.setY(this.y + deltaY);
+
+    const NEW_X = this.x + deltaX;
+    const NEW_Y = this.y + deltaY;
+    if (this.checkValidTilePosition(NEW_X, NEW_Y)) {
+      this._positionX += deltaX;
+      this.setX(NEW_X);
+      this._positionY += deltaY;
+      this.setY(NEW_Y);
+    }
   }
 
   public updateOrientationWithTarget(): boolean {
@@ -145,8 +158,17 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   }
 
   public isDestinationReached(): boolean {
-    return MathModule.isValueInThreshold(this.positionX, this.destinationX, 1) && 
+    return MathModule.isValueInThreshold(this.positionX, this.destinationX, 1) &&
       MathModule.isValueInThreshold(this.positionY, this.destinationY, 1);
+  }
+
+  private checkValidTilePosition(x: number, y: number): boolean {
+    if (!ActiveEntity.campaignManager) {
+      console.error("ActiveEntity class' campaign manager ref is null, use ActiveEntity.setCampaignManager() to enable floor collision/detection.");
+      return true
+    }
+    console.log(x, y, ActiveEntity.campaignManager.getTileFromPixelPosition(x, y));
+    return ActiveEntity.campaignManager.getTileFromPixelPosition(x, y)?.type === TileType.Floor;
   }
 
   abstract update(time: number, deltaTime: number): void;

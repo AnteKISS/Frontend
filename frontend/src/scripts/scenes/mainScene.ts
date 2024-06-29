@@ -18,6 +18,7 @@ import { SignalHandler } from '../events/signal';
 import Tooltip from '../label/tooltip'
 import { SpellCollider } from '../physics/spellCollider';
 import { SpellColliderManager } from '../managers/spellColliderManager'
+import { ActiveEntity } from '../entities/activeEntity'
 
 export default class MainScene extends Phaser.Scene {
   uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -27,7 +28,7 @@ export default class MainScene extends Phaser.Scene {
   pointer: Phaser.Input.Pointer;
   centerPoint: Point;
   mapEditorButton: Phaser.GameObjects.Text;
-  spellSpriteColliders: SpellCollider[] = []; 
+  spellSpriteColliders: SpellCollider[] = [];
 
   private playerTest: PlayerEntity;
   private monsterTest: MonsterEntity;
@@ -72,14 +73,16 @@ export default class MainScene extends Phaser.Scene {
         fontSize: '24px'
       })
       .setInteractive()
-      .on('pointerdown', (pointer, localX, localY, event) => { 
-        event.stopPropagation(); 
-        this.scene.launch('MapEditor'); 
-        this.scene.pause('MainScene'); 
-        this.scene.setVisible(false, 'MainScene'); 
+      .on('pointerdown', (pointer, localX, localY, event) => {
+        event.stopPropagation();
+        this.scene.launch('MapEditor');
+        this.scene.pause('MainScene');
+        this.scene.setVisible(false, 'MainScene');
       });
 
     this.input!.mouse!.disableContextMenu();
+
+    ActiveEntity.setCampaignManager(this.campaignManager);
 
     this.gui = new GUI(this, 0, 0);
     this.playerTest = EntityManager.instance.createPlayer(this);
@@ -222,7 +225,7 @@ export default class MainScene extends Phaser.Scene {
   public onPlayerDeath(): void {
     let background = this.add.graphics({ fillStyle: { color: 0x0F0000, alpha: 0.8 } });
     background.fillRect(0, 0, this.sys.game.config.width as number, this.sys.game.config.height as number);
-  
+
     let deathText = this.add.text(this.sys.game.config.width as number / 2, this.sys.game.config.height as number / 2, 'You are deader than dead\n Press  \'ESC\' to continue', {
       fontSize: '64px',
       color: '#ff0000',
