@@ -6,10 +6,9 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
   public readonly gridWidth: number;
   public readonly gridHeight: number;
 
-  private infoItems: [InventoryItem, number, number][] = []; // [item,posx,posy]
-  private indexFound = -1;
+  private infoItems: Map<InventoryItem, Point>;
 
-  public occupied: boolean[][];
+  private occupied: InventoryItem | null[][];
   private cells: Phaser.GameObjects.Sprite[][];
   private currentCell: Phaser.GameObjects.Sprite | null;
   private currentCellPosition: Point;
@@ -18,9 +17,10 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
     super(scene, x, y);
     this.gridWidth = gridWidth;
     this.gridHeight = gridHeight;
+    this.infoItems = new Map<InventoryItem, Point>;
     this.currentCellPosition = new Point(-1, -1);
 
-    this.occupied = Array.from({ length: gridHeight }, () => Array(gridWidth).fill(false)); // true = occupe
+    this.occupied = Array.from({ length: gridHeight }, () => Array(gridWidth).fill(null));
     this.cells = [];
 
     scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
@@ -30,7 +30,7 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
 
   public onPointerMove(pointer: Phaser.Input.Pointer): void {
     this.updateCurrentCell(pointer);
-    this.infoItems.forEach((infoItem) => infoItem[0].update(pointer));
+    for (const item of this.infoItems.keys()) item.update(pointer);
   }
 
   public createGrid(): void {
@@ -60,9 +60,9 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
     //occupe la place
     for (let y = 0; y < item.getItem().inventoryHeight; y++)
       for (let x = 0; x < item.getItem().inventoryWidth; x++)
-        this.occupied[startY + y][startX + x] = true;
+        this.occupied[startY + y][startX + x] = item;
 
-    this.infoItems.push([item, startX, startY]);
+    this.infoItems.set(item, new Point(startX, startY));
     this.add(item);
     item.getItem().changeToInventorySprite();
     item.setSize(item.getItem().inventoryWidth * InventoryConfig.CELL_SIZE, item.getItem().inventoryHeight * InventoryConfig.CELL_SIZE);
@@ -71,15 +71,19 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
   }
 
   public removeItem(item: InventoryItem, selectedX: number, selectedY: number): boolean {
+    const itemInfo = this.infoItems.get(item);
+
+    if (!itemInfo) {
+      console.error("Can't remove item, not in inventory.");
+      return false;
+    }
+
     //libere la place
     for (let y = 0; y < item.getItem().inventoryHeight; y++)
       for (let x = 0; x < item.getItem().inventoryWidth; x++)
-        this.occupied[selectedY + y][selectedX + x] = false;
+        this.occupied[itemInfo.y + y][itemInfo.x + x] = null;
 
-    // eneleve l item du tableau
-    this.indexFound = this.infoItems.findIndex((itemInfo) => item === itemInfo[0]);
-
-    this.infoItems.splice(this.indexFound, 1);
+    this.infoItems.delete(item);
     this.remove(item);
     return true;
   }
@@ -98,6 +102,33 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
     return true;
   }
 
+  public swapItem(item: InventoryItem, startX: number, startY: number): InventoryItem | null {
+    if (startX + item.getItem().inventoryWidth > this.gridWidth || startY + item.getItem().inventoryHeight > this.gridHeight)
+      return item;
+
+    const itemsInTheWay = new Set<InventoryItem>();
+    let newItemInHand = null;
+
+    for (let y = startY; y < startY + item.getItem().inventoryHeight; y++) {
+      for (let x = startX; x < startX + item.getItem().inventoryWidth; x++) {
+        if (this.occupied[y][x])
+          itemsInTheWay.add(this.occupied[y][x]);
+        if (itemsInTheWay.size > 1)
+          return item;
+      }
+    }
+
+    if (itemsInTheWay.size === 1) {
+      const itemToSwap = itemsInTheWay.values().next().value;
+      this.removeItem(itemToSwap, startX, startY);
+      newItemInHand = itemToSwap;
+    }
+
+    this.addItem(item, startX, startY);
+
+    return newItemInHand;
+  }
+
   public mouseIsOverItem(item: InventoryItem, startX: number, startY: number): boolean {
     const gridX = this.currentCellPosition.x;
     const gridY = this.currentCellPosition.y;
@@ -105,7 +136,7 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
       && gridY >= startY && gridY < startY + item.getItem().inventoryHeight;
   }
 
-  public getItemsInfo(): [InventoryItem, number, number][] {
+  public getItemsInfo(): Map<InventoryItem, Point> {
     return this.infoItems;
   }
 

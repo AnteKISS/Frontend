@@ -55,9 +55,9 @@ export default class Inventory extends Phaser.GameObjects.Container {
     }
 
     // Check if clicking item in item storage
-    for (let [item, startX, startY] of this.itemStorage.getItemsInfo())
-      if (this.itemStorage.mouseIsOverItem(item, startX, startY)) {
-        this.pickUpItem(item, startX, startY);
+    for (let [item, startPos] of this.itemStorage.getItemsInfo())
+      if (this.itemStorage.mouseIsOverItem(item, startPos.x, startPos.y)) {
+        this.pickUpItem(item, startPos.x, startPos.y);
         this.updateSelectedItemPosition(pointer);
         return;
       }
@@ -135,24 +135,21 @@ export default class Inventory extends Phaser.GameObjects.Container {
     return true;
   }
 
-  private dropItemInItemStorage(): boolean {
+  private dropItemInItemStorage(): void {
     if (!this.selectedItem)
-      return false;
+      return;
 
     const gridPos = this.itemStorage.getCurrentCellPosition();
 
     if (gridPos.x == -1 && gridPos.y == -1) {
       this.dropHeldItem();
-      return true;
+      return;
     }
 
-    if (this.itemStorage.isSpaceAvailable(this.selectedItem, gridPos.x, gridPos.y)) {
-      this.itemStorage.addItem(this.selectedItem, gridPos.x, gridPos.y);
-      this.setSelectedItem(null);
-      return true;
+    if (this.selectedItem) {
+      const swappedItem = this.itemStorage.swapItem(this.selectedItem, gridPos.x, gridPos.y);
+      this.setSelectedItem(swappedItem);
     }
-
-    return false;
   }
 
   private setSelectedItem(item: InventoryItem | null): void {
