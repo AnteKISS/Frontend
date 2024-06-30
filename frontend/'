@@ -39,10 +39,11 @@ export class MathModule {
     return point;
   }
 
-  public static getVectorLinearComposition(v: Vector, v1: Vector, v2: Vector): [Vector, Vector] {
-    const m = math.matrix([[v1.x, v2.x], [v1.y, v2.y]]);
-    const c = math.lusolve(m, [v.x, v.y]).toArray();
-    const [c1, c2] = [c[0][0], c[1][0]];
-    return [new Vector(v1.x * c1, v1.y * c1), new Vector(v2.x * c2, v2.y * c2)];
+  public static getVectorLinearComposition(vx: number, vy: number, v1x: number, v1y: number, v2x: number, v2y: number) {
+    const m = math.matrix([[v1x, v2x], [v1y, v2y]]);
+    const x = math.lusolve(m, [vx, vy]);
+    console.log(x);
+    console.log(x.get(0));
+    // return [new Vector(v1x * x[0][0], v1y * x[0][0]), new Vector(v2x * x[1][0], v2y * x[1][0])];
   }
 }
