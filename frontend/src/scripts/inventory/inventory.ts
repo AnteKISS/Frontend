@@ -86,7 +86,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
 
   public updateSelectedItemPosition(pointer: Phaser.Input.Pointer): void {
     if (this.selectedItem) {
-      this.selectedItem.setPosition(pointer.x, pointer.y);
+      this.selectedItem.setPosition(pointer.x - this.selectedItem.width / 2, pointer.y - this.selectedItem.height / 2);
       this.selectedItem.update(pointer);
     }
   }
@@ -119,7 +119,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
       itemAlreadyDropped = this.dropItemInEquipSlot(EQUIP_SLOT);
 
     if (!itemAlreadyDropped)
-      itemAlreadyDropped = this.dropItemInItemStorage();
+      itemAlreadyDropped = this.dropItemInItemStorage(pointer);
 
     if (!itemAlreadyDropped && !this.isPointerOnInventory(pointer))
       this.dropHeldItem();
@@ -143,13 +143,13 @@ export default class Inventory extends Phaser.GameObjects.Container {
     return true;
   }
 
-  private dropItemInItemStorage(): boolean {
+  private dropItemInItemStorage(pointer: Phaser.Input.Pointer): boolean {
     if (!this.selectedItem)
       return false;
 
-    const gridPos = this.itemStorage.getCurrentCellPosition();
+    const gridPos = this.itemStorage.getHeldItemCell(pointer, this.selectedItem);
 
-    if (gridPos.x == -1 && gridPos.y == -1)
+    if (!gridPos)
       return false;
 
     const swappedItem = this.itemStorage.swapItem(this.selectedItem, gridPos.x, gridPos.y);

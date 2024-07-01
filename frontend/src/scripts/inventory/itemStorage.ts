@@ -144,6 +144,19 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
     return this.currentCellPosition;
   }
 
+  public getHeldItemCell(pointer: Phaser.Input.Pointer, item: InventoryItem): Point | null {
+    const worldTransformMatrix = this.getWorldTransformMatrix();
+    const adjustedX = pointer.x - worldTransformMatrix.tx;
+    const adjustedY = pointer.y - worldTransformMatrix.ty;
+    const col = Math.round((adjustedX - item.width / 2) / InventoryConfig.CELL_SIZE);
+    const row = Math.round((adjustedY - item.height / 2) / InventoryConfig.CELL_SIZE);
+
+    if (row < 0 || row > this.gridHeight - 1 || col < 0 || col > this.gridWidth - 1)
+      return null;
+
+    return new Point(col, row);
+  }
+
   private updateCurrentCell(pointer: Phaser.Input.Pointer): void {
     const worldTransformMatrix = this.getWorldTransformMatrix();
     const adjustedX = pointer.x - worldTransformMatrix.tx;
