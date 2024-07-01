@@ -63,6 +63,11 @@ export default class Inventory extends Phaser.GameObjects.Container {
       }
   }
 
+  public isPointerOnInventory(pointer: Phaser.Input.Pointer): boolean {
+    const bounds = this.getBounds();
+    return Phaser.Geom.Rectangle.Contains(bounds, pointer.x, pointer.y);
+  }
+
   public show(): void {
     this.setVisible(true);
   }
@@ -81,7 +86,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
 
   public updateSelectedItemPosition(pointer: Phaser.Input.Pointer): void {
     if (this.selectedItem) {
-      this.selectedItem.setPosition(pointer.x - this.x, pointer.y - this.y);
+      this.selectedItem.setPosition(pointer.x, pointer.y);
       this.selectedItem.update(pointer);
     }
   }
@@ -114,7 +119,10 @@ export default class Inventory extends Phaser.GameObjects.Container {
       itemAlreadyDropped = this.dropItemInEquipSlot(EQUIP_SLOT);
 
     if (!itemAlreadyDropped)
-      this.dropItemInItemStorage();
+      itemAlreadyDropped = this.dropItemInItemStorage();
+
+    if (!itemAlreadyDropped && !this.isPointerOnInventory(pointer))
+      this.dropHeldItem();
 
     this.updateSelectedItemPosition(pointer);
   }
@@ -135,29 +143,22 @@ export default class Inventory extends Phaser.GameObjects.Container {
     return true;
   }
 
-  private dropItemInItemStorage(): void {
+  private dropItemInItemStorage(): boolean {
     if (!this.selectedItem)
-      return;
+      return false;
 
     const gridPos = this.itemStorage.getCurrentCellPosition();
 
-    if (gridPos.x == -1 && gridPos.y == -1) {
-      this.dropHeldItem();
-      return;
-    }
+    if (gridPos.x == -1 && gridPos.y == -1)
+      return false;
 
-    if (this.selectedItem) {
-      const swappedItem = this.itemStorage.swapItem(this.selectedItem, gridPos.x, gridPos.y);
-      this.setSelectedItem(swappedItem);
-    }
+    const swappedItem = this.itemStorage.swapItem(this.selectedItem, gridPos.x, gridPos.y);
+    this.setSelectedItem(swappedItem);
+    return true;
   }
 
   private setSelectedItem(item: InventoryItem | null): void {
-    if (this.selectedItem)
-      this.remove(this.selectedItem);
     this.selectedItem = item;
-    if (this.selectedItem)
-      this.add(this.selectedItem);
   }
 }
 

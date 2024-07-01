@@ -196,8 +196,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public isPointerOnInventory(pointer: Phaser.Input.Pointer): boolean {
-    const bounds = this.inventory.getBounds();
-    return this.isInventoryOpen() && Phaser.Geom.Rectangle.Contains(bounds, pointer.x, pointer.y);
+    return this.isInventoryOpen() && this.inventory.isPointerOnInventory(pointer);
   }
 
   public isInventoryOpen(): boolean {
