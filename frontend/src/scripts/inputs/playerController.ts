@@ -4,22 +4,28 @@ import { MonsterEntity } from "../entities/monsterEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import { EntityManager } from "../managers/entityManager";
 import { MathModule } from "../utilities/mathModule";
+import MainScene from "../scenes/mainScene";
 
 export default class PlayerController {
   public pointerDown: boolean = false;
-  
-  private player: PlayerEntity;
 
-  constructor(scene: Phaser.Scene, player: PlayerEntity) {
+  private player: PlayerEntity;
+  private mainScene: MainScene;
+  private pointerOnInventory: boolean; // TODO: Should only need to call mainScene's "isPointerOnInventory". This is necessary for "update" function
+
+  constructor(scene: MainScene, player: PlayerEntity) {
     this.player = player;
+    this.mainScene = scene;
+    this.pointerOnInventory = false;
     this.initSpellBarInput();
     this.initPlayerMovementInput();
   }
 
   public update(time: number, deltaTime: number): void {
-    if (this.player.isDead()) {
+    if (this.player.isDead() || this.pointerOnInventory) {
       return;
     }
+
     if (this.pointerDown && !this.player.isAttacking()) {
       const destinationX: number = this.player.scene.input.mousePointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
       const destinationY: number = this.player.scene.input.mousePointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
@@ -95,9 +101,12 @@ export default class PlayerController {
 
   public onPointerDown(pointer: Phaser.Input.Pointer): void {
     this.pointerDown = true;
-    if (this.player.isDead()) {
+    this.pointerOnInventory = this.mainScene.isPointerOnInventory(pointer);
+
+    if (this.player.isDead() || this.pointerOnInventory) {
       return;
     }
+
     let destinationX = pointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
     let destinationY = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
 
@@ -121,15 +130,18 @@ export default class PlayerController {
   }
 
   public onPointerMove(pointer: Phaser.Input.Pointer): void {
-    if (this.player.isDead()) {
+    this.pointerOnInventory = this.mainScene.isPointerOnInventory(pointer);
+
+    if (this.player.isDead() || this.pointerOnInventory) {
       return;
     }
+
     const destinationX: number = pointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
     const destinationY: number = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
 
     if (this.pointerDown && !this.player.isAttacking()) {
-        this.player.setDestination(destinationX, destinationY);
-        this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, destinationX, destinationY));
+      this.player.setDestination(destinationX, destinationY);
+      this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, destinationX, destinationY));
     }
   }
 

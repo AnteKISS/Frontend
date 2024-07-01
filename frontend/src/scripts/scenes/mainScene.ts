@@ -195,6 +195,11 @@ export default class MainScene extends Phaser.Scene {
     SpellColliderManager.getInstance.update();
   }
 
+  public isPointerOnInventory(pointer: Phaser.Input.Pointer): boolean {
+    const bounds = this.inventory.getBounds();
+    return this.isInventoryOpen() && Phaser.Geom.Rectangle.Contains(bounds, pointer.x, pointer.y);
+  }
+
   public isInventoryOpen(): boolean {
     return this.inventory.visible;
   }
