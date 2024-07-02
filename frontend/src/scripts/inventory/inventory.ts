@@ -40,10 +40,10 @@ export default class Inventory extends Phaser.GameObjects.Container {
   }
 
   public onPointerDown(pointer: Phaser.Input.Pointer): void {
+    this.isLastClickDropItem = false;
+
     if (!this.visible)
       return;
-
-    this.isLastClickDropItem = false;
 
     // If holding item, try dropping it
     if (this.selectedItem) {

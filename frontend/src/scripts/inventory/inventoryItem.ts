@@ -12,6 +12,7 @@ export default class InventoryItem extends Phaser.GameObjects.Container {
     this.item = item;
     this.add(this.item);
     this.scene.add.existing(this);
+    this.scene.cameras.main.ignore(this);
   }
 
   public getItem(): Item {
