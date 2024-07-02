@@ -7,6 +7,7 @@ import TileDrawer from './tiledrawer'
 import TileSprite from './tilesprite'
 import Tile, { TileType } from './tile'
 import TileSet from './tileset'
+import Transition from './transition'
 
 export default class CampaignManager {
   private scene: Phaser.Scene;
@@ -36,6 +37,13 @@ export default class CampaignManager {
 
   public loadCampaign(json: string): void {
     this.campaign = CampaignSerializer.import(json);
+    this.loadCurrentArea();
+  }
+
+  public loadCurrentArea(): void {
+    for (const TILE_SPRITE of this.tileSprites.values())
+      TILE_SPRITE.destroy();
+    this.tileSprites.clear();
 
     for (const TILE of this.campaign.currentArea().tileSet.getTiles()) {
       const TILE_SPRITE = new TileSprite(this.scene, TILE).setDepth(-1);
@@ -50,18 +58,22 @@ export default class CampaignManager {
 
   public addAct(name: string): void {
     this.campaign.addAct(new Act(name));
+    this.loadCurrentArea();
   }
 
   public deleteCurrentAct(): void {
     this.campaign.deleteCurrentAct();
+    this.loadCurrentArea();
   }
 
   public previousAct(): void {
     this.campaign.previousAct();
+    this.loadCurrentArea();
   }
 
   public nextAct(): void {
     this.campaign.nextAct();
+    this.loadCurrentArea();
   }
 
   public renameAct(name: string): void {
@@ -86,18 +98,22 @@ export default class CampaignManager {
 
   public addArea(name: string): void {
     this.campaign.currentAct().addArea(new Area(name));
+    this.loadCurrentArea();
   }
 
   public deleteCurrentArea(): void {
     this.campaign.currentAct().deleteCurrentArea();
+    this.loadCurrentArea();
   }
 
   public previousArea(): void {
     this.campaign.currentAct().previousArea();
+    this.loadCurrentArea();
   }
 
   public nextArea(): void {
     this.campaign.currentAct().nextArea();
+    this.loadCurrentArea();
   }
 
   public renameArea(name: string): void {
@@ -122,6 +138,12 @@ export default class CampaignManager {
 
   public getTile(x: number, y: number): Tile | undefined {
     return this.campaign.currentArea().tileSet.getTile(x, y);
+  }
+
+  // TODO: Use null instead of undefined
+  public getTileFromPixelPosition(pixelX: number, pixelY: number): Tile | undefined {
+    const PIXEL_POS = Tile.getTilePosFromUnitPos(pixelX, pixelY);
+    return this.getTile(PIXEL_POS.x, PIXEL_POS.y);
   }
 
   public addTile(x: number, y: number, type: TileType, bitmap: string, frame: number): void {
@@ -153,6 +175,16 @@ export default class CampaignManager {
         console.error("CampaignManager::deleteTile - Tile to delete has no associated tile sprite.");
       this.tileSprites.delete(TILE);
     }
+  }
+
+  /******************************/
+  //         TRANSITION         //
+  /******************************/
+
+  public transition(t: Transition): boolean {
+    const res = this.campaign.currentAct().transition(t.targetArea);
+    if (res) this.loadCurrentArea();
+    return res;
   }
 
   /******************************/

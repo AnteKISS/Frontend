@@ -25,7 +25,5 @@ export default class InventoryItem extends Phaser.GameObjects.Container {
       Tooltip.updateText(this.item.name);
       Tooltip.requestTooltip(this);
     }
-    else
-      Tooltip.cancelTooltip(this);
   }
 }

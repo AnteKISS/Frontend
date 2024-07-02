@@ -19,6 +19,7 @@ import { Signal, SignalHandler } from '../events/signal';
 import { Exp } from '../progression/exp';
 import { SkillTree } from '../progression/skillTree';
 import { AttributeAllocation } from '../progression/attributeAllocation';
+import Tile, { TileType } from '../tiles/tile';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -111,6 +112,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
     this.controller.update(time, deltaTime);
     this.updatePosition();
+    this.handleTileTransition();
     this.animator.update(time, deltaTime);
 
     this.exp.update();
@@ -242,6 +244,22 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
           }
         }
     }
+  }
+
+  private handleTileTransition() {
+    // Check if current tile has a transition
+    if (!(ActiveEntity.campaignManager && this.currentTile?.transition))
+      return;
+
+    // Make sure transition is valid in current act
+    if (!ActiveEntity.campaignManager.transition(this.currentTile.transition))
+      return;
+
+    const newPlayerPosition = Tile.getUnitPosFromTilePos(this.currentTile.transition.targetX, this.currentTile.transition.targetY);
+    this._positionX = newPlayerPosition.x;
+    this._positionY = newPlayerPosition.y;
+    this.setX(newPlayerPosition.x);
+    this.setY(newPlayerPosition.y);
   }
 }
 

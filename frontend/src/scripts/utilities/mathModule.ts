@@ -1,4 +1,6 @@
 import Point from "../types/point";
+import Vector from "../types/vector";
+import * as math from "mathjs";
 
 export class MathModule {
 
@@ -9,11 +11,11 @@ export class MathModule {
 
   public static normalizeRadAngleToDegrees(angle: number): number {
     let normalizedAngle = angle % (2 * Math.PI);
-    
+
     if (normalizedAngle < 0) {
       normalizedAngle += 2 * Math.PI;
     }
-  
+
     // We need to flip on the horizontal axis the angle
     return (360 - Phaser.Math.RadToDeg(normalizedAngle)) % 360;
   }
@@ -28,12 +30,19 @@ export class MathModule {
   }
 
   public static getRandomPointInCircle(parentX: number, parentY: number, radius: number): Point {
-      let point: Point = { x: parentX, y: parentY };
-      const randomAngle_rad = Math.random() * 2 * Math.PI;
-      const randomRadius = Math.random() * radius;
-  
-      point.x += randomRadius * Math.cos(randomAngle_rad);
-      point.y += randomRadius * Math.sin(randomAngle_rad);
-      return point;
+    let point: Point = { x: parentX, y: parentY };
+    const randomAngle_rad = Math.random() * 2 * Math.PI;
+    const randomRadius = Math.random() * radius;
+
+    point.x += randomRadius * Math.cos(randomAngle_rad);
+    point.y += randomRadius * Math.sin(randomAngle_rad);
+    return point;
+  }
+
+  public static getVectorLinearComposition(v: Vector, v1: Vector, v2: Vector): [Vector, Vector] {
+    const m = math.matrix([[v1.x, v2.x], [v1.y, v2.y]]);
+    const c = math.lusolve(m, [v.x, v.y]).toArray();
+    const [c1, c2] = [c[0][0], c[1][0]];
+    return [new Vector(v1.x * c1, v1.y * c1), new Vector(v2.x * c2, v2.y * c2)];
   }
 }

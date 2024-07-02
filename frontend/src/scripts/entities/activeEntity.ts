@@ -7,6 +7,9 @@ import { MathModule } from '../utilities/mathModule';
 import { ActiveEntityAnimationState } from './entityState';
 import { EntityOrientation } from '../enums/entityOrientation';
 import { Physics } from '../physics/collider';
+import CampaignManager from '../tiles/campaignmanager';
+import Tile, { TileType } from '../tiles/tile';
+import Vector from '../types/vector';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
@@ -19,10 +22,13 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   public animator: ActiveEntityAnimator;
   public lastValidPositionX: number;
   public lastValidPositionY: number;
-  
+
+  protected currentTile: Tile | undefined;
+  protected static campaignManager: CampaignManager | null = null;
+
   protected _isMoving: boolean = false;
-  
-  constructor(scene) {
+
+  constructor(scene: Phaser.Scene) {
     super(scene);
     scene.add.existing(this);
     this.type = 'ActiveEntity';
@@ -55,6 +61,10 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this.setY(v);
   }
 
+  public static setCampaignManager(cm: CampaignManager) {
+    ActiveEntity.campaignManager = cm;
+  }
+
   public updatePosition(): void {
 
     if (this.isDestinationReached()) {
@@ -83,10 +93,49 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     let deltaY: number = distance * Math.sin(this._orientation_rad);
     this.lastValidPositionX = this._positionX;
     this.lastValidPositionY = this._positionY;
+
+    let newX = this.x + deltaX;
+    let newY = this.y + deltaY;
+    // console.log(MathModule.getVectorLinearComposition(deltaX, deltaY, -1, -0.5, 1, -0.5));
+
+    if (!this.checkValidTilePosition(newX, newY)) {
+      let v1 = new Vector(0, 0);
+      let v2 = new Vector(0, 0);
+      let delta = new Vector(deltaX, deltaY);
+      let angle = Math.atan2(delta.y, delta.x);
+
+      // TODO: All these constants should be instanciated outside this function
+
+      const vNE = new Vector(1, -0.5);
+      const vNW = new Vector(-1, -0.5);
+      const vSW = new Vector(-1, 0.5);
+      const vSE = new Vector(1, 0.5);
+
+      const aNE = Math.atan2(vNE.y, vNE.x);
+      const aNW = Math.atan2(vNW.y, vNW.x);
+      const aSW = Math.atan2(vSW.y, vSW.x);
+      const aSE = Math.atan2(vSE.y, vSE.x);
+
+      if (aNE < angle && angle < aSE) { v1 = vNE; v2 = vSE; } // RIGHT
+      else if (aSE < angle && angle < aSW) { v1 = vSE; v2 = vSW; } // DOWN
+      else if (aSW < angle || angle < aNW) { v1 = vSW; v2 = vNW; } // LEFT
+      else if (aNW < angle && angle < aNE) { v1 = vNW; v2 = vNE; } // UP
+
+      [v1, v2] = MathModule.getVectorLinearComposition(delta, v1, v2);
+
+      if (this.checkValidTilePosition(this.x + v1.x, this.y + v1.y)) { deltaX = v1.x; deltaY = v1.y; }
+      else if (this.checkValidTilePosition(this.x + v2.x, this.y + v2.y)) { deltaX = v2.x; deltaY = v2.y; }
+      else { deltaX = 0; deltaY = 0; }
+
+      newX = this.x + deltaX;
+      newY = this.y + deltaY;
+    }
+
     this._positionX += deltaX;
-    this.setX(this.x + deltaX);
+    this.setX(newX);
     this._positionY += deltaY;
-    this.setY(this.y + deltaY);
+    this.setY(newY);
+    this.currentTile = ActiveEntity.campaignManager?.getTileFromPixelPosition(newX, newY);
   }
 
   public updateOrientationWithTarget(): boolean {
@@ -145,8 +194,17 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   }
 
   public isDestinationReached(): boolean {
-    return MathModule.isValueInThreshold(this.positionX, this.destinationX, 1) && 
+    return MathModule.isValueInThreshold(this.positionX, this.destinationX, 1) &&
       MathModule.isValueInThreshold(this.positionY, this.destinationY, 1);
+  }
+
+  private checkValidTilePosition(x: number, y: number): boolean {
+    if (!ActiveEntity.campaignManager) {
+      console.error("ActiveEntity class' campaign manager ref is null, use ActiveEntity.setCampaignManager() to enable floor collision/detection.");
+      return true
+    }
+    const newPositionTile = ActiveEntity.campaignManager.getTileFromPixelPosition(x, y);
+    return newPositionTile?.type === TileType.Floor;
   }
 
   abstract update(time: number, deltaTime: number): void;
