@@ -5,7 +5,7 @@ import { BaseEntity } from './baseEntity';
 import { MathModule } from '../utilities/mathModule'
 import PlayerController from '../inputs/playerController';
 import Spell from '../spells/spell';
-import SpellBook from  '../spells/spellBook';
+import SpellBook from '../spells/spellBook';
 import IceShard from '../spells/craftedSpells/iceShard';
 import Firebolt from '../spells/craftedSpells/firebolt';
 import Quake from '../spells/craftedSpells/quake';
@@ -31,7 +31,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   maxMana: number = 150; //Pour test
   mySpellBook: SpellBook;
   private equippedSpells: Spell[] = [];
-  private controller: PlayerController;
+  public controller: PlayerController;
   public exp: Exp;
   private skillTree: SkillTree;
   private attributeAllocation: AttributeAllocation;
@@ -65,17 +65,17 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
     this.positionX = this.scene.cameras.main.width / 2;
     this.positionY = this.scene.cameras.main.height / 2;
-    
+
     this.controller = new PlayerController(scene, this);
     this.exp = new Exp(this);
     this.skillTree = new SkillTree(this);
     this.attributeAllocation = new AttributeAllocation(this);
-  
+
     this.mySpellBook = new SpellBook(this);
     this.mySpellBook.addSpell(new Firebolt(this));
     this.mySpellBook.addSpell(new IceShard(this));
     this.mySpellBook.addSpell(new Quake(this));
-    
+
     this.stats.mana = 150; //Pour test
     this.stats.maxHealth = 150; //Pour test
 
@@ -156,46 +156,45 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   // Event Handlers
   public onSpellKeyDown(key: string): void {
     switch (key) {
-    case '1':
-      if(this.equippedSpells[0])
-        this.equippedSpells[0].onCast();
-      break;
-    case '2':
-      if(this.equippedSpells[1])
-        this.equippedSpells[1].onCast();
-      break;
-    case '3':
-      if(this.equippedSpells[2])
-        this.equippedSpells[2].onCast();
-      break;
-    case 'Q':
-     if(this.equippedSpells[3])
-        this.equippedSpells[3].onCast();
-      break;
-    case 'W':
-      if(this.equippedSpells[4])
-        this.equippedSpells[4].onCast();
-      break;
-    case 'E':
-      if(this.equippedSpells[5])
-        this.equippedSpells[5].onCast();
-      break;
-    case 'R':
-      if(this.equippedSpells[6])
-        this.equippedSpells[6].onCast();
-      break;
-    case 'T':
-      if(this.equippedSpells[7])
-        this.equippedSpells[7].onCast();
-      break;
-    default:
-      break;
+      case '1':
+        if (this.equippedSpells[0])
+          this.equippedSpells[0].onCast();
+        break;
+      case '2':
+        if (this.equippedSpells[1])
+          this.equippedSpells[1].onCast();
+        break;
+      case '3':
+        if (this.equippedSpells[2])
+          this.equippedSpells[2].onCast();
+        break;
+      case 'Q':
+        if (this.equippedSpells[3])
+          this.equippedSpells[3].onCast();
+        break;
+      case 'W':
+        if (this.equippedSpells[4])
+          this.equippedSpells[4].onCast();
+        break;
+      case 'E':
+        if (this.equippedSpells[5])
+          this.equippedSpells[5].onCast();
+        break;
+      case 'R':
+        if (this.equippedSpells[6])
+          this.equippedSpells[6].onCast();
+        break;
+      case 'T':
+        if (this.equippedSpells[7])
+          this.equippedSpells[7].onCast();
+        break;
+      default:
+        break;
     }
   }
 
-  public levelUp()
-  {
-    this.stats.level ++;
+  public levelUp() {
+    this.stats.level++;
     this.skillTree.levelUp();
     this.attributeAllocation.levelUp();
   }
@@ -214,7 +213,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       hitEntity.depth = 0;
     }
   }
-  
+
   onEntityColliding = (hitEntity: BaseEntity): void => {
 
   }

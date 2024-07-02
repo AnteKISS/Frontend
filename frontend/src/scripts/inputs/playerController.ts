@@ -21,9 +21,7 @@ export default class PlayerController {
     this.mainScene = scene;
     this.pointerOnInventory = false;
 
-    scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
     scene.input.on('pointerup', () => this.onPointerUp());
-    scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
     scene.input.keyboard.on('keydown-ESC', () => this.tryRestart());
 
     this.initAllSpellBarInput();
@@ -70,10 +68,6 @@ export default class PlayerController {
     this.updateTarget();
   }
 
-  public onPointerUp(): void {
-    this.pointerDown = false;
-  }
-
   public onPointerMove(pointer: Phaser.Input.Pointer): void {
     this.pointerOnInventory = this.mainScene.isPointerOnInventory(pointer);
 
@@ -83,7 +77,11 @@ export default class PlayerController {
     this.updateDestination(pointer);
   }
 
-  public attackTarget(target: PlayerEntity | MonsterEntity): void {
+  private onPointerUp(): void {
+    this.pointerDown = false;
+  }
+
+  private attackTarget(target: PlayerEntity | MonsterEntity): void {
     this.player.attack(target);
   }
 

@@ -13,7 +13,8 @@ export default class Inventory extends Phaser.GameObjects.Container {
   private playerEquipment: PlayerEquipment;
   private itemStorage: ItemStorage;
 
-  private selectedItem: InventoryItem | null = null;
+  private selectedItem: InventoryItem | null;
+  private isLastClickDropItem: boolean;
 
   constructor(scene: Phaser.Scene) {
     super(scene, 640, 0);
@@ -25,8 +26,10 @@ export default class Inventory extends Phaser.GameObjects.Container {
     this.closeButton = new Phaser.GameObjects.Sprite(scene, 243, 37, 'close_button').setInteractive();
     this.closeButton.on('pointerdown', () => this.hide());
 
+    this.selectedItem = null;
+    this.isLastClickDropItem = false;
+
     scene.input.on('pointermove', this.onPointerMove, this);
-    scene.input.on('pointerdown', this.onPointerDown, this);
 
     this.add([this.background, this.closeButton, this.itemStorage, this.playerEquipment]);
     scene.add.existing(this);
@@ -36,9 +39,11 @@ export default class Inventory extends Phaser.GameObjects.Container {
     this.updateSelectedItemPosition(pointer);
   }
 
-  private onPointerDown(pointer: Phaser.Input.Pointer): void {
+  public onPointerDown(pointer: Phaser.Input.Pointer): void {
     if (!this.visible)
       return;
+
+    this.isLastClickDropItem = false;
 
     // If holding item, try dropping it
     if (this.selectedItem) {
@@ -66,6 +71,10 @@ export default class Inventory extends Phaser.GameObjects.Container {
   public isPointerOnInventory(pointer: Phaser.Input.Pointer): boolean {
     const bounds = this.getBounds();
     return Phaser.Geom.Rectangle.Contains(bounds, pointer.x, pointer.y);
+  }
+
+  public wasItemDroppedLastClick(): boolean {
+    return this.isLastClickDropItem;
   }
 
   public show(): void {
@@ -121,8 +130,10 @@ export default class Inventory extends Phaser.GameObjects.Container {
     if (!itemAlreadyDropped)
       itemAlreadyDropped = this.dropItemInItemStorage(pointer);
 
-    if (!itemAlreadyDropped && !this.isPointerOnInventory(pointer))
+    if (!itemAlreadyDropped && !this.isPointerOnInventory(pointer)) {
+      this.isLastClickDropItem = true;
       this.dropHeldItem();
+    }
 
     this.updateSelectedItemPosition(pointer);
   }

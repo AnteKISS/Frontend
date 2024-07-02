@@ -146,6 +146,9 @@ export default class MainScene extends Phaser.Scene {
       })
       .setOrigin(1, 0);
 
+    this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
+    this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
+
     // let music: Phaser.Sound.BaseSound;
     // music = this.sound.add('spinning_rat_power', { loop: true});
     // music.play();
@@ -205,6 +208,18 @@ export default class MainScene extends Phaser.Scene {
 
   public isItemPickedUp(): boolean {
     return this.inventory.isItemPickedUp();
+  }
+
+  private onPointerMove(pointer: Phaser.Input.Pointer): void {
+    if (!this.inventory.wasItemDroppedLastClick())
+      this.playerTest.controller.onPointerMove(pointer);
+  }
+
+  private onPointerDown(pointer: Phaser.Input.Pointer): void {
+    this.inventory.onPointerDown(pointer);
+
+    if (!this.inventory.wasItemDroppedLastClick())
+      this.playerTest.controller.onPointerDown(pointer);
   }
 
   private drawDebugTileSet(): void {
