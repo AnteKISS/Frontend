@@ -25,6 +25,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('arrowLeft', 'assets/gui/editor/arrows/Arrow_W0001.png');
     this.load.image('arrowRight', 'assets/gui/editor/arrows/Arrow_E0001.png');
     this.load.image('whiteGlow', 'assets/gui/editor/white_glow.png');
+    this.load.image('button', 'assets/gui/progression/button.png');
 
     // INVENTORY
     this.load.image('stone_sword_inventory', 'assets/inventory/stone_sword.png');

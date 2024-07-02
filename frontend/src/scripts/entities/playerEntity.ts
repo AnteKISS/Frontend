@@ -35,7 +35,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   public controller: PlayerController;
   public exp: Exp;
   private skillTree: SkillTree;
-  private attributeAllocation: AttributeAllocation;
+  public attributeAllocation: AttributeAllocation;
 
   constructor(scene) {
     super(scene);

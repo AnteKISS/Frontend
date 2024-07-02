@@ -4,13 +4,18 @@ import { PlayerEntity } from "../entities/playerEntity";
 export class AttributeAllocation
 {
     private player: PlayerEntity;
-    private totalAttributePoint: number;
-    private availableAttributePoint: number;
-    private allocatedAttributePoint: number;
+    private totalAttributePoint: number = 0;
+    private availableAttributePoint: number = 0;
+    private allocatedAttributePoint: number = 0;
     public strength: number = 0;
     public dexterity: number = 0;
     public vitality: number = 0;
     public intelligence: number = 0;
+    public tempStrength: number = 0;
+    public tempDexterity: number = 0;
+    public tempVitality: number = 0;
+    public tempIntelligence: number = 0;
+
 
     constructor(player: PlayerEntity)
     {
@@ -21,7 +26,7 @@ export class AttributeAllocation
     {
         if(this.availableAttributePoint > 0)
         {
-            this.strength ++
+            this.tempStrength ++;
             this.allocatedAttributePoint ++;
             this.updateAvailableAttributePoint();
         }
@@ -31,7 +36,7 @@ export class AttributeAllocation
     {
         if(this.availableAttributePoint > 0)
         {
-            this.dexterity ++
+            this.tempDexterity ++;
             this.allocatedAttributePoint ++;
             this.updateAvailableAttributePoint();
         }
@@ -41,7 +46,7 @@ export class AttributeAllocation
     {
         if(this.availableAttributePoint > 0)
         {
-            this.vitality ++
+            this.tempVitality ++;
             this.allocatedAttributePoint ++;
             this.updateAvailableAttributePoint();
         }
@@ -51,10 +56,72 @@ export class AttributeAllocation
     {
         if(this.availableAttributePoint > 0)
         {
-            this.intelligence ++
+            this.tempIntelligence ++;
             this.allocatedAttributePoint ++;
             this.updateAvailableAttributePoint();
         }
+    }
+
+    public unallocateStrenghtPoint()
+    {
+        if(this.allocatedAttributePoint > this.vitality + this.strength + this.dexterity + this.intelligence && this.tempStrength > 0)
+        {
+            this.tempStrength --;
+            this.allocatedAttributePoint --;
+            this.updateAvailableAttributePoint();
+        }
+    }
+
+    public unallocateDexterityPoint()
+    {
+        if(this.allocatedAttributePoint > this.vitality + this.strength + this.dexterity + this.intelligence && this.tempDexterity > 0)
+        {
+            this.tempDexterity --;
+            this.allocatedAttributePoint --;
+            this.updateAvailableAttributePoint();
+        }
+    }
+
+    public unallocateVitalityPoint()
+    {
+        if(this.allocatedAttributePoint > this.vitality + this.strength + this.dexterity + this.intelligence && this.tempVitality > 0)
+        {
+            this.tempVitality --;
+            this.allocatedAttributePoint --;
+            this.updateAvailableAttributePoint();
+        }
+    }
+
+    public unallocateIntelligencePoint()
+    {
+        if(this.allocatedAttributePoint > this.vitality + this.strength + this.dexterity + this.intelligence && this.tempIntelligence > 0)
+        {
+            this.tempIntelligence --;
+            this.allocatedAttributePoint --;
+            this.updateAvailableAttributePoint();
+        }
+    }
+
+    public confirmSelection()
+    {
+        this.vitality += this.tempVitality;
+        this.strength += this.tempStrength;
+        this.dexterity += this.tempDexterity;
+        this.intelligence += this.tempIntelligence;
+        this.tempVitality = 0;
+        this.tempStrength = 0;
+        this.tempDexterity = 0;
+        this.tempIntelligence = 0;
+    }
+
+    public cancelSelection()
+    {
+        this.allocatedAttributePoint = this.allocatedAttributePoint - this.tempVitality - this.tempStrength - this.tempDexterity - this.tempIntelligence;
+        this.updateAvailableAttributePoint();
+        this.tempVitality = 0;
+        this.tempStrength = 0;
+        this.tempDexterity = 0;
+        this.tempIntelligence = 0;
     }
 
     public levelUp(): void 

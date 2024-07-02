@@ -19,6 +19,8 @@ import Tooltip from '../label/tooltip'
 import { SpellCollider } from '../physics/spellCollider';
 import { SpellColliderManager } from '../managers/spellColliderManager'
 import { ActiveEntity } from '../entities/activeEntity'
+import { AttributeGUI } from '../progression/attributeGUI'
+import { AttributeAllocation } from '../progression/attributeAllocation'
 
 export default class MainScene extends Phaser.Scene {
   uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -38,6 +40,9 @@ export default class MainScene extends Phaser.Scene {
   private gui: GUI;
 
   private inventory: Inventory;
+
+  private attributeGUI: AttributeGUI;
+  
 
   public constructor() {
     super({ key: 'MainScene' });
@@ -119,10 +124,16 @@ export default class MainScene extends Phaser.Scene {
 
     this.input.setDefaultCursor('default');
 
+    //Setup Attribute Allocation Panel
+    this.attributeGUI = new AttributeGUI(this, this.playerTest.attributeAllocation);
+
+    this.input.keyboard?.on('keydown-A', () => this.attributeGUI.aKeyPressed());
+    this.input.keyboard?.on('keydown-ESC', () => this.attributeGUI.hide());
+
     // Setup inventory test
     this.inventory = new Inventory(this);
-    this.input.keyboard.on('keydown-I', () => this.inventory.show());
-    this.input.keyboard.on('keydown-ESC', () => this.inventory.hide());
+    this.input.keyboard?.on('keydown-I', () => this.inventory.show());
+    this.input.keyboard?.on('keydown-ESC', () => this.inventory.hide());
 
     const stoneSword = new Item(this, "Stone Sword", ItemType.WEAPON, 1, 2, "stone_sword_inventory", "dropped_sword");
     this.inventory.getItemStorage().addItem(new InventoryItem(this, stoneSword), 0, 0);
@@ -164,7 +175,8 @@ export default class MainScene extends Phaser.Scene {
         this.entityHealthBar.graphics,
         this.entityHealthBar.lblEntityName,
         this.entityHealthBar.lblEntityDescription,
-        this.inventory
+        this.inventory,
+        this.attributeGUI
       ]
     );
     // TODO: Find a way to make the ignore list more dynamic
@@ -198,6 +210,7 @@ export default class MainScene extends Phaser.Scene {
     this.updateGUI();
     this.entityHealthBar.update();
     this.drawDebugTileSet();
+    this.attributeGUI.update();
     SpellColliderManager.getInstance.update();
   }
 
