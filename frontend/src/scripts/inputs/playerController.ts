@@ -5,147 +5,127 @@ import { PlayerEntity } from "../entities/playerEntity";
 import { EntityManager } from "../managers/entityManager";
 import { MathModule } from "../utilities/mathModule";
 import MainScene from "../scenes/mainScene";
+import Point from "../types/point";
 
 export default class PlayerController {
   public pointerDown: boolean = false;
 
   private player: PlayerEntity;
+  private destination: Point;
   private mainScene: MainScene;
   private pointerOnInventory: boolean; // TODO: Should only need to call mainScene's "isPointerOnInventory". This is necessary for "update" function
 
   constructor(scene: MainScene, player: PlayerEntity) {
     this.player = player;
+    this.destination = new Point(this.player.positionX, this.player.positionY);
     this.mainScene = scene;
     this.pointerOnInventory = false;
-    this.initSpellBarInput();
-    this.initPlayerMovementInput();
+
+    scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
+    scene.input.on('pointerup', () => this.onPointerUp());
+    scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
+    scene.input.keyboard.on('keydown-ESC', () => this.tryRestart());
+
+    this.initAllSpellBarInput();
   }
 
   public update(time: number, deltaTime: number): void {
-    if (this.player.isDead() || this.pointerOnInventory) {
+    if (this.player.isDead() || this.pointerOnInventory)
       return;
-    }
 
-    if (this.pointerDown && !this.player.isAttacking()) {
-      const destinationX: number = this.player.scene.input.mousePointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
-      const destinationY: number = this.player.scene.input.mousePointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
-      this.player.setDestination(destinationX, destinationY);
-    }
-    let destinationX: number = this.player.destinationX;
-    let destinationY: number = this.player.destinationY;
-    if (this.player.target !== null && this.player.target !== undefined) {
-      if (!(this.player.target as unknown as IFightable).isDead()) {
-        if (MathModule.scaledDistanceBetween(this.player.positionX, this.player.positionY, this.player.target.positionX, this.player.target.positionY) > 100) {
-          destinationX = this.player.target.positionX;
-          destinationY = this.player.target.positionY;
-        } else {
-          if (this.player.target instanceof MonsterEntity || this.player.target instanceof PlayerEntity && !this.player.isAttacking()) {
-            this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, this.player.target.positionX, this.player.target.positionY));
-            if (this.player.target.isTargetable) {
-              this.player.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
-              this.player.setDestination(this.player.positionX, this.player.positionY);
-            }
-          }
-        }
-      }
-    }
-    if (!this.player.isAttacking()) {
-      this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, destinationX, destinationY));
-    }
+    this.updateDestination(this.player.scene.input.mousePointer);
+    this.updateDestinationBasedOnTarget();
   }
 
-  private initSpellBarInput(): void {
+  private initAllSpellBarInput(): void {
     const scene = this.player.scene;
 
     if (scene && scene.input && scene.input.keyboard) {
-      const key1 = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
-      key1.on('down', () => this.player.onSpellKeyDown('1'), this.player);
-
-      const key2 = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
-      key2.on('down', () => this.player.onSpellKeyDown('2'), this.player);
-
-      const key3 = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
-      key3.on('down', () => this.player.onSpellKeyDown('3'), this.player);
-
-      const keyQ = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
-      keyQ.on('down', () => this.player.onSpellKeyDown('Q'), this.player);
-
-      const keyW = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-      keyW.on('down', () => this.player.onSpellKeyDown('W'), this.player);
-
-      const keyE = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E);
-      keyE.on('down', () => this.player.onSpellKeyDown('E'), this.player);
-
-      const keyR = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-      keyR.on('down', () => this.player.onSpellKeyDown('R'), this.player);
-
-      const keyT = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T);
-      keyT.on('down', () => this.player.onSpellKeyDown('T'), this.player);
+      this.initSpellBarInput(Phaser.Input.Keyboard.KeyCodes.ONE, '1');
+      this.initSpellBarInput(Phaser.Input.Keyboard.KeyCodes.TWO, '2');
+      this.initSpellBarInput(Phaser.Input.Keyboard.KeyCodes.THREE, '3');
+      this.initSpellBarInput(Phaser.Input.Keyboard.KeyCodes.Q, 'Q');
+      this.initSpellBarInput(Phaser.Input.Keyboard.KeyCodes.W, 'W');
+      this.initSpellBarInput(Phaser.Input.Keyboard.KeyCodes.E, 'E');
+      this.initSpellBarInput(Phaser.Input.Keyboard.KeyCodes.R, 'R');
+      this.initSpellBarInput(Phaser.Input.Keyboard.KeyCodes.T, 'T');
     } else {
       console.error("Player or scene not initialized");
     }
   }
 
-  private initPlayerMovementInput(): void {
-    const scene = this.player.scene;
-
-    scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
-    scene.input.on('pointerup', (pointer: Phaser.Input.Pointer) => this.onPointerUp(pointer));
-    scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
-    scene.input.keyboard.on('keydown-ESC', () => {
-      if (this.player.isDead()) {
-        this.player.scene.scene.restart();
-      }
-    });
+  private initSpellBarInput(keycode: number, char: string) {
+    const key = this.mainScene.input.keyboard.addKey(keycode);
+    key.on('down', () => this.player.onSpellKeyDown(char), this.player);
   }
 
   public onPointerDown(pointer: Phaser.Input.Pointer): void {
     this.pointerDown = true;
     this.pointerOnInventory = this.mainScene.isPointerOnInventory(pointer);
 
-    if (this.player.isDead() || this.pointerOnInventory) {
+    if (this.player.isDead() || this.pointerOnInventory)
       return;
-    }
 
-    let destinationX = pointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
-    let destinationY = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
-
-    const entity = EntityManager.instance.getEntityAtPosition(destinationX, destinationY);
-    if ((entity !== undefined && entity !== null) && entity !== this.player) {
-      if (!(entity as unknown as IFightable).isDead()) {
-        this.player.target = entity;
-      }
-    } else {
-      this.player.target = null;
-    }
-
-    if (!this.player.isAttacking()) {
-      this.player.setDestination(destinationX, destinationY);
-      this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, destinationX, destinationY));
-    }
+    this.updateDestination(pointer);
+    this.updateTarget();
   }
 
-  public onPointerUp(pointer: Phaser.Input.Pointer): void {
+  public onPointerUp(): void {
     this.pointerDown = false;
   }
 
   public onPointerMove(pointer: Phaser.Input.Pointer): void {
     this.pointerOnInventory = this.mainScene.isPointerOnInventory(pointer);
 
-    if (this.player.isDead() || this.pointerOnInventory) {
+    if (this.player.isDead() || this.pointerOnInventory)
       return;
-    }
 
-    const destinationX: number = pointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
-    const destinationY: number = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
-
-    if (this.pointerDown && !this.player.isAttacking()) {
-      this.player.setDestination(destinationX, destinationY);
-      this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, destinationX, destinationY));
-    }
+    this.updateDestination(pointer);
   }
 
   public attackTarget(target: PlayerEntity | MonsterEntity): void {
     this.player.attack(target);
   }
-}   
+
+  private updateDestination(pointer: Phaser.Input.Pointer) {
+    this.destination.x = pointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
+    this.destination.y = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
+
+    if (this.pointerDown && !this.player.isAttacking()) {
+      this.player.setDestination(this.destination.x, this.destination.y);
+      this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, this.destination.x, this.destination.y));
+    }
+  }
+
+  private updateDestinationBasedOnTarget() {
+    if (
+      !this.player.target
+      || (this.player.target as unknown as IFightable).isDead()
+      || MathModule.scaledDistanceBetween(this.player.positionX, this.player.positionY, this.player.target.positionX, this.player.target.positionY) > 100
+      || !(this.player.target instanceof MonsterEntity || this.player.target instanceof PlayerEntity && !this.player.isAttacking())
+    )
+      return;
+
+    this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, this.player.target.positionX, this.player.target.positionY));
+    if (this.player.target.isTargetable) {
+      this.player.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
+      this.player.setDestination(this.player.positionX, this.player.positionY);
+    }
+  }
+
+  private updateTarget() {
+    const entity = EntityManager.instance.getEntityAtPosition(this.destination.x, this.destination.y);
+
+    if ((entity !== undefined && entity !== null) && entity !== this.player) {
+      if (!(entity as unknown as IFightable).isDead()) {
+        this.player.target = entity;
+      }
+    } else
+      this.player.target = null;
+  }
+
+  private tryRestart() {
+    if (this.player.isDead())
+      this.player.scene.scene.restart();
+  }
+}
