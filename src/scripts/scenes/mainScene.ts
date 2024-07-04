@@ -11,7 +11,7 @@ import { EntityManager } from '../managers/entityManager';
 import { OutlinePipeline } from '../pipelines/outlinePipeline';
 
 import { TileColor } from '../tiles/tiledrawer'
-import CampaignManager from '../tiles/campaignmanager'
+import CampaignManager from '../managers/campaignmanager'
 import Point from '../types/point'
 import { EntityHealthBar } from '../uielements/entityHealthBar';
 import { SignalHandler } from '../events/signal';
@@ -42,7 +42,7 @@ export default class MainScene extends Phaser.Scene {
   private inventory: Inventory;
 
   private attributeGUI: AttributeGUI;
-  
+
 
   public constructor() {
     super({ key: 'MainScene' });

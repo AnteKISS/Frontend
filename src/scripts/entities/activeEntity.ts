@@ -7,7 +7,7 @@ import { MathModule } from '../utilities/mathModule';
 import { ActiveEntityAnimationState } from './entityState';
 import { EntityOrientation } from '../enums/entityOrientation';
 import { Physics } from '../physics/collider';
-import CampaignManager from '../tiles/campaignmanager';
+import CampaignManager from '../managers/campaignmanager';
 import Tile, { TileType } from '../tiles/tile';
 import Vector from '../types/vector';
 

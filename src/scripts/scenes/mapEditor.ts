@@ -1,8 +1,8 @@
 import 'phaser'
-import Tile from '../tiles/tile'
+import Tile, { TileType } from '../tiles/tile'
 import { TileColor } from '../tiles/tiledrawer'
 import TileSet from '../tiles/tileset'
-import CampaignManager from '../tiles/campaignmanager'
+import CampaignManager from '../managers/campaignmanager'
 import CampaignSerializer from '../tiles/campaignserializer'
 import TextInput from '../editor/textInput'
 import TransitionForm from '../editor/transitionform'
@@ -181,8 +181,7 @@ export default class MapEditor extends Phaser.Scene {
     this.tileSelector = new TileSelector(this);
 
     // Inputs
-    if(this.input && this.input.keyboard)
-    {
+    if (this.input && this.input.keyboard) {
       this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
       this.dKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
       this.sKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
@@ -193,14 +192,14 @@ export default class MapEditor extends Phaser.Scene {
     // Prevent DOM from handling tab key
     this.input!.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.TAB, true);
 
-      this.input.on('pointerdown', (pointer, objects) => {
-        if (objects.length === 0) {
-          this.tileModeClick();
-          this.canPlaceObject = true;
-        }
-        else
-          this.canPlaceObject = false;
-      });
+    this.input.on('pointerdown', (pointer, objects) => {
+      if (objects.length === 0) {
+        this.tileModeClick();
+        this.canPlaceObject = true;
+      }
+      else
+        this.canPlaceObject = false;
+    });
 
     this.input!.keyboard!.on('keydown', (event: KeyboardEvent) => this.handleKeyDown(event));
     this.input.on('wheel', (pointer, currentlyOver, dx, dy, dz, event) => this.zoom(dy));
@@ -408,7 +407,7 @@ export default class MapEditor extends Phaser.Scene {
 
     if (this.tileMode === TileMode.Add)
       for (const TILE_POS of CURSOR_TILES_POS)
-        this.campaignManager.addTile(TILE_POS.x, TILE_POS.y, this.tileSelector.getTileType(), this.tileSelector.getTileBitMap(), this.tileSelector.getTileFrame());
+        this.campaignManager.addTile(TILE_POS.x, TILE_POS.y, TileType.Floor, this.tileSelector.getTileBitMap(), this.tileSelector.getTileFrame());
     else if (this.tileMode === TileMode.Delete)
       for (const TILE_POS of CURSOR_TILES_POS)
         this.campaignManager.deleteTile(TILE_POS.x, TILE_POS.y);

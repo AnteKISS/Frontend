@@ -1,13 +1,13 @@
-import Act from './act'
-import Area from './area'
-import Campaign from './campaign'
-import CampaignSerializer from './campaignserializer'
-import Pathfinding from './pathfinding'
-import TileDrawer from './tiledrawer'
-import TileSprite from './tilesprite'
-import Tile, { TileType } from './tile'
-import TileSet from './tileset'
-import Transition from './transition'
+import Act from '../tiles/act'
+import Area from '../tiles/area'
+import Campaign from '../tiles/campaign'
+import CampaignSerializer from '../tiles/campaignserializer'
+import Pathfinding from '../tiles/pathfinding'
+import TileDrawer from '../tiles/tiledrawer'
+import TileSprite from '../tiles/tilesprite'
+import Tile, { TileType } from '../tiles/tile'
+import TileSet from '../tiles/tileset'
+import Transition from '../tiles/transition'
 
 export default class CampaignManager {
   private scene: Phaser.Scene;
