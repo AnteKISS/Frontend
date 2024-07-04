@@ -3,12 +3,10 @@ import Act from './act'
 import Area from './area'
 import TileSet from './tileset'
 import Transition from './transition'
-import { TileType } from './tile'
 
 interface TileJson {
   x: number,
   y: number,
-  type: TileType,
   bitmap: string,
   frame: number,
   transitionName: string,
@@ -69,7 +67,7 @@ export default abstract class CampaignSerializer {
       for (let i = 0; i < ACT.areas.length; i++) {
         const TILESET = new TileSet(0);
         for (const TILE_JSON of ACT_JSON.areas[i].tileset.tiles)
-          TILESET.addTile(TILE_JSON.x, TILE_JSON.y, TILE_JSON.type, TILE_JSON.bitmap, TILE_JSON.frame, ACT.getTransition(TILE_JSON.transitionName));
+          TILESET.addTile(TILE_JSON.x, TILE_JSON.y, TILE_JSON.bitmap, TILE_JSON.frame, ACT.getTransition(TILE_JSON.transitionName));
         ACT.areas[i].tileSet = TILESET;
       }
 
@@ -119,7 +117,6 @@ export default abstract class CampaignSerializer {
           const TILE_JSON: TileJson = {
             x: TILE.x,
             y: TILE.y,
-            type: TILE.type,
             bitmap: TILE.bitmap,
             frame: TILE.frame,
             transitionName: (TILE.transition !== undefined) ? TILE.transition.name : "",

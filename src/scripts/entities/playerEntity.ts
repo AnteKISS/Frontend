@@ -19,7 +19,7 @@ import { Signal, SignalHandler } from '../events/signal';
 import { Exp } from '../progression/exp';
 import { SkillTree } from '../progression/skillTree';
 import { AttributeAllocation } from '../progression/attributeAllocation';
-import Tile, { TileType } from '../tiles/tile';
+import Tile from '../tiles/tile';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 

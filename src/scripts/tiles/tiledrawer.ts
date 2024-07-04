@@ -1,5 +1,5 @@
 import 'phaser'
-import Tile, { TileType } from './tile'
+import Tile from './tile'
 
 export enum TileColor {
   Floor = 0x0000FF,
@@ -21,12 +21,10 @@ export default class TileDrawer {
     for (const tile of tiles) {
       let lineColor = 0x000000;
 
-      if (tile.type === TileType.Floor) {
-        if (tile.transition !== undefined)
-          lineColor = TileColor.Transition;
-        else
-          lineColor = TileColor.Floor;
-      }
+      if (tile.transition !== undefined)
+        lineColor = TileColor.Transition;
+      else
+        lineColor = TileColor.Floor;
 
       this.drawDebugTilePos(tile.x, tile.y, lineColor);
     }

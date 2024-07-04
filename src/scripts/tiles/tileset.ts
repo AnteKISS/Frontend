@@ -1,4 +1,4 @@
-import Tile, { TileType } from './tile'
+import Tile from './tile'
 import Transition from './transition'
 import Point from '../types/point'
 
@@ -10,14 +10,14 @@ export default class TileSet {
 
     for (let i = -size; i <= size; i++) {
       for (let j = -size; j <= size; j++) {
-        let tile = new Tile(i, j, TileType.Floor, "rocky_floor_tiles", 8);
+        let tile = new Tile(i, j, "rocky_floor_tiles", 8);
         this.tiles.set(Tile.getHash(tile.x, tile.y), tile);
       }
     }
   }
 
-  public addTile(x: number, y: number, type: TileType, bitmap: string, frame: number, transition: Transition | undefined = undefined): Tile {
-    const TILE = new Tile(x, y, type, bitmap, frame, transition);
+  public addTile(x: number, y: number, bitmap: string, frame: number, transition: Transition | undefined = undefined): Tile {
+    const TILE = new Tile(x, y, bitmap, frame, transition);
     this.tiles.set(Tile.getHash(x, y), TILE);
     return TILE;
   }

@@ -1,13 +1,6 @@
 import Transition from './transition'
 import Point from '../types/point'
 
-export enum TileType {
-  Floor,
-  LeftWall,
-  RightWall,
-  FullWall,
-}
-
 export default class Tile {
   public static readonly WIDTH: number = 100;
   public static readonly HEIGHT: number = this.WIDTH / 2;
@@ -16,16 +9,14 @@ export default class Tile {
 
   public readonly x: number;
   public readonly y: number;
-  public readonly type: TileType;
   public readonly bitmap: string;
   public readonly frame: number;
 
   public transition: Transition | undefined;
 
-  public constructor(x: number, y: number, type: TileType, bitmap: string, frame: number, transition: Transition | undefined = undefined) {
+  public constructor(x: number, y: number, bitmap: string, frame: number, transition: Transition | undefined = undefined) {
     this.x = x;
     this.y = y;
-    this.type = type;
     this.bitmap = bitmap;
     this.frame = frame;
     this.transition = transition;

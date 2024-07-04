@@ -1,5 +1,5 @@
 import TileSet from './tileset'
-import Tile, { TileType } from './tile'
+import Tile from './tile'
 import Point from '../types/point'
 
 class Node {
@@ -117,7 +117,6 @@ export default abstract class Pathfinding {
   private static isValidTile(tileset: TileSet, x: number, y: number, dir: number[]): boolean {
     const tile: Tile | undefined = tileset.getTile(x, y);
     return tile !== undefined
-      && tile.type === TileType.Floor
       && !Pathfinding.DirectionRequirements.get(dir)?.find((rd) => !Pathfinding.isValidTile(tileset, x - dir[0] + rd[0], y - dir[1] + rd[1], rd)); // If diagonal, adjacent tiles must be valid
   }
 

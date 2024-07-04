@@ -1,5 +1,5 @@
 import 'phaser'
-import Tile, { TileType } from '../tiles/tile'
+import Tile from '../tiles/tile'
 import { TileColor } from '../tiles/tiledrawer'
 import TileSet from '../tiles/tileset'
 import CampaignManager from '../managers/campaignmanager'
@@ -407,7 +407,7 @@ export default class MapEditor extends Phaser.Scene {
 
     if (this.tileMode === TileMode.Add)
       for (const TILE_POS of CURSOR_TILES_POS)
-        this.campaignManager.addTile(TILE_POS.x, TILE_POS.y, TileType.Floor, this.tileSelector.getTileBitMap(), this.tileSelector.getTileFrame());
+        this.campaignManager.addTile(TILE_POS.x, TILE_POS.y, this.tileSelector.getTileBitMap(), this.tileSelector.getTileFrame());
     else if (this.tileMode === TileMode.Delete)
       for (const TILE_POS of CURSOR_TILES_POS)
         this.campaignManager.deleteTile(TILE_POS.x, TILE_POS.y);

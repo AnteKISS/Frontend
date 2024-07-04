@@ -5,7 +5,7 @@ import CampaignSerializer from '../tiles/campaignserializer'
 import Pathfinding from '../tiles/pathfinding'
 import TileDrawer from '../tiles/tiledrawer'
 import TileSprite from '../tiles/tilesprite'
-import Tile, { TileType } from '../tiles/tile'
+import Tile from '../tiles/tile'
 import TileSet from '../tiles/tileset'
 import Transition from '../tiles/transition'
 
@@ -146,7 +146,7 @@ export default class CampaignManager {
     return this.getTile(PIXEL_POS.x, PIXEL_POS.y);
   }
 
-  public addTile(x: number, y: number, type: TileType, bitmap: string, frame: number): void {
+  public addTile(x: number, y: number, bitmap: string, frame: number): void {
     // Overwrite existing tile
     const EXISTING_TILE = this.getTile(x, y);
     if (EXISTING_TILE) {
@@ -159,7 +159,7 @@ export default class CampaignManager {
       }
     }
 
-    const TILE = this.campaign.currentArea().tileSet.addTile(x, y, type, bitmap, frame);
+    const TILE = this.campaign.currentArea().tileSet.addTile(x, y, bitmap, frame);
     const TILE_SPRITE = new TileSprite(this.scene, TILE).setDepth(-1);
     this.scene.cameras.getCamera("uiCamera")!.ignore(TILE_SPRITE);
     this.tileSprites.set(TILE, TILE_SPRITE);

@@ -8,7 +8,7 @@ import { ActiveEntityAnimationState } from './entityState';
 import { EntityOrientation } from '../enums/entityOrientation';
 import { Physics } from '../physics/collider';
 import CampaignManager from '../managers/campaignmanager';
-import Tile, { TileType } from '../tiles/tile';
+import Tile from '../tiles/tile';
 import Vector from '../types/vector';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
@@ -203,8 +203,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
       console.error("ActiveEntity class' campaign manager ref is null, use ActiveEntity.setCampaignManager() to enable floor collision/detection.");
       return true
     }
-    const newPositionTile = ActiveEntity.campaignManager.getTileFromPixelPosition(x, y);
-    return newPositionTile?.type === TileType.Floor;
+    return !!ActiveEntity.campaignManager.getTileFromPixelPosition(x, y);
   }
 
   abstract update(time: number, deltaTime: number): void;
