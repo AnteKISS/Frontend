@@ -14,7 +14,7 @@ export class Exp
         this.totalExp = 0;
         this.currentExpToMax = 0;
         this.levelExpToMax = 0;
-        this.addExp(500);
+        this.addExp(30000000);
         this.updateLevelExpToMax();
     }
 
