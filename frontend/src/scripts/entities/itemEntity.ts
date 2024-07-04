@@ -19,10 +19,35 @@ export default class ItemEntity extends InactiveEntity {
     if (PLAYERS.length > 0) {
       const P1 = PLAYERS[0];
       this.setPosition(P1.x - this.item.width / 2, P1.y - this.item.width / 2);
+      // const spriteReference: Phaser.GameObjects.Sprite = (this.item.getAll().filter((gameObject) => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite);
+      // this.item.setInteractive({ hitArea: new Phaser.Geom.Rectangle(spriteReference.x / 2, spriteReference.y / 2, spriteReference.displayWidth, spriteReference.displayHeight), hitAreaCallback: Phaser.Geom.Rectangle.Contains });
     }
+
+    const spriteReference: Phaser.GameObjects.Sprite = (this.item.getAll().filter((gameObject) => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite);
 
     this.label = new Label(this.scene, this.item.name);
     this.label.setPosition(this.item.getWidth() / 2, 0);
+    this.item.setInteractive({ 
+      hitArea: new Phaser.Geom.Rectangle(
+        (spriteReference.displayWidth * 0.5) - (this.label.getBounds().width * 0.5),
+        -(this.label.getBounds().height * 0.5),
+        this.label.getBounds().width, this.label.getBounds().height), 
+        hitAreaCallback: Phaser.Geom.Rectangle.Contains
+    });
+    
+    this.item.on('pointerover', (pointer: Phaser.Input.Pointer) => {
+      this.label.setBackgroundColor(0xDDDDDD);
+      this.label.setTextColor('#000000');
+    });
+
+    this.item.on('pointerout', (pointer: Phaser.Input.Pointer) => {
+      this.label.setBackgroundColor(0x000000);
+      this.label.setTextColor('#FFFFFF');
+    });
+
+    this.item.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
+      
+    });
 
     this.add([this.item, this.label]);
     this.scene.cameras.getCamera("uiCamera").ignore(this); // TODO: Maybe add this line to base entity
