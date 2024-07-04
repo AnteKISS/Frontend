@@ -9,7 +9,7 @@ export abstract class SpellCollider
     protected parentObject: Phaser.Physics.Arcade.Sprite;
     protected debugGraphics: Phaser.GameObjects.Graphics;
 	protected owner: BaseEntity;
-    protected alreadyHitEntities: BaseEntity[]
+    protected alreadyHitEntities: BaseEntity[];
     protected collidingCallback: (hitEntity: BaseEntity) => void;
 
     constructor(owner: BaseEntity, parentObject: Phaser.Physics.Arcade.Sprite, collidingCallback: (hitEntity: BaseEntity) => void)

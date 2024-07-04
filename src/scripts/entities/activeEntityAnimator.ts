@@ -82,7 +82,6 @@ export class ActiveEntityAnimator {
         for (const sprite of this.sprites) {
           sprite.play(`${this.parent.currentAnimationState.state}_${getOrientationString(this.parent.orientation)}_${sprite.textureName.toUpperCase()}`);
         }
-        this.parent.scene.anims.get
         this.parent.currentAnimationState.state = ActiveEntityAnimationState.State.DEAD;
         break;
       case ActiveEntityAnimationState.State.DEAD:
