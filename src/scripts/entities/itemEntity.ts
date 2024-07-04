@@ -25,7 +25,7 @@ export default class ItemEntity extends InactiveEntity {
     this.label.setPosition(this.item.getWidth() / 2, 0);
 
     this.add([this.item, this.label]);
-    this.scene.cameras.getCamera("uiCamera").ignore(this); // TODO: Maybe add this line to base entity
+    this.scene.cameras.getCamera("uiCamera")?.ignore(this); // TODO: Maybe add this line to base entity
   }
 
   update(deltaTime: number): void { }

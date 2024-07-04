@@ -22,7 +22,7 @@ export default class PlayerController {
     this.pointerOnInventory = false;
 
     scene.input.on('pointerup', () => this.onPointerUp());
-    scene.input.keyboard.on('keydown-ESC', () => this.tryRestart());
+    scene.input.keyboard?.on('keydown-ESC', () => this.tryRestart());
 
     this.initAllSpellBarInput();
   }
@@ -53,8 +53,8 @@ export default class PlayerController {
   }
 
   private initSpellBarInput(keycode: number, char: string) {
-    const key = this.mainScene.input.keyboard.addKey(keycode);
-    key.on('down', () => this.player.onSpellKeyDown(char), this.player);
+    const key = this.mainScene.input.keyboard?.addKey(keycode);
+    key?.on('down', () => this.player.onSpellKeyDown(char), this.player);
   }
 
   public onPointerDown(pointer: Phaser.Input.Pointer): void {
