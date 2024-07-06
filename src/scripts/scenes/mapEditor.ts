@@ -8,7 +8,7 @@ import TextInput from '../editor/textInput'
 import TransitionForm from '../editor/transitionform'
 import ConfigureTileForm from '../editor/configuretileform'
 import DeleteTransitionForm from '../editor/deletetransitionform'
-import TileSelector from '../editor/tileSelector'
+import GameObjectSelector from '../editor/gameObjectSelector'
 import Point from '../types/point'
 
 enum TileMode {
@@ -84,7 +84,7 @@ export default class MapEditor extends Phaser.Scene {
   private transitionForm: TransitionForm;
   private configureTileForm: ConfigureTileForm;
   private deleteTransitionForm: DeleteTransitionForm;
-  private tileSelector: TileSelector;
+  private tileSelector: GameObjectSelector;
 
   // Input keys
   private aKey: Phaser.Input.Keyboard.Key; // Move left
@@ -178,7 +178,7 @@ export default class MapEditor extends Phaser.Scene {
     this.deleteTransitionForm = new DeleteTransitionForm(this, this.campaignManager.getCampaign(), () => this.hideDeleteTransitionForm());
     this.deleteTransitionForm.hide();
 
-    this.tileSelector = new TileSelector(this);
+    this.tileSelector = new GameObjectSelector(this);
 
     // Inputs
     if (this.input && this.input.keyboard) {
@@ -407,7 +407,7 @@ export default class MapEditor extends Phaser.Scene {
 
     if (this.tileMode === TileMode.Add)
       for (const TILE_POS of CURSOR_TILES_POS)
-        this.campaignManager.addTile(TILE_POS.x, TILE_POS.y, this.tileSelector.getTileBitMap(), this.tileSelector.getTileFrame());
+        this.campaignManager.addTile(TILE_POS.x, TILE_POS.y, this.tileSelector.getSelectedObjectBitMap(), this.tileSelector.getSelectedObjectFrame());
     else if (this.tileMode === TileMode.Delete)
       for (const TILE_POS of CURSOR_TILES_POS)
         this.campaignManager.deleteTile(TILE_POS.x, TILE_POS.y);

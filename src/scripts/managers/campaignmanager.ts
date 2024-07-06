@@ -4,7 +4,7 @@ import Campaign from '../tiles/campaign'
 import CampaignSerializer from '../tiles/campaignserializer'
 import Pathfinding from '../tiles/pathfinding'
 import TileDrawer from '../tiles/tiledrawer'
-import TileSprite from '../tiles/tilesprite'
+import GameObjectSprite from '../tiles/gameobjectsprite'
 import Tile from '../tiles/tile'
 import TileSet from '../tiles/tileset'
 import Transition from '../tiles/transition'
@@ -14,7 +14,7 @@ export default class CampaignManager {
   private campaign: Campaign;
   private graphics: Phaser.GameObjects.Graphics;
   private tiledrawer: TileDrawer;
-  private tileSprites: Map<Tile, TileSprite>;
+  private tileSprites: Map<Tile, GameObjectSprite>;
 
   public constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -46,7 +46,7 @@ export default class CampaignManager {
     this.tileSprites.clear();
 
     for (const TILE of this.campaign.currentArea().tileSet.getTiles()) {
-      const TILE_SPRITE = new TileSprite(this.scene, TILE).setDepth(-1);
+      const TILE_SPRITE = new GameObjectSprite(this.scene, TILE).setDepth(-1);
       this.tileSprites.set(TILE, TILE_SPRITE);
       this.scene.cameras.getCamera("uiCamera")!.ignore(TILE_SPRITE);
     }
@@ -160,7 +160,7 @@ export default class CampaignManager {
     }
 
     const TILE = this.campaign.currentArea().tileSet.addTile(x, y, bitmap, frame);
-    const TILE_SPRITE = new TileSprite(this.scene, TILE).setDepth(-1);
+    const TILE_SPRITE = new GameObjectSprite(this.scene, TILE).setDepth(-1);
     this.scene.cameras.getCamera("uiCamera")!.ignore(TILE_SPRITE);
     this.tileSprites.set(TILE, TILE_SPRITE);
   }

@@ -25,9 +25,9 @@ export default class Tab extends Phaser.GameObjects.Container {
     this.scene.add.existing(this);
   }
 
-  public setOnPointerDown(func: Function) {
+  public setOnPointerDown(func: Function): void {
+    this.background.off('pointerdown', this.onPointerDownFunc);
     this.onPointerDownFunc = func;
-    this.removeListener('pointerdown');
-    this.on('pointerdown', this.onPointerDownFunc);
+    this.background.on('pointerdown', this.onPointerDownFunc);
   }
 }

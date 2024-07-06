@@ -117,8 +117,8 @@ export default abstract class CampaignSerializer {
           const TILE_JSON: TileJson = {
             x: TILE.x,
             y: TILE.y,
-            bitmap: TILE.bitmap,
-            frame: TILE.frame,
+            bitmap: TILE.source,
+            frame: TILE.frame!,
             transitionName: (TILE.transition !== undefined) ? TILE.transition.name : "",
           };
           TILESET_JSON.tiles.push(TILE_JSON);
