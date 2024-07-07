@@ -1,8 +1,8 @@
 import Campaign from './campaign'
 import Act from './act'
 import Area from './area'
-import TileSet from './tileset'
 import Transition from './transition'
+import GameObject from './gameobject';
 
 interface TileJson {
   x: number,
@@ -10,10 +10,6 @@ interface TileJson {
   bitmap: string,
   frame: number,
   transitionName: string,
-}
-
-interface TileSetJson {
-  tiles: TileJson[],
 }
 
 interface TransitionJson {
@@ -25,7 +21,7 @@ interface TransitionJson {
 
 interface AreaJson {
   name: string,
-  tileset: TileSetJson,
+  gameObjects: GameObject,
 }
 
 interface ActJson {
@@ -43,6 +39,7 @@ export default abstract class CampaignSerializer {
   public static import(json: string): Campaign {
     const CAMPAIGN_JSON: CampaignJson = JSON.parse(json);
     const CAMPAIGN = new Campaign(CAMPAIGN_JSON.name);
+    /*
     CAMPAIGN.acts = [];
 
     // Create campaign
@@ -73,6 +70,7 @@ export default abstract class CampaignSerializer {
 
       CAMPAIGN.addAct(ACT);
     }
+    */
     return CAMPAIGN;
   }
 
@@ -81,7 +79,7 @@ export default abstract class CampaignSerializer {
       name: campaign.name,
       acts: [],
     };
-
+    /*
     // Create JSON for every act
     for (const ACT of campaign.acts) {
       const ACT_JSON: ActJson = {
@@ -128,7 +126,7 @@ export default abstract class CampaignSerializer {
       }
       CAMPAIGN_JSON.acts.push(ACT_JSON);
     }
-
+    */
     return JSON.stringify(CAMPAIGN_JSON);
   }
 }

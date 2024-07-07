@@ -8,20 +8,21 @@ import GameObjectSprite from '../tiles/gameobjectsprite'
 import Tile from '../tiles/tile'
 import TileModule from '../tiles/tilemodule'
 import Transition from '../tiles/transition'
+import GameObject from '../tiles/gameobject'
 
 export default class CampaignManager {
   private scene: Phaser.Scene;
   private campaign: Campaign;
   private graphics: Phaser.GameObjects.Graphics;
   private tiledrawer: TileDrawer;
-  private tileSprites: Map<Tile, GameObjectSprite>;
+  private gameObjectSprites: Map<GameObject, GameObjectSprite>;
 
   public constructor(scene: Phaser.Scene) {
     this.scene = scene;
     this.graphics = this.scene.add.graphics();
     this.tiledrawer = new TileDrawer(this.graphics);
     this.campaign = new Campaign("Default Campaign");
-    this.tileSprites = new Map();
+    this.gameObjectSprites = new Map();
 
     this.scene.cameras.getCamera("uiCamera")!.ignore(this.graphics);
   }
@@ -41,14 +42,14 @@ export default class CampaignManager {
   }
 
   public loadCurrentArea(): void {
-    for (const TILE_SPRITE of this.tileSprites.values())
-      TILE_SPRITE.destroy();
-    this.tileSprites.clear();
+    for (const GAME_OBJECT_SPRITE of this.gameObjectSprites.values())
+      GAME_OBJECT_SPRITE.destroy();
+    this.gameObjectSprites.clear();
 
-    for (const TILE of this.campaign.currentArea().tileSet.getTiles()) {
-      const TILE_SPRITE = new GameObjectSprite(this.scene, TILE).setDepth(-1);
-      this.tileSprites.set(TILE, TILE_SPRITE);
-      this.scene.cameras.getCamera("uiCamera")!.ignore(TILE_SPRITE);
+    for (const GAME_OBJECT of this.campaign.currentArea().getGameObjects()) {
+      const GAME_OBJECT_SPRITE = new GameObjectSprite(this.scene, GAME_OBJECT).setDepth(-1);
+      this.gameObjectSprites.set(GAME_OBJECT, GAME_OBJECT_SPRITE);
+      this.scene.cameras.getCamera("uiCamera")!.ignore(GAME_OBJECT_SPRITE);
     }
   }
 
@@ -137,7 +138,7 @@ export default class CampaignManager {
   /******************************/
 
   public getTile(x: number, y: number): Tile | undefined {
-    return this.campaign.currentArea().tileSet.getTile(x, y);
+    return this.campaign.currentArea().getGameObject(x, y, Tile);
   }
 
   // TODO: Use null instead of undefined
@@ -150,7 +151,7 @@ export default class CampaignManager {
     // Overwrite existing tile
     const EXISTING_TILE = this.getTile(x, y);
     if (EXISTING_TILE) {
-      const EXISTING_TILE_SPRITE = this.tileSprites.get(EXISTING_TILE);
+      const EXISTING_TILE_SPRITE = this.gameObjectSprites.get(EXISTING_TILE);
       if (EXISTING_TILE_SPRITE)
         EXISTING_TILE_SPRITE.destroy();
       else {
@@ -159,21 +160,23 @@ export default class CampaignManager {
       }
     }
 
-    const TILE = this.campaign.currentArea().tileSet.addTile(x, y, bitmap, frame);
+    const TILE = new Tile(x, y, bitmap, frame);
+    this.campaign.currentArea().addGameObject(x, y, TILE);
+
     const TILE_SPRITE = new GameObjectSprite(this.scene, TILE).setDepth(-1);
     this.scene.cameras.getCamera("uiCamera")!.ignore(TILE_SPRITE);
-    this.tileSprites.set(TILE, TILE_SPRITE);
+    this.gameObjectSprites.set(TILE, TILE_SPRITE);
   }
 
-  public deleteTile(x: number, y: number): void {
-    const TILE = this.campaign.currentArea().tileSet.deleteTile(x, y);
-    if (TILE) {
-      const TILE_SPRITE = this.tileSprites.get(TILE);
-      if (TILE_SPRITE)
-        TILE_SPRITE.destroy();
+  public deleteGameObject(x: number, y: number): void {
+    const GAME_OBJECT = this.campaign.currentArea().removeGameObject(x, y);
+    if (GAME_OBJECT) {
+      const GAME_OBJECT_SPRITE = this.gameObjectSprites.get(GAME_OBJECT);
+      if (GAME_OBJECT_SPRITE)
+        GAME_OBJECT_SPRITE.destroy();
       else
         console.error("CampaignManager::deleteTile - Tile to delete has no associated tile sprite.");
-      this.tileSprites.delete(TILE);
+      this.gameObjectSprites.delete(GAME_OBJECT);
     }
   }
 
@@ -201,13 +204,15 @@ export default class CampaignManager {
     this.tiledrawer.drawDebugTilePos(TILE_POS.x, TILE_POS.y, color);
   }
 
+  /*
   public drawDebugCurrentTileSet(): void {
     this.tiledrawer.drawDebugTileList(this.campaign.currentArea().tileSet.getTiles());
   }
+  */
 
   public drawDebugProximityTiles(pixelX: number, pixelY: number, depth: number): void {
     const TILE_POS = TileModule.getTilePosFromUnitPos(pixelX, pixelY);
-    const PROXIMITY_TILES = this.campaign.currentArea().tileSet.getProximityTileList(TILE_POS.x, TILE_POS.y, depth);
+    const PROXIMITY_TILES = this.campaign.currentArea().getProximityTileList(TILE_POS.x, TILE_POS.y, depth);
     this.tiledrawer.drawDebugTileList(PROXIMITY_TILES);
   }
 
@@ -221,7 +226,7 @@ export default class CampaignManager {
   public drawDebugPathfinding(px1: number, py1: number, px2: number, py2: number): void {
     const TILE_1 = TileModule.getTilePosFromUnitPos(px1, py1);
     const TILE_2 = TileModule.getTilePosFromUnitPos(px2, py2);
-    for (const POINT of Pathfinding.findPath(this.campaign.currentArea().tileSet, TILE_1.x, TILE_1.y, TILE_2.x, TILE_2.y))
+    for (const POINT of Pathfinding.findPath(this.campaign.currentArea(), TILE_1.x, TILE_1.y, TILE_2.x, TILE_2.y))
       this.tiledrawer.drawDebugTilePos(POINT.x, POINT.y, 0x000000);
   }
 

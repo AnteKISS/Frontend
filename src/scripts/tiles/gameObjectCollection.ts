@@ -1,4 +1,5 @@
 import GameObject from "./gameobject";
+import Tile from "./tile";
 
 export default class GameObjectCollection {
   // A map of gameobjects at a single tile. Each collection can only have one of a certain type of GameObject.
@@ -10,11 +11,13 @@ export default class GameObjectCollection {
   }
 
   public add(gameObject: GameObject): Map<string, GameObject> {
-    return this.collection.set(typeof (gameObject), gameObject);
+    return this.collection.set(gameObject.constructor.name, gameObject);
   }
 
-  public delete(): void {
-    this.collection.delete("Tile"); // TODO: Delete any gameObject, implement priority system of which gameobject to delete first?
+  public delete(): GameObject | undefined {
+    const gameObject = this.collection.get(Tile.name);
+    this.collection.delete(Tile.name); // TODO: Delete any gameObject, implement priority system of which gameobject to delete first?
+    return gameObject;
   }
 
   public get<T extends GameObject>(constructor: new (...args: any[]) => T): T | undefined {
@@ -23,5 +26,9 @@ export default class GameObjectCollection {
 
   public getAll(): IterableIterator<GameObject> {
     return this.collection.values();
+  }
+
+  public size(): number {
+    return this.collection.size;
   }
 }

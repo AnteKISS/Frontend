@@ -1,5 +1,6 @@
 import 'phaser'
 import Campaign from '../tiles/campaign'
+import Tile from '../tiles/tile';
 
 export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
   campaign: Campaign;
@@ -35,8 +36,7 @@ export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
     this.scene.add.existing(this);
 
     this.focused = false;
-    if(scene && scene.input && scene.input.keyboard)
-    {
+    if (scene && scene.input && scene.input.keyboard) {
       scene.input.keyboard.on('keydown', (event: KeyboardEvent) => this.handleKeyDown(event));
     }
     this.updateTransitionText();
@@ -85,11 +85,18 @@ export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
         this.campaign.currentAct().deleteTransition(TRANSITION_NAME);
 
         // Delete all transition references in tiles
-        for (const AREA of this.campaign.currentAct().areas)
-          for (const TILE of AREA.tileSet.getTiles())
+        for (const AREA of this.campaign.currentAct().areas) {
+          for (const GAME_OBJECT of AREA.getGameObjects()) {
+            if (!(GAME_OBJECT instanceof Tile))
+              continue;
+
+            const TILE = GAME_OBJECT as Tile;
             if (TILE.transition && TILE.transition.name === TRANSITION_NAME)
               TILE.transition = undefined;
+          }
+        }
 
+        // Update index of selected transition
         if (this.selectedTransitionIndex >= this.campaign.currentAct().getTransitionAmount())
           this.selectedTransitionIndex = Math.max(0, this.campaign.currentAct().getTransitionAmount() - 1);
 

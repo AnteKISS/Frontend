@@ -2,17 +2,14 @@ import GameObject from './gameobject';
 import GameObjectCollection from './gameObjectCollection';
 import Tile from './tile';
 import TileModule from './tilemodule';
-import TileSet from './tileset';
 
 export default class Area {
   public name: string;
   public gameObjects: Map<string, GameObjectCollection>;
-  public tileSet: TileSet;
 
   public constructor(name: string) {
     this.name = name;
     this.gameObjects = new Map();
-    this.tileSet = new TileSet(3);
 
     // Default area
     const size = 5;
@@ -31,8 +28,26 @@ export default class Area {
     collection.add(gameObject);
   }
 
-  public removeGameObject(x: number, y: number): void {
-    this.getGameObjectCollection(x, y)?.delete();
+  public removeGameObject(x: number, y: number): GameObject | undefined {
+    const hash = TileModule.getTileHash(x, y);
+    const collection = this.gameObjects.get(hash);
+    const gameObject = collection?.delete();
+    if (collection?.size() === 0) this.gameObjects.delete(hash);
+    return gameObject;
+  }
+
+  public getGameObject<T extends GameObject>(x: number, y: number, constructor: new (...args: any[]) => T): T | undefined {
+    return this.getGameObjectCollection(x, y)?.get(constructor);
+  }
+
+  public getGameObjects(): GameObject[] {
+    const gameObjects: GameObject[] = [];
+
+    for (const collection of this.gameObjects.values())
+      for (const gameObject of collection.getAll())
+        gameObjects.push(gameObject);
+
+    return gameObjects;
   }
 
   public getProximityTileList(x: number, y: number, proximity: number): Tile[] {

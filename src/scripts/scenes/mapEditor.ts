@@ -410,7 +410,7 @@ export default class MapEditor extends Phaser.Scene {
         this.campaignManager.addTile(TILE_POS.x, TILE_POS.y, this.tileSelector.getSelectedObjectBitMap(), this.tileSelector.getSelectedObjectFrame());
     else if (this.tileMode === TileMode.Delete)
       for (const TILE_POS of CURSOR_TILES_POS)
-        this.campaignManager.deleteTile(TILE_POS.x, TILE_POS.y);
+        this.campaignManager.deleteGameObject(TILE_POS.x, TILE_POS.y);
     else if (this.tileMode === TileMode.Configure) {
       const TILE: Tile | undefined = this.campaignManager.getTile(this.cursorTilePos.x, this.cursorTilePos.y);
       if (TILE) {
@@ -418,7 +418,6 @@ export default class MapEditor extends Phaser.Scene {
         this.configureTileForm.show(TILE);
       }
     }
-
   }
 
   private zoom(dy: number): void {
@@ -433,7 +432,7 @@ export default class MapEditor extends Phaser.Scene {
     this.campaignManager.clearDebugTiles();
 
     if (this.showDebugTiles) {
-      this.campaignManager.drawDebugCurrentTileSet();
+      // this.campaignManager.drawDebugCurrentTileSet(); // TODO: Fix
       this.campaignManager.drawDebugPoint(this.playerPos.x, this.playerPos.y, TileColor.Player);
       this.campaignManager.drawDebugTile(this.playerPos.x, this.playerPos.y, TileColor.Player);
     }

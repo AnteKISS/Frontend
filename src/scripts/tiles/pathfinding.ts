@@ -1,6 +1,6 @@
-import TileSet from './tileset'
 import Tile from './tile'
 import Point from '../types/point'
+import Area from './area';
 
 class Node {
   public x: number;
@@ -64,8 +64,8 @@ export default abstract class Pathfinding {
   * @param y2 - Destination tile y position.
   * @returns A list of tiles that make up the found path. An empty array if no path was found.
   */
-  public static findPath(tileset: TileSet, x1: number, y1: number, x2: number, y2: number): Point[] {
-    if (tileset.getTile(x1, y1) === undefined || tileset.getTile(x2, y2) === undefined) {
+  public static findPath(area: Area, x1: number, y1: number, x2: number, y2: number): Point[] {
+    if (area.getGameObject(x1, y1, Tile) === undefined || area.getGameObject(x2, y2, Tile) === undefined) {
       // console.error("Pathfinding::findPath - Couldn't find path, start or end tile isn't in tileset.");
       return [];
     }
@@ -89,7 +89,7 @@ export default abstract class Pathfinding {
       for (const direction of Pathfinding.Directions) {
         let neighbor: Node = new Node(current.x + direction[0], current.y + direction[1]);
 
-        if (!Pathfinding.isValidTile(tileset, neighbor.x, neighbor.y, direction) || closed.has(`${neighbor.x},${neighbor.y}`))
+        if (!Pathfinding.isValidTile(area, neighbor.x, neighbor.y, direction) || closed.has(`${neighbor.x},${neighbor.y}`))
           continue; // Tile not traversable or already traversed
 
         neighbor.gScore = current.gScore + Pathfinding.getDistance(current, neighbor);
@@ -114,10 +114,10 @@ export default abstract class Pathfinding {
     return [];
   }
 
-  private static isValidTile(tileset: TileSet, x: number, y: number, dir: number[]): boolean {
-    const tile: Tile | undefined = tileset.getTile(x, y);
+  private static isValidTile(area: Area, x: number, y: number, dir: number[]): boolean {
+    const tile: Tile | undefined = area.getGameObject(x, y, Tile);
     return tile !== undefined
-      && !Pathfinding.DirectionRequirements.get(dir)?.find((rd) => !Pathfinding.isValidTile(tileset, x - dir[0] + rd[0], y - dir[1] + rd[1], rd)); // If diagonal, adjacent tiles must be valid
+      && !Pathfinding.DirectionRequirements.get(dir)?.find((rd) => !Pathfinding.isValidTile(area, x - dir[0] + rd[0], y - dir[1] + rd[1], rd)); // If diagonal, adjacent tiles must be valid
   }
 
   private static getPathFromNodeLinkedList(head: Node): Point[] {
