@@ -1,6 +1,6 @@
 import Tile from './tile'
+import TileModule from './tilemodule';
 import Transition from './transition'
-import Point from '../types/point'
 
 export default class TileSet {
   private tiles: Map<String, Tile>
@@ -11,19 +11,19 @@ export default class TileSet {
     for (let i = -size; i <= size; i++) {
       for (let j = -size; j <= size; j++) {
         let tile = new Tile(i, j, "rocky_floor_tiles", 8);
-        this.tiles.set(Tile.getHash(tile.x, tile.y), tile);
+        this.tiles.set(TileModule.getTileHash(tile.x, tile.y), tile);
       }
     }
   }
 
   public addTile(x: number, y: number, bitmap: string, frame: number, transition: Transition | undefined = undefined): Tile {
     const TILE = new Tile(x, y, bitmap, frame, transition);
-    this.tiles.set(Tile.getHash(x, y), TILE);
+    this.tiles.set(TileModule.getTileHash(x, y), TILE);
     return TILE;
   }
 
   public deleteTile(x: number, y: number): Tile | undefined {
-    const HASH = Tile.getHash(x, y);
+    const HASH = TileModule.getTileHash(x, y);
     const TILE = this.tiles.get(HASH);
     if (TILE !== undefined)
       this.tiles.delete(HASH);
@@ -31,7 +31,7 @@ export default class TileSet {
   }
 
   public getTile(x: number, y: number): Tile | undefined {
-    return this.tiles.get(Tile.getHash(x, y));
+    return this.tiles.get(TileModule.getTileHash(x, y));
   }
 
   public getTiles(): IterableIterator<Tile> {
@@ -57,20 +57,4 @@ export default class TileSet {
     return tileList;
   }
 
-  public static getProximityTilePos(x: number, y: number, proximity: number): Point[] {
-    const posList: Point[] = [];
-    const P2: number = proximity * proximity;
-
-    // Select tiles in a circle, column by column
-    // Algorithm used: https://stackoverflow.com/a/14036626
-    for (let cx = x - proximity; cx <= x + proximity; cx++) {
-      const X2: number = Math.pow((x - cx), 2);
-      const Y_DIST: number = Math.floor(Math.sqrt(P2 - X2));
-      for (let cy = y - Y_DIST; cy <= y + Y_DIST; cy++) {
-        posList.push(new Point(cx, cy));
-      }
-    }
-
-    return posList;
-  }
 }

@@ -1,11 +1,12 @@
 import GameObject from './gameobject';
 import Tile from './tile'
+import TileModule from './tilemodule';
 
 export default class GameObjectSprite extends Phaser.GameObjects.Sprite {
   public constructor(scene: Phaser.Scene, gameObject: GameObject) {
     super(scene, 0, 0, gameObject.source, gameObject.frame);
 
-    const TILE_UNIT_POS = Tile.getUnitPosFromTilePos(gameObject.tileX, gameObject.tileY);
+    const TILE_UNIT_POS = TileModule.getUnitPosFromTilePos(gameObject.tileX, gameObject.tileY);
 
     if (gameObject instanceof Tile) {
       this.setScale(Tile.WIDTH / this.width);

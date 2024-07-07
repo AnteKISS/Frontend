@@ -1,5 +1,5 @@
-import 'phaser'
 import Tile from './tile'
+import TileModule from './tilemodule'
 
 export enum TileColor {
   Floor = 0x0000FF,
@@ -31,7 +31,7 @@ export default class TileDrawer {
   }
 
   public drawDebugTilePos(tileX: number, tileY: number, fillColor: number): void {
-    const points = Tile.getPointsFromTilePos(tileX, tileY);
+    const points = TileModule.getPointsFromTilePos(tileX, tileY);
 
     this.graphics.lineStyle(2, 0x000000);
     this.graphics.fillStyle(fillColor, 0.5);

@@ -6,7 +6,7 @@ import Pathfinding from '../tiles/pathfinding'
 import TileDrawer from '../tiles/tiledrawer'
 import GameObjectSprite from '../tiles/gameobjectsprite'
 import Tile from '../tiles/tile'
-import TileSet from '../tiles/tileset'
+import TileModule from '../tiles/tilemodule'
 import Transition from '../tiles/transition'
 
 export default class CampaignManager {
@@ -142,7 +142,7 @@ export default class CampaignManager {
 
   // TODO: Use null instead of undefined
   public getTileFromPixelPosition(pixelX: number, pixelY: number): Tile | undefined {
-    const PIXEL_POS = Tile.getTilePosFromUnitPos(pixelX, pixelY);
+    const PIXEL_POS = TileModule.getTilePosFromUnitPos(pixelX, pixelY);
     return this.getTile(PIXEL_POS.x, PIXEL_POS.y);
   }
 
@@ -197,7 +197,7 @@ export default class CampaignManager {
   }
 
   public drawDebugTile(pixelX: number, pixelY: number, color: number): void {
-    const TILE_POS = Tile.getTilePosFromUnitPos(pixelX, pixelY);
+    const TILE_POS = TileModule.getTilePosFromUnitPos(pixelX, pixelY);
     this.tiledrawer.drawDebugTilePos(TILE_POS.x, TILE_POS.y, color);
   }
 
@@ -206,21 +206,21 @@ export default class CampaignManager {
   }
 
   public drawDebugProximityTiles(pixelX: number, pixelY: number, depth: number): void {
-    const TILE_POS = Tile.getTilePosFromUnitPos(pixelX, pixelY);
+    const TILE_POS = TileModule.getTilePosFromUnitPos(pixelX, pixelY);
     const PROXIMITY_TILES = this.campaign.currentArea().tileSet.getProximityTileList(TILE_POS.x, TILE_POS.y, depth);
     this.tiledrawer.drawDebugTileList(PROXIMITY_TILES);
   }
 
   public drawDebugProximityTilePos(pixelX: number, pixelY: number, color: number, brushSize: number): void {
-    const TILE_POS = Tile.getTilePosFromUnitPos(pixelX, pixelY);
-    const TILES_POS = TileSet.getProximityTilePos(TILE_POS.x, TILE_POS.y, brushSize);
+    const TILE_POS = TileModule.getTilePosFromUnitPos(pixelX, pixelY);
+    const TILES_POS = TileModule.getProximityTilePos(TILE_POS.x, TILE_POS.y, brushSize);
     for (const POS of TILES_POS)
       this.tiledrawer.drawDebugTilePos(POS.x, POS.y, color);
   }
 
   public drawDebugPathfinding(px1: number, py1: number, px2: number, py2: number): void {
-    const TILE_1 = Tile.getTilePosFromUnitPos(px1, py1);
-    const TILE_2 = Tile.getTilePosFromUnitPos(px2, py2);
+    const TILE_1 = TileModule.getTilePosFromUnitPos(px1, py1);
+    const TILE_2 = TileModule.getTilePosFromUnitPos(px2, py2);
     for (const POINT of Pathfinding.findPath(this.campaign.currentArea().tileSet, TILE_1.x, TILE_1.y, TILE_2.x, TILE_2.y))
       this.tiledrawer.drawDebugTilePos(POINT.x, POINT.y, 0x000000);
   }

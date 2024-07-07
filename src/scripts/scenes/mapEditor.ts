@@ -1,7 +1,7 @@
 import 'phaser'
 import Tile from '../tiles/tile'
 import { TileColor } from '../tiles/tiledrawer'
-import TileSet from '../tiles/tileset'
+import TileModule from '../tiles/tilemodule'
 import CampaignManager from '../managers/campaignmanager'
 import CampaignSerializer from '../tiles/campaignserializer'
 import TextInput from '../editor/textInput'
@@ -249,7 +249,7 @@ export default class MapEditor extends Phaser.Scene {
       ((this.pointer.x - this.centerPoint.x + this.playerPos.x) / this.cameras.main.zoom) + this.cameraOffsetPos.x,
       ((this.pointer.y - this.centerPoint.y + this.playerPos.y) / this.cameras.main.zoom) + this.cameraOffsetPos.y
     );
-    this.cursorTilePos = Tile.getTilePosFromUnitPos(this.cursorUnitPos.x, this.cursorUnitPos.y);
+    this.cursorTilePos = TileModule.getTilePosFromUnitPos(this.cursorUnitPos.x, this.cursorUnitPos.y);
 
     this.unitPosText.setText("Unit Pos : " + Math.round(this.cursorUnitPos.x) + ", " + Math.round(this.cursorUnitPos.y));
     this.tilePosText.setText("Tile Pos : " + this.cursorTilePos.x + ", " + this.cursorTilePos.y);
@@ -403,7 +403,7 @@ export default class MapEditor extends Phaser.Scene {
   private tileModeClick(): void {
     if (this.inMenu) return;
 
-    const CURSOR_TILES_POS = TileSet.getProximityTilePos(this.cursorTilePos.x, this.cursorTilePos.y, this.brushSize);
+    const CURSOR_TILES_POS = TileModule.getProximityTilePos(this.cursorTilePos.x, this.cursorTilePos.y, this.brushSize);
 
     if (this.tileMode === TileMode.Add)
       for (const TILE_POS of CURSOR_TILES_POS)

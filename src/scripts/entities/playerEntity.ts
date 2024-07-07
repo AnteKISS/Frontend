@@ -19,7 +19,7 @@ import { Signal, SignalHandler } from '../events/signal';
 import { Exp } from '../progression/exp';
 import { SkillTree } from '../progression/skillTree';
 import { AttributeAllocation } from '../progression/attributeAllocation';
-import Tile from '../tiles/tile';
+import TileModule from '../tiles/tilemodule';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -255,7 +255,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     if (!ActiveEntity.campaignManager.transition(this.currentTile.transition))
       return;
 
-    const newPlayerPosition = Tile.getUnitPosFromTilePos(this.currentTile.transition.targetX, this.currentTile.transition.targetY);
+    const newPlayerPosition = TileModule.getUnitPosFromTilePos(this.currentTile.transition.targetX, this.currentTile.transition.targetY);
     this._positionX = newPlayerPosition.x;
     this._positionY = newPlayerPosition.y;
     this.setX(newPlayerPosition.x);
