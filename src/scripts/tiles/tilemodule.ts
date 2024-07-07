@@ -30,7 +30,7 @@ export default class TileModule {
     );
   }
 
-  public static getTileHash(x: number, y: number): String {
+  public static getTileHash(x: number, y: number): string {
     return x.toString() + "," + y.toString();
   }
 
