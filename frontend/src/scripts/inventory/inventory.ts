@@ -3,7 +3,6 @@ import ItemStorage from './itemStorage'
 import InventoryConfig from './inventoryConfig'
 import InventoryItem from './inventoryItem'
 import EquipSlot from './equipSlot'
-import Tooltip from '../label/tooltip'
 import { EntityManager } from '../managers/entityManager'
 
 export default class Inventory extends Phaser.GameObjects.Container {
