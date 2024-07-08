@@ -25,7 +25,7 @@ export default class PlayerController {
     this.pointerOnInventory = false;
 
     scene.input.on('pointerup', () => this.onPointerUp());
-    scene.input.keyboard.on('keydown-ESC', () => this.respawnPlayer());
+    scene.input.keyboard.on('keydown-ESC', () => this.player.isDead() ? this.respawnPlayer() : null);
 
     this.initAllSpellBarInput();
   }
@@ -134,17 +134,11 @@ export default class PlayerController {
       this.destination.y = this.selectedItem.positionY;
       return;
     }
-    // this.player.
   }
 
   private updateSelectedItem() {
     this.selectedItem = EntityManager.instance.getItemAtPosition(this.destination.x, this.destination.y);
   }
-
-  // private tryRestart() {
-  //   if (this.player.isDead())
-  //     this.player.scene.scene.restart();
-  // }
 
   private respawnPlayer() {
     this.player.positionX = 0;
