@@ -21,6 +21,7 @@ import { SpellColliderManager } from '../managers/spellColliderManager'
 import { ActiveEntity } from '../entities/activeEntity'
 import ItemEntity from '../entities/itemEntity'
 import { MathModule } from '../utilities/mathModule'
+import { GameInput } from '../inputs/gameInputs'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -38,6 +39,8 @@ export default class MainScene extends Phaser.Scene {
   private monsterTest3: MonsterEntity;
   private entityHealthBar: EntityHealthBar;
   private gui: GUI;
+
+  private gameInputs: GameInput;
 
   private deathScreenBackground: Phaser.GameObjects.Graphics;
   private deathScreenText: Phaser.GameObjects.Text;
@@ -58,6 +61,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public create() {
+    this.gameInputs = new GameInput(this);
     this.fpsText = new FpsText(this);
     this.uiCamera = this.cameras.add(0, 0, 1280, 720, false, "uiCamera");
 
@@ -121,7 +125,6 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest3.positionY = this.monsterTest.positionY + 120;
     this.monsterTest3.area = this.campaignManager.getCampaign().currentArea();
     this.entityHealthBar = new EntityHealthBar(this);
-    // this.entityHealthBar.entity = this.monsterTest;
     this.gui.spellBar.setSpellBook(this.playerTest.spellBook);
 
     this.input.setDefaultCursor('default');
@@ -206,6 +209,12 @@ export default class MainScene extends Phaser.Scene {
     this.entityHealthBar.update();
     this.drawDebugTileSet();
     SpellColliderManager.getInstance.update();
+
+    if (this.gameInputs.showGroundItemsKey.isDown) {
+      EntityManager.instance.toggleGroundItemsTooltip(true);
+    } else {
+      EntityManager.instance.toggleGroundItemsTooltip(false);
+    }
   }
 
   public isPointerOnInventory(pointer: Phaser.Input.Pointer): boolean {

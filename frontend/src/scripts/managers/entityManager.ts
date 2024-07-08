@@ -157,6 +157,13 @@ export class EntityManager {
 
   // TODO: Add function to create npc
 
+  public toggleGroundItemsTooltip(showTooltip: boolean): void {
+    const itemEntities = this._entities.filter(entity => entity instanceof ItemEntity) as ItemEntity[];
+    itemEntities.forEach(itemEntity => {
+      itemEntity.label.visible = showTooltip;
+    });
+  }
+
   public setDebugMode(enableDebugMode: boolean): void {
     this._entities.forEach(entity => {
       entity.setDebugMode(enableDebugMode);

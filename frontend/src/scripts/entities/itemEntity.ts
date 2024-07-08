@@ -34,6 +34,7 @@ export default class ItemEntity extends InactiveEntity {
         this.label.getBounds().width, this.label.getBounds().height), 
         hitAreaCallback: Phaser.Geom.Rectangle.Contains
     });
+    this.label.visible = false;
     
     // this.item.on('pointerover', (pointer: Phaser.Input.Pointer) => {
     //   this.label.setBackgroundColor(0xDDDDDD);
