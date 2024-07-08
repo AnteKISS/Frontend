@@ -33,6 +33,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
 
     this.add([this.background, this.closeButton, this.itemStorage, this.playerEquipment]);
     scene.add.existing(this);
+    this.hide();
   }
 
   private onPointerMove(pointer: Phaser.Input.Pointer): void {

@@ -28,12 +28,12 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   public mainHandSprite: InventorySprite;
   public offHandSprite: InventorySprite;
   public onPlayerDeath: Signal = new Signal();
-
-  maxMana: number = 150; //Pour test
-  mySpellBook: SpellBook;
-  private equippedSpells: Spell[] = [];
+  public maxMana: number = 150; //Pour test
+  public spellBook: SpellBook;
   public controller: PlayerController;
   public exp: Exp;
+
+  private equippedSpells: Spell[] = [];
   private skillTree: SkillTree;
   private attributeAllocation: AttributeAllocation;
 
@@ -72,10 +72,10 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.skillTree = new SkillTree(this);
     this.attributeAllocation = new AttributeAllocation(this);
 
-    this.mySpellBook = new SpellBook(this);
-    this.mySpellBook.addSpell(new Firebolt(this));
-    this.mySpellBook.addSpell(new IceShard(this));
-    this.mySpellBook.addSpell(new Quake(this));
+    this.spellBook = new SpellBook(this);
+    this.spellBook.addSpell(new Firebolt(this));
+    this.spellBook.addSpell(new IceShard(this));
+    this.spellBook.addSpell(new Quake(this));
 
     this.stats.mana = 150; //Pour test
     this.stats.maxHealth = 150; //Pour test

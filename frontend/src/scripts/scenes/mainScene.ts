@@ -19,16 +19,18 @@ import Tooltip from '../label/tooltip'
 import { SpellCollider } from '../physics/spellCollider';
 import { SpellColliderManager } from '../managers/spellColliderManager'
 import { ActiveEntity } from '../entities/activeEntity'
+import ItemEntity from '../entities/itemEntity'
+import { MathModule } from '../utilities/mathModule'
 
 export default class MainScene extends Phaser.Scene {
-  uiCamera: Phaser.Cameras.Scene2D.Camera;
-  fpsText: FpsText;
-  versionText: Phaser.GameObjects.Text
-  campaignManager: CampaignManager;
-  pointer: Phaser.Input.Pointer;
-  centerPoint: Point;
-  mapEditorButton: Phaser.GameObjects.Text;
-  spellSpriteColliders: SpellCollider[] = [];
+  public uiCamera: Phaser.Cameras.Scene2D.Camera;
+  public fpsText: FpsText;
+  public versionText: Phaser.GameObjects.Text
+  public campaignManager: CampaignManager;
+  public pointer: Phaser.Input.Pointer;
+  public centerPoint: Point;
+  public mapEditorButton: Phaser.GameObjects.Text;
+  public spellSpriteColliders: SpellCollider[] = [];
 
   private playerTest: PlayerEntity;
   private monsterTest: MonsterEntity;
@@ -36,6 +38,9 @@ export default class MainScene extends Phaser.Scene {
   private monsterTest3: MonsterEntity;
   private entityHealthBar: EntityHealthBar;
   private gui: GUI;
+
+  private deathScreenBackground: Phaser.GameObjects.Graphics;
+  private deathScreenText: Phaser.GameObjects.Text;
 
   private inventory: Inventory;
 
@@ -58,6 +63,7 @@ export default class MainScene extends Phaser.Scene {
 
     // new GameLogo(this, this.cameras.main.width / 2, this.cameras.main.height / 2);
     this.fpsText = new FpsText(this);
+
     //this.campaign = new Campaign("Main");
     this.campaignManager = new CampaignManager(this);
     this.campaignManager.loadCampaign('{"name":"Default Campaign","acts":[{"name":"Act I","areas":[{"name":"Area 1","tileset":{"tiles":[{"x":-3,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-3,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-3,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-3,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-3,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-3,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-3,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-2,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-2,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-2,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-2,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-2,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-2,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-2,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":0,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":0,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":0,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":0,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":0,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":0,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":0,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":1,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":1,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":1,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":1,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":1,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":1,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":1,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":2,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":2,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":2,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":2,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":2,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":2,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":2,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":3,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":3,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":3,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":3,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":3,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":3,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":3,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":4,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":""},{"x":0,"y":4,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":""},{"x":1,"y":4,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":""},{"x":-1,"y":5,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":"Area 2"},{"x":0,"y":5,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":"Area 2"},{"x":1,"y":5,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":"Area 2"},{"x":-1,"y":6,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":"Area 2"},{"x":0,"y":6,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":"Area 2"},{"x":1,"y":6,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":"Area 2"}]}},{"name":"Area 2","tileset":{"tiles":[{"x":-3,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-3,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-3,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-3,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-3,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-3,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-3,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-2,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-2,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-2,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-2,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-2,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-2,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-2,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":0,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":0,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":0,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":0,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":0,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":0,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":0,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":1,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":1,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":1,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":1,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":1,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":1,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":1,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":2,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":2,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":2,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":2,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":2,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":2,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":2,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":3,"y":-3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":3,"y":-2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":3,"y":-1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":3,"y":0,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":3,"y":1,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":3,"y":2,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":3,"y":3,"type":0,"bitmap":"rocky_floor_tiles","frame":8,"transitionName":""},{"x":-1,"y":-4,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":""},{"x":1,"y":-4,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":""},{"x":0,"y":-4,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":""},{"x":-1,"y":-5,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":"Area 1"},{"x":0,"y":-5,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":"Area 1"},{"x":1,"y":-5,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":"Area 1"},{"x":0,"y":-6,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":"Area 1"},{"x":-1,"y":-6,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":"Area 1"},{"x":1,"y":-6,"type":0,"bitmap":"rocky_floor_tiles","frame":0,"transitionName":"Area 1"}]}}],"transitions":[{"name":"Area 2","areaName":"Area 2","targetX":0,"targetY":0},{"name":"Area 1","areaName":"Area 1","targetX":3,"targetY":3}]}]}');
@@ -104,9 +110,10 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest.area = this.campaignManager.getCampaign().currentArea();
     this.monsterTest2 = EntityManager.instance.createMonster(this, 'minotaur_0');
     this.monsterTest2.name = 'Menotaur';
-    this.monsterTest2.positionX = this.monsterTest.positionX;
+    this.monsterTest2.positionX = this.monsterTest.positionX - 240;
     this.monsterTest2.positionY = this.monsterTest.positionY - 60;
     this.monsterTest2.stats.movementSpeed = 150;
+    this.monsterTest2.stats.basePhysicalDamage = 20;
     this.monsterTest2.area = this.campaignManager.getCampaign().currentArea();
     this.monsterTest3 = EntityManager.instance.createMonster(this, 'skeleton_0');
     this.monsterTest3.name = 'Skeletenotaur';
@@ -115,13 +122,13 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest3.area = this.campaignManager.getCampaign().currentArea();
     this.entityHealthBar = new EntityHealthBar(this);
     // this.entityHealthBar.entity = this.monsterTest;
-    this.gui.spellBar.setSpellBook(this.playerTest.mySpellBook);
+    this.gui.spellBar.setSpellBook(this.playerTest.spellBook);
 
     this.input.setDefaultCursor('default');
 
     // Setup inventory test
     this.inventory = new Inventory(this);
-    this.input.keyboard.on('keydown-I', () => this.inventory.show());
+    this.input.keyboard.on('keydown-I', () => this.inventory.visible ? this.inventory.hide() : this.inventory.show());
     this.input.keyboard.on('keydown-ESC', () => this.inventory.hide());
 
     const stoneSword = new Item(this, "Stone Sword", ItemType.WEAPON, 1, 2, "stone_sword_inventory", "dropped_sword");
@@ -221,8 +228,23 @@ export default class MainScene extends Phaser.Scene {
   private onPointerDown(pointer: Phaser.Input.Pointer): void {
     this.inventory.onPointerDown(pointer);
 
-    if (!this.inventory.wasItemDroppedLastClick())
+    if (!this.inventory.wasItemDroppedLastClick()) {
       this.playerTest.controller.onPointerDown(pointer);
+    }
+
+    const itemEntity: ItemEntity | null = EntityManager.instance.getItemAtPosition(
+      pointer.x + this.playerTest.positionX - this.playerTest.scene.cameras.main.width * 0.5, 
+      pointer.y + this.playerTest.positionY - this.playerTest.scene.cameras.main.height * 0.5
+    );
+    if (!itemEntity) {
+      return;
+    }
+    if (MathModule.scaledDistanceBetween(this.playerTest.positionX, this.playerTest.positionY, itemEntity.x, itemEntity.y) < 100) {
+      const itemAddedToInventory: boolean = this.inventory.getItemStorage().autoLoot(new InventoryItem(this, itemEntity.item));
+      if (itemAddedToInventory) {
+        EntityManager.instance.destroyItem(itemEntity);
+      }
+    }
   }
 
   private drawDebugTileSet(): void {
@@ -248,15 +270,24 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public onPlayerDeath(): void {
-    let background = this.add.graphics({ fillStyle: { color: 0x0F0000, alpha: 0.8 } });
-    background.fillRect(0, 0, this.sys.game.config.width as number, this.sys.game.config.height as number);
+    this.showDeathScreen();
+  }
 
-    let deathText = this.add.text(this.sys.game.config.width as number / 2, this.sys.game.config.height as number / 2, 'You are deader than dead\n Press  \'ESC\' to continue', {
+  public showDeathScreen(): void {
+    this.deathScreenBackground = this.add.graphics({ fillStyle: { color: 0x0F0000, alpha: 0.8 } });
+    this.deathScreenBackground.fillRect(0, 0, this.sys.game.config.width as number, this.sys.game.config.height as number);
+
+    this.deathScreenText = this.add.text(this.sys.game.config.width as number / 2, this.sys.game.config.height as number / 2, 'You are deader than dead\n Press  \'ESC\' to continue', {
       fontSize: '64px',
       color: '#ff0000',
       fontFamily: 'Doodle'
     });
-    deathText.setOrigin(0.5, 0.5);
-    this.cameras.main.ignore([background, deathText]);
+    this.deathScreenText.setOrigin(0.5, 0.5);
+    this.cameras.main.ignore([this.deathScreenBackground, this.deathScreenText]);
+  }
+
+  public hideDeathScreen(): void {
+    this.deathScreenBackground.clear();
+    this.deathScreenText.destroy();
   }
 }

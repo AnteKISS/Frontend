@@ -73,11 +73,39 @@ export class EntityManager {
 
     for (let entity of this._entities) {
       let entitySprite: Phaser.GameObjects.Sprite = entity.getAll().filter(gameObject => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite;
-
+      if (entity instanceof ItemEntity) {
+        continue;
+      }
       if (positionX > entity.positionX - (entity.truncatedSpriteWidth / 2) &&
           positionX < entity.positionX + (entity.truncatedSpriteWidth / 2) &&
           positionY < entity.positionY + (entity.truncatedSpriteHeight - (entity.truncatedSpriteHeight * entitySprite.originY)) &&
           positionY > entity.positionY - (entity.truncatedSpriteHeight * entitySprite.originY)) {
+        foundEntities.push(entity);
+      }
+    }
+    for (let entity of foundEntities) {
+      if (!topMostEntity) {
+        topMostEntity = entity;
+      } else {
+        if (entity.depth > topMostEntity.depth) {
+          topMostEntity = entity;
+        }
+      }
+    }
+    return topMostEntity;
+  }
+
+  public getItemAtPosition(positionX: number, positionY: number): ItemEntity | null {
+    let topMostEntity: ItemEntity | null = null;
+    let foundEntities: ItemEntity[] = [];
+
+    const entities = this._entities.filter(entity => entity instanceof ItemEntity) as ItemEntity[];
+
+    for (let entity of entities) {
+      const item = entity.item;
+
+      const isItemUnderCursor = Phaser.Geom.Rectangle.Contains(item.getBounds(), positionX, positionY);
+      if (isItemUnderCursor) {
         foundEntities.push(entity);
       }
     }
@@ -120,6 +148,11 @@ export class EntityManager {
     let itemEntity: ItemEntity = new ItemEntity(scene, item);
     this.addEntity(itemEntity);
     return itemEntity;
+  }
+
+  public destroyItem(itemEntity: ItemEntity): void {
+    this.removeEntity(itemEntity);
+    itemEntity.destroy();
   }
 
   // TODO: Add function to create npc
