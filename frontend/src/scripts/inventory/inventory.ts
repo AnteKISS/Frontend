@@ -24,7 +24,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
     this.background = new Phaser.GameObjects.Sprite(scene, 0, 360, 'black_rock_background');
 
     this.closeButton = new Phaser.GameObjects.Sprite(scene, 243, 37, 'close_button').setInteractive();
-    this.closeButton.on('pointerdown', () => this.hide());
+    this.closeButton.on('pointerdown', (event) => {this.hide(); event.stopPropagation();});
 
     this.selectedItem = null;
     this.isLastClickDropItem = false;
