@@ -138,7 +138,7 @@ export default class CampaignManager {
   /******************************/
 
   public getTile(x: number, y: number): Tile | undefined {
-    return this.campaign.currentArea().getGameObject(x, y, Tile);
+    return this.campaign.currentArea().getGameObjectByType(x, y, Tile);
   }
 
   // TODO: Use null instead of undefined
@@ -155,17 +155,37 @@ export default class CampaignManager {
       if (EXISTING_TILE_SPRITE)
         EXISTING_TILE_SPRITE.destroy();
       else {
-        console.log("CampaignManager::addTile - Found tile to overwrite, but not associated tile sprite.");
+        console.error("CampaignManager::addTile - Found tile to overwrite, but not associated tile sprite.");
         return;
       }
     }
 
     const TILE = new Tile(x, y, bitmap, frame);
-    this.campaign.currentArea().addGameObject(x, y, TILE);
+    this.campaign.currentArea().addGameObject(TILE);
 
     const TILE_SPRITE = new GameObjectSprite(this.scene, TILE).setDepth(-1);
     this.scene.cameras.getCamera("uiCamera")!.ignore(TILE_SPRITE);
     this.gameObjectSprites.set(TILE, TILE_SPRITE);
+  }
+
+  public addGameObject(gameObject: GameObject) {
+    console.log(gameObject);
+
+    const EXISTING_GAME_OBJECT = this.campaign.currentArea().getGameObjectOfSameType(gameObject.tileX, gameObject.tileY, gameObject);
+    if (EXISTING_GAME_OBJECT) {
+      const SPRITE = this.gameObjectSprites.get(EXISTING_GAME_OBJECT);
+      if (SPRITE)
+        SPRITE.destroy();
+      else {
+        console.error("CampaignManager::addGame - Found GameObject to overwrite, but no associated GameObjectSprite");
+        return;
+      }
+    }
+
+    this.campaign.currentArea().addGameObject(gameObject);
+    const SPRITE = new GameObjectSprite(this.scene, gameObject).setDepth(-1);
+    this.scene.cameras.getCamera("uiCamera")!.ignore(SPRITE);
+    this.gameObjectSprites.set(gameObject, SPRITE);
   }
 
   public deleteGameObject(x: number, y: number): void {
@@ -177,6 +197,7 @@ export default class CampaignManager {
       else
         console.error("CampaignManager::deleteTile - Tile to delete has no associated tile sprite.");
       this.gameObjectSprites.delete(GAME_OBJECT);
+      // TODO: Handle multiple game objects on a single tile
     }
   }
 

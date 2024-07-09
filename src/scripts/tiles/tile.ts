@@ -21,4 +21,8 @@ export default class Tile extends GameObject {
   public get y(): number {
     return this.tileY;
   }
+
+  public override getArgs(): any[] {
+    return ["Tile", this.x, this.y, this.source, this.frame, this.transition?.name];
+  }
 }

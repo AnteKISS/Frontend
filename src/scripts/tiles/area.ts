@@ -22,9 +22,9 @@ export default class Area {
     }
   }
 
-  public addGameObject(x: number, y: number, gameObject: GameObject): void {
-    let collection = this.getGameObjectCollection(x, y);
-    if (!collection) collection = this.createGameObjectCollection(x, y);
+  public addGameObject(gameObject: GameObject): void {
+    let collection = this.getGameObjectCollection(gameObject.tileX, gameObject.tileY);
+    if (!collection) collection = this.createGameObjectCollection(gameObject.tileX, gameObject.tileY);
     collection.add(gameObject);
   }
 
@@ -36,8 +36,12 @@ export default class Area {
     return gameObject;
   }
 
-  public getGameObject<T extends GameObject>(x: number, y: number, constructor: new (...args: any[]) => T): T | undefined {
-    return this.getGameObjectCollection(x, y)?.get(constructor);
+  public getGameObjectByType<T extends GameObject>(x: number, y: number, constructor: new (...args: any[]) => T): T | undefined {
+    return this.getGameObjectCollection(x, y)?.getByType(constructor);
+  }
+
+  public getGameObjectOfSameType(x: number, y: number, gameObject: GameObject) {
+    return this.getGameObjectCollection(x, y)?.getBySameType(gameObject);
   }
 
   public getGameObjects(): GameObject[] {
@@ -61,7 +65,7 @@ export default class Area {
       const X2: number = Math.pow((x - cx), 2);
       const Y_DIST: number = Math.floor(Math.sqrt(P2 - X2));
       for (let cy = y - Y_DIST; cy <= y + Y_DIST; cy++) {
-        tile = this.getGameObjectCollection(cx, cy)?.get(Tile);
+        tile = this.getGameObjectCollection(cx, cy)?.getByType(Tile);
         if (tile) tileList.push(tile);
       }
     }

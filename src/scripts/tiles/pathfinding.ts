@@ -65,7 +65,7 @@ export default abstract class Pathfinding {
   * @returns A list of tiles that make up the found path. An empty array if no path was found.
   */
   public static findPath(area: Area, x1: number, y1: number, x2: number, y2: number): Point[] {
-    if (area.getGameObject(x1, y1, Tile) === undefined || area.getGameObject(x2, y2, Tile) === undefined) {
+    if (area.getGameObjectByType(x1, y1, Tile) === undefined || area.getGameObjectByType(x2, y2, Tile) === undefined) {
       // console.error("Pathfinding::findPath - Couldn't find path, start or end tile isn't in tileset.");
       return [];
     }
@@ -115,7 +115,7 @@ export default abstract class Pathfinding {
   }
 
   private static isValidTile(area: Area, x: number, y: number, dir: number[]): boolean {
-    const tile: Tile | undefined = area.getGameObject(x, y, Tile);
+    const tile: Tile | undefined = area.getGameObjectByType(x, y, Tile);
     return tile !== undefined
       && !Pathfinding.DirectionRequirements.get(dir)?.find((rd) => !Pathfinding.isValidTile(area, x - dir[0] + rd[0], y - dir[1] + rd[1], rd)); // If diagonal, adjacent tiles must be valid
   }

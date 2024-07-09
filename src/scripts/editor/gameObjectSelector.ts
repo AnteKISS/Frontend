@@ -1,6 +1,8 @@
 import GameObject from '../tiles/gameobject';
 import GameObjectSprite from '../tiles/gameobjectsprite';
 import Tab from './tab';
+import { WallType } from '../tiles/wall';
+import { GameObjectRegistry } from '../tiles/gameObjectRegistry';
 
 export default class GameObjectSelector extends Phaser.GameObjects.Container {
   private static readonly OBJECTS_PER_ROW = 6;
@@ -10,7 +12,7 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
   private static readonly WALLS_TAB_KEY = "Wall";
   private static readonly SPAWNERS_TAB_KEY = "Spawner";
 
-  private gameObjectSpriteLists: Map<string, Array<[string, number]>>;
+  private gameObjectSpriteLists: Map<string, Array<any>>;
   private row: number;
   private selectedTab: string;
   private selectedObjectTab: string;
@@ -32,8 +34,8 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
     this.selectedObjectIndex = 0;
     this.gameObjectSpriteLists = new Map();
 
-    this.setupSprites(GameObjectSelector.TILES_TAB_KEY, [['rocky_floor_tiles', 15]]);
-    this.setupSprites(GameObjectSelector.WALLS_TAB_KEY, [['flat_stone_walls', 24]]);
+    this.setupTileSprites([['rocky_floor_tiles', 15]]);
+    this.setupWallSprites([['flat_stone_walls', 24]]);
     this.setupTabs();
 
     this.scene = scene;
@@ -53,14 +55,24 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
     this.updateDisplayObjects();
   }
 
-  private setupSprites(tabKey: string, bitmapsArray: Array<[string, number]>) {
-    const SPRITE_ARRAY = new Array<[string, number]>();
+  private setupTileSprites(bitmapsArray: Array<[string, number]>) {
+    const SPRITE_ARRAY = new Array<any>;
 
     for (const BITMAP of bitmapsArray)
       for (let i = 0; i < BITMAP[1]; i++)
-        SPRITE_ARRAY.push([BITMAP[0], i]);
+        SPRITE_ARRAY.push(["Tile", BITMAP[0], i]);
 
-    this.gameObjectSpriteLists.set(tabKey, SPRITE_ARRAY);
+    this.gameObjectSpriteLists.set(GameObjectSelector.TILES_TAB_KEY, SPRITE_ARRAY);
+  }
+
+  private setupWallSprites(sourceArray: Array<[string, number]>) {
+    const SPRITE_ARRAY = new Array<any>;
+
+    for (const BITMAP of sourceArray)
+      for (let i = 0; i < BITMAP[1]; i++)
+        SPRITE_ARRAY.push(["Wall", BITMAP[0], i, i % 2 ? WallType.Right : WallType.Left]);
+
+    this.gameObjectSpriteLists.set(GameObjectSelector.WALLS_TAB_KEY, SPRITE_ARRAY);
   }
 
   private setupTabs() {
@@ -106,6 +118,13 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
     this.updateDisplayObjects();
   }
 
+  public getSelectedGameObject(x: number, y: number) {
+    const ARGS = this.gameObjectSpriteLists.get(this.selectedTab)![this.selectedObjectIndex];
+    console.log(ARGS);
+    const GameObjectClass = GameObjectRegistry[ARGS[0]];
+    return new GameObjectClass(x, y, ...ARGS.slice(1));
+  }
+
   private updateDisplayObjects() {
     this.selectedObjectGlow.setVisible(false);
 
@@ -121,7 +140,7 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
         return;
 
       const X = (i * GameObjectSelector.OBJECT_SPACING) - (GameObjectSelector.OBJECT_SPACING * GameObjectSelector.OBJECTS_PER_ROW / 2) + (GameObjectSelector.OBJECT_SPACING / 2);
-      const OBJECT = this.scene.add.sprite(X, 0, this.gameObjectSpriteLists.get(this.selectedTab)![SPRITE_INDEX][0], this.gameObjectSpriteLists.get(this.selectedTab)![SPRITE_INDEX][1])
+      const OBJECT = this.scene.add.sprite(X, 0, this.gameObjectSpriteLists.get(this.selectedTab)![SPRITE_INDEX][1], this.gameObjectSpriteLists.get(this.selectedTab)![SPRITE_INDEX][2])
         .setInteractive();
 
       OBJECT.setScale(GameObjectSprite.getSpriteScale(this.selectedTab, OBJECT));

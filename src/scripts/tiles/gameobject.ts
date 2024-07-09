@@ -10,4 +10,6 @@ export default abstract class GameObject {
     this.source = source;
     this.frame = frame;
   }
+
+  public abstract getArgs(): Array<any>;
 }

@@ -1,16 +1,8 @@
-import Campaign from './campaign'
-import Act from './act'
-import Area from './area'
-import Transition from './transition'
-import GameObject from './gameobject';
-
-interface TileJson {
-  x: number,
-  y: number,
-  bitmap: string,
-  frame: number,
-  transitionName: string,
-}
+import Campaign from './campaign';
+import Act from './act';
+import Area from './area';
+import Transition from './transition';
+import { GameObjectRegistry } from './gameObjectRegistry';
 
 interface TransitionJson {
   name: string,
@@ -21,7 +13,7 @@ interface TransitionJson {
 
 interface AreaJson {
   name: string,
-  gameObjects: GameObject,
+  gameObjects: Array<any>, // Format: ["Tile", 3, 4, "source", frame, transition]
 }
 
 interface ActJson {
@@ -39,7 +31,7 @@ export default abstract class CampaignSerializer {
   public static import(json: string): Campaign {
     const CAMPAIGN_JSON: CampaignJson = JSON.parse(json);
     const CAMPAIGN = new Campaign(CAMPAIGN_JSON.name);
-    /*
+
     CAMPAIGN.acts = [];
 
     // Create campaign
@@ -48,8 +40,16 @@ export default abstract class CampaignSerializer {
       ACT.areas = [];
 
       // Create campaign's areas for each act
-      for (const AREA_JSON of ACT_JSON.areas)
-        ACT.addArea(new Area(AREA_JSON.name));
+      for (const AREA_JSON of ACT_JSON.areas) {
+        const AREA = new Area(AREA_JSON.name);
+        ACT.addArea(AREA);
+        for (const GAME_OBJECT_ARGS of AREA_JSON.gameObjects) {
+          const ARGS: Array<any> = GAME_OBJECT_ARGS;
+          const GameObjectClass = GameObjectRegistry[ARGS[0]];
+          const newGameObject = new GameObjectClass(...ARGS.slice(1));
+          AREA.addGameObject(newGameObject);
+        }
+      }
 
       // Create act's transitions
       for (const TRANSITION_JSON of ACT_JSON.transitions) {
@@ -60,17 +60,9 @@ export default abstract class CampaignSerializer {
         }
       }
 
-      // Create tileset for each area
-      for (let i = 0; i < ACT.areas.length; i++) {
-        const TILESET = new TileSet(0);
-        for (const TILE_JSON of ACT_JSON.areas[i].tileset.tiles)
-          TILESET.addTile(TILE_JSON.x, TILE_JSON.y, TILE_JSON.bitmap, TILE_JSON.frame, ACT.getTransition(TILE_JSON.transitionName));
-        ACT.areas[i].tileSet = TILESET;
-      }
-
       CAMPAIGN.addAct(ACT);
     }
-    */
+
     return CAMPAIGN;
   }
 
@@ -79,7 +71,7 @@ export default abstract class CampaignSerializer {
       name: campaign.name,
       acts: [],
     };
-    /*
+
     // Create JSON for every act
     for (const ACT of campaign.acts) {
       const ACT_JSON: ActJson = {
@@ -101,32 +93,19 @@ export default abstract class CampaignSerializer {
 
       // Create JSON for each act's areas
       for (const AREA of ACT.areas) {
-        const TILESET_JSON: TileSetJson = {
-          tiles: [],
-        };
-
         const AREA_JSON: AreaJson = {
           name: AREA.name,
-          tileset: TILESET_JSON,
+          gameObjects: [],
         };
 
-        // Create JSON for each tiles for area's tileset
-        for (const TILE of AREA.tileSet.getTiles()) {
-          const TILE_JSON: TileJson = {
-            x: TILE.x,
-            y: TILE.y,
-            bitmap: TILE.source,
-            frame: TILE.frame!,
-            transitionName: (TILE.transition !== undefined) ? TILE.transition.name : "",
-          };
-          TILESET_JSON.tiles.push(TILE_JSON);
-        }
+        for (const OBJECT of AREA.getGameObjects())
+          AREA_JSON.gameObjects.push(OBJECT.getArgs());
 
         ACT_JSON.areas.push(AREA_JSON);
       }
       CAMPAIGN_JSON.acts.push(ACT_JSON);
     }
-    */
+
     return JSON.stringify(CAMPAIGN_JSON);
   }
 }

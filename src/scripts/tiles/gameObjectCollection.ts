@@ -20,8 +20,12 @@ export default class GameObjectCollection {
     return gameObject;
   }
 
-  public get<T extends GameObject>(constructor: new (...args: any[]) => T): T | undefined {
+  public getByType<T extends GameObject>(constructor: new (...args: any[]) => T): T | undefined {
     return this.collection.get(constructor.name) as T | undefined;
+  }
+
+  public getBySameType(gameObject: GameObject) {
+    return this.collection.get(gameObject.constructor.name);
   }
 
   public getAll(): IterableIterator<GameObject> {

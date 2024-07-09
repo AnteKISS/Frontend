@@ -1,6 +1,7 @@
 import GameObject from './gameobject';
-import Tile from './tile'
+import Tile from './tile';
 import TileModule from './tilemodule';
+import Wall, { WallType } from './wall';
 
 export default class GameObjectSprite extends Phaser.GameObjects.Sprite {
   public constructor(scene: Phaser.Scene, gameObject: GameObject) {
@@ -12,9 +13,14 @@ export default class GameObjectSprite extends Phaser.GameObjects.Sprite {
       this.setScale(Tile.WIDTH / this.width);
       this.setPosition(TILE_UNIT_POS.x, TILE_UNIT_POS.y);
     }
-    else { // TODO: Add wall type
+    else if (gameObject instanceof Wall) {
+      const WALL = gameObject as Wall;
       this.setScale(Tile.HEIGHT * 1.5 / this.height);
-      this.setPosition(TILE_UNIT_POS.x - Tile.WIDTH / 4, TILE_UNIT_POS.y - Tile.HEIGHT / 4);
+
+      if (WALL.type === WallType.Left)
+        this.setPosition(TILE_UNIT_POS.x - Tile.WIDTH / 4, TILE_UNIT_POS.y - Tile.HEIGHT / 4);
+      else if (WALL.type === WallType.Right)
+        this.setPosition(TILE_UNIT_POS.x + Tile.WIDTH / 4, TILE_UNIT_POS.y - Tile.HEIGHT / 4);
     }
 
     scene.add.existing(this);
