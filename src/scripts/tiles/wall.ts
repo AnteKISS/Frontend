@@ -1,8 +1,8 @@
 import GameObject from './gameobject'
 
 export enum WallType {
-  Left,
-  Right
+  Left = "Left",
+  Right = "Right"
 }
 
 export default class Wall extends GameObject {
@@ -15,5 +15,9 @@ export default class Wall extends GameObject {
 
   public override getArgs(): any[] {
     return ["Wall", this.tileX, this.tileY, this.type, this.source, this.frame];
+  }
+
+  public override getCollectionId(): string {
+    return "Wall" + this.type;
   }
 }

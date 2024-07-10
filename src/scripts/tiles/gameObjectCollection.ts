@@ -1,5 +1,4 @@
 import GameObject from "./gameobject";
-import Tile from "./tile";
 
 export default class GameObjectCollection {
   // A map of gameobjects at a single tile. Each collection can only have one of a certain type of GameObject.
@@ -11,7 +10,7 @@ export default class GameObjectCollection {
   }
 
   public add(gameObject: GameObject): Map<string, GameObject> {
-    return this.collection.set(gameObject.constructor.name, gameObject);
+    return this.collection.set(gameObject.getCollectionId(), gameObject);
   }
 
   public delete(): Array<GameObject> | undefined {
@@ -27,7 +26,7 @@ export default class GameObjectCollection {
   }
 
   public getBySameType(gameObject: GameObject) {
-    return this.collection.get(gameObject.constructor.name);
+    return this.collection.get(gameObject.getCollectionId());
   }
 
   public getAll(): IterableIterator<GameObject> {

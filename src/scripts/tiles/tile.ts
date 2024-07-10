@@ -25,4 +25,8 @@ export default class Tile extends GameObject {
   public override getArgs(): any[] {
     return ["Tile", this.x, this.y, this.source, this.frame, this.transition?.name];
   }
+
+  public override getCollectionId(): string {
+    return "Tile";
+  }
 }
