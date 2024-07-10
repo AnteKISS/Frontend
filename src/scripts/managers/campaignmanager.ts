@@ -47,7 +47,7 @@ export default class CampaignManager {
     this.gameObjectSprites.clear();
 
     for (const GAME_OBJECT of this.campaign.currentArea().getGameObjects()) {
-      const GAME_OBJECT_SPRITE = new GameObjectSprite(this.scene, GAME_OBJECT).setDepth(-1);
+      const GAME_OBJECT_SPRITE = new GameObjectSprite(this.scene, GAME_OBJECT);
       this.gameObjectSprites.set(GAME_OBJECT, GAME_OBJECT_SPRITE);
       this.scene.cameras.getCamera("uiCamera")!.ignore(GAME_OBJECT_SPRITE);
     }
@@ -141,31 +141,9 @@ export default class CampaignManager {
     return this.campaign.currentArea().getGameObjectByType(x, y, Tile);
   }
 
-  // TODO: Use null instead of undefined
   public getTileFromPixelPosition(pixelX: number, pixelY: number): Tile | undefined {
     const PIXEL_POS = TileModule.getTilePosFromUnitPos(pixelX, pixelY);
     return this.getTile(PIXEL_POS.x, PIXEL_POS.y);
-  }
-
-  public addTile(x: number, y: number, bitmap: string, frame: number): void {
-    // Overwrite existing tile
-    const EXISTING_TILE = this.getTile(x, y);
-    if (EXISTING_TILE) {
-      const EXISTING_TILE_SPRITE = this.gameObjectSprites.get(EXISTING_TILE);
-      if (EXISTING_TILE_SPRITE)
-        EXISTING_TILE_SPRITE.destroy();
-      else {
-        console.error("CampaignManager::addTile - Found tile to overwrite, but not associated tile sprite.");
-        return;
-      }
-    }
-
-    const TILE = new Tile(x, y, bitmap, frame);
-    this.campaign.currentArea().addGameObject(TILE);
-
-    const TILE_SPRITE = new GameObjectSprite(this.scene, TILE).setDepth(-1);
-    this.scene.cameras.getCamera("uiCamera")!.ignore(TILE_SPRITE);
-    this.gameObjectSprites.set(TILE, TILE_SPRITE);
   }
 
   public addGameObject(gameObject: GameObject) {
@@ -181,7 +159,7 @@ export default class CampaignManager {
     }
 
     this.campaign.currentArea().addGameObject(gameObject);
-    const SPRITE = new GameObjectSprite(this.scene, gameObject).setDepth(-1);
+    const SPRITE = new GameObjectSprite(this.scene, gameObject);
     this.scene.cameras.getCamera("uiCamera")!.ignore(SPRITE);
     this.gameObjectSprites.set(gameObject, SPRITE);
   }

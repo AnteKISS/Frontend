@@ -24,6 +24,7 @@ export default class GameObjectSprite extends Phaser.GameObjects.Sprite {
     }
 
     scene.add.existing(this);
+    this.setDepth(-100000 + gameObject.tileX - gameObject.tileY);
   }
 
   public static getSpriteScale(type: String, sprite: Phaser.GameObjects.Sprite): number {
