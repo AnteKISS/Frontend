@@ -2,7 +2,7 @@ import Transition from './transition'
 import GameObject from './gameobject';
 
 export default class Tile extends GameObject {
-  public static readonly WIDTH: number = 100;
+  public static readonly WIDTH: number = 200;
   public static readonly HEIGHT: number = this.WIDTH / 2;
   public static readonly HALF_WIDTH: number = this.WIDTH / 2;
   public static readonly HALF_HEIGHT: number = this.HEIGHT / 2;

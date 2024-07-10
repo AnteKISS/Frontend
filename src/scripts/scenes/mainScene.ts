@@ -208,7 +208,7 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest3.update(time, deltaTime);
     this.updateGUI();
     this.entityHealthBar.update();
-    this.drawDebugTileSet();
+    // this.drawDebugTileSet();
     this.attributeGUI.update();
     SpellColliderManager.getInstance.update();
   }
