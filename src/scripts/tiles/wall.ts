@@ -23,6 +23,6 @@ export default class Wall extends GameObject {
   }
 
   public getCollectionDepth(): number {
-    return Tile.HALF_HEIGHT;
+    return Tile.HALF_HEIGHT * 1.5;
   }
 }

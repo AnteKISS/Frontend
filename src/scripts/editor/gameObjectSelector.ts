@@ -1,4 +1,3 @@
-import GameObject from '../tiles/gameobject';
 import GameObjectSprite from '../tiles/gameobjectsprite';
 import Tab from './tab';
 import { WallType } from '../tiles/wall';
@@ -36,6 +35,7 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
 
     this.setupTileSprites([['rocky_floor_tiles', 15]]);
     this.setupWallSprites([['flat_stone_walls', 24]]);
+    this.setupSpawnerSprites();
     this.setupTabs();
 
     this.scene = scene;
@@ -73,6 +73,10 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
         SPRITE_ARRAY.push(["Wall", BITMAP[0], i, i % 2 ? WallType.Right : WallType.Left]);
 
     this.gameObjectSpriteLists.set(GameObjectSelector.WALLS_TAB_KEY, SPRITE_ARRAY);
+  }
+
+  private setupSpawnerSprites() {
+    this.gameObjectSpriteLists.set(GameObjectSelector.SPAWNERS_TAB_KEY, []);
   }
 
   private setupTabs() {

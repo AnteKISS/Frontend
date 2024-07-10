@@ -10,6 +10,7 @@ import { Physics } from '../physics/collider';
 import CampaignManager from '../managers/campaignmanager';
 import Tile from '../tiles/tile';
 import Vector from '../types/vector';
+import Point from '../types/point';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
@@ -28,6 +29,9 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
   protected _isMoving: boolean = false;
 
+  private tileHitboxSize: number;
+  private tileCollisionPoints: Array<Point>;
+
   constructor(scene: Phaser.Scene) {
     super(scene);
     scene.add.existing(this);
@@ -38,6 +42,22 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this.currentAnimationState = new ActiveEntityAnimationState();
     this.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;
     this.isTargetable = true;
+
+    this.tileHitboxSize = 50;
+    this.tileCollisionPoints = [
+      new Point(-1, 0),
+      new Point(-0.5, -0.5),
+      new Point(0, -1),
+      new Point(0.5, -0.5),
+      new Point(1, 0),
+      new Point(0.5, 0.5),
+      new Point(0, 1),
+      new Point(-0.5, 0.5)
+    ];
+    for (const tileCollisionPoint of this.tileCollisionPoints) {
+      tileCollisionPoint.x *= this.tileHitboxSize;
+      tileCollisionPoint.y *= this.tileHitboxSize;
+    }
   }
 
   // Getters/Setters
@@ -207,7 +227,12 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
       console.error("ActiveEntity class' campaign manager ref is null, use ActiveEntity.setCampaignManager() to enable floor collision/detection.");
       return true
     }
-    return !!ActiveEntity.campaignManager.getTileFromPixelPosition(x, y);
+
+    for (const p of this.tileCollisionPoints)
+      if (!ActiveEntity.campaignManager.getTileFromPixelPosition(x + p.x, y + p.y))
+        return false;
+
+    return true;
   }
 
   abstract update(time: number, deltaTime: number): void;
