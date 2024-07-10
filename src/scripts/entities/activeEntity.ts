@@ -136,6 +136,12 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this._positionY += deltaY;
     this.setY(newY);
     this.currentTile = ActiveEntity.campaignManager?.getTileFromPixelPosition(newX, newY);
+
+
+    // TODO: This is the same formula from GameObjectSprite, put formula in utils-like file or static member of some class
+    // TODO: Also put this in other, more appropriate function
+    if (this.currentTile)
+      this.setDepth(-100000 + this.currentTile.x - this.currentTile.y - 0.1);
   }
 
   public updateOrientationWithTarget(): boolean {

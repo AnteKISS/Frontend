@@ -14,7 +14,7 @@ export default class Wall extends GameObject {
   }
 
   public override getArgs(): any[] {
-    return ["Wall", this.tileX, this.tileY, this.type, this.source, this.frame];
+    return ["Wall", this.tileX, this.tileY, this.source, this.frame, this.type];
   }
 
   public override getCollectionId(): string {
