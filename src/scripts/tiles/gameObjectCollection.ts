@@ -14,10 +14,12 @@ export default class GameObjectCollection {
     return this.collection.set(gameObject.constructor.name, gameObject);
   }
 
-  public delete(): GameObject | undefined {
-    const gameObject = this.collection.get(Tile.name);
-    this.collection.delete(Tile.name); // TODO: Delete any gameObject, implement priority system of which gameobject to delete first?
-    return gameObject;
+  public delete(): Array<GameObject> | undefined {
+    const gameObjectsToDelete = new Array<GameObject>;
+    for (const gameObject of this.collection.values())
+      gameObjectsToDelete.push(gameObject);
+    this.collection.clear();
+    return gameObjectsToDelete;
   }
 
   public getByType<T extends GameObject>(constructor: new (...args: any[]) => T): T | undefined {

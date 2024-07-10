@@ -29,7 +29,7 @@ export default class MapEditor extends Phaser.Scene {
   private static readonly MIN_ZOOM = 0.2;
   private static readonly MAX_ZOOM = 2;
   private static readonly MIN_BRUSH_SIZE = 0;
-  private static readonly MAX_BRUSH_SIZE = 10;
+  private static readonly MAX_BRUSH_SIZE = 5;
 
   // Phaser refs/objects
   private pointer: Phaser.Input.Pointer;
@@ -415,7 +415,7 @@ export default class MapEditor extends Phaser.Scene {
 
     else if (this.tileMode === TileMode.Delete)
       for (const TILE_POS of CURSOR_TILES_POS)
-        this.campaignManager.deleteGameObject(TILE_POS.x, TILE_POS.y);
+        this.campaignManager.deleteGameObjects(TILE_POS.x, TILE_POS.y);
 
     else if (this.tileMode === TileMode.Configure) {
       const TILE: Tile | undefined = this.campaignManager.getTile(this.cursorTilePos.x, this.cursorTilePos.y);

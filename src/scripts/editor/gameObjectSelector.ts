@@ -120,7 +120,6 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
 
   public getSelectedGameObject(x: number, y: number) {
     const ARGS = this.gameObjectSpriteLists.get(this.selectedTab)![this.selectedObjectIndex];
-    console.log(ARGS);
     const GameObjectClass = GameObjectRegistry[ARGS[0]];
     return new GameObjectClass(x, y, ...ARGS.slice(1));
   }

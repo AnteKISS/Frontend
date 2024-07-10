@@ -28,12 +28,12 @@ export default class Area {
     collection.add(gameObject);
   }
 
-  public removeGameObject(x: number, y: number): GameObject | undefined {
+  public removeGameObjects(x: number, y: number): Array<GameObject> | undefined {
     const hash = TileModule.getTileHash(x, y);
     const collection = this.gameObjects.get(hash);
-    const gameObject = collection?.delete();
-    if (collection?.size() === 0) this.gameObjects.delete(hash);
-    return gameObject;
+    const gameObjectsToDelete = collection?.delete();
+    if (gameObjectsToDelete) this.gameObjects.delete(hash);
+    return gameObjectsToDelete;
   }
 
   public getGameObjectByType<T extends GameObject>(x: number, y: number, constructor: new (...args: any[]) => T): T | undefined {

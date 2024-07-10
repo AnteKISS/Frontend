@@ -169,8 +169,6 @@ export default class CampaignManager {
   }
 
   public addGameObject(gameObject: GameObject) {
-    console.log(gameObject);
-
     const EXISTING_GAME_OBJECT = this.campaign.currentArea().getGameObjectOfSameType(gameObject.tileX, gameObject.tileY, gameObject);
     if (EXISTING_GAME_OBJECT) {
       const SPRITE = this.gameObjectSprites.get(EXISTING_GAME_OBJECT);
@@ -188,16 +186,17 @@ export default class CampaignManager {
     this.gameObjectSprites.set(gameObject, SPRITE);
   }
 
-  public deleteGameObject(x: number, y: number): void {
-    const GAME_OBJECT = this.campaign.currentArea().removeGameObject(x, y);
-    if (GAME_OBJECT) {
-      const GAME_OBJECT_SPRITE = this.gameObjectSprites.get(GAME_OBJECT);
-      if (GAME_OBJECT_SPRITE)
-        GAME_OBJECT_SPRITE.destroy();
-      else
-        console.error("CampaignManager::deleteTile - Tile to delete has no associated tile sprite.");
-      this.gameObjectSprites.delete(GAME_OBJECT);
-      // TODO: Handle multiple game objects on a single tile
+  public deleteGameObjects(x: number, y: number): void {
+    const GAME_OBJECTS_TO_DELETE = this.campaign.currentArea().removeGameObjects(x, y);
+    if (GAME_OBJECTS_TO_DELETE) {
+      for (const GAME_OBJECT of GAME_OBJECTS_TO_DELETE) {
+        const GAME_OBJECT_SPRITE = this.gameObjectSprites.get(GAME_OBJECT);
+        if (GAME_OBJECT_SPRITE)
+          GAME_OBJECT_SPRITE.destroy();
+        else
+          console.error("CampaignManager::deleteGameObjects - GameObject to delete has no associated GameObjectSprite.");
+        this.gameObjectSprites.delete(GAME_OBJECT);
+      }
     }
   }
 
