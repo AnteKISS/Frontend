@@ -13,4 +13,5 @@ export default abstract class GameObject {
 
   public abstract getArgs(): Array<any>;
   public abstract getCollectionId(): string;
+  public abstract getCollectionDepth(): number;
 }

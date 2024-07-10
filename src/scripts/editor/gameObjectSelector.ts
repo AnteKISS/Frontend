@@ -142,7 +142,7 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
       const OBJECT = this.scene.add.sprite(X, 0, this.gameObjectSpriteLists.get(this.selectedTab)![SPRITE_INDEX][1], this.gameObjectSpriteLists.get(this.selectedTab)![SPRITE_INDEX][2])
         .setInteractive();
 
-      OBJECT.setScale(GameObjectSprite.getSpriteScale(this.selectedTab, OBJECT));
+      OBJECT.setScale(GameObjectSprite.getSpriteScale(this.selectedTab, OBJECT) / 2);
 
       OBJECT.on('pointerdown', () => {
         this.selectedObjectTab = this.selectedTab;

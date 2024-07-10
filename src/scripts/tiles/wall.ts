@@ -1,4 +1,5 @@
 import GameObject from './gameobject'
+import Tile from './tile';
 
 export enum WallType {
   Left = "Left",
@@ -19,5 +20,9 @@ export default class Wall extends GameObject {
 
   public override getCollectionId(): string {
     return "Wall" + this.type;
+  }
+
+  public getCollectionDepth(): number {
+    return Tile.HALF_HEIGHT;
   }
 }

@@ -25,4 +25,8 @@ export default class Spawner extends GameObject {
   public getCollectionId(): string {
     return "Spawner";
   }
+
+  public getCollectionDepth(): number {
+    return 0;
+  }
 }

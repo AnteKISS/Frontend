@@ -29,4 +29,8 @@ export default class Tile extends GameObject {
   public override getCollectionId(): string {
     return "Tile";
   }
+
+  public override getCollectionDepth(): number {
+    return -Tile.HALF_HEIGHT;
+  }
 }

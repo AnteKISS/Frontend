@@ -203,9 +203,9 @@ export default class MainScene extends Phaser.Scene {
     window['deltaTime'] = deltaTime;
     this.fpsText.update();
     this.playerTest.update(time, deltaTime);
-    this.monsterTest.update(time, deltaTime);
-    this.monsterTest2.update(time, deltaTime);
-    this.monsterTest3.update(time, deltaTime);
+    //this.monsterTest.update(time, deltaTime);
+    //this.monsterTest2.update(time, deltaTime);
+    //this.monsterTest3.update(time, deltaTime);
     this.updateGUI();
     this.entityHealthBar.update();
     // this.drawDebugTileSet();
