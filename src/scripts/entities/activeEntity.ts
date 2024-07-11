@@ -30,7 +30,6 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   protected _isMoving: boolean = false;
 
   private tileHitboxSize: number;
-  private tileCollisionPoints: Array<Point>;
 
   constructor(scene: Phaser.Scene) {
     super(scene);
@@ -43,21 +42,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;
     this.isTargetable = true;
 
-    this.tileHitboxSize = 50;
-    this.tileCollisionPoints = [
-      new Point(-1, 0),
-      new Point(-0.5, -0.5),
-      new Point(0, -1),
-      new Point(0.5, -0.5),
-      new Point(1, 0),
-      new Point(0.5, 0.5),
-      new Point(0, 1),
-      new Point(-0.5, 0.5)
-    ];
-    for (const tileCollisionPoint of this.tileCollisionPoints) {
-      tileCollisionPoint.x *= this.tileHitboxSize;
-      tileCollisionPoint.y *= this.tileHitboxSize;
-    }
+    this.tileHitboxSize = 68;
   }
 
   // Getters/Setters
@@ -228,9 +213,16 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
       return true
     }
 
-    for (const p of this.tileCollisionPoints)
-      if (!ActiveEntity.campaignManager.getTileFromPixelPosition(x + p.x, y + p.y))
-        return false;
+    const P1 = ActiveEntity.campaignManager.getTileFromPixelPosition(x - this.tileHitboxSize, y);
+    const P2 = ActiveEntity.campaignManager.getTileFromPixelPosition(x + this.tileHitboxSize, y);
+
+    if (!(P1 && P2))
+      return false;
+
+    for (let tx = P1.x; tx <= P2.x; tx++)
+      for (let ty = P1.y; ty <= P2.y; ty++)
+        if (!ActiveEntity.campaignManager.getTile(tx, ty))
+          return false;
 
     return true;
   }

@@ -58,15 +58,15 @@ export class EntityManager {
       let entitySprite: Phaser.GameObjects.Sprite = entity.getAll().filter(gameObject => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite;
 
       if (positionX > entity.positionX - (entity.truncatedSpriteWidth / 2) &&
-          positionX < entity.positionX + (entity.truncatedSpriteWidth / 2) &&
-          positionY < entity.positionY + (entity.truncatedSpriteHeight - (entity.truncatedSpriteHeight * entitySprite.originY)) &&
-          positionY > entity.positionY - (entity.truncatedSpriteHeight * entitySprite.originY)) {
+        positionX < entity.positionX + (entity.truncatedSpriteWidth / 2) &&
+        positionY < entity.positionY + (entity.truncatedSpriteHeight - (entity.truncatedSpriteHeight * entitySprite.originY)) &&
+        positionY > entity.positionY - (entity.truncatedSpriteHeight * entitySprite.originY)) {
         foundEntities.push(entity);
       }
     }
     return foundEntities;
   }
-  
+
   public getEntityAtPosition(positionX: number, positionY: number): BaseEntity | null {
     let topMostEntity: BaseEntity | null = null;
     let foundEntities: BaseEntity[] = [];
@@ -75,9 +75,9 @@ export class EntityManager {
       let entitySprite: Phaser.GameObjects.Sprite = entity.getAll().filter(gameObject => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite;
 
       if (positionX > entity.positionX - (entity.truncatedSpriteWidth / 2) &&
-          positionX < entity.positionX + (entity.truncatedSpriteWidth / 2) &&
-          positionY < entity.positionY + (entity.truncatedSpriteHeight - (entity.truncatedSpriteHeight * entitySprite.originY)) &&
-          positionY > entity.positionY - (entity.truncatedSpriteHeight * entitySprite.originY)) {
+        positionX < entity.positionX + (entity.truncatedSpriteWidth / 2) &&
+        positionY < entity.positionY + (entity.truncatedSpriteHeight - (entity.truncatedSpriteHeight * entitySprite.originY)) &&
+        positionY > entity.positionY - (entity.truncatedSpriteHeight * entitySprite.originY)) {
         foundEntities.push(entity);
       }
     }
