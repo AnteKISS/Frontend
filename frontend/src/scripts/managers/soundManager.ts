@@ -17,8 +17,8 @@ export default class SoundManager {
 
     // Create sound managers
     const uiSoundManager = new Phaser.Sound.WebAudioSoundManager(scene.game);
-    const backgroundSoundManager = new Phaser.Sound.BaseSoundManager(scene.game);
-    const effectsSoundManager = new Phaser.Sound.BaseSoundManager(scene.game);
+    const backgroundSoundManager = new Phaser.Sound.WebAudioSoundManager(scene.game);
+    const effectsSoundManager = new Phaser.Sound.WebAudioSoundManager(scene.game);
 
     // Load sounds
     uiSoundManager.add('buttonClick', { volume: 0.5, loop: false });
@@ -29,6 +29,11 @@ export default class SoundManager {
     uiSoundManager.play('buttonClick');
     backgroundSoundManager.play('backgroundMusic');
     effectsSoundManager.play('explosion');
+
+    // scene.sound.setListenerPosition(x, y);
+
+    // var mySound = scene.sound.add("soundKey");
+    // scene.tweens.add({ targets: mySound, volume: 0, duration: 500 });
 
     // Manipulate sound properties
     // For example, adjust volume based on distance
