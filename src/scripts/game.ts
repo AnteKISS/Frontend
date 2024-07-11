@@ -28,12 +28,16 @@ const config = {
 }
 
 async function startGame() {
-  await initKeycloak();
+  try {
+    await initKeycloak();
 
-  if (keycloak.authenticated) {
-    new Phaser.Game(config);
-  } else {
-    keycloak.login();
+    if (keycloak.authenticated) {
+      new Phaser.Game(config);
+    } else {
+      keycloak.login();
+    }
+  } catch (err) {
+    console.error('Failed to initialize Keycloak or start the game', err);
   }
 }
 
