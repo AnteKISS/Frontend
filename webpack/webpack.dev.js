@@ -6,7 +6,9 @@ const dev = {
   stats: 'errors-warnings',
   devtool: 'eval',
   devServer: {
-    open: true
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    port: 8080
   }
 }
 
