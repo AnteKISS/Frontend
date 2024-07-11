@@ -25,7 +25,6 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   public lastValidPositionY: number;
 
   protected currentTile: Tile | undefined;
-  protected static campaignManager: CampaignManager | null = null;
 
   protected _isMoving: boolean = false;
 
@@ -64,10 +63,6 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this._positionY = v;
     this.destinationY = v;
     this.setY(v);
-  }
-
-  public static setCampaignManager(cm: CampaignManager) {
-    ActiveEntity.campaignManager = cm;
   }
 
   public updatePosition(): void {
@@ -140,7 +135,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this.setX(newX);
     this._positionY += deltaY;
     this.setY(newY);
-    this.currentTile = ActiveEntity.campaignManager?.getTileFromPixelPosition(newX, newY);
+    this.currentTile = CampaignManager.getInstance()?.getTileFromPixelPosition(newX, newY);
 
 
     if (this.currentTile)
@@ -208,20 +203,20 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   }
 
   private checkValidTilePosition(x: number, y: number): boolean {
-    if (!ActiveEntity.campaignManager) {
+    if (!CampaignManager.getInstance()) {
       console.error("ActiveEntity class' campaign manager ref is null, use ActiveEntity.setCampaignManager() to enable floor collision/detection.");
       return true
     }
 
-    const P1 = ActiveEntity.campaignManager.getTileFromPixelPosition(x - this.tileHitboxSize, y);
-    const P2 = ActiveEntity.campaignManager.getTileFromPixelPosition(x + this.tileHitboxSize, y);
+    const P1 = CampaignManager.getInstance().getTileFromPixelPosition(x - this.tileHitboxSize, y);
+    const P2 = CampaignManager.getInstance().getTileFromPixelPosition(x + this.tileHitboxSize, y);
 
     if (!(P1 && P2))
       return false;
 
     for (let tx = P1.x; tx <= P2.x; tx++)
       for (let ty = P1.y; ty <= P2.y; ty++)
-        if (!ActiveEntity.campaignManager.getTile(tx, ty))
+        if (!CampaignManager.getInstance().getTile(tx, ty))
           return false;
 
     return true;

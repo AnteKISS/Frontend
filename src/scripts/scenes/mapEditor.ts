@@ -37,7 +37,6 @@ export default class MapEditor extends Phaser.Scene {
   private uiCamera: Phaser.Cameras.Scene2D.Camera;
 
   // Editor data / helpers
-  private campaignManager: CampaignManager;
   private playerPos: Point;
   private cameraOffsetPos: Point;
   private cursorUnitPos: Point;
@@ -107,8 +106,8 @@ export default class MapEditor extends Phaser.Scene {
       this.cameras.main.height / 2
     );
 
-    this.campaignManager = new CampaignManager(this);
-    this.campaignManager.loadCampaign('{"name":"Default Campaign","acts":[{"name":"Act I","areas":[{"name":"Default","gameObjects":[["Tile",-5,-5,"rocky_floor_tiles",8,null],["Tile",-5,-4,"rocky_floor_tiles",8,null],["Tile",-5,-3,"rocky_floor_tiles",8,null],["Tile",-5,-2,"rocky_floor_tiles",8,null],["Tile",-5,-1,"rocky_floor_tiles",8,null],["Tile",-5,0,"rocky_floor_tiles",8,null],["Tile",-5,1,"rocky_floor_tiles",8,null],["Tile",-5,2,"rocky_floor_tiles",8,null],["Tile",-5,3,"rocky_floor_tiles",8,null],["Tile",-5,4,"rocky_floor_tiles",8,null],["Tile",-5,5,"rocky_floor_tiles",8,null],["Tile",-4,-5,"rocky_floor_tiles",8,null],["Tile",-4,-4,"rocky_floor_tiles",3,null],["Tile",-4,-3,"rocky_floor_tiles",3,null],["Tile",-4,-2,"rocky_floor_tiles",3,null],["Tile",-4,-1,"rocky_floor_tiles",3,null],["Tile",-4,0,"rocky_floor_tiles",3,null],["Tile",-4,1,"rocky_floor_tiles",3,null],["Tile",-4,2,"rocky_floor_tiles",3,null],["Tile",-4,3,"rocky_floor_tiles",3,null],["Tile",-4,4,"rocky_floor_tiles",3,null],["Tile",-4,5,"rocky_floor_tiles",8,null],["Tile",-3,-5,"rocky_floor_tiles",8,null],["Tile",-3,-4,"rocky_floor_tiles",3,null],["Tile",-3,-3,"rocky_floor_tiles",12,null],["Tile",-3,-2,"rocky_floor_tiles",3,null],["Tile",-3,-1,"rocky_floor_tiles",3,null],["Tile",-3,0,"rocky_floor_tiles",3,null],["Tile",-3,1,"rocky_floor_tiles",3,null],["Tile",-3,2,"rocky_floor_tiles",3,null],["Tile",-3,3,"rocky_floor_tiles",12,null],["Tile",-3,4,"rocky_floor_tiles",3,null],["Tile",-3,5,"rocky_floor_tiles",8,null],["Tile",-2,-5,"rocky_floor_tiles",8,null],["Tile",-2,-4,"rocky_floor_tiles",3,null],["Tile",-2,-3,"rocky_floor_tiles",3,null],["Tile",-2,-2,"rocky_floor_tiles",3,null],["Tile",-2,-1,"rocky_floor_tiles",3,null],["Tile",-2,0,"rocky_floor_tiles",3,null],["Tile",-2,1,"rocky_floor_tiles",3,null],["Tile",-2,2,"rocky_floor_tiles",3,null],["Tile",-2,3,"rocky_floor_tiles",3,null],["Tile",-2,4,"rocky_floor_tiles",3,null],["Tile",-2,5,"rocky_floor_tiles",8,null],["Tile",-1,-5,"rocky_floor_tiles",8,null],["Tile",-1,-4,"rocky_floor_tiles",3,null],["Tile",-1,-3,"rocky_floor_tiles",3,null],["Tile",-1,-2,"rocky_floor_tiles",3,null],["Tile",-1,-1,"rocky_floor_tiles",14,null],["Tile",-1,0,"rocky_floor_tiles",14,null],["Tile",-1,1,"rocky_floor_tiles",14,null],["Tile",-1,2,"rocky_floor_tiles",3,null],["Tile",-1,3,"rocky_floor_tiles",3,null],["Tile",-1,4,"rocky_floor_tiles",3,null],["Tile",-1,5,"rocky_floor_tiles",8,null],["Tile",0,-5,"rocky_floor_tiles",8,null],["Tile",0,-4,"rocky_floor_tiles",3,null],["Tile",0,-3,"rocky_floor_tiles",3,null],["Tile",0,-2,"rocky_floor_tiles",3,null],["Tile",0,-1,"rocky_floor_tiles",14,null],["Tile",0,0,"rocky_floor_tiles",14,null],["Tile",0,1,"rocky_floor_tiles",14,null],["Tile",0,2,"rocky_floor_tiles",3,null],["Tile",0,3,"rocky_floor_tiles",3,null],["Tile",0,4,"rocky_floor_tiles",3,null],["Tile",0,5,"rocky_floor_tiles",8,null],["Tile",1,-5,"rocky_floor_tiles",8,null],["Tile",1,-4,"rocky_floor_tiles",3,null],["Tile",1,-3,"rocky_floor_tiles",3,null],["Tile",1,-2,"rocky_floor_tiles",3,null],["Tile",1,-1,"rocky_floor_tiles",14,null],["Tile",1,0,"rocky_floor_tiles",14,null],["Tile",1,1,"rocky_floor_tiles",14,null],["Tile",1,2,"rocky_floor_tiles",3,null],["Tile",1,3,"rocky_floor_tiles",3,null],["Tile",1,4,"rocky_floor_tiles",3,null],["Tile",1,5,"rocky_floor_tiles",8,null],["Tile",2,-5,"rocky_floor_tiles",8,null],["Tile",2,-4,"rocky_floor_tiles",3,null],["Tile",2,-3,"rocky_floor_tiles",3,null],["Tile",2,-2,"rocky_floor_tiles",3,null],["Tile",2,-1,"rocky_floor_tiles",3,null],["Tile",2,0,"rocky_floor_tiles",3,null],["Tile",2,1,"rocky_floor_tiles",3,null],["Tile",2,2,"rocky_floor_tiles",3,null],["Tile",2,3,"rocky_floor_tiles",3,null],["Tile",2,4,"rocky_floor_tiles",3,null],["Tile",2,5,"rocky_floor_tiles",8,null],["Tile",3,-5,"rocky_floor_tiles",8,null],["Tile",3,-4,"rocky_floor_tiles",3,null],["Tile",3,-3,"rocky_floor_tiles",12,null],["Tile",3,-2,"rocky_floor_tiles",3,null],["Tile",3,-1,"rocky_floor_tiles",3,null],["Tile",3,0,"rocky_floor_tiles",3,null],["Tile",3,1,"rocky_floor_tiles",3,null],["Tile",3,2,"rocky_floor_tiles",3,null],["Tile",3,3,"rocky_floor_tiles",12,null],["Tile",3,4,"rocky_floor_tiles",3,null],["Tile",3,5,"rocky_floor_tiles",8,null],["Tile",4,-5,"rocky_floor_tiles",8,null],["Tile",4,-4,"rocky_floor_tiles",3,null],["Tile",4,-3,"rocky_floor_tiles",3,null],["Tile",4,-2,"rocky_floor_tiles",3,null],["Tile",4,-1,"rocky_floor_tiles",3,null],["Tile",4,0,"rocky_floor_tiles",3,null],["Tile",4,1,"rocky_floor_tiles",3,null],["Tile",4,2,"rocky_floor_tiles",3,null],["Tile",4,3,"rocky_floor_tiles",3,null],["Tile",4,4,"rocky_floor_tiles",3,null],["Tile",4,5,"rocky_floor_tiles",8,null],["Tile",5,-5,"rocky_floor_tiles",8,null],["Tile",5,-4,"rocky_floor_tiles",8,null],["Tile",5,-3,"rocky_floor_tiles",8,null],["Tile",5,-2,"rocky_floor_tiles",8,null],["Tile",5,-1,"rocky_floor_tiles",8,null],["Tile",5,0,"rocky_floor_tiles",8,null],["Tile",5,1,"rocky_floor_tiles",8,null],["Tile",5,2,"rocky_floor_tiles",8,null],["Tile",5,3,"rocky_floor_tiles",8,null],["Tile",5,4,"rocky_floor_tiles",8,null],["Tile",5,5,"rocky_floor_tiles",8,null],["Tile",-6,5,"rocky_floor_tiles",0,null],["Tile",-6,6,"rocky_floor_tiles",0,null],["Tile",-5,6,"rocky_floor_tiles",0,null],["Tile",5,6,"rocky_floor_tiles",0,null],["Tile",6,6,"rocky_floor_tiles",0,null],["Tile",6,5,"rocky_floor_tiles",0,null],["Tile",6,-5,"rocky_floor_tiles",0,null],["Tile",6,-6,"rocky_floor_tiles",0,null],["Tile",5,-6,"rocky_floor_tiles",0,null],["Tile",-5,-6,"rocky_floor_tiles",0,null],["Tile",-6,-6,"rocky_floor_tiles",0,null],["Tile",-6,-5,"rocky_floor_tiles",0,null]]}],"transitions":[]}]}');
+    CampaignManager.init(this);
+    CampaignManager.getInstance().loadCampaign('{"name":"Default Campaign","acts":[{"name":"Act I","areas":[{"name":"Default","gameObjects":[["Tile",-5,-5,"rocky_floor_tiles",8,null],["Tile",-5,-4,"rocky_floor_tiles",8,null],["Tile",-5,-3,"rocky_floor_tiles",8,null],["Tile",-5,-2,"rocky_floor_tiles",8,null],["Tile",-5,-1,"rocky_floor_tiles",8,null],["Tile",-5,0,"rocky_floor_tiles",8,null],["Tile",-5,1,"rocky_floor_tiles",8,null],["Tile",-5,2,"rocky_floor_tiles",8,null],["Tile",-5,3,"rocky_floor_tiles",8,null],["Tile",-5,4,"rocky_floor_tiles",8,null],["Tile",-5,5,"rocky_floor_tiles",8,null],["Tile",-4,-5,"rocky_floor_tiles",8,null],["Tile",-4,-4,"rocky_floor_tiles",3,null],["Tile",-4,-3,"rocky_floor_tiles",3,null],["Tile",-4,-2,"rocky_floor_tiles",3,null],["Tile",-4,-1,"rocky_floor_tiles",3,null],["Tile",-4,0,"rocky_floor_tiles",3,null],["Tile",-4,1,"rocky_floor_tiles",3,null],["Tile",-4,2,"rocky_floor_tiles",3,null],["Tile",-4,3,"rocky_floor_tiles",3,null],["Tile",-4,4,"rocky_floor_tiles",3,null],["Tile",-4,5,"rocky_floor_tiles",8,null],["Tile",-3,-5,"rocky_floor_tiles",8,null],["Tile",-3,-4,"rocky_floor_tiles",3,null],["Tile",-3,-3,"rocky_floor_tiles",12,null],["Tile",-3,-2,"rocky_floor_tiles",3,null],["Tile",-3,-1,"rocky_floor_tiles",3,null],["Tile",-3,0,"rocky_floor_tiles",3,null],["Tile",-3,1,"rocky_floor_tiles",3,null],["Tile",-3,2,"rocky_floor_tiles",3,null],["Tile",-3,3,"rocky_floor_tiles",12,null],["Tile",-3,4,"rocky_floor_tiles",3,null],["Tile",-3,5,"rocky_floor_tiles",8,null],["Tile",-2,-5,"rocky_floor_tiles",8,null],["Tile",-2,-4,"rocky_floor_tiles",3,null],["Tile",-2,-3,"rocky_floor_tiles",3,null],["Tile",-2,-2,"rocky_floor_tiles",3,null],["Tile",-2,-1,"rocky_floor_tiles",3,null],["Tile",-2,0,"rocky_floor_tiles",3,null],["Tile",-2,1,"rocky_floor_tiles",3,null],["Tile",-2,2,"rocky_floor_tiles",3,null],["Tile",-2,3,"rocky_floor_tiles",3,null],["Tile",-2,4,"rocky_floor_tiles",3,null],["Tile",-2,5,"rocky_floor_tiles",8,null],["Tile",-1,-5,"rocky_floor_tiles",8,null],["Tile",-1,-4,"rocky_floor_tiles",3,null],["Tile",-1,-3,"rocky_floor_tiles",3,null],["Tile",-1,-2,"rocky_floor_tiles",3,null],["Tile",-1,-1,"rocky_floor_tiles",14,null],["Tile",-1,0,"rocky_floor_tiles",14,null],["Tile",-1,1,"rocky_floor_tiles",14,null],["Tile",-1,2,"rocky_floor_tiles",3,null],["Tile",-1,3,"rocky_floor_tiles",3,null],["Tile",-1,4,"rocky_floor_tiles",3,null],["Tile",-1,5,"rocky_floor_tiles",8,null],["Tile",0,-5,"rocky_floor_tiles",8,null],["Tile",0,-4,"rocky_floor_tiles",3,null],["Tile",0,-3,"rocky_floor_tiles",3,null],["Tile",0,-2,"rocky_floor_tiles",3,null],["Tile",0,-1,"rocky_floor_tiles",14,null],["Tile",0,0,"rocky_floor_tiles",14,null],["Tile",0,1,"rocky_floor_tiles",14,null],["Tile",0,2,"rocky_floor_tiles",3,null],["Tile",0,3,"rocky_floor_tiles",3,null],["Tile",0,4,"rocky_floor_tiles",3,null],["Tile",0,5,"rocky_floor_tiles",8,null],["Tile",1,-5,"rocky_floor_tiles",8,null],["Tile",1,-4,"rocky_floor_tiles",3,null],["Tile",1,-3,"rocky_floor_tiles",3,null],["Tile",1,-2,"rocky_floor_tiles",3,null],["Tile",1,-1,"rocky_floor_tiles",14,null],["Tile",1,0,"rocky_floor_tiles",14,null],["Tile",1,1,"rocky_floor_tiles",14,null],["Tile",1,2,"rocky_floor_tiles",3,null],["Tile",1,3,"rocky_floor_tiles",3,null],["Tile",1,4,"rocky_floor_tiles",3,null],["Tile",1,5,"rocky_floor_tiles",8,null],["Tile",2,-5,"rocky_floor_tiles",8,null],["Tile",2,-4,"rocky_floor_tiles",3,null],["Tile",2,-3,"rocky_floor_tiles",3,null],["Tile",2,-2,"rocky_floor_tiles",3,null],["Tile",2,-1,"rocky_floor_tiles",3,null],["Tile",2,0,"rocky_floor_tiles",3,null],["Tile",2,1,"rocky_floor_tiles",3,null],["Tile",2,2,"rocky_floor_tiles",3,null],["Tile",2,3,"rocky_floor_tiles",3,null],["Tile",2,4,"rocky_floor_tiles",3,null],["Tile",2,5,"rocky_floor_tiles",8,null],["Tile",3,-5,"rocky_floor_tiles",8,null],["Tile",3,-4,"rocky_floor_tiles",3,null],["Tile",3,-3,"rocky_floor_tiles",12,null],["Tile",3,-2,"rocky_floor_tiles",3,null],["Tile",3,-1,"rocky_floor_tiles",3,null],["Tile",3,0,"rocky_floor_tiles",3,null],["Tile",3,1,"rocky_floor_tiles",3,null],["Tile",3,2,"rocky_floor_tiles",3,null],["Tile",3,3,"rocky_floor_tiles",12,null],["Tile",3,4,"rocky_floor_tiles",3,null],["Tile",3,5,"rocky_floor_tiles",8,null],["Tile",4,-5,"rocky_floor_tiles",8,null],["Tile",4,-4,"rocky_floor_tiles",3,null],["Tile",4,-3,"rocky_floor_tiles",3,null],["Tile",4,-2,"rocky_floor_tiles",3,null],["Tile",4,-1,"rocky_floor_tiles",3,null],["Tile",4,0,"rocky_floor_tiles",3,null],["Tile",4,1,"rocky_floor_tiles",3,null],["Tile",4,2,"rocky_floor_tiles",3,null],["Tile",4,3,"rocky_floor_tiles",3,null],["Tile",4,4,"rocky_floor_tiles",3,null],["Tile",4,5,"rocky_floor_tiles",8,null],["Tile",5,-5,"rocky_floor_tiles",8,null],["Tile",5,-4,"rocky_floor_tiles",8,null],["Tile",5,-3,"rocky_floor_tiles",8,null],["Tile",5,-2,"rocky_floor_tiles",8,null],["Tile",5,-1,"rocky_floor_tiles",8,null],["Tile",5,0,"rocky_floor_tiles",8,null],["Tile",5,1,"rocky_floor_tiles",8,null],["Tile",5,2,"rocky_floor_tiles",8,null],["Tile",5,3,"rocky_floor_tiles",8,null],["Tile",5,4,"rocky_floor_tiles",8,null],["Tile",5,5,"rocky_floor_tiles",8,null],["Tile",-6,5,"rocky_floor_tiles",0,null],["Tile",-6,6,"rocky_floor_tiles",0,null],["Tile",-5,6,"rocky_floor_tiles",0,null],["Tile",5,6,"rocky_floor_tiles",0,null],["Tile",6,6,"rocky_floor_tiles",0,null],["Tile",6,5,"rocky_floor_tiles",0,null],["Tile",6,-5,"rocky_floor_tiles",0,null],["Tile",6,-6,"rocky_floor_tiles",0,null],["Tile",5,-6,"rocky_floor_tiles",0,null],["Tile",-5,-6,"rocky_floor_tiles",0,null],["Tile",-6,-6,"rocky_floor_tiles",0,null],["Tile",-6,-5,"rocky_floor_tiles",0,null]]}],"transitions":[]}]}');
 
     this.playerPos = new Point();
     this.cameraOffsetPos = new Point();
@@ -170,13 +169,13 @@ export default class MapEditor extends Phaser.Scene {
     this.renameAreaInput.setBackgroundVisibility(false);
     this.renameAreaInput.setPadding(0);
 
-    this.transitionForm = new TransitionForm(this, this.campaignManager.getCampaign(), () => this.hideTransitionForm());
+    this.transitionForm = new TransitionForm(this, CampaignManager.getInstance().getCampaign(), () => this.hideTransitionForm());
     this.transitionForm.hide();
 
-    this.configureTileForm = new ConfigureTileForm(this, this.campaignManager.getCampaign(), () => this.hideConfigureTileForm());
+    this.configureTileForm = new ConfigureTileForm(this, CampaignManager.getInstance().getCampaign(), () => this.hideConfigureTileForm());
     this.configureTileForm.hide();
 
-    this.deleteTransitionForm = new DeleteTransitionForm(this, this.campaignManager.getCampaign(), () => this.hideDeleteTransitionForm());
+    this.deleteTransitionForm = new DeleteTransitionForm(this, CampaignManager.getInstance().getCampaign(), () => this.hideDeleteTransitionForm());
     this.deleteTransitionForm.hide();
 
     this.gameObjectSelector = new GameObjectSelector(this);
@@ -254,8 +253,8 @@ export default class MapEditor extends Phaser.Scene {
 
     this.unitPosText.setText("Unit Pos : " + Math.round(this.cursorUnitPos.x) + ", " + Math.round(this.cursorUnitPos.y));
     this.tilePosText.setText("Tile Pos : " + this.cursorTilePos.x + ", " + this.cursorTilePos.y);
-    this.currentActText.setText("Act (" + (this.campaignManager.getActIndex() + 1) + "/" + this.campaignManager.getActAmount() + ") : " + this.campaignManager.getActName());
-    this.currentAreaText.setText("Area (" + (this.campaignManager.getAreaIndex() + 1) + "/" + this.campaignManager.getAreaAmount() + ") : " + this.campaignManager.getAreaName());
+    this.currentActText.setText("Act (" + (CampaignManager.getInstance().getActIndex() + 1) + "/" + CampaignManager.getInstance().getActAmount() + ") : " + CampaignManager.getInstance().getActName());
+    this.currentAreaText.setText("Area (" + (CampaignManager.getInstance().getAreaIndex() + 1) + "/" + CampaignManager.getInstance().getAreaAmount() + ") : " + CampaignManager.getInstance().getAreaName());
     this.cameras.main.setScroll(
       this.playerPos.x + this.cameraOffsetPos.x - this.cameras.main.width / 2,
       this.playerPos.y + this.cameraOffsetPos.y - this.cameras.main.height / 2
@@ -328,7 +327,7 @@ export default class MapEditor extends Phaser.Scene {
 
     // New act
     else if (PRESSED_KEY === 'u') {
-      this.campaignManager.addAct("New Act");
+      CampaignManager.getInstance().addAct("New Act");
     }
 
     // Rename current act
@@ -337,24 +336,24 @@ export default class MapEditor extends Phaser.Scene {
       this.renameActInput.focused = true;
       this.renameActInput.visible = true;
       this.currentActText.visible = false;
-      this.renameActInput.updateInputText(this.campaignManager.getActName());
+      this.renameActInput.updateInputText(CampaignManager.getInstance().getActName());
     }
 
     // Go to previous act
     else if (PRESSED_KEY === 'o')
-      this.campaignManager.previousAct();
+      CampaignManager.getInstance().previousAct();
 
     // Go to next act
     else if (PRESSED_KEY === 'p')
-      this.campaignManager.nextAct();
+      CampaignManager.getInstance().nextAct();
 
     // Delete current act
     else if (PRESSED_KEY === 'delete')
-      this.campaignManager.deleteCurrentAct();
+      CampaignManager.getInstance().deleteCurrentAct();
 
     // New area
     else if (PRESSED_KEY === 'h')
-      this.campaignManager.addArea("New Area");
+      CampaignManager.getInstance().addArea("New Area");
 
     // Rename current area
     else if (PRESSED_KEY === 'j') {
@@ -362,20 +361,20 @@ export default class MapEditor extends Phaser.Scene {
       this.renameAreaInput.focused = true;
       this.renameAreaInput.visible = true;
       this.currentAreaText.visible = false;
-      this.renameAreaInput.updateInputText(this.campaignManager.getAreaName());
+      this.renameAreaInput.updateInputText(CampaignManager.getInstance().getAreaName());
     }
 
     // Go to previous area
     else if (PRESSED_KEY === 'k')
-      this.campaignManager.previousArea();
+      CampaignManager.getInstance().previousArea();
 
     // Go to next area
     else if (PRESSED_KEY === 'l')
-      this.campaignManager.nextArea();
+      CampaignManager.getInstance().nextArea();
 
     // Delete current area
     else if (PRESSED_KEY === '~')
-      this.campaignManager.deleteCurrentArea();
+      CampaignManager.getInstance().deleteCurrentArea();
 
     // Create transition
     else if (PRESSED_KEY === 't') {
@@ -397,7 +396,7 @@ export default class MapEditor extends Phaser.Scene {
     else if (PRESSED_KEY === '\\')
       this.scene.start('MainScene');
 
-    const EXPORT = CampaignSerializer.export(this.campaignManager.getCampaign());
+    const EXPORT = CampaignSerializer.export(CampaignManager.getInstance().getCampaign());
     console.log(EXPORT);
   }
 
@@ -408,14 +407,14 @@ export default class MapEditor extends Phaser.Scene {
 
     if (this.tileMode === TileMode.Add)
       for (const TILE_POS of CURSOR_TILES_POS)
-        this.campaignManager.addGameObject(this.gameObjectSelector.getSelectedGameObject(TILE_POS.x, TILE_POS.y));
+        CampaignManager.getInstance().addGameObject(this.gameObjectSelector.getSelectedGameObject(TILE_POS.x, TILE_POS.y));
 
     else if (this.tileMode === TileMode.Delete)
       for (const TILE_POS of CURSOR_TILES_POS)
-        this.campaignManager.deleteGameObjects(TILE_POS.x, TILE_POS.y);
+        CampaignManager.getInstance().deleteGameObjects(TILE_POS.x, TILE_POS.y);
 
     else if (this.tileMode === TileMode.Configure) {
-      const TILE: Tile | undefined = this.campaignManager.getTile(this.cursorTilePos.x, this.cursorTilePos.y);
+      const TILE: Tile | undefined = CampaignManager.getInstance().getTile(this.cursorTilePos.x, this.cursorTilePos.y);
       if (TILE) {
         this.inMenu = true;
         this.configureTileForm.show(TILE);
@@ -432,12 +431,12 @@ export default class MapEditor extends Phaser.Scene {
   }
 
   private drawTileSet(): void {
-    this.campaignManager.clearDebugTiles();
+    CampaignManager.getInstance().clearDebugTiles();
 
     if (this.showDebugTiles) {
-      // this.campaignManager.drawDebugCurrentTileSet(); // TODO: Fix
-      this.campaignManager.drawDebugPoint(this.playerPos.x, this.playerPos.y, TileColor.Player);
-      this.campaignManager.drawDebugTile(this.playerPos.x, this.playerPos.y, TileColor.Player);
+      // CampaignManager.getInstance().drawDebugCurrentTileSet(); // TODO: Fix
+      CampaignManager.getInstance().drawDebugPoint(this.playerPos.x, this.playerPos.y, TileColor.Player);
+      CampaignManager.getInstance().drawDebugTile(this.playerPos.x, this.playerPos.y, TileColor.Player);
     }
 
     // Draw cursor tile
@@ -448,13 +447,13 @@ export default class MapEditor extends Phaser.Scene {
 
     if (this.tileMode === TileMode.Configure)
       // Don't apply brush size when in "configure" mode
-      this.campaignManager.drawDebugTile(this.cursorUnitPos.x, this.cursorUnitPos.y, cursorColor);
+      CampaignManager.getInstance().drawDebugTile(this.cursorUnitPos.x, this.cursorUnitPos.y, cursorColor);
     else
-      this.campaignManager.drawDebugProximityTilePos(this.cursorUnitPos.x, this.cursorUnitPos.y, cursorColor, this.brushSize);
+      CampaignManager.getInstance().drawDebugProximityTilePos(this.cursorUnitPos.x, this.cursorUnitPos.y, cursorColor, this.brushSize);
   }
 
   private renameAct(): void {
-    this.campaignManager.renameAct(this.renameActInput.inputText);
+    CampaignManager.getInstance().renameAct(this.renameActInput.inputText);
     this.renameActInput.focused = false;
     this.renameActInput.visible = false;
     this.currentActText.visible = true;
@@ -462,7 +461,7 @@ export default class MapEditor extends Phaser.Scene {
   }
 
   private renameArea(): void {
-    this.campaignManager.renameArea(this.renameAreaInput.inputText);
+    CampaignManager.getInstance().renameArea(this.renameAreaInput.inputText);
     this.renameAreaInput.focused = false;
     this.renameAreaInput.visible = false;
     this.currentAreaText.visible = true;

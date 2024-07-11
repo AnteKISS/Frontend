@@ -19,6 +19,7 @@ import { Signal, SignalHandler } from '../events/signal';
 import { Exp } from '../progression/exp';
 import { SkillTree } from '../progression/skillTree';
 import { AttributeAllocation } from '../progression/attributeAllocation';
+import CampaignManager from '../managers/campaignmanager';
 import TileModule from '../tiles/tilemodule';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
@@ -248,11 +249,11 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
   private handleTileTransition() {
     // Check if current tile has a transition
-    if (!(ActiveEntity.campaignManager && this.currentTile?.transition))
+    if (!(CampaignManager.getInstance() && this.currentTile?.transition))
       return;
 
     // Make sure transition is valid in current act
-    if (!ActiveEntity.campaignManager.transition(this.currentTile.transition))
+    if (!CampaignManager.getInstance().transition(this.currentTile.transition))
       return;
 
     const newPlayerPosition = TileModule.getUnitPosFromTilePos(this.currentTile.transition.targetX, this.currentTile.transition.targetY);

@@ -11,20 +11,35 @@ import Transition from '../tiles/transition'
 import GameObject from '../tiles/gameobject'
 
 export default class CampaignManager {
+  private static instance: CampaignManager;
+
   private scene: Phaser.Scene;
   private campaign: Campaign;
   private graphics: Phaser.GameObjects.Graphics;
   private tiledrawer: TileDrawer;
   private gameObjectSprites: Map<GameObject, GameObjectSprite>;
 
-  public constructor(scene: Phaser.Scene) {
-    this.scene = scene;
-    this.graphics = this.scene.add.graphics();
-    this.tiledrawer = new TileDrawer(this.graphics);
-    this.campaign = new Campaign("Default Campaign");
-    this.gameObjectSprites = new Map();
+  private constructor() { }
 
-    this.scene.cameras.getCamera("uiCamera")!.ignore(this.graphics);
+  public static init(scene: Phaser.Scene) {
+    let instance = CampaignManager.instance;
+
+    if (instance?.gameObjectSprites)
+      for (const sprite of instance.gameObjectSprites.values())
+        sprite.destroy();
+
+    CampaignManager.instance = new CampaignManager();
+    instance = CampaignManager.instance;
+    instance.scene = scene;
+    instance.graphics = instance.scene.add.graphics();
+    instance.tiledrawer = new TileDrawer(instance.graphics);
+    instance.campaign = new Campaign("Default Campaign");
+    instance.gameObjectSprites = new Map();
+    instance.scene.cameras.getCamera("uiCamera")!.ignore(instance.graphics);
+  }
+
+  public static getInstance(): CampaignManager {
+    return CampaignManager.instance;
   }
 
   // TODO: Remove this
