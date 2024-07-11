@@ -27,23 +27,24 @@ const config = {
   }
 }
 
-async function startGame(): Promise<void> {
+async function startApp(): Promise<void> {
   try {
     await initKeycloak();
 
     if (keycloak.authenticated) {
-      new Phaser.Game(config);
+      // Proceed with application initialization
     } else {
+      // Redirect to Keycloak login page if not authenticated
       keycloak.login();
     }
   } catch (error) {
-    console.error('Failed to initialize Keycloak or start the game', error);
+    console.error('Failed to initialize Keycloak', error);
     throw error;
   }
 }
 
-startGame().catch((error) => {
-  console.error('Error starting the game:', error);
+startApp().catch((error) => {
+  console.error('Error starting the application:', error);
 });
 
 window.addEventListener('load', () => {
