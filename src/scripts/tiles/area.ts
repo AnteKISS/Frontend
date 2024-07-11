@@ -1,31 +1,28 @@
 import GameObject from './gameobject';
 import GameObjectCollection from './gameObjectCollection';
+import Spawner from './spawner';
 import Tile from './tile';
 import TileModule from './tilemodule';
 
 export default class Area {
   public name: string;
   public gameObjects: Map<string, GameObjectCollection>;
+  public spawners: Array<Spawner>;
 
   public constructor(name: string) {
     this.name = name;
     this.gameObjects = new Map();
-
-    // Default area
-    const size = 5;
-    for (let i = -size; i <= size; i++) {
-      for (let j = -size; j <= size; j++) {
-        const tile = new Tile(i, j, "rocky_floor_tiles", 8);
-        const collection = this.createGameObjectCollection(tile.x, tile.y);
-        collection.add(tile);
-      }
-    }
+    this.spawners = new Array();
   }
 
   public addGameObject(gameObject: GameObject): void {
     let collection = this.getGameObjectCollection(gameObject.tileX, gameObject.tileY);
     if (!collection) collection = this.createGameObjectCollection(gameObject.tileX, gameObject.tileY);
     collection.add(gameObject);
+  }
+
+  public addSpawner(spawner: Spawner): void {
+    this.spawners.push(spawner);
   }
 
   public removeGameObjects(x: number, y: number): Array<GameObject> | undefined {
@@ -52,6 +49,11 @@ export default class Area {
         gameObjects.push(gameObject);
 
     return gameObjects;
+  }
+
+  public activateSpawners(): void {
+    for (const spawner of this.spawners)
+      spawner.spawn();
   }
 
   public getProximityTileList(x: number, y: number, proximity: number): Tile[] {

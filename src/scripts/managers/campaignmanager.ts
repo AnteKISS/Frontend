@@ -42,9 +42,12 @@ export default class CampaignManager {
     return CampaignManager.instance;
   }
 
-  // TODO: Remove this
   public getCampaign(): Campaign {
     return this.campaign;
+  }
+
+  public getScene(): Phaser.Scene {
+    return this.scene;
   }
 
   /******************************/
@@ -66,6 +69,8 @@ export default class CampaignManager {
       this.gameObjectSprites.set(GAME_OBJECT, GAME_OBJECT_SPRITE);
       this.scene.cameras.getCamera("uiCamera")!.ignore(GAME_OBJECT_SPRITE);
     }
+
+    this.campaign.currentArea().activateSpawners();
   }
 
   /******************************/
