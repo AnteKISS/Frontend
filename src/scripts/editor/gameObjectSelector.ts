@@ -76,7 +76,9 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
   }
 
   private setupSpawnerSprites() {
-    this.gameObjectSpriteLists.set(GameObjectSelector.SPAWNERS_TAB_KEY, []);
+    this.gameObjectSpriteLists.set(GameObjectSelector.SPAWNERS_TAB_KEY, [
+      ["Spawner", "basic_spawner", undefined]
+    ]);
   }
 
   private setupTabs() {
@@ -98,14 +100,6 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
   private changeTab(tabKey: string) {
     this.selectedTab = tabKey;
     this.updateDisplayObjects();
-  }
-
-  public getSelectedObjectBitMap(): string {
-    return this.gameObjectSpriteLists.get(this.selectedObjectTab)![this.selectedObjectIndex][0];
-  }
-
-  public getSelectedObjectFrame(): number {
-    return this.gameObjectSpriteLists.get(this.selectedObjectTab)![this.selectedObjectIndex][1];
   }
 
   public previousRow() {
@@ -143,7 +137,8 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
         return;
 
       const X = (i * GameObjectSelector.OBJECT_SPACING) - (GameObjectSelector.OBJECT_SPACING * GameObjectSelector.OBJECTS_PER_ROW / 2) + (GameObjectSelector.OBJECT_SPACING / 2);
-      const OBJECT = this.scene.add.sprite(X, 0, this.gameObjectSpriteLists.get(this.selectedTab)![SPRITE_INDEX][1], this.gameObjectSpriteLists.get(this.selectedTab)![SPRITE_INDEX][2])
+      const OBJECT_SPRITE_INFO = this.gameObjectSpriteLists.get(this.selectedTab)![SPRITE_INDEX];
+      const OBJECT = this.scene.add.sprite(X, 0, OBJECT_SPRITE_INFO[1], OBJECT_SPRITE_INFO[2])
         .setInteractive();
 
       OBJECT.setScale(GameObjectSprite.getSpriteScale(this.selectedTab, OBJECT) / 2);

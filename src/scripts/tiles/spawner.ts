@@ -9,7 +9,7 @@ export default class Spawner extends GameObject {
   private range: number; // in tiles
 
   public constructor(tileX: number, tileY: number) {
-    super(tileX, tileY, "none for the moment");
+    super(tileX, tileY, "basic_spawner");
     this.entityId = "zombie";
     this.respawn = true;
     this.spawnRate = 60;
@@ -19,7 +19,7 @@ export default class Spawner extends GameObject {
   }
 
   public getArgs(): any[] {
-    return [this.tileX, this.tileY, this.source];
+    return ["Spawner", this.tileX, this.tileY, this.source];
   }
 
   public getCollectionId(): string {

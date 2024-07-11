@@ -1,4 +1,5 @@
 import GameObject from './gameobject';
+import Spawner from './spawner';
 import Tile from './tile';
 import TileModule from './tilemodule';
 import Wall, { WallType } from './wall';
@@ -10,7 +11,7 @@ export default class GameObjectSprite extends Phaser.GameObjects.Sprite {
     const TILE_UNIT_POS = TileModule.getUnitPosFromTilePos(gameObject.tileX, gameObject.tileY);
     this.setPosition(TILE_UNIT_POS.x, TILE_UNIT_POS.y);
 
-    if (gameObject instanceof Tile) {
+    if (gameObject instanceof Tile || gameObject instanceof Spawner) {
       this.setScale(Tile.WIDTH / this.width);
     }
     else if (gameObject instanceof Wall) {
@@ -24,7 +25,7 @@ export default class GameObjectSprite extends Phaser.GameObjects.Sprite {
     }
 
     scene.add.existing(this);
-    this.setDepth(TILE_UNIT_POS.y - Tile.HALF_HEIGHT + gameObject.getCollectionDepth());
+    this.setDepth(TILE_UNIT_POS.y + gameObject.getCollectionDepth());
   }
 
   public static getSpriteScale(type: String, sprite: Phaser.GameObjects.Sprite): number {

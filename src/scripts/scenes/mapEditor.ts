@@ -406,12 +406,9 @@ export default class MapEditor extends Phaser.Scene {
 
     const CURSOR_TILES_POS = TileModule.getProximityTilePos(this.cursorTilePos.x, this.cursorTilePos.y, this.brushSize);
 
-    if (this.tileMode === TileMode.Add) {
-      for (const TILE_POS of CURSOR_TILES_POS) {
-        // this.campaignManager.addTile(TILE_POS.x, TILE_POS.y, this.gameObjectSelector.getSelectedObjectBitMap(), this.gameObjectSelector.getSelectedObjectFrame());
+    if (this.tileMode === TileMode.Add)
+      for (const TILE_POS of CURSOR_TILES_POS)
         this.campaignManager.addGameObject(this.gameObjectSelector.getSelectedGameObject(TILE_POS.x, TILE_POS.y));
-      }
-    }
 
     else if (this.tileMode === TileMode.Delete)
       for (const TILE_POS of CURSOR_TILES_POS)

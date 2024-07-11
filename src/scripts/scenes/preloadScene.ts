@@ -27,6 +27,9 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('whiteGlow', 'assets/gui/editor/white_glow.png');
     this.load.image('button', 'assets/gui/progression/button.png');
 
+    // GAME OBJECTS
+    this.load.image('basic_spawner', 'assets/sprites/spawner/basic_spawner.png');
+
     // INVENTORY
     this.load.image('stone_sword_inventory', 'assets/inventory/stone_sword.png');
     this.load.image('wooden_shield_inventory', 'assets/inventory/wooden_shield.png');
