@@ -39,9 +39,9 @@ export abstract class Behavior {
       return false;
     }
     return MathModule.scaledDistanceBetween(
-      this.parent.positionX, 
-      this.parent.positionY, 
-      this.parent.target!.positionX, 
+      this.parent.positionX,
+      this.parent.positionY,
+      this.parent.target!.positionX,
       this.parent.target!.positionY
     ) <= distance;
   }
@@ -51,9 +51,9 @@ export abstract class Behavior {
       return false;
     }
     return MathModule.scaledDistanceBetween(
-      this.parent.positionX, 
-      this.parent.positionY, 
-      this.parent.target!.positionX, 
+      this.parent.positionX,
+      this.parent.positionY,
+      this.parent.target!.positionX,
       this.parent.target!.positionY
     ) <= this.parent.stats.meleeRange;
   }
@@ -63,9 +63,9 @@ export abstract class Behavior {
       return false;
     }
     return MathModule.scaledDistanceBetween(
-      this.parent.positionX, 
-      this.parent.positionY, 
-      this.parent.target!.positionX, 
+      this.parent.positionX,
+      this.parent.positionY,
+      this.parent.target!.positionX,
       this.parent.target!.positionY
     ) <= this.parent.stats.projectileRange;
   }
@@ -89,12 +89,12 @@ export abstract class Behavior {
     // for (let entity: ActiveEntity of this.parent.area.getEntities) {
 
     // }
-    for (let entity of EntityManager.instance.getEntities()) {
+    for (let entity of EntityManager.instance.getAreaEntities()) {
       if (entity.type != nameOf(PlayerEntity)) {
         continue;
       }
       const distanceBetweenEntities: number = MathModule.distanceBetween(
-        this.parent.positionX, 
+        this.parent.positionX,
         this.parent.positionY,
         entity.positionX,
         entity.positionY

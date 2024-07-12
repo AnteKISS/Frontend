@@ -4,14 +4,16 @@ import { BaseEntity } from "../entities/baseEntity";
 import { ActiveEntityFactory } from "../factories/activeEntityFactory";
 import Item from "../inventory/item";
 import ItemEntity from "../entities/itemEntity";
-import NotImplementedError from "../errors/notImplementedError";
+import CampaignManager from "./campaignmanager";
 
 export class EntityManager {
   private static _instance: EntityManager;
-  private _entities: BaseEntity[];
+  private globalPool: BaseEntity[];
+  private areaPools: Map<string, BaseEntity[]>;
 
   private constructor() {
-    this._entities = [];
+    this.globalPool = [];
+    this.areaPools = new Map();
   }
 
   public static get instance(): EntityManager {
@@ -21,40 +23,44 @@ export class EntityManager {
     return EntityManager._instance;
   }
 
-  private addEntity(entity: BaseEntity): void {
-    this._entities.push(entity);
+  private addGlobalEntity(entity: BaseEntity): void {
+    this.globalPool.push(entity);
   }
 
-  private removeEntity(entity: BaseEntity): void {
-    const index = this._entities.indexOf(entity);
+  private addAreaEntity(entity: BaseEntity): void {
+    this.getCurrentAreaEntityPool().push(entity);
+  }
+
+  private removeAreaEntity(entity: BaseEntity): void {
+    const pool = this.getCurrentAreaEntityPool();
+    const index = pool.indexOf(entity);
     if (index == -1) {
       return;
     }
-    this._entities.splice(index, 1);
+    pool.splice(index, 1);
   }
 
   public update(time: number, deltaTime: number): void {
-    this._entities.forEach(entity => {
-      entity.update(time, deltaTime);
-    });
+    this.globalPool.forEach(entity => { entity.update(time, deltaTime); });
+    this.getCurrentAreaEntityPool().forEach(entity => { entity.update(time, deltaTime); });
   }
 
-  public resetEntities(): void {
-    this._entities.forEach(entity => {
+  public resetAreaEntities(): void {
+    this.getCurrentAreaEntityPool().forEach(entity => {
       if (entity.isResetReady) {
         entity.reset();
       }
     });
   }
 
-  public getEntities(): BaseEntity[] {
-    return this._entities;
+  public getAreaEntities(): BaseEntity[] {
+    return this.getCurrentAreaEntityPool();
   }
 
-  public getEntitiesAtPosition(positionX: number, positionY: number): BaseEntity[] {
+  public getAreaEntitiesAtPosition(positionX: number, positionY: number): BaseEntity[] {
     let foundEntities: BaseEntity[] = [];
 
-    for (let entity of this._entities) {
+    for (let entity of this.getCurrentAreaEntityPool()) {
       let entitySprite: Phaser.GameObjects.Sprite = entity.getAll().filter(gameObject => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite;
 
       if (positionX > entity.positionX - (entity.truncatedSpriteWidth / 2) &&
@@ -67,11 +73,11 @@ export class EntityManager {
     return foundEntities;
   }
 
-  public getEntityAtPosition(positionX: number, positionY: number): BaseEntity | null {
+  public getAreaEntityAtPosition(positionX: number, positionY: number): BaseEntity | null {
     let topMostEntity: BaseEntity | null = null;
     let foundEntities: BaseEntity[] = [];
 
-    for (let entity of this._entities) {
+    for (let entity of this.getCurrentAreaEntityPool()) {
       let entitySprite: Phaser.GameObjects.Sprite = entity.getAll().filter(gameObject => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite;
 
       if (positionX > entity.positionX - (entity.truncatedSpriteWidth / 2) &&
@@ -94,39 +100,48 @@ export class EntityManager {
   }
 
   public getPlayers(): PlayerEntity[] {
-    return this._entities.filter(entity => entity instanceof PlayerEntity) as PlayerEntity[];
+    return this.globalPool.filter(entity => entity instanceof PlayerEntity) as PlayerEntity[];
   }
 
   public getMonsters(): MonsterEntity[] {
-    return this._entities.filter(entity => entity instanceof MonsterEntity) as MonsterEntity[];
+    return this.getCurrentAreaEntityPool().filter(entity => entity instanceof MonsterEntity) as MonsterEntity[];
   }
 
   // TODO: Add function to get all npcs
 
   public createPlayer(scene: Phaser.Scene): PlayerEntity {
     let player: PlayerEntity = ActiveEntityFactory.createPlayer(scene);
-    this.addEntity(player);
+    this.addGlobalEntity(player);
     return player;
   }
 
   public createMonster(scene: Phaser.Scene, monsterCode: string): MonsterEntity {
     let monster: MonsterEntity = ActiveEntityFactory.createMonster(scene, monsterCode);
-    this.addEntity(monster);
+    this.addAreaEntity(monster);
     return monster;
   }
 
   public createItem(scene: Phaser.Scene, item: Item): ItemEntity {
     item.changeToEntitySprite();
     let itemEntity: ItemEntity = new ItemEntity(scene, item);
-    this.addEntity(itemEntity);
+    this.addAreaEntity(itemEntity);
     return itemEntity;
   }
 
   // TODO: Add function to create npc
 
   public setDebugMode(enableDebugMode: boolean): void {
-    this._entities.forEach(entity => {
+    this.getCurrentAreaEntityPool().forEach(entity => {
       entity.setDebugMode(enableDebugMode);
     });
+  }
+
+  private getCurrentAreaEntityPool(): BaseEntity[] {
+    let pool = this.areaPools.get(CampaignManager.getInstance().getAreaName());
+    if (!pool) {
+      pool = [];
+      this.areaPools.set(CampaignManager.getInstance().getAreaName(), pool);
+    }
+    return pool;
   }
 }

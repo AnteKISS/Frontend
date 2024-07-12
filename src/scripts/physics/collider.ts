@@ -12,18 +12,18 @@ export namespace Physics {
   }
 
   export class Collider {
-    
+
     private readonly SPRITE_HITBOX_COLOR: number = 0x00FF00;
     private readonly ENTITY_HITBOX_COLOR: number = 0xFF0000;
     private readonly ENTITY_ORIGIN_COLOR: number = 0x0000FF;
-    
+
     public parentEntity: BaseEntity;
     public parentSprite: Phaser.GameObjects.Sprite;
     public debugGraphics: Phaser.GameObjects.Graphics;
 
     private _collidingSpriteCallback: (hitEntity: BaseEntity) => void;
     private _collidingEntityCallback: (hitEntity: BaseEntity) => void;
-    
+
     constructor(parentEntity: BaseEntity, parentSprite: Phaser.GameObjects.Sprite, collidingSpriteCallback: (hitEntity: BaseEntity) => void, collidingEntityCallback: (hitEntity: BaseEntity) => void) {
       this.parentEntity = parentEntity;
       this.parentSprite = parentSprite;
@@ -40,21 +40,21 @@ export namespace Physics {
 
       const radiusX = this.parentEntity.truncatedSpriteWidth;
       const radiusY = this.parentEntity.truncatedSpriteWidth / 2;
-      
+
       this.debugGraphics.beginPath();
       this.debugGraphics.fillEllipse(
-        this.parentEntity.positionX, 
-        this.parentEntity.positionY, 
-        radiusX, 
+        this.parentEntity.positionX,
+        this.parentEntity.positionY,
+        radiusX,
         radiusY
       );
       this.debugGraphics.fillPath();
 
       this.debugGraphics.lineStyle(2, this.ENTITY_HITBOX_COLOR, 0.5);
       this.debugGraphics.strokeRect(
-        this.parentEntity.positionX - (this.parentEntity.truncatedSpriteWidth / 2), 
-        this.parentEntity.positionY - (this.parentEntity.truncatedSpriteHeight * this.parentSprite.originY), 
-        this.parentEntity.truncatedSpriteWidth, 
+        this.parentEntity.positionX - (this.parentEntity.truncatedSpriteWidth / 2),
+        this.parentEntity.positionY - (this.parentEntity.truncatedSpriteHeight * this.parentSprite.originY),
+        this.parentEntity.truncatedSpriteWidth,
         this.parentEntity.truncatedSpriteHeight
       );
 
@@ -63,14 +63,14 @@ export namespace Physics {
     }
 
     public checkCollisions(): CollisionInformation {
-      let collisionInfo: CollisionInformation = {collidingEntity: null, collidingSprite: null};
+      let collisionInfo: CollisionInformation = { collidingEntity: null, collidingSprite: null };
       collisionInfo.collidingSprite = this.checkSpriteCollision();
       collisionInfo.collidingEntity = this.checkEntityCollision();
       return collisionInfo;
     }
 
     public checkSpriteCollision(): Phaser.GameObjects.Sprite | null {
-      const entities: BaseEntity[] = EntityManager.instance.getEntities();
+      const entities: BaseEntity[] = EntityManager.instance.getAreaEntities();
       const positionX: number = this.parentEntity.positionX;
       const positionY: number = this.parentEntity.positionY;
       const truncatedSpriteWidth: number = this.parentEntity.truncatedSpriteWidth;
@@ -101,11 +101,11 @@ export namespace Physics {
     }
 
     public checkEntityCollision(): BaseEntity | null {
-      const entities: BaseEntity[] = EntityManager.instance.getEntities();
+      const entities: BaseEntity[] = EntityManager.instance.getAreaEntities();
       const positionX: number = this.parentEntity.positionX;
       const positionY: number = this.parentEntity.positionY;
       const truncatedSpriteWidth: number = this.parentEntity.truncatedSpriteWidth;
-    
+
       for (let index = 0; index < entities.length; index++) {
         if (entities[index] === this.parentEntity) {
           continue;
@@ -117,10 +117,10 @@ export namespace Physics {
         if (entity.isDead()) {
           continue;
         }
-    
+
         const radiusX = truncatedSpriteWidth;
         const radiusY = truncatedSpriteWidth / 2;
-    
+
         const dx = positionX - entities[index].positionX;
         const dy = positionY - entities[index].positionY;
         if ((dx * dx) / (radiusX * radiusX) + (dy * dy) / (radiusY * radiusY) <= 1) {
