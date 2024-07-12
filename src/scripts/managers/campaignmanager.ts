@@ -202,10 +202,13 @@ export default class CampaignManager {
   //         TRANSITION         //
   /******************************/
 
-  public transition(t: Transition): boolean {
-    const res = this.campaign.currentAct().transition(t.targetArea);
-    if (res) this.loadCurrentArea();
-    return res;
+  public transition(transitionName: string): Transition | null {
+    const transition = this.campaign.currentAct().getTransition(transitionName);
+    if (!transition) return null;
+
+    const transitionSuccessful = this.campaign.currentAct().transition(transition.targetArea);
+    if (transitionSuccessful) this.loadCurrentArea();
+    return transition;
   }
 
   /******************************/

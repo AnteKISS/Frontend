@@ -38,8 +38,7 @@ export default class ConfigureTileForm extends Phaser.GameObjects.Container {
     this.add([this.background, this.title, this.transitionSelect, this.nextTransitionText, this.cancelText, this.confirmText]);
     this.scene.add.existing(this);
 
-    if(scene && scene.input && scene.input.keyboard)
-    {
+    if (scene && scene.input && scene.input.keyboard) {
       scene.input.keyboard.on('keydown', (event: KeyboardEvent) => this.handleKeyDown(event));
     }
     this.focused = false;
@@ -92,7 +91,7 @@ export default class ConfigureTileForm extends Phaser.GameObjects.Container {
       // Quit and create transition if valid inputs
       if (this.tile && this.transitionNames.length > 0) {
         const TRANSITION_NAME = this.transitionNames[this.selectedTransitionIndex];
-        this.tile.transition = this.campaign.currentAct().getTransition(TRANSITION_NAME);
+        this.tile.transition = TRANSITION_NAME;
         this.onFinished();
       }
     }

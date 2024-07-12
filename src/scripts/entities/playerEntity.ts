@@ -253,10 +253,11 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       return;
 
     // Make sure transition is valid in current act
-    if (!CampaignManager.getInstance().transition(this.currentTile.transition))
+    const transition = CampaignManager.getInstance().transition(this.currentTile.transition);
+    if (!transition)
       return;
 
-    const newPlayerPosition = TileModule.getUnitPosFromTilePos(this.currentTile.transition.targetX, this.currentTile.transition.targetY);
+    const newPlayerPosition = TileModule.getUnitPosFromTilePos(transition.targetX, transition.targetY);
     this._positionX = newPlayerPosition.x;
     this._positionY = newPlayerPosition.y;
     this.setX(newPlayerPosition.x);

@@ -91,8 +91,8 @@ export default class DeleteTransitionForm extends Phaser.GameObjects.Container {
               continue;
 
             const TILE = GAME_OBJECT as Tile;
-            if (TILE.transition && TILE.transition.name === TRANSITION_NAME)
-              TILE.transition = undefined;
+            if (TILE.transition === TRANSITION_NAME)
+              TILE.transition = "";
           }
         }
 

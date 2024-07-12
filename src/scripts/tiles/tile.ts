@@ -1,4 +1,3 @@
-import Transition from './transition'
 import GameObject from './gameobject';
 
 export default class Tile extends GameObject {
@@ -7,9 +6,9 @@ export default class Tile extends GameObject {
   public static readonly HALF_WIDTH: number = this.WIDTH / 2;
   public static readonly HALF_HEIGHT: number = this.HEIGHT / 2;
 
-  public transition: Transition | undefined;
+  public transition: string;
 
-  public constructor(x: number, y: number, source: string, frame: number, transition: Transition | undefined = undefined) {
+  public constructor(x: number, y: number, source: string, frame: number, transition: string = "") {
     super(x, y, source, frame);
     this.transition = transition;
   }
@@ -23,7 +22,7 @@ export default class Tile extends GameObject {
   }
 
   public override getArgs(): any[] {
-    return ["Tile", this.x, this.y, this.source, this.frame, this.transition?.name];
+    return ["Tile", this.x, this.y, this.source, this.frame, this.transition];
   }
 
   public override getCollectionId(): string {
