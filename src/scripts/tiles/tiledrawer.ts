@@ -21,7 +21,7 @@ export default class TileDrawer {
     for (const tile of tiles) {
       let lineColor = 0x000000;
 
-      if (tile.transition !== undefined)
+      if (tile.transition)
         lineColor = TileColor.Transition;
       else
         lineColor = TileColor.Floor;

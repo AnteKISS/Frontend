@@ -4,6 +4,7 @@ import Area from './area';
 import Transition from './transition';
 import { GameObjectRegistry } from './gameObjectRegistry';
 import Spawner from './spawner';
+import Tile from './tile';
 
 interface TransitionJson {
   name: string,
@@ -51,7 +52,9 @@ export default abstract class CampaignSerializer {
           AREA.addGameObject(newGameObject);
 
           // Spawners have their own ref list in area
-          if (newGameObject instanceof Spawner)
+          if (newGameObject instanceof Tile)
+            AREA.addTile(newGameObject);
+          else if (newGameObject instanceof Spawner)
             AREA.addSpawner(newGameObject);
         }
       }

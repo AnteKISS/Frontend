@@ -7,11 +7,13 @@ import TileModule from './tilemodule';
 export default class Area {
   public name: string;
   public gameObjects: Map<string, GameObjectCollection>;
+  public tiles: Array<Tile>;
   public spawners: Array<Spawner>;
 
   public constructor(name: string) {
     this.name = name;
     this.gameObjects = new Map();
+    this.tiles = new Array();
     this.spawners = new Array();
   }
 
@@ -19,6 +21,10 @@ export default class Area {
     let collection = this.getGameObjectCollection(gameObject.tileX, gameObject.tileY);
     if (!collection) collection = this.createGameObjectCollection(gameObject.tileX, gameObject.tileY);
     collection.add(gameObject);
+  }
+
+  public addTile(tile: Tile): void {
+    this.tiles.push(tile);
   }
 
   public addSpawner(spawner: Spawner): void {
@@ -49,6 +55,10 @@ export default class Area {
         gameObjects.push(gameObject);
 
     return gameObjects;
+  }
+
+  public getTiles(): Tile[] {
+    return this.tiles;
   }
 
   public activateSpawners(): void {

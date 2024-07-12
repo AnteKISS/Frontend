@@ -225,11 +225,10 @@ export default class CampaignManager {
     this.tiledrawer.drawDebugTilePos(TILE_POS.x, TILE_POS.y, color);
   }
 
-  /*
   public drawDebugCurrentTileSet(): void {
-    this.tiledrawer.drawDebugTileList(this.campaign.currentArea().tileSet.getTiles());
+    console.log("TEST:", this.campaign.currentArea().getTiles());
+    this.tiledrawer.drawDebugTileList(this.campaign.currentArea().getTiles());
   }
-  */
 
   public drawDebugProximityTiles(pixelX: number, pixelY: number, depth: number): void {
     const TILE_POS = TileModule.getTilePosFromUnitPos(pixelX, pixelY);

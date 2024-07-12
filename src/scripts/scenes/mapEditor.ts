@@ -397,7 +397,7 @@ export default class MapEditor extends Phaser.Scene {
       this.scene.start('MainScene');
 
     const EXPORT = CampaignSerializer.export(CampaignManager.getInstance().getCampaign());
-    console.log(EXPORT);
+    // console.log(EXPORT);
   }
 
   private tileModeClick(): void {
@@ -434,9 +434,9 @@ export default class MapEditor extends Phaser.Scene {
     CampaignManager.getInstance().clearDebugTiles();
 
     if (this.showDebugTiles) {
-      // CampaignManager.getInstance().drawDebugCurrentTileSet(); // TODO: Fix
       CampaignManager.getInstance().drawDebugPoint(this.playerPos.x, this.playerPos.y, TileColor.Player);
       CampaignManager.getInstance().drawDebugTile(this.playerPos.x, this.playerPos.y, TileColor.Player);
+      CampaignManager.getInstance().drawDebugCurrentTileSet();
     }
 
     // Draw cursor tile
