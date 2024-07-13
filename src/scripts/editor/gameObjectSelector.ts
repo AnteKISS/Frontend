@@ -77,7 +77,7 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
 
   private setupSpawnerSprites() {
     this.gameObjectSpriteLists.set(GameObjectSelector.SPAWNERS_TAB_KEY, [
-      ["Spawner", "basic_spawner", undefined]
+      ["Spawner", "basic_spawner", "zombie_0", 5, 5]
     ]);
   }
 

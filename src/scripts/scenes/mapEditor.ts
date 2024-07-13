@@ -10,6 +10,8 @@ import ConfigureTileForm from '../editor/configuretileform'
 import DeleteTransitionForm from '../editor/deletetransitionform'
 import GameObjectSelector from '../editor/gameObjectSelector'
 import Point from '../types/point'
+import ConfigureSpawnerForm from '../editor/configureSpawnerForm'
+import Spawner from '../tiles/spawner'
 
 enum TileMode {
   Add = "Add",
@@ -84,6 +86,7 @@ export default class MapEditor extends Phaser.Scene {
   private configureTileForm: ConfigureTileForm;
   private deleteTransitionForm: DeleteTransitionForm;
   private gameObjectSelector: GameObjectSelector;
+  private configureSpawnerForm: ConfigureSpawnerForm;
 
   // Input keys
   private aKey: Phaser.Input.Keyboard.Key; // Move left
@@ -180,6 +183,9 @@ export default class MapEditor extends Phaser.Scene {
 
     this.gameObjectSelector = new GameObjectSelector(this);
 
+    this.configureSpawnerForm = new ConfigureSpawnerForm(this, () => this.hideConfigureSpawnerForm());
+    this.configureSpawnerForm.hide();
+
     // Inputs
     if (this.input && this.input.keyboard) {
       this.aKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
@@ -238,6 +244,7 @@ export default class MapEditor extends Phaser.Scene {
         this.deleteTransitionForm,
         this.configureTileForm,
         this.gameObjectSelector,
+        this.configureSpawnerForm,
       ]
     );
   }
@@ -397,7 +404,7 @@ export default class MapEditor extends Phaser.Scene {
       this.scene.start('MainScene');
 
     const EXPORT = CampaignSerializer.export(CampaignManager.getInstance().getCampaign());
-    // console.log(EXPORT);
+    console.log(EXPORT);
   }
 
   private tileModeClick(): void {
@@ -414,11 +421,24 @@ export default class MapEditor extends Phaser.Scene {
         CampaignManager.getInstance().deleteGameObjects(TILE_POS.x, TILE_POS.y);
 
     else if (this.tileMode === TileMode.Configure) {
-      const TILE: Tile | undefined = CampaignManager.getInstance().getTile(this.cursorTilePos.x, this.cursorTilePos.y);
-      if (TILE) {
-        this.inMenu = true;
-        this.configureTileForm.show(TILE);
-      }
+      this.configure(this.cursorTilePos.x, this.cursorTilePos.y);
+    }
+  }
+
+  private configure(tileX: number, tileY: number) {
+    // Check if trying to configure spawner
+    const SPAWNER: Spawner | undefined = CampaignManager.getInstance().getGameObjectByType(tileX, tileY, Spawner);
+    if (SPAWNER) {
+      this.inMenu = true;
+      this.configureSpawnerForm.show(SPAWNER);
+      return;
+    }
+
+    // Check if trying to configure tile
+    const TILE: Tile | undefined = CampaignManager.getInstance().getTile(tileX, tileY);
+    if (TILE) {
+      this.inMenu = true;
+      this.configureTileForm.show(TILE);
     }
   }
 
@@ -481,6 +501,11 @@ export default class MapEditor extends Phaser.Scene {
   private hideDeleteTransitionForm(): void {
     this.inMenu = false;
     this.deleteTransitionForm.hide();
+  }
+
+  private hideConfigureSpawnerForm(): void {
+    this.inMenu = false;
+    this.configureSpawnerForm.hide();
   }
 
   private changeTileMode(mode: TileMode): void {

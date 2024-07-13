@@ -5,15 +5,15 @@ import GameObject from './gameobject';
 import TileModule from './tilemodule';
 
 export default class Spawner extends GameObject {
-  private monsterCode: string;
-  private spawnAmount: number;
-  private range: number; // in tiles
+  public monsterCode: string;
+  public spawnAmount: number;
+  public range: number; // in tiles
 
-  public constructor(tileX: number, tileY: number) {
-    super(tileX, tileY, "basic_spawner");
-    this.monsterCode = "zombie_0";
-    this.spawnAmount = 5;
-    this.range = 5;
+  public constructor(tileX: number, tileY: number, source: string, monsterCode: string, spawnAmount: number, range: number) {
+    super(tileX, tileY, source);
+    this.monsterCode = monsterCode
+    this.spawnAmount = spawnAmount;
+    this.range = range;
   }
 
   public spawn(): void {
@@ -31,7 +31,7 @@ export default class Spawner extends GameObject {
   }
 
   public getArgs(): any[] {
-    return ["Spawner", this.tileX, this.tileY, this.source];
+    return ["Spawner", this.tileX, this.tileY, this.source, this.monsterCode, this.spawnAmount, this.range];
   }
 
   public getCollectionId(): string {

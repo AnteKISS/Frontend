@@ -154,7 +154,7 @@ export default class CampaignManager {
   }
 
   /******************************/
-  //           TILES            //
+  //        GAME OBJECTS        //
   /******************************/
 
   public getTile(x: number, y: number): Tile | undefined {
@@ -164,6 +164,10 @@ export default class CampaignManager {
   public getTileFromPixelPosition(pixelX: number, pixelY: number): Tile | undefined {
     const PIXEL_POS = TileModule.getTilePosFromUnitPos(pixelX, pixelY);
     return this.getTile(PIXEL_POS.x, PIXEL_POS.y);
+  }
+
+  public getGameObjectByType<T extends GameObject>(tileX: number, tileY: number, constructor: new (...args: any[]) => T): T | undefined {
+    return this.campaign.currentArea().getGameObjectByType(tileX, tileY, constructor);
   }
 
   public addGameObject(gameObject: GameObject) {

@@ -1,4 +1,3 @@
-import 'phaser'
 import Tile from '../tiles/tile'
 import Campaign from '../tiles/campaign'
 

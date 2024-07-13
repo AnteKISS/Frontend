@@ -53,8 +53,7 @@ export default class TransitionForm extends Phaser.GameObjects.Container {
     this.add([this.background, this.title, this.nameInput, this.xInput, this.yInput, this.areaSelect, this.nextInputText, this.cancelText, this.confirmText]);
     this.scene.add.existing(this);
 
-    if(scene && scene.input && scene.input.keyboard)
-    {
+    if (scene && scene.input && scene.input.keyboard) {
       scene.input.keyboard.on('keydown', (event: KeyboardEvent) => this.handleKeyDown(event));
     }
     this.focused = false;
