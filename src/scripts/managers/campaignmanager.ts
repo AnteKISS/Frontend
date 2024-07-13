@@ -9,6 +9,7 @@ import Tile from '../tiles/tile'
 import TileModule from '../tiles/tilemodule'
 import Transition from '../tiles/transition'
 import GameObject from '../tiles/gameobject'
+import { EntityManager } from './entityManager'
 
 export default class CampaignManager {
   private static instance: CampaignManager;
@@ -210,8 +211,13 @@ export default class CampaignManager {
     const transition = this.campaign.currentAct().getTransition(transitionName);
     if (!transition) return null;
 
+    EntityManager.instance.hideAreaEntities();
+
     const transitionSuccessful = this.campaign.currentAct().transition(transition.targetArea);
     if (transitionSuccessful) this.loadCurrentArea();
+
+    EntityManager.instance.showAreaEntities();
+
     return transition;
   }
 

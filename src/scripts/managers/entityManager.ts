@@ -40,6 +40,16 @@ export class EntityManager {
     pool.splice(index, 1);
   }
 
+  public hideAreaEntities(): void {
+    for (const entity of this.getCurrentAreaEntityPool())
+      entity.setVisible(false);
+  }
+
+  public showAreaEntities(): void {
+    for (const entity of this.getCurrentAreaEntityPool())
+      entity.setVisible(true);
+  }
+
   public update(time: number, deltaTime: number): void {
     this.globalPool.forEach(entity => { entity.update(time, deltaTime); });
     this.getCurrentAreaEntityPool().forEach(entity => { entity.update(time, deltaTime); });

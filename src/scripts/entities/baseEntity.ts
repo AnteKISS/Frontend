@@ -19,9 +19,10 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
   protected _orientation_rad: number;
   protected _debugMode: boolean = false;
 
-  constructor(scene) {
+  constructor(scene: Phaser.Scene) {
     super(scene, 0, 0);
     scene.add.existing(this);
+    scene.cameras.getCamera("uiCamera")?.ignore(this);
     this.type = 'BaseEntity';
   }
 

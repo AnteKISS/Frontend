@@ -1,3 +1,4 @@
+import { MonsterEntity } from '../entities/monsterEntity';
 import CampaignManager from '../managers/campaignmanager';
 import { EntityManager } from '../managers/entityManager';
 import { MathModule } from '../utilities/mathModule';
@@ -8,25 +9,30 @@ export default class Spawner extends GameObject {
   public monsterCode: string;
   public spawnAmount: number;
   public range: number; // in tiles
+  public entities: Set<MonsterEntity>;
 
   public constructor(tileX: number, tileY: number, source: string, monsterCode: string, spawnAmount: number, range: number) {
     super(tileX, tileY, source);
     this.monsterCode = monsterCode
     this.spawnAmount = spawnAmount;
     this.range = range;
+    this.entities = new Set();
   }
 
   public spawn(): void {
-    for (let i = 0; i < this.spawnAmount; i++) {
+    const spawnedEntitiesAmount = this.entities.size;
+
+    for (let i = 0; i < this.spawnAmount - spawnedEntitiesAmount; i++) {
       const entity = EntityManager.instance.createMonster(CampaignManager.getInstance().getScene(), this.monsterCode);
-      const xTileOffset = MathModule.getRandomInt(-this.range, this.range);
-      const yTileOffset = MathModule.getRandomInt(-this.range, this.range);
+      const xTileOffset = MathModule.getRandomInt(-this.range, this.range + 1);
+      const yTileOffset = MathModule.getRandomInt(-this.range, this.range + 1);
       const pos = TileModule.getUnitPosFromTilePos(this.tileX + xTileOffset, this.tileY + yTileOffset);
 
       console.log(entity);
       entity.positionX = pos.x;
       entity.positionY = pos.y;
       entity.area = CampaignManager.getInstance().getCampaign().currentArea();
+      this.entities.add(entity);
     }
   }
 
