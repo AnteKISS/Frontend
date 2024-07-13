@@ -9,14 +9,16 @@ export default class GameObjectCollection {
     this.collection = new Map();
   }
 
-  public add(gameObject: GameObject): Map<string, GameObject> {
-    return this.collection.set(gameObject.getCollectionId(), gameObject);
+  public add(gameObject: GameObject): GameObject | undefined {
+    const replacedGameObject = this.collection.get(gameObject.getCollectionId());
+    this.collection.set(gameObject.getCollectionId(), gameObject);
+    return replacedGameObject;
   }
 
-  public delete(): Array<GameObject> | undefined {
-    const gameObjectsToDelete = new Array<GameObject>;
-    for (const gameObject of this.collection.values())
-      gameObjectsToDelete.push(gameObject);
+  public delete(): Map<string, GameObject> | undefined {
+    const gameObjectsToDelete = new Map<string, GameObject>;
+    for (const gameObject of this.collection)
+      gameObjectsToDelete.set(gameObject[0], gameObject[1]);
     this.collection.clear();
     return gameObjectsToDelete;
   }

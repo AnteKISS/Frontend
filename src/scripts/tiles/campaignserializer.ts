@@ -50,12 +50,6 @@ export default abstract class CampaignSerializer {
           const GameObjectClass = GameObjectRegistry[ARGS[0]];
           const newGameObject = new GameObjectClass(...ARGS.slice(1));
           AREA.addGameObject(newGameObject);
-
-          // Spawners have their own ref list in area
-          if (newGameObject instanceof Tile)
-            AREA.addTile(newGameObject);
-          else if (newGameObject instanceof Spawner)
-            AREA.addSpawner(newGameObject);
         }
       }
 

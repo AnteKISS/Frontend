@@ -226,7 +226,6 @@ export default class CampaignManager {
   }
 
   public drawDebugCurrentTileSet(): void {
-    console.log("TEST:", this.campaign.currentArea().getTiles());
     this.tiledrawer.drawDebugTileList(this.campaign.currentArea().getTiles());
   }
 

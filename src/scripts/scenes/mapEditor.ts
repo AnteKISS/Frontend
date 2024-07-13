@@ -397,7 +397,7 @@ export default class MapEditor extends Phaser.Scene {
       this.scene.start('MainScene');
 
     const EXPORT = CampaignSerializer.export(CampaignManager.getInstance().getCampaign());
-    console.log(EXPORT);
+    // console.log(EXPORT);
   }
 
   private tileModeClick(): void {

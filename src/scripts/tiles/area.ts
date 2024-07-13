@@ -7,36 +7,47 @@ import TileModule from './tilemodule';
 export default class Area {
   public name: string;
   public gameObjects: Map<string, GameObjectCollection>;
-  public tiles: Array<Tile>;
-  public spawners: Array<Spawner>;
+  public tiles: Set<Tile>;
+  public spawners: Set<Spawner>;
 
   public constructor(name: string) {
     this.name = name;
     this.gameObjects = new Map();
-    this.tiles = new Array();
-    this.spawners = new Array();
+    this.tiles = new Set();
+    this.spawners = new Set();
   }
 
   public addGameObject(gameObject: GameObject): void {
     let collection = this.getGameObjectCollection(gameObject.tileX, gameObject.tileY);
     if (!collection) collection = this.createGameObjectCollection(gameObject.tileX, gameObject.tileY);
-    collection.add(gameObject);
+    const replacedGameObject = collection.add(gameObject);
+
+    if (gameObject instanceof Tile) {
+      this.tiles.delete(replacedGameObject as Tile);
+      this.tiles.add(gameObject);
+    }
+    else if (gameObject instanceof Spawner) {
+      this.spawners.delete(replacedGameObject as Spawner);
+      this.spawners.add(gameObject);
+    }
   }
 
-  public addTile(tile: Tile): void {
-    this.tiles.push(tile);
-  }
-
-  public addSpawner(spawner: Spawner): void {
-    this.spawners.push(spawner);
-  }
-
-  public removeGameObjects(x: number, y: number): Array<GameObject> | undefined {
+  public removeGameObjects(x: number, y: number): IterableIterator<GameObject> | undefined {
     const hash = TileModule.getTileHash(x, y);
     const collection = this.gameObjects.get(hash);
     const gameObjectsToDelete = collection?.delete();
+
+    // Delete area's extra references to gameobjects
+    if (gameObjectsToDelete) {
+      const tile = gameObjectsToDelete.get("Tile");
+      const spawner = gameObjectsToDelete.get("Spawner");
+
+      if (tile) this.tiles.delete(tile as Tile);
+      if (spawner) this.spawners.delete(spawner as Spawner);
+    }
+
     if (gameObjectsToDelete) this.gameObjects.delete(hash);
-    return gameObjectsToDelete;
+    return gameObjectsToDelete?.values();
   }
 
   public getGameObjectByType<T extends GameObject>(x: number, y: number, constructor: new (...args: any[]) => T): T | undefined {
@@ -57,8 +68,8 @@ export default class Area {
     return gameObjects;
   }
 
-  public getTiles(): Tile[] {
-    return this.tiles;
+  public getTiles(): IterableIterator<Tile> {
+    return this.tiles.values();
   }
 
   public activateSpawners(): void {
