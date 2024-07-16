@@ -22,6 +22,10 @@ import { ActiveEntity } from '../entities/activeEntity'
 import ItemEntity from '../entities/itemEntity'
 import { MathModule } from '../utilities/mathModule'
 import { GameInput } from '../inputs/gameInputs'
+import { GameObjects } from 'phaser'
+import SoundManager from '../managers/soundManager'
+import EventManager from '../managers/eventManager'
+import { UiEvents } from '../events/uiEvents'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -89,6 +93,8 @@ export default class MainScene extends Phaser.Scene {
         this.scene.launch('MapEditor');
         this.scene.pause('MainScene');
         this.scene.setVisible(false, 'MainScene');
+        const clickEvent = new UiEvents.ButtonClickEvent(this.mapEditorButton);
+        EventManager.notifyObservers(clickEvent);
       });
 
     this.input!.mouse!.disableContextMenu();
@@ -178,6 +184,8 @@ export default class MainScene extends Phaser.Scene {
       ]
     );
     // TODO: Find a way to make the ignore list more dynamic
+    // var pointLight = this.add.pointlight(this.playerTest.positionX, this.playerTest.positionY, 0x7777aa, 250, 100, 0.005);
+    // pointLight.depth = 100;
     this.uiCamera.ignore(
       [
         this.playerTest,
@@ -188,8 +196,11 @@ export default class MainScene extends Phaser.Scene {
         this.monsterTest.collider.debugGraphics,
         this.monsterTest2.collider.debugGraphics,
         this.monsterTest3.collider.debugGraphics,
+        // pointLight
       ]
     );
+    var soundMgr = new SoundManager(this, this.playerTest);
+    EventManager.addObserver(soundMgr);
     // EntityManager.instance.setDebugMode(true);
   }
 
@@ -201,10 +212,7 @@ export default class MainScene extends Phaser.Scene {
 
     window['deltaTime'] = deltaTime;
     this.fpsText.update();
-    this.playerTest.update(time, deltaTime);
-    this.monsterTest.update(time, deltaTime);
-    this.monsterTest2.update(time, deltaTime);
-    this.monsterTest3.update(time, deltaTime);
+    EntityManager.instance.update(time, deltaTime);
     this.updateGUI();
     this.entityHealthBar.update();
     this.drawDebugTileSet();

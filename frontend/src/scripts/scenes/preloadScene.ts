@@ -58,6 +58,7 @@ export default class PreloadScene extends Phaser.Scene {
     // AUDIO
     this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
     this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');
+    this.load.audio('buttonClick', 'assets/sound/click.wav');
 
     this.initializeSpritesheets();
 
