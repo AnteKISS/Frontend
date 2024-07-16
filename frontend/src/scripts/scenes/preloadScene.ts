@@ -59,6 +59,14 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
     this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');
     this.load.audio('buttonClick', 'assets/sound/click.wav');
+    this.load.audio('melee_swing_and_hit_armor_1', 'assets/sound/melee_swing_and_hit_armor_1.wav');
+    this.load.audio('melee_swing_and_hit_armor_2', 'assets/sound/melee_swing_and_hit_armor_2.wav');
+    this.load.audio('melee_swing_and_hit_armor_3', 'assets/sound/melee_swing_and_hit_armor_3.wav');
+    this.load.audio('melee_swing_and_hit_armor_4', 'assets/sound/melee_swing_and_hit_armor_4.wav');
+    this.load.audio('melee_swing_and_hit_flesh_1', 'assets/sound/melee_swing_and_hit_flesh_1.wav');
+    this.load.audio('melee_swing_and_hit_flesh_2', 'assets/sound/melee_swing_and_hit_flesh_2.wav');
+    this.load.audio('melee_swing_and_hit_flesh_3', 'assets/sound/melee_swing_and_hit_flesh_3.wav');
+    this.load.audio('melee_swing_and_hit_flesh_4', 'assets/sound/melee_swing_and_hit_flesh_4.wav');
 
     this.initializeSpritesheets();
 
@@ -73,7 +81,7 @@ export default class PreloadScene extends Phaser.Scene {
 
   }
 
-  create() {
+  create(): void {
     this.scene.start('MainScene');
   }
 

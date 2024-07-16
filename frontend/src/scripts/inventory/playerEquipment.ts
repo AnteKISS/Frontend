@@ -1,4 +1,5 @@
 import EquipSlot from './equipSlot'
+import InventoryItem from './inventoryItem';
 import { ItemType } from './itemType'
 
 export default class PlayerEquipment extends Phaser.GameObjects.Container {
@@ -33,6 +34,15 @@ export default class PlayerEquipment extends Phaser.GameObjects.Container {
     for (const SLOT of this.equipSlots)
       if (Phaser.Geom.Rectangle.Contains(SLOT.getBounds(), pointer.x, pointer.y))
         return SLOT;
+    return null;
+  }
+
+  public getEquippedWeapon(): InventoryItem | null {
+    for (const SLOT of this.equipSlots) {
+      if (SLOT.itemType === ItemType.WEAPON) {
+        return SLOT.getItem();
+      }
+    }
     return null;
   }
 }

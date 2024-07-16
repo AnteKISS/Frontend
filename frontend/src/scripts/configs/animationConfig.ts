@@ -596,7 +596,7 @@ export const player_AnimationConfig = {
       { start: player_meleeAttackAnimationStartFrame + EntityOrientation.DOWN_LEFT,   end: player_meleeAttackAnimationEndFrame + EntityOrientation.DOWN_LEFT,   sheet: 'greatbow', orientation: EntityOrientation.DOWN_LEFT }
     ],
     state: ActiveEntityAnimationState.State.MELEEATTACK,
-    frameRate: 8
+    frameRate: 12
   },
   block: {
     frames: [

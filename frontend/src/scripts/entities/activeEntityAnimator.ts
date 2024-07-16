@@ -7,6 +7,11 @@ import { getOrientationString } from "../enums/entityOrientation";
 import { InventorySprite } from "./inventorySprite";
 import { InventorySlots } from "../enums/inventorySlots";
 import { Signal } from "../events/signal";
+import Item from "../inventory/item";
+import { ActiveEntityEvents } from "../events/activeEntityEvents";
+import { ItemType } from "../inventory/itemType";
+import EventManager from "../managers/eventManager";
+import MainScene from "../scenes/mainScene";
 
 export class ActiveEntityAnimator {
   public parent: ActiveEntity;
@@ -129,7 +134,16 @@ export class ActiveEntityAnimator {
   }
 
   onAnimationStart = (listener): void => {
-
+    const action: string = listener.key.split('_')[0].toUpperCase();
+    switch (action) {
+      case ActiveEntityAnimationState.State.MELEEATTACK:
+        // Some rat code since I'm not sure how the inventory system works
+        const parentScene = this.parent.scene as MainScene;
+        let equippedWeapon: Item = parentScene.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite");
+        const meleeAttackEvent = new ActiveEntityEvents.MeleeWeaponAttackEvent(this.parent, equippedWeapon);
+        meleeAttackEvent.isStartingAttack = true;
+        EventManager.notifyObservers(meleeAttackEvent);
+    }
   }
 
   onAnimationUpdate = (listener): void => {
@@ -142,6 +156,16 @@ export class ActiveEntityAnimator {
       this.onYoyoAnimationMiddleFrame.raise(() => {
         this.parent.currentAnimationState
       });
+      const action: string = listener.key.split('_')[0].toUpperCase();
+      switch (action) {
+        case ActiveEntityAnimationState.State.MELEEATTACK:
+          // Some rat code since I'm not sure how the inventory system works
+          const parentScene = this.parent.scene as MainScene;
+          let equippedWeapon: Item = parentScene.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite");
+          const meleeAttackEvent = new ActiveEntityEvents.MeleeWeaponAttackEvent(this.parent, equippedWeapon);
+          meleeAttackEvent.isMiddleOfAttack = true;
+          EventManager.notifyObservers(meleeAttackEvent);
+      }
     }
   }
 

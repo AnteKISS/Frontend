@@ -1,6 +1,6 @@
 import { ActiveEntity } from "../entities/activeEntity";
-import ItemEntity from "../entities/itemEntity";
 import Spell from "../spells/spell";
+import Item from "../inventory/item";
 
 export namespace ActiveEntityEvents {
 
@@ -31,9 +31,12 @@ export namespace ActiveEntityEvents {
 
   export abstract class WeaponEvent {
     public entity: ActiveEntity;
-    public weapon: ItemEntity;
+    public weapon: Item;
+    public isStartingAttack: boolean = false;
+    public isMiddleOfAttack: boolean = false;
+    public isFinishingAttack: boolean = false;
 
-    constructor(entity: ActiveEntity, weapon: ItemEntity) {
+    constructor(entity: ActiveEntity, weapon: Item) {
       this.entity = entity;
       this.weapon = weapon;
     }
@@ -50,19 +53,19 @@ export namespace ActiveEntityEvents {
   }
 
   export class MeleeWeaponAttackEvent extends WeaponEvent {
-    constructor(attacker: ActiveEntity, weapon: ItemEntity) {
+    constructor(attacker: ActiveEntity, weapon: Item) {
       super(attacker, weapon);
     }
   }
 
   export class RangedWeaponAttackEvent extends WeaponEvent {
-    constructor(attacker: ActiveEntity, weapon: ItemEntity) {
+    constructor(attacker: ActiveEntity, weapon: Item) {
       super(attacker, weapon);
     }
   }
 
   export class MagicAttackEvent extends WeaponEvent {
-    constructor(attacker: ActiveEntity, weapon: ItemEntity) {
+    constructor(attacker: ActiveEntity, weapon: Item) {
       super(attacker, weapon);
     }
   }

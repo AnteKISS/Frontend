@@ -49,7 +49,7 @@ export default class MainScene extends Phaser.Scene {
   private deathScreenBackground: Phaser.GameObjects.Graphics;
   private deathScreenText: Phaser.GameObjects.Text;
 
-  private inventory: Inventory;
+  public inventory: Inventory;
 
   public constructor() {
     super({ key: 'MainScene' });

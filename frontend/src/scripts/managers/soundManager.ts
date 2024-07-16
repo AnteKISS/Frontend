@@ -1,4 +1,5 @@
 import { PlayerEntity } from "../entities/playerEntity";
+import { ActiveEntityEvents } from "../events/activeEntityEvents";
 import { UiEvents } from "../events/uiEvents";
 import IObserver from "../observer/observer";
 import { Settings } from "../settings/settings";
@@ -24,12 +25,13 @@ export default class SoundManager implements IObserver {
     // scene.tweens.add({ targets: mySound, volume: 0, duration: 500 });
   }
   public onNotify(event: any): void {
-    if (this.isUiEvent(event)) {
-      this.handleUiEvent(event);
+    if (event instanceof UiEvents.ButtonClickEvent) {
+      this.uiSoundManager.play(this.BUTTON_CLICK_SOUND_KEY);
+    } else if (event instanceof ActiveEntityEvents.MeleeWeaponAttackEvent) {
+      if (event.isMiddleOfAttack) {
+        this.playMeleeSwingHitSound(event.entity.target instanceof PlayerEntity);
+      }
     }
-    // if (event instanceof UiEvents.ButtonClickEvent) {
-    //   this.uiSoundManager.play('buttonClick');
-    // }
   }
 
   public playBackgroundMusic(): void {
@@ -42,89 +44,19 @@ export default class SoundManager implements IObserver {
     this.backgroundSoundManager.play('backgroundMusic');
   }
 
-  private handleUiEvent(event: any): void {
-    if (event instanceof UiEvents.ButtonClickEvent) {
-      this.uiSoundManager.play(this.BUTTON_CLICK_SOUND_KEY);
+  public playMeleeSwingHitSound(targetHasArmor: boolean): void {
+    if (Settings.instance.soundSettings.soundEffectsMuted) {
+      return;
+    }
+    const random = Math.floor(Math.random() * 4) + 1;
+    const pitchVariation = Math.random() * 0.2 + 0.9;
+    const soundSetting = {
+      rate: pitchVariation
+    };
+    if (targetHasArmor) {
+      this.effectsSoundManager.play('melee_swing_and_hit_armor_' + random, soundSetting);
+    } else {
+      this.effectsSoundManager.play('melee_swing_and_hit_flesh_' + random, soundSetting);
     }
   }
-
-  private isUiEvent(event: any): boolean {
-    return event.constructor && event.constructor.name.startsWith('UiEvents');
-  }
 }
-
-/**
- * But how would I play a sound at a specific time? For example, when the player is hitting a monster, how could I play the appropriate sound if he hits the enemy?
-
-To play a sound at a specific time, such as when the player hits a monster in your game, you can implement event-driven sound playback. Here's how you can achieve this in your TypeScript game development architecture:
-
-    Event System: Implement an event system that allows different game entities to communicate with each other. When the player hits a monster, an event can be triggered to play the appropriate sound.
-
-    Observer Pattern: Use the observer pattern to notify the sound manager or relevant sound classes when specific events occur in the game, such as a player hitting a monster.
-
-    Custom Events: Define custom events for different interactions in the game, such as "PlayerHitMonsterEvent", which can carry information about the specific interaction.
-
-Here's an updated example to demonstrate how you can play a sound at a specific time, like when the player hits a monster:
-
-typescript
-
-// Custom event for when the player hits a monster
-class PlayerHitMonsterEvent {
-    constructor(public player: Player, public monster: Monster) {}
-}
-
-// Observer interface for classes that listen to events
-interface Observer {
-    onNotify(event: any): void;
-}
-
-// Player class
-class Player {
-    hitMonster(monster: Monster) {
-        // Logic for player hitting a monster
-        const event = new PlayerHitMonsterEvent(this, monster);
-        EventManager.notify(event);
-    }
-}
-
-// Monster class
-class Monster {}
-
-// Event manager to handle events and notify observers
-class EventManager {
-    private static observers: Observer[] = [];
-
-    static addObserver(observer: Observer) {
-        this.observers.push(observer);
-    }
-
-    static notify(event: any) {
-        this.observers.forEach(observer => {
-            observer.onNotify(event);
-        });
-    }
-}
-
-// Sound manager class that acts as an observer for game events
-class SoundManager implements Observer {
-    onNotify(event: any) {
-        if (event instanceof PlayerHitMonsterEvent) {
-            // Play sound when player hits a monster
-            const hitSound = new SoundEffect("hitSound.mp3");
-            hitSound.play();
-        }
-    }
-}
-
-// Usage
-const player = new Player();
-const monster = new Monster();
-const soundManager = new SoundManager();
-
-EventManager.addObserver(soundManager);
-
-// Simulate player hitting a monster
-player.hitMonster(monster);
-
-In this example, when the player hits a monster, a custom event PlayerHitMonsterEvent is triggered. The SoundManager class listens for this event and plays the appropriate sound effect. By using events and observers, you can decouple the sound playback logic from the game entities, making your code more modular and easier to maintain.
- */
