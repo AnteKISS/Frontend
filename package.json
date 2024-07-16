@@ -4,8 +4,9 @@
   "description": "Projet S3i de la team AntéKISS",
   "homepage": "https://github.com/AnteKISS/Frontend?tab=readme-ov-file#nametbd",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "webpack serve --config webpack/webpack.dev.js",
+    "start": "node --experimental-specifier-resolution=node --loader ts-node/esm src/scripts/server.ts",
     "build": "rimraf dist && webpack --config webpack/webpack.prod.js",
     "bundle": "npm run build",
     "serve": "serve dist"
@@ -37,7 +38,8 @@
     "keycloak-js": "^25.0.1",
     "mathjs": "^13.0.1",
     "node": "^20.13.1",
-    "phaser": "^3.55.2"
+    "phaser": "^3.55.2",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^10.1.0",
