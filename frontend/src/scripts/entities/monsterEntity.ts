@@ -86,7 +86,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     throw new NotImplementedError();
   }
 
-  public damage(amount: number): void {
+  public damage(amount: number, damageSource: ActiveEntity): void {
     // TODO: take into account gear, active effects then apply damage
     if (this.stats.health == 0) {
       return;

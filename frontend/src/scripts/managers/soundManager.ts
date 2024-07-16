@@ -12,7 +12,8 @@ export default class SoundManager implements IObserver {
   private backgroundSoundManager: Phaser.Sound.WebAudioSoundManager;
   private effectsSoundManager: Phaser.Sound.WebAudioSoundManager;
 
-  private readonly BUTTON_CLICK_SOUND_KEY = 'buttonClick';
+  private readonly BUTTON_CLICK_1_SOUND_KEY = 'buttonClick_1';
+  private readonly BUTTON_CLICK_2_SOUND_KEY = 'buttonClick_2';
 
   constructor(scene: Phaser.Scene, player: PlayerEntity) {
     this.scene = scene;
@@ -26,10 +27,15 @@ export default class SoundManager implements IObserver {
   }
   public onNotify(event: any): void {
     if (event instanceof UiEvents.ButtonClickEvent) {
-      this.uiSoundManager.play(this.BUTTON_CLICK_SOUND_KEY);
+      this.uiSoundManager.play(this.BUTTON_CLICK_2_SOUND_KEY);
     } else if (event instanceof ActiveEntityEvents.MeleeWeaponAttackEvent) {
       if (event.isMiddleOfAttack) {
         this.playMeleeSwingHitSound(event.entity.target instanceof PlayerEntity);
+      }
+    } else if (event instanceof ActiveEntityEvents.KilledEvent) {
+      if (event.target instanceof PlayerEntity) {
+        const random = Math.floor(Math.random() * 3) + 1;
+        this.effectsSoundManager.play('human_male_death_' + random);
       }
     }
   }

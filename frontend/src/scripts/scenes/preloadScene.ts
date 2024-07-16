@@ -58,7 +58,8 @@ export default class PreloadScene extends Phaser.Scene {
     // AUDIO
     this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
     this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');
-    this.load.audio('buttonClick', 'assets/sound/click.wav');
+    this.load.audio('buttonClick_1', 'assets/sound/click_1.wav');
+    this.load.audio('buttonClick_2', 'assets/sound/click_2.wav');
     this.load.audio('melee_swing_and_hit_armor_1', 'assets/sound/melee_swing_and_hit_armor_1.wav');
     this.load.audio('melee_swing_and_hit_armor_2', 'assets/sound/melee_swing_and_hit_armor_2.wav');
     this.load.audio('melee_swing_and_hit_armor_3', 'assets/sound/melee_swing_and_hit_armor_3.wav');
@@ -67,18 +68,11 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.audio('melee_swing_and_hit_flesh_2', 'assets/sound/melee_swing_and_hit_flesh_2.wav');
     this.load.audio('melee_swing_and_hit_flesh_3', 'assets/sound/melee_swing_and_hit_flesh_3.wav');
     this.load.audio('melee_swing_and_hit_flesh_4', 'assets/sound/melee_swing_and_hit_flesh_4.wav');
+    this.load.audio('human_male_death_1', 'assets/sound/human_male_death_1.mp3');
+    this.load.audio('human_male_death_2', 'assets/sound/human_male_death_2.mp3');
+    this.load.audio('human_male_death_3', 'assets/sound/human_male_death_3.wav');
 
     this.initializeSpritesheets();
-
-    // this.load.image('sky', 'assets/sky.png');
-    // this.load.image('ground', 'assets/platform.png');
-    // this.load.image('star', 'assets/star.png');
-    // this.load.image('bomb', 'assets/bomb.png');
-    // this.load.spritesheet('dude',
-    //     'assets/dude.png',
-    //     { frameWidth: 32, frameHeight: 48 }
-    // );
-
   }
 
   create(): void {

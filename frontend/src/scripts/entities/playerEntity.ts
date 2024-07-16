@@ -20,6 +20,8 @@ import { Exp } from '../progression/exp';
 import { SkillTree } from '../progression/skillTree';
 import { AttributeAllocation } from '../progression/attributeAllocation';
 import Tile, { TileType } from '../tiles/tile';
+import { ActiveEntityEvents } from '../events/activeEntityEvents';
+import EventManager from '../managers/eventManager';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -128,10 +130,10 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   public attack(target: IFightable): void {
-    target.damage(10);
+    target.damage(10, this);
   }
 
-  public damage(amount: number): void {
+  public damage(amount: number, damageSource: ActiveEntity): void {
     // TODO: take into account gear, active effects then apply damage
     if (this.stats.health == 0) {
       return;
@@ -143,6 +145,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       this.destinationY = this.positionY;
       this.currentAnimationState.state = ActiveEntityAnimationState.State.DEATH;
       this.onPlayerDeath.raise();
+      const deathEvent = new ActiveEntityEvents.KilledEvent(damageSource, this);
+      EventManager.notifyObservers(deathEvent);
     }
   }
 
