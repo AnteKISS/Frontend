@@ -72,12 +72,12 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
       this.destinationX = this.positionX;
       this.destinationY = this.positionY;
 
-      const random = Math.floor(Math.random() * 8) + 1;
-      const soundConfig = {
-        rate: this.stats.movementSpeed / 150,
-        volume: 0.25
-      };
-      SoundManager.getInstance().effectsSoundManager.play('step_dirt_' + random, soundConfig);
+      // const random = Math.floor(Math.random() * 8) + 1;
+      // const soundConfig = {
+      //   rate: this.stats.movementSpeed / 150,
+      //   volume: 0.25
+      // };
+      // SoundManager.getInstance().effectsSoundManager.play('step_dirt_' + random, soundConfig);
       return;
     }
 
@@ -92,7 +92,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
       collisionInfo.collidingEntity!.positionY -= Math.sin(angle) * 2;
       return;
     }
-
+    SoundManager.getInstance().playFootstepsSound(this);
     this._isMoving = true;
     let distance: number = this.stats.movementSpeed * (window['deltaTime'] / 1000);
     let distanceMultiplier: number = 1 - (Math.abs(Math.sin(this._orientation_rad)) / 2);

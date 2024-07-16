@@ -5,6 +5,7 @@ import Area from '../tiles/area';
 export abstract class BaseEntity extends Phaser.GameObjects.Container {
 
   public id: number;
+  public uuid: string;
   public code: string;
   public orientation: EntityOrientation = EntityOrientation.DOWN;
   public isResetReady: boolean = false;
@@ -23,6 +24,7 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
     super(scene, 0, 0);
     scene.add.existing(this);
     this.type = 'BaseEntity';
+    this.uuid = Phaser.Math.RND.uuid();
   }
 
   // Properties

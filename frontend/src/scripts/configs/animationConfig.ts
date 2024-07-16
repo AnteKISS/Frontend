@@ -928,7 +928,7 @@ export const player_AnimationConfig = {
       { start: player_deathAnimationStartFrame + EntityOrientation.DOWN_LEFT,   end: player_deathAnimationEndFrame + EntityOrientation.DOWN_LEFT,   sheet: 'greatbow', orientation: EntityOrientation.DOWN_LEFT }
     ],
     state: ActiveEntityAnimationState.State.DEATH,
-    frameRate: 4
+    frameRate: 8
   },
   cheer: {
     frames: [

@@ -1,4 +1,5 @@
 import { ActiveEntity } from "../entities/activeEntity";
+import { EntitySound, SoundType } from "../entities/entitySound";
 import { MonsterEntity } from "../entities/monsterEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import { ActiveEntityEvents } from "../events/activeEntityEvents";
@@ -14,7 +15,8 @@ export default class SoundManager implements IObserver {
   private _scene: Phaser.Scene;
   private player: PlayerEntity;
 
-  private footstepsSoundEntityMap: Map<ActiveEntity, Phaser.Sound.BaseSound> = new Map();
+  // private footstepsSoundEntityMap: Map<ActiveEntity, Phaser.Sound.BaseSound> = new Map();
+  private playingFootstepsSoundList: Phaser.Sound.BaseSound[] = [];
 
   private readonly BUTTON_CLICK_1_SOUND_KEY = 'buttonClick_1';
   private readonly BUTTON_CLICK_2_SOUND_KEY = 'buttonClick_2';
@@ -103,5 +105,31 @@ export default class SoundManager implements IObserver {
     } else {
       this.effectsSoundManager.play('melee_swing_and_hit_flesh_' + random, soundSetting);
     }
+  }
+
+  public playFootstepsSound(entity: ActiveEntity): void {
+    if (!this.scene || !this.player) {
+      return;
+    }
+    if (Settings.instance.soundSettings.soundEffectsMuted) {
+      return;
+    }
+    if (this.playingFootstepsSoundList.filter((sound) => (sound as EntitySound).entityUUID == entity.uuid && (sound as EntitySound).soundType == SoundType.FOOTSTEPS && sound.isPlaying).length > 0) {
+      return;
+    }
+    const random = Math.floor(Math.random() * 8) + 1;
+    const soundSetting = {
+      rate: entity.stats.movementSpeed / 150,
+      volume: 0.1
+    };
+    const sound = this.effectsSoundManager.add('step_dirt_' + random, soundSetting) as EntitySound;
+    sound.entityUUID = entity.uuid;
+    sound.soundType = SoundType.FOOTSTEPS;
+    this.playingFootstepsSoundList.push(sound);
+    sound.on('complete', () => {
+      this.playingFootstepsSoundList.slice(this.playingFootstepsSoundList.indexOf(sound), 1);
+      sound.destroy();
+    });
+    sound.play();
   }
 }
