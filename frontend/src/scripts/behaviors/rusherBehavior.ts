@@ -2,8 +2,6 @@ import { ActiveEntity } from "../entities/activeEntity";
 import { ActiveEntityAnimationState, ActiveEntityBehaviorState } from "../entities/entityState";
 import { MonsterEntity } from "../entities/monsterEntity";
 import { PlayerEntity } from "../entities/playerEntity";
-import { ActiveEntityEvents } from "../events/activeEntityEvents";
-import EventManager from "../managers/eventManager";
 import { MathModule } from "../utilities/mathModule";
 import { Behavior } from "./behavior";
 import { BehaviorFactors } from "./behaviorFactors";
@@ -43,8 +41,6 @@ export class RusherBehavior extends Behavior {
     
     switch (monster.currentBehaviorState.state) {
       case ActiveEntityBehaviorState.State.IDLE:
-        const movementFinishedEvent = new ActiveEntityEvents.MovingFinishedEvent(this.parent);
-        EventManager.notifyObservers(movementFinishedEvent);
         if (this.factors.roamFactor <= 0) {
 
         }
@@ -67,8 +63,6 @@ export class RusherBehavior extends Behavior {
         }
         else if (this.isTargetValid() && !this.isEntityInMeleeRange()) {
           this.parent.setDestination(this.parent.target!.positionX, this.parent.target!.positionY);
-          const startedMovementEvent = new ActiveEntityEvents.MovingStartedEvent(this.parent);
-          EventManager.notifyObservers(startedMovementEvent);
         } else {
           this.setBehaviorState(ActiveEntityBehaviorState.State.MELEE_ATTACKING);
         }
@@ -77,15 +71,11 @@ export class RusherBehavior extends Behavior {
         // Might not be necessary
         break;
       case ActiveEntityBehaviorState.State.ROAMING:
-        const startedMovementEvent = new ActiveEntityEvents.MovingStartedEvent(this.parent);
-        EventManager.notifyObservers(startedMovementEvent);
         const roamPoint = MathModule.getRandomPointInCircle(this.parent.positionX, this.parent.positionY, 100);
         this.parent.setDestination(roamPoint.x, roamPoint.y);
         this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         break;
       case ActiveEntityBehaviorState.State.MELEE_ATTACKING:
-        const finishedMovementEvent = new ActiveEntityEvents.MovingFinishedEvent(this.parent);
-        EventManager.notifyObservers(finishedMovementEvent);
         this.attackCooldown_ms = this.delayBetweenAttack * this.factors.attackCooldownFactor;
         if (!this.isTargetValid()) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
@@ -101,8 +91,6 @@ export class RusherBehavior extends Behavior {
         }
         break;
       case ActiveEntityBehaviorState.State.RANGED_ATTACKING:
-        const movementFinishedEvent1 = new ActiveEntityEvents.MovingFinishedEvent(this.parent);
-        EventManager.notifyObservers(movementFinishedEvent1);
         this.attackCooldown_ms = this.delayBetweenAttack * this.factors.attackCooldownFactor;
         if (!this.isTargetValid()) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
@@ -115,8 +103,6 @@ export class RusherBehavior extends Behavior {
         }
         break;
       case ActiveEntityBehaviorState.State.CASTING_SPELL:
-        const movementFinishedEvent2 = new ActiveEntityEvents.MovingFinishedEvent(this.parent);
-        EventManager.notifyObservers(movementFinishedEvent2);
         if (!this.isTargetValid()) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         }
@@ -127,8 +113,6 @@ export class RusherBehavior extends Behavior {
       case ActiveEntityBehaviorState.State.HIT:
         break;
       case ActiveEntityBehaviorState.State.DEATH:
-        const movementFinishedEvent3 = new ActiveEntityEvents.MovingFinishedEvent(this.parent);
-        EventManager.notifyObservers(movementFinishedEvent3);
         break;
     }
   }

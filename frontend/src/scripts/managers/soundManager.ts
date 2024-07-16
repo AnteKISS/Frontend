@@ -7,29 +7,54 @@ import IObserver from "../observer/observer";
 import { Settings } from "../settings/settings";
 
 export default class SoundManager implements IObserver {
+  public uiSoundManager: Phaser.Sound.WebAudioSoundManager;
+  public backgroundSoundManager: Phaser.Sound.WebAudioSoundManager;
+  public effectsSoundManager: Phaser.Sound.WebAudioSoundManager;
 
-  private scene: Phaser.Scene;
+  private _scene: Phaser.Scene;
   private player: PlayerEntity;
-  private uiSoundManager: Phaser.Sound.WebAudioSoundManager;
-  private backgroundSoundManager: Phaser.Sound.WebAudioSoundManager;
-  private effectsSoundManager: Phaser.Sound.WebAudioSoundManager;
 
   private footstepsSoundEntityMap: Map<ActiveEntity, Phaser.Sound.BaseSound> = new Map();
 
   private readonly BUTTON_CLICK_1_SOUND_KEY = 'buttonClick_1';
   private readonly BUTTON_CLICK_2_SOUND_KEY = 'buttonClick_2';
 
-  constructor(scene: Phaser.Scene, player: PlayerEntity) {
-    this.scene = scene;
-    this.player = player;
-    this.uiSoundManager = new Phaser.Sound.WebAudioSoundManager(scene.game);
-    this.backgroundSoundManager = new Phaser.Sound.WebAudioSoundManager(scene.game);
-    this.effectsSoundManager = new Phaser.Sound.WebAudioSoundManager(scene.game);
+  private static instance: SoundManager | null = null;
 
-    // scene.sound.setListenerPosition(x, y);
-    // scene.tweens.add({ targets: mySound, volume: 0, duration: 500 });
+  private constructor() {
+
   }
+
+  public static getInstance(): SoundManager {
+    if (!SoundManager.instance) {
+      SoundManager.instance = new SoundManager();
+    }
+    return SoundManager.instance;
+  }
+
+  public set scene(scene: Phaser.Scene) {
+    this._scene = scene;
+    this.uiSoundManager = new Phaser.Sound.WebAudioSoundManager(this.scene.game);
+    this.backgroundSoundManager = new Phaser.Sound.WebAudioSoundManager(this.scene.game);
+    this.effectsSoundManager = new Phaser.Sound.WebAudioSoundManager(this.scene.game);
+  }
+
+  public get scene(): Phaser.Scene {
+    return this._scene;
+  }
+
+  public set playerEntity(player: PlayerEntity) {
+    this.player = player;
+  }
+
+  public get playerEntity(): PlayerEntity {
+    return this.player;
+  }
+
   public onNotify(event: any): void {
+    if (!this.scene || !this.player) {
+      return;
+    }
     if (event instanceof UiEvents.ButtonClickEvent) {
       this.uiSoundManager.play(this.BUTTON_CLICK_2_SOUND_KEY);
     } else if (event instanceof ActiveEntityEvents.MeleeWeaponAttackEvent) {
@@ -42,32 +67,16 @@ export default class SoundManager implements IObserver {
         this.effectsSoundManager.play('human_male_death_' + random);
       }
     } else if (event instanceof ActiveEntityEvents.MovingStartedEvent) {
-      // if (event.entity instanceof MonsterEntity && event.entity.name === 'Menotaur') {
-        const random = Math.floor(Math.random() * 8) + 1;
-        if (this.footstepsSoundEntityMap.has(event.entity)) {
-          if (this.footstepsSoundEntityMap.get(event.entity)!.isPlaying) {
-            return;
-          }
-          this.footstepsSoundEntityMap.get(event.entity)!.play();
-          return;
-        }
-        let sound = new Phaser.Sound.WebAudioSound(this.effectsSoundManager, 'step_dirt_' + random, { rate: event.entity.stats.movementSpeed / 150, loop: true,  });
-        this.footstepsSoundEntityMap.set(event.entity, sound);
-        sound.play();
-      // }
+
     } else if (event instanceof ActiveEntityEvents.MovingFinishedEvent) {
-      // if (event.entity instanceof MonsterEntity && event.entity.name === 'Menotaur') {
-        if (!this.footstepsSoundEntityMap.has(event.entity)) {
-          return;
-        }
-        if (this.footstepsSoundEntityMap.get(event.entity)!.isPlaying) {
-          this.footstepsSoundEntityMap.get(event.entity)!.stop();
-        }
-      // }
+
     }
   }
 
   public playBackgroundMusic(): void {
+    if (!this.scene || !this.player) {
+      return;
+    }
     if (Settings.instance.soundSettings.backgroundMusicMuted) {
       if (this.backgroundSoundManager.getAllPlaying().length > 0) {
         this.backgroundSoundManager.stopAll();
@@ -78,6 +87,9 @@ export default class SoundManager implements IObserver {
   }
 
   public playMeleeSwingHitSound(targetHasArmor: boolean): void {
+    if (!this.scene || !this.player) {
+      return;
+    }
     if (Settings.instance.soundSettings.soundEffectsMuted) {
       return;
     }

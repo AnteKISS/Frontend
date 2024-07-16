@@ -199,8 +199,10 @@ export default class MainScene extends Phaser.Scene {
         // pointLight
       ]
     );
-    var soundMgr = new SoundManager(this, this.playerTest);
-    EventManager.addObserver(soundMgr);
+    let soundManager = SoundManager.getInstance();
+    soundManager.scene = this;
+    soundManager.playerEntity = this.playerTest;
+    EventManager.addObserver(soundManager);
     // EntityManager.instance.setDebugMode(true);
   }
 

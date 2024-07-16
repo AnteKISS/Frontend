@@ -10,6 +10,7 @@ import { Physics } from '../physics/collider';
 import CampaignManager from '../tiles/campaignmanager';
 import Tile, { TileType } from '../tiles/tile';
 import Vector from '../types/vector';
+import SoundManager from '../managers/soundManager';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
@@ -70,6 +71,13 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     if (this.isDestinationReached()) {
       this.destinationX = this.positionX;
       this.destinationY = this.positionY;
+
+      const random = Math.floor(Math.random() * 8) + 1;
+      const soundConfig = {
+        rate: this.stats.movementSpeed / 150,
+        volume: 0.25
+      };
+      SoundManager.getInstance().effectsSoundManager.play('step_dirt_' + random, soundConfig);
       return;
     }
 
