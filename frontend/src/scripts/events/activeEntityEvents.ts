@@ -81,4 +81,16 @@ export namespace ActiveEntityEvents {
       super(attacker, target);
     }
   }
+
+  export class MovingStartedEvent extends MovementEvent {
+    constructor(entity: ActiveEntity) {
+      super(entity);
+    }
+  }
+
+  export class MovingFinishedEvent extends MovementEvent {
+    constructor(entity: ActiveEntity) {
+      super(entity);
+    }
+  }
 }

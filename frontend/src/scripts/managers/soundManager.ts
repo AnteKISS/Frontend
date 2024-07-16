@@ -1,3 +1,5 @@
+import { ActiveEntity } from "../entities/activeEntity";
+import { MonsterEntity } from "../entities/monsterEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import { ActiveEntityEvents } from "../events/activeEntityEvents";
 import { UiEvents } from "../events/uiEvents";
@@ -11,6 +13,8 @@ export default class SoundManager implements IObserver {
   private uiSoundManager: Phaser.Sound.WebAudioSoundManager;
   private backgroundSoundManager: Phaser.Sound.WebAudioSoundManager;
   private effectsSoundManager: Phaser.Sound.WebAudioSoundManager;
+
+  private footstepsSoundEntityMap: Map<ActiveEntity, Phaser.Sound.BaseSound> = new Map();
 
   private readonly BUTTON_CLICK_1_SOUND_KEY = 'buttonClick_1';
   private readonly BUTTON_CLICK_2_SOUND_KEY = 'buttonClick_2';
@@ -37,6 +41,29 @@ export default class SoundManager implements IObserver {
         const random = Math.floor(Math.random() * 3) + 1;
         this.effectsSoundManager.play('human_male_death_' + random);
       }
+    } else if (event instanceof ActiveEntityEvents.MovingStartedEvent) {
+      // if (event.entity instanceof MonsterEntity && event.entity.name === 'Menotaur') {
+        const random = Math.floor(Math.random() * 8) + 1;
+        if (this.footstepsSoundEntityMap.has(event.entity)) {
+          if (this.footstepsSoundEntityMap.get(event.entity)!.isPlaying) {
+            return;
+          }
+          this.footstepsSoundEntityMap.get(event.entity)!.play();
+          return;
+        }
+        let sound = new Phaser.Sound.WebAudioSound(this.effectsSoundManager, 'step_dirt_' + random, { rate: event.entity.stats.movementSpeed / 150, loop: true,  });
+        this.footstepsSoundEntityMap.set(event.entity, sound);
+        sound.play();
+      // }
+    } else if (event instanceof ActiveEntityEvents.MovingFinishedEvent) {
+      // if (event.entity instanceof MonsterEntity && event.entity.name === 'Menotaur') {
+        if (!this.footstepsSoundEntityMap.has(event.entity)) {
+          return;
+        }
+        if (this.footstepsSoundEntityMap.get(event.entity)!.isPlaying) {
+          this.footstepsSoundEntityMap.get(event.entity)!.stop();
+        }
+      // }
     }
   }
 

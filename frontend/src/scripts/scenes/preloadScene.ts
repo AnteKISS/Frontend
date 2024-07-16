@@ -71,6 +71,14 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.audio('human_male_death_1', 'assets/sound/human_male_death_1.mp3');
     this.load.audio('human_male_death_2', 'assets/sound/human_male_death_2.mp3');
     this.load.audio('human_male_death_3', 'assets/sound/human_male_death_3.wav');
+    this.load.audio('step_dirt_1', 'assets/sound/step_dirt_1.wav');
+    this.load.audio('step_dirt_2', 'assets/sound/step_dirt_2.wav');
+    this.load.audio('step_dirt_3', 'assets/sound/step_dirt_3.wav');
+    this.load.audio('step_dirt_4', 'assets/sound/step_dirt_4.wav');
+    this.load.audio('step_dirt_5', 'assets/sound/step_dirt_5.wav');
+    this.load.audio('step_dirt_6', 'assets/sound/step_dirt_6.wav');
+    this.load.audio('step_dirt_7', 'assets/sound/step_dirt_7.wav');
+    this.load.audio('step_dirt_8', 'assets/sound/step_dirt_8.wav');
 
     this.initializeSpritesheets();
   }
