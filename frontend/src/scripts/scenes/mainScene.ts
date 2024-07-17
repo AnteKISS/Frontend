@@ -52,6 +52,7 @@ export default class MainScene extends Phaser.Scene {
   public inventory: Inventory;
 
   private music: Phaser.Sound.WebAudioSound;
+  private playerLight: Phaser.GameObjects.PointLight;
 
   public constructor() {
     super({ key: 'MainScene' });
@@ -165,38 +166,38 @@ export default class MainScene extends Phaser.Scene {
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
 
-    // // let distanceThreshold = 400; //This is the max distance from the object. Any farther and no sound is played.
-    // // let distanceToObject = Phaser.Math.Distance.Between(player.x, player.y, soundObj.x, soundObj.y);
-    // // let normalizedSound = 1 - (distanceToObject / distanceThreshold);
-    // // sound.volume = normalizedSound; turns into sound.volume = Phaser.Math.Easing.Sine.In(normalizedSound);
-    // this.music = this.sound.add('spinning_rat_power', {
-    //   mute: false,
-    //   volume: 0.9,
-    //   rate: 1,
-    //   detune: 0,
-    //   seek: 0,
-    //   loop: true,
-    //   delay: 0,
-    //   // source of the spatial sound
-    //   source: {
-    //       x: this.monsterTest2.positionX,// - this.cameras.main.width / 2,
-    //       y: this.monsterTest2.positionY,// - this.cameras.main.height / 2,
-    //       z: 0,
-    //       panningModel: 'equalpower',
-    //       distanceModel: 'inverse',
-    //       orientationX: 0,
-    //       orientationY: 0,
-    //       orientationZ: -1,
-    //       refDistance: 1,
-    //       maxDistance: 10000,
-    //       rolloffFactor: 1,
-    //       coneInnerAngle: 360,
-    //       coneOuterAngle: 0,
-    //       coneOuterGain: 0,
-    //       follow: undefined
-    //   }
-    // }) as Phaser.Sound.WebAudioSound;
-    // this.music.play();
+    // let distanceThreshold = 400; //This is the max distance from the object. Any farther and no sound is played.
+    // let distanceToObject = Phaser.Math.Distance.Between(player.x, player.y, soundObj.x, soundObj.y);
+    // let normalizedSound = 1 - (distanceToObject / distanceThreshold);
+    // sound.volume = normalizedSound; turns into sound.volume = Phaser.Math.Easing.Sine.In(normalizedSound);
+    this.music = this.sound.add('spinning_rat_power', {
+      mute: false,
+      volume: 0.9,
+      rate: 1,
+      detune: 0,
+      seek: 0,
+      loop: true,
+      delay: 0,
+      // source of the spatial sound
+      source: {
+          x: this.monsterTest2.positionX,// - this.cameras.main.width / 2,
+          y: this.monsterTest2.positionY,// - this.cameras.main.height / 2,
+          z: 0,
+          panningModel: 'equalpower',
+          distanceModel: 'inverse',
+          orientationX: 0,
+          orientationY: 0,
+          orientationZ: -1,
+          refDistance: 1,
+          maxDistance: 1000,
+          rolloffFactor: 1,
+          coneInnerAngle: 360,
+          coneOuterAngle: 0,
+          coneOuterGain: 0,
+          follow: undefined
+      }
+    }) as Phaser.Sound.WebAudioSound;
+    this.music.play();
     this.cameras.main.ignore(
       [
         this.fpsText,
@@ -210,8 +211,8 @@ export default class MainScene extends Phaser.Scene {
       ]
     );
     // TODO: Find a way to make the ignore list more dynamic
-    // var pointLight = this.add.pointlight(this.playerTest.positionX, this.playerTest.positionY, 0x7777aa, 250, 100, 0.005);
-    // pointLight.depth = 100;
+    this.playerLight = this.add.pointlight(this.playerTest.positionX, this.playerTest.positionY, 0xE0E0E0, 250, 3, 0.01);
+    this.playerLight.depth = 100;
     this.uiCamera.ignore(
       [
         this.playerTest,
@@ -222,7 +223,7 @@ export default class MainScene extends Phaser.Scene {
         this.monsterTest.collider.debugGraphics,
         this.monsterTest2.collider.debugGraphics,
         this.monsterTest3.collider.debugGraphics,
-        // pointLight
+        this.playerLight
       ]
     );
     let soundManager = SoundManager.getInstance();
@@ -231,6 +232,24 @@ export default class MainScene extends Phaser.Scene {
     SoundManager.getInstance().playOutsideBackgroundAmbience();
     EventManager.addObserver(soundManager);
     // EntityManager.instance.setDebugMode(true);
+    (this.plugins.get('rexHorrifiPipeline') as any).add(this.cameras.main, {
+      vignetteEnable: true,
+      vignetteStrength: 1, 
+      vignetteIntensity: 1.5,
+    });
+    this.input.keyboard!.on('keydown-W', () => {
+      (this.music.y as unknown as AudioParam).value -= 10;
+      console.log('Y: ', this.music.y);
+    });
+    this.input.keyboard!.on('keydown-S', () => {
+      (this.music.y as unknown as AudioParam).value += 10;
+    });
+    this.input.keyboard!.on('keydown-A', () => {
+      (this.music.x as unknown as AudioParam).value -= 10;
+    });
+    this.input.keyboard!.on('keydown-D', () => {
+      (this.music.x as unknown as AudioParam).value += 10;
+    });
   }
 
   public update(time: number, deltaTime: number) {
@@ -238,6 +257,8 @@ export default class MainScene extends Phaser.Scene {
       this.playerTest.positionX - this.cameras.main.width / 2,
       this.playerTest.positionY - this.cameras.main.height / 2
     );
+    this.playerLight.x = this.playerTest.positionX;
+    this.playerLight.y = this.playerTest.positionY;
     // let directionX = this.playerTest.positionX - this.monsterTest2.positionX;
     // let directionY = this.playerTest.positionY - this.monsterTest2.positionY;
     // let length = Math.sqrt((directionX * directionX) + (directionY * directionY));
@@ -250,7 +271,7 @@ export default class MainScene extends Phaser.Scene {
     // // this.music.setPan(panningValueX);
     // this.music.x = panningValueX;
     // this.music.y = panningValueY;
-    // this.sound.setListenerPosition(this.playerTest.positionX, this.playerTest.positionY);
+    this.sound.setListenerPosition(this.playerTest.positionX, this.playerTest.positionY);
 
     // this.sound.setListenerPosition(this.playerTest.positionX - this.cameras.main.width / 2, this.playerTest.positionY - this.cameras.main.height / 2);
     // console.log('Player pos: ', this.playerTest.positionX, this.playerTest.positionY);

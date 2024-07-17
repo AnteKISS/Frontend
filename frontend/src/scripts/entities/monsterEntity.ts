@@ -49,10 +49,16 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       scene.plugins.get('rexGlowFilterPipeline').add(this.baseSprite, {
         intensity: 0.02
       });
+      // scene.plugins.get('rexOutlinePipeline').add(this.baseSprite, {
+      //   thickness: 3,
+      //   outlineColor: 0x000000,
+      //   quality: 0.1
+      // });
     });
     this.baseSprite.on('pointerout', (pointer: Phaser.Input.Pointer) => {
       window['selectedMonster'] = null;
       scene.plugins.get('rexGlowFilterPipeline').remove(this.baseSprite);
+      // scene.plugins.get('rexOutlinePipeline').remove(this.baseSprite);
     });
 
     this.currentBehaviorState = new ActiveEntityBehaviorState();
