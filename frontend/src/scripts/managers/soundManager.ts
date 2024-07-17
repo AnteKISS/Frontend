@@ -1,4 +1,5 @@
 import { ActiveEntity } from "../entities/activeEntity";
+import { BaseEntity } from "../entities/baseEntity";
 import { EntitySound, SoundType } from "../entities/entitySound";
 import { MonsterEntity } from "../entities/monsterEntity";
 import { PlayerEntity } from "../entities/playerEntity";
@@ -53,6 +54,20 @@ export default class SoundManager implements IObserver {
     return this.player;
   }
 
+  public update(time: number, deltaTime: number): void {
+    if (!this.scene || !this.player) {
+      return;
+    }
+    this.effectsSoundManager.setListenerPosition(this.player.positionX, this.player.positionY);
+    this.scene.sound.setListenerPosition(this.player.positionX, this.player.positionY);
+    // this.backgroundSoundManager.setListenerPosition(this.player.positionX, this.player.positionY);
+    // this.uiSoundManager.setListenerPosition(this.player.positionX, this.player.positionY);
+    // this.playingFootstepsSoundList.forEach(sound => {
+    //   ((sound as EntitySound).x as unknown as AudioParam).value = (sound as EntitySound).entity.positionX;
+    //   ((sound as EntitySound).y as unknown as AudioParam).value = (sound as EntitySound).entity.positionY;
+    // });
+  }
+
   public onNotify(event: any): void {
     if (!this.scene || !this.player) {
       return;
@@ -87,7 +102,7 @@ export default class SoundManager implements IObserver {
     }
     this.backgroundSoundManager.play('outside_ambience_1', {
       loop: true,
-      volume: 0.5
+      volume: 0.1
     });
   }
 
@@ -111,28 +126,109 @@ export default class SoundManager implements IObserver {
   }
 
   public playFootstepsSound(entity: ActiveEntity): void {
+    // Theres a bug with the SetListenerPosition and I am not able to change the listener position (player) for the sound
+    if (entity.uuid != "It just doesnt work") {
+      return;
+    }
     if (!this.scene || !this.player) {
       return;
     }
     if (Settings.instance.soundSettings.soundEffectsMuted) {
       return;
     }
-    if (this.playingFootstepsSoundList.filter((sound) => (sound as EntitySound).entityUUID == entity.uuid && (sound as EntitySound).soundType == SoundType.FOOTSTEPS && sound.isPlaying).length > 0) {
+    if (this.playingFootstepsSoundList.filter((sound) => (sound as EntitySound).entity.uuid == entity.uuid && (sound as EntitySound).soundType == SoundType.FOOTSTEPS && sound.isPlaying).length > 0) {
       return;
     }
     const random = Math.floor(Math.random() * 8) + 1;
-    const soundSetting = {
+    // const soundSetting = {
+    //   rate: entity.stats.movementSpeed / 150,
+    //   volume: 0.5,
+    //   source: {
+    //     x: entity.positionX,
+    //     y: entity.positionY,
+    //     z: 0,
+    //     panningModel: 'equalpower',
+    //     distanceModel: 'inverse',
+    //     orientationX: 0,
+    //     orientationY: 0,
+    //     orientationZ: -1,
+    //     refDistance: 1,
+    //     maxDistance: 500,
+    //     rolloffFactor: 0.25,
+    //     coneInnerAngle: 360,
+    //     coneOuterAngle: 0,
+    //     coneOuterGain: 0,
+    //     follow: entity
+    //   }
+    // };
+    const sound = this.effectsSoundManager.add('step_dirt_' + random, {
       rate: entity.stats.movementSpeed / 150,
-      volume: 0.1
-    };
-    const sound = this.effectsSoundManager.add('step_dirt_' + random, soundSetting) as EntitySound;
-    sound.entityUUID = entity.uuid;
+      volume: 0.25,
+      source: {
+        x: entity.positionX,
+        y: entity.positionY,
+        z: 0,
+        panningModel: 'equalpower',
+        distanceModel: 'inverse',
+        orientationX: 0,
+        orientationY: 0,
+        orientationZ: -1,
+        refDistance: 1,
+        maxDistance: 500,
+        rolloffFactor: 1,
+        coneInnerAngle: 360,
+        coneOuterAngle: 0,
+        coneOuterGain: 0,
+        follow: undefined
+      }
+    }) as EntitySound;
+    // const sound = this.effectsSoundManager.add('step_dirt_' + random, soundSetting) as EntitySound;
+    sound.entity = entity;
     sound.soundType = SoundType.FOOTSTEPS;
     this.playingFootstepsSoundList.push(sound);
+    sound.on('update', () => {
+      console.log('update sound');
+      // (sound.x as unknown as AudioParam).value = entity.positionX;
+      // (sound.y as unknown as AudioParam).value = entity.positionY;
+      // this.effectsSoundManager.setListenerPosition(this.player.positionX, this.player.positionY);
+    });
     sound.on('complete', () => {
-      this.playingFootstepsSoundList.slice(this.playingFootstepsSoundList.indexOf(sound), 1);
-      sound.destroy();
+      console.log('complete sound b4: ', this.playingFootstepsSoundList);
+      const index = this.playingFootstepsSoundList.indexOf(sound);
+      if (index !== -1) {
+        this.playingFootstepsSoundList.splice(index, 1);
+      }
+      // this.playingFootstepsSoundList.slice(this.playingFootstepsSoundList.indexOf(sound), 1);
+      console.log('complete sound after: ', this.playingFootstepsSoundList);
+      // sound.destroy();
     });
     sound.play();
   }
+  // this.music = this.sound.add('spinning_rat_power', {
+  //   mute: false,
+  //   volume: 0.9,
+  //   rate: 1,
+  //   detune: 0,
+  //   seek: 0,
+  //   loop: true,
+  //   delay: 0,
+  //   // source of the spatial sound
+  //   source: {
+  //       x: this.monsterTest2.positionX,// - this.cameras.main.width / 2,
+  //       y: this.monsterTest2.positionY,// - this.cameras.main.height / 2,
+  //       z: 0,
+  //       panningModel: 'equalpower',
+  //       distanceModel: 'inverse',
+  //       orientationX: 0,
+  //       orientationY: 0,
+  //       orientationZ: -1,
+  //       refDistance: 1,
+  //       maxDistance: 1000,
+  //       rolloffFactor: 0.25,
+  //       coneInnerAngle: 360,
+  //       coneOuterAngle: 0,
+  //       coneOuterGain: 0,
+  //       follow: undefined
+  //   }
+  // }) as Phaser.Sound.WebAudioSound;
 }

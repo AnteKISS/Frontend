@@ -118,7 +118,7 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest.area = this.campaignManager.getCampaign().currentArea();
     this.monsterTest2 = EntityManager.instance.createMonster(this, 'minotaur_0');
     this.monsterTest2.name = 'Menotaur';
-    this.monsterTest2.positionX = this.monsterTest.positionX - 240;
+    this.monsterTest2.positionX = this.monsterTest.positionX - 2400;
     this.monsterTest2.positionY = this.monsterTest.positionY - 60;
     this.monsterTest2.stats.movementSpeed = 150;
     this.monsterTest2.stats.basePhysicalDamage = 20;
@@ -190,14 +190,14 @@ export default class MainScene extends Phaser.Scene {
           orientationZ: -1,
           refDistance: 1,
           maxDistance: 1000,
-          rolloffFactor: 1,
+          rolloffFactor: 0.25,
           coneInnerAngle: 360,
           coneOuterAngle: 0,
           coneOuterGain: 0,
           follow: undefined
       }
     }) as Phaser.Sound.WebAudioSound;
-    this.music.play();
+    // this.music.play();
     this.cameras.main.ignore(
       [
         this.fpsText,
@@ -272,7 +272,7 @@ export default class MainScene extends Phaser.Scene {
     // this.music.x = panningValueX;
     // this.music.y = panningValueY;
     this.sound.setListenerPosition(this.playerTest.positionX, this.playerTest.positionY);
-
+    SoundManager.getInstance().update(time, deltaTime);
     // this.sound.setListenerPosition(this.playerTest.positionX - this.cameras.main.width / 2, this.playerTest.positionY - this.cameras.main.height / 2);
     // console.log('Player pos: ', this.playerTest.positionX, this.playerTest.positionY);
     // console.log('Listener pos: ', this.sound.listenerPosition);
