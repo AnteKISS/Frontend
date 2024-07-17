@@ -30,7 +30,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   public offHandSprite: InventorySprite;
   public onPlayerDeath: Signal = new Signal();
 
-  maxMana: number = 150; //Pour test
   mySpellBook: SpellBook;
   private equippedSpells: Spell[] = [];
   public controller: PlayerController;
@@ -39,6 +38,10 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   public attributeAllocation: AttributeAllocation;
   private manaRegenEvent: Phaser.Time.TimerEvent;
   private healthRegenEvent: Phaser.Time.TimerEvent;
+  private realStrenght: number;
+  private realDexterity: number;
+  private realIntelligence: number;
+  private realVitality: number;
 
   constructor(scene) {
     super(scene);
@@ -127,16 +130,32 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     }
     this.collider.checkSpriteCollision();
 
-    if(this.stats.health < this.stats.maxHealth)
-    {
-      this.stats.health += this.stats.healthRegeneration*deltaTime;
-    }
+    this.attributeConversion();
+  }
+
+  private attributeConversion(): void
+  {
+    this.realVitality = this.stats.vitality + this.attributeAllocation.vitality;
+    this.stats.maxHealth = 100 + this.realVitality * 10;
+    this.stats.healthRegeneration = 2 + this.realVitality * 0.2;
+
+    this.realStrenght = this.stats.strength + this.attributeAllocation.strength;
+    
+    this.realDexterity = this.stats.dexterity + this.attributeAllocation.dexterity;
+    this.stats.movementSpeed = this.stats.baseMovementSpeed + this.realDexterity * 0.5;
+
+    this.stats.basePhysicalDamage = 10 + this.realStrenght * 2 + this.realDexterity;
+
+    this.realIntelligence = this.stats.intelligence + this.attributeAllocation.intelligence;
+    this.stats.maxMana = 100 + this.realIntelligence * 5;
+    this.stats.manaRegeneration = 2 + this.realIntelligence * 0.2;
+    this.stats.baseMagicalDamage = 10 + this.realIntelligence * 2;
   }
 
   private startManaRegen(scene: Phaser.Scene) 
   {
     this.manaRegenEvent = scene.time.addEvent({
-        delay: 1000,                // Regenerate every second
+        delay: 1000,                
         callback: this.regenerateMana,
         callbackScope: this,
         loop: true
@@ -146,7 +165,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   private startHealthRegen(scene: Phaser.Scene) 
   {
     this.healthRegenEvent = scene.time.addEvent({
-        delay: 1000,                // Regenerate every second
+        delay: 1000,                
         callback: this.regenerateHealth,
         callbackScope: this,
         loop: true
@@ -155,13 +174,13 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
 
   private regenerateMana() 
   {
-    if (this.stats.mana < this.maxMana) 
+    if (this.stats.mana < this.stats.maxMana) 
     {
       this.stats.mana += this.stats.manaRegeneration;
     }
-    if (this.stats.mana > this.maxMana) 
+    if (this.stats.mana > this.stats.maxMana) 
     {
-      this.stats.mana = this.maxMana;
+      this.stats.mana = this.stats.maxMana;
     }
   }
 
@@ -182,7 +201,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   public attack(target: IFightable): void {
-    target.damage(10);
+    target.damage(this.stats.basePhysicalDamage);
   }
 
   public damage(amount: number): void {

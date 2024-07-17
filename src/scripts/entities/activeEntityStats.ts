@@ -2,6 +2,7 @@ export class ActiveEntityStats {
   public strength: number = 0;
   public dexterity: number = 0;
   public vitality: number = 0;
+  public intelligence: number = 0;
   public energy: number = 0;
   public mana: number = 0;
   public maxMana: number = 0;
