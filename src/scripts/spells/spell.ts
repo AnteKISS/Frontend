@@ -113,6 +113,7 @@ export default class Spell
 
     spellHit = (hitEntity: BaseEntity): void =>
     {
+        console.log('Hit');
         this.onHitEffects.forEach(onHitEffect =>
         {
             onHitEffect.onHit(hitEntity);

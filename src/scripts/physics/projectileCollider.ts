@@ -1,4 +1,6 @@
+import { ActiveEntity } from "../entities/activeEntity";
 import { BaseEntity } from "../entities/baseEntity";
+import { IFightable } from "../entities/IFightable";
 import { EntityManager } from "../managers/entityManager";
 import { SpellCollider } from "./spellCollider";
 
@@ -58,6 +60,10 @@ export class ProjectileCollider extends SpellCollider
             {
 				continue;
 			}
+            if((entities[index] as unknown as IFightable).isDead() == true)
+            {
+                continue;
+            }
             if (!(positionX + (this.truncatedSpriteWidth / 2) > entities[index].positionX - (entities[index].truncatedSpriteWidth / 2))) 
             {
                 continue;

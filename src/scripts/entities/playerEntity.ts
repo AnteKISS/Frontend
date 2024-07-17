@@ -20,6 +20,7 @@ import { Exp } from '../progression/exp';
 import { SkillTree } from '../progression/skillTree';
 import { AttributeAllocation } from '../progression/attributeAllocation';
 import Tile, { TileType } from '../tiles/tile';
+import { ActiveEntityStats } from './activeEntityStats';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -36,6 +37,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   public exp: Exp;
   private skillTree: SkillTree;
   public attributeAllocation: AttributeAllocation;
+  private manaRegenEvent: Phaser.Time.TimerEvent;
+  private healthRegenEvent: Phaser.Time.TimerEvent;
 
   constructor(scene) {
     super(scene);
@@ -90,6 +93,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.truncatedSpriteHeight = 64 * this.bodySprite.scaleY;
     this.collider = new Physics.Collider(this, this.bodySprite, this.onSpriteColliding, this.onEntityColliding);
     this.animator = new ActiveEntityAnimator(this);
+    this.startManaRegen(scene);
+    this.startHealthRegen(scene);
     const animationCompleteHandler: SignalHandler = {
       callback: this.onNonRepeatingAnimationEnd.bind(this),
       parameters: [this.currentAnimationState]
@@ -121,6 +126,55 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       this.collider.displayDebugGraphics();
     }
     this.collider.checkSpriteCollision();
+
+    if(this.stats.health < this.stats.maxHealth)
+    {
+      this.stats.health += this.stats.healthRegeneration*deltaTime;
+    }
+  }
+
+  private startManaRegen(scene: Phaser.Scene) 
+  {
+    this.manaRegenEvent = scene.time.addEvent({
+        delay: 1000,                // Regenerate every second
+        callback: this.regenerateMana,
+        callbackScope: this,
+        loop: true
+    });
+  }
+
+  private startHealthRegen(scene: Phaser.Scene) 
+  {
+    this.healthRegenEvent = scene.time.addEvent({
+        delay: 1000,                // Regenerate every second
+        callback: this.regenerateHealth,
+        callbackScope: this,
+        loop: true
+    });
+  }
+
+  private regenerateMana() 
+  {
+    if (this.stats.mana < this.maxMana) 
+    {
+      this.stats.mana += this.stats.manaRegeneration;
+    }
+    if (this.stats.mana > this.maxMana) 
+    {
+      this.stats.mana = this.maxMana;
+    }
+  }
+
+  private regenerateHealth() 
+  {
+    if (this.stats.health < this.stats.maxHealth) 
+    {
+      this.stats.health += this.stats.healthRegeneration;
+    }
+    if (this.stats.health > this.stats.maxHealth) 
+    {
+      this.stats.health = this.stats.maxHealth;
+    }
   }
 
   public reset(): void {

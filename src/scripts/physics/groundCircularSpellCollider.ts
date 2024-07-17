@@ -1,6 +1,7 @@
 import { SpellCollider } from "./spellCollider";
 import { BaseEntity } from "../entities/baseEntity";
 import { EntityManager } from "../managers/entityManager";
+import { IFightable } from "../entities/IFightable";
 
 export class GroundCircularSpellCollider extends SpellCollider
 {
@@ -37,6 +38,10 @@ export class GroundCircularSpellCollider extends SpellCollider
         for (let index = 0; index < entities.length; index++)
         {
             if (entities[index] === this.owner)
+            {
+                continue;
+            }
+            if((entities[index] as unknown as IFightable).isDead() == true)
             {
                 continue;
             }
