@@ -75,7 +75,7 @@ export default class SoundManager implements IObserver {
     }
   }
 
-  public playBackgroundMusic(): void {
+  public playOutsideBackgroundAmbience(): void {
     if (!this.scene || !this.player) {
       return;
     }
@@ -85,7 +85,10 @@ export default class SoundManager implements IObserver {
       }
       return;
     }
-    this.backgroundSoundManager.play('backgroundMusic');
+    this.backgroundSoundManager.play('outside_ambience_1', {
+      loop: true,
+      volume: 0.5
+    });
   }
 
   public playMeleeSwingHitSound(targetHasArmor: boolean): void {

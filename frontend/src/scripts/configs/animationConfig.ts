@@ -1392,7 +1392,7 @@ export const minotaur_0_AnimationConfig = {
       { start: minotaur_0_runAnimationStartFrame + minotaur_0_downLeftOrientationSpriteOffset,  end: minotaur_0_runAnimationEndFrame + minotaur_0_downLeftOrientationSpriteOffset,  sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.RUN,
-    frameRate: 8
+    frameRate: 10
   },
   meleeAttack: {
     frames: [
@@ -1406,7 +1406,7 @@ export const minotaur_0_AnimationConfig = {
       { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_downLeftOrientationSpriteOffset,  end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_downLeftOrientationSpriteOffset,  sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.MELEEATTACK,
-    frameRate: 8
+    frameRate: 10
   },
   block: {
     frames: [
