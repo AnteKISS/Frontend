@@ -51,6 +51,8 @@ export default class MainScene extends Phaser.Scene {
 
   public inventory: Inventory;
 
+  private music: Phaser.Sound.WebAudioSound;
+
   public constructor() {
     super({ key: 'MainScene' });
   }
@@ -168,12 +170,11 @@ export default class MainScene extends Phaser.Scene {
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
 
-    let music: Phaser.Sound.BaseSound;
     // let distanceThreshold = 400; //This is the max distance from the object. Any farther and no sound is played.
     // let distanceToObject = Phaser.Math.Distance.Between(player.x, player.y, soundObj.x, soundObj.y);
     // let normalizedSound = 1 - (distanceToObject / distanceThreshold);
     // sound.volume = normalizedSound; turns into sound.volume = Phaser.Math.Easing.Sine.In(normalizedSound);
-    music = this.sound.add('spinning_rat_power', {
+    this.music = this.sound.add('spinning_rat_power', {
       mute: false,
       volume: 0.9,
       rate: 1,
@@ -183,8 +184,8 @@ export default class MainScene extends Phaser.Scene {
       delay: 0,
       // source of the spatial sound
       source: {
-          x: this.monsterTest2.positionX - this.cameras.main.width / 2,
-          y: this.monsterTest2.positionY - this.cameras.main.height / 2,
+          x: this.monsterTest2.positionX,// - this.cameras.main.width / 2,
+          y: this.monsterTest2.positionY,// - this.cameras.main.height / 2,
           z: 0,
           panningModel: 'equalpower',
           distanceModel: 'inverse',
@@ -192,15 +193,15 @@ export default class MainScene extends Phaser.Scene {
           orientationY: 0,
           orientationZ: -1,
           refDistance: 1,
-          maxDistance: 400,
+          maxDistance: 10000,
           rolloffFactor: 1,
           coneInnerAngle: 360,
           coneOuterAngle: 0,
           coneOuterGain: 0,
           follow: undefined
       }
-    });
-    // music.play();
+    }) as Phaser.Sound.WebAudioSound;
+    this.music.play();
     this.cameras.main.ignore(
       [
         this.fpsText,
@@ -241,7 +242,28 @@ export default class MainScene extends Phaser.Scene {
       this.playerTest.positionX - this.cameras.main.width / 2,
       this.playerTest.positionY - this.cameras.main.height / 2
     );
+    let directionX = this.playerTest.positionX - this.monsterTest2.positionX;
+    let directionY = this.playerTest.positionY - this.monsterTest2.positionY;
+    let length = Math.sqrt((directionX * directionX) + (directionY * directionY));
+    let normalizedDirectionX = directionX / length;
+    let normalizedDirectionY = directionY / length;
+    let angle = Math.atan2(normalizedDirectionY, normalizedDirectionX);
+    let panningValueX = Math.sin(angle);
+    let panningValueY = Math.cos(angle);
+    // console.log('panningValueX: ', panningValueX, 'panningValueY: ', panningValueY);
+    // this.music.setPan(panningValueX);
+    this.music.x = panningValueX;
+    this.music.y = panningValueY;
     this.sound.setListenerPosition(this.playerTest.positionX, this.playerTest.positionY);
+    // this.sound.setListenerPosition(this.playerTest.positionX - this.cameras.main.width / 2, this.playerTest.positionY - this.cameras.main.height / 2);
+    // console.log('Player pos: ', this.playerTest.positionX, this.playerTest.positionY);
+    // console.log('Listener pos: ', this.sound.listenerPosition);
+    // this.music.x = this.monsterTest2.positionX;
+    // this.music.x = this.playerTest.positionX + this.monsterTest2.positionX - this.cameras.main.width / 2;
+    // this.music.y = this.monsterTest2.positionY;
+    // this.music.y = this.playerTest.positionY + this.monsterTest2.positionY - this.cameras.main.height / 2;
+    // console.log('Music pos: ', this.music.x, this.music.y);
+    // console.log('----------------------------------------------------------------------');
     window['deltaTime'] = deltaTime;
     this.fpsText.update();
     EntityManager.instance.update(time, deltaTime);

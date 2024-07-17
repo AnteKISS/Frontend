@@ -13,6 +13,8 @@ import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { ActiveEntityAnimationState, ActiveEntityBehaviorState } from './entityState';
 import { Behavior } from '../behaviors/behavior';
 import { RusherBehavior } from '../behaviors/rusherBehavior';
+import { ActiveEntityEvents } from '../events/activeEntityEvents';
+import EventManager from '../managers/eventManager';
 
 export class MonsterEntity extends ActiveEntity implements IFightable {
 
@@ -44,9 +46,13 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
     this.baseSprite.on('pointerover', (pointer: Phaser.Input.Pointer) => {
       window['selectedMonster'] = this;
+      scene.plugins.get('rexGlowFilterPipeline').add(this.baseSprite, {
+        intensity: 0.02
+      });
     });
     this.baseSprite.on('pointerout', (pointer: Phaser.Input.Pointer) => {
       window['selectedMonster'] = null;
+      scene.plugins.get('rexGlowFilterPipeline').remove(this.baseSprite);
     });
 
     this.currentBehaviorState = new ActiveEntityBehaviorState();
@@ -98,6 +104,8 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       this.destinationY = this.positionY;
       this.currentAnimationState.state = ActiveEntityAnimationState.State.DEATH;
       this.currentBehaviorState.state = ActiveEntityBehaviorState.State.DEATH;
+      const deathEvent = new ActiveEntityEvents.KilledEvent(damageSource, this);
+      EventManager.notifyObservers(deathEvent);
     }
   }
 
