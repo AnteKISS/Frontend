@@ -1,13 +1,13 @@
 import IObserver from "../observer/observer";
 
-export default class EventManager {
-  private static observers: IObserver[] = [];
+export abstract class EventManager {
+  private observers: IObserver[] = [];
 
-  public static addObserver(observer: IObserver): void {
+  public addObserver(observer: IObserver): void {
     this.observers.push(observer);
   }
 
-  public static removeObserver(observer: IObserver): void {
+  public removeObserver(observer: IObserver): void {
     const index = this.observers.indexOf(observer);
     if (index == -1) {
       return;
@@ -15,9 +15,39 @@ export default class EventManager {
     this.observers.splice(index, 1);
   }
 
-  public static notifyObservers(event: any): void {
+  public notifyObservers(event: any): void {
     this.observers.forEach(observer => {
       observer.onNotify(event);
     });
+  }
+}
+
+export class GeneralEventManager extends EventManager {
+  private static instance: GeneralEventManager | null = null;
+
+  private constructor() {
+    super();
+  }
+
+  public static getInstance(): GeneralEventManager {
+    if (!GeneralEventManager.instance) {
+      GeneralEventManager.instance = new GeneralEventManager();
+    }
+    return GeneralEventManager.instance;
+  }
+}
+
+export class PlayerEquipmentEventManager extends EventManager {
+  private static instance: PlayerEquipmentEventManager | null = null;
+
+  private constructor() {
+    super();
+  }
+
+  public static getInstance(): PlayerEquipmentEventManager {
+    if (!PlayerEquipmentEventManager.instance) {
+      PlayerEquipmentEventManager.instance = new PlayerEquipmentEventManager();
+    }
+    return PlayerEquipmentEventManager.instance;
   }
 }

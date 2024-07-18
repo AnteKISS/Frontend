@@ -10,7 +10,7 @@ import ItemEntity from "../entities/itemEntity";
 import { re } from "mathjs";
 import { ActiveEntityEvents } from "../events/activeEntityEvents";
 import InventoryItem from "../inventory/inventoryItem";
-import EventManager from "../managers/eventManager";
+import { GeneralEventManager } from "../managers/eventManager";
 import Item from "../inventory/item";
 import { ItemType } from "../inventory/itemType";
 

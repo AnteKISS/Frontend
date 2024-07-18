@@ -14,7 +14,8 @@ import { ActiveEntityAnimationState, ActiveEntityBehaviorState } from './entityS
 import { Behavior } from '../behaviors/behavior';
 import { RusherBehavior } from '../behaviors/rusherBehavior';
 import { ActiveEntityEvents } from '../events/activeEntityEvents';
-import EventManager from '../managers/eventManager';
+import { GeneralEventManager } from '../managers/eventManager';
+import MainScene from '../scenes/mainScene';
 
 export class MonsterEntity extends ActiveEntity implements IFightable {
 
@@ -111,7 +112,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       this.currentAnimationState.state = ActiveEntityAnimationState.State.DEATH;
       this.currentBehaviorState.state = ActiveEntityBehaviorState.State.DEATH;
       const deathEvent = new ActiveEntityEvents.KilledEvent(damageSource, this);
-      EventManager.notifyObservers(deathEvent);
+      GeneralEventManager.getInstance().notifyObservers(deathEvent);
     }
   }
 

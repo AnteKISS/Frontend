@@ -4,7 +4,7 @@ export type SignalHandler = {
 }
 
 export class Signal {
-  private handlers: SignalHandler[] = [];
+  public handlers: SignalHandler[] = [];
 
   public addHandler(handler: SignalHandler): void {
     this.handlers.push(handler);

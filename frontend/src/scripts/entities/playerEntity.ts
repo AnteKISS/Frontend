@@ -21,10 +21,14 @@ import { SkillTree } from '../progression/skillTree';
 import { AttributeAllocation } from '../progression/attributeAllocation';
 import Tile, { TileType } from '../tiles/tile';
 import { ActiveEntityEvents } from '../events/activeEntityEvents';
-import EventManager from '../managers/eventManager';
+import { GeneralEventManager } from '../managers/eventManager';
+import MainScene from '../scenes/mainScene';
+import InventoryItem from '../inventory/inventoryItem';
+import IObserver from '../observer/observer';
+import { PlayerEvents } from '../events/playerEvents';
+import { ItemType } from '../inventory/itemType';
 
-export class PlayerEntity extends ActiveEntity implements IFightable {
-
+export class PlayerEntity extends ActiveEntity implements IFightable, IObserver {
   public headSprite: InventorySprite;
   public bodySprite: InventorySprite;
   public mainHandSprite: InventorySprite;
@@ -146,7 +150,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       this.currentAnimationState.state = ActiveEntityAnimationState.State.DEATH;
       this.onPlayerDeath.raise();
       const deathEvent = new ActiveEntityEvents.KilledEvent(damageSource, this);
-      EventManager.notifyObservers(deathEvent);
+      GeneralEventManager.getInstance().notifyObservers(deathEvent);
     }
   }
 
@@ -250,6 +254,27 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     }
   }
 
+  public onNotify(event: any): void {
+    console.log(event.item.getItem().itemType);
+    if (event instanceof PlayerEvents.PlayerEquipItemEvent) {
+      switch (event.item.getItem().itemType) {
+        case ItemType.HELMET:
+          this.headSprite.textureName = "MALE_HEAD1";
+        case ItemType.ARMOR:
+          this.bodySprite.textureName = "STEEL_ARMOR";
+      }
+      event.player.animator.forceUpdateOnce = true;
+    } else if (event instanceof PlayerEvents.PlayerUnequipItemEvent) {
+      switch (event.item.getItem().itemType) {
+        case ItemType.HELMET:
+          this.headSprite.textureName = "MALE_HEAD2";
+        case ItemType.ARMOR:
+          this.bodySprite.textureName = "CLOTHES";
+      }
+      event.player.animator.forceUpdateOnce = true;
+    }
+  }
+
   private handleTileTransition() {
     // Check if current tile has a transition
     if (!(ActiveEntity.campaignManager && this.currentTile?.transition))
@@ -266,7 +291,3 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.setY(newPlayerPosition.y);
   }
 }
-
-// if ((module as any).hot) {
-//   (module as any).hot.accept();
-// }

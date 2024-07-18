@@ -16,7 +16,6 @@ export default class SoundManager implements IObserver {
   private _scene: Phaser.Scene;
   private player: PlayerEntity;
 
-  // private footstepsSoundEntityMap: Map<ActiveEntity, Phaser.Sound.BaseSound> = new Map();
   private playingFootstepsSoundList: Phaser.Sound.BaseSound[] = [];
 
   private readonly BUTTON_CLICK_1_SOUND_KEY = 'buttonClick_1';
@@ -58,8 +57,8 @@ export default class SoundManager implements IObserver {
     if (!this.scene || !this.player) {
       return;
     }
-    this.effectsSoundManager.setListenerPosition(this.player.positionX, this.player.positionY);
-    this.scene.sound.setListenerPosition(this.player.positionX, this.player.positionY);
+    // this.effectsSoundManager.setListenerPosition(this.player.positionX, this.player.positionY);
+    // this.scene.sound.setListenerPosition(this.player.positionX, this.player.positionY);
     // this.backgroundSoundManager.setListenerPosition(this.player.positionX, this.player.positionY);
     // this.uiSoundManager.setListenerPosition(this.player.positionX, this.player.positionY);
     // this.playingFootstepsSoundList.forEach(sound => {

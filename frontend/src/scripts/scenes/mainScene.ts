@@ -24,7 +24,7 @@ import { MathModule } from '../utilities/mathModule'
 import { GameInput } from '../inputs/gameInputs'
 import { GameObjects } from 'phaser'
 import SoundManager from '../managers/soundManager'
-import EventManager from '../managers/eventManager'
+import { GeneralEventManager, PlayerEquipmentEventManager } from '../managers/eventManager'
 import { UiEvents } from '../events/uiEvents'
 
 export default class MainScene extends Phaser.Scene {
@@ -92,12 +92,29 @@ export default class MainScene extends Phaser.Scene {
         this.scene.pause('MainScene');
         this.scene.setVisible(false, 'MainScene');
         const clickEvent = new UiEvents.ButtonClickEvent(this.mapEditorButton);
-        EventManager.notifyObservers(clickEvent);
+        GeneralEventManager.getInstance().notifyObservers(clickEvent);
       });
 
     this.input!.mouse!.disableContextMenu();
 
     ActiveEntity.setCampaignManager(this.campaignManager);
+
+    // Setup inventory test
+    this.inventory = new Inventory(this);
+    this.input.keyboard!.on('keydown-I', () => this.inventory.visible ? this.inventory.hide() : this.inventory.show());
+    this.input.keyboard!.on('keydown-ESC', () => this.inventory.hide());
+
+    const stoneSword = new Item(this, "Stone Sword", ItemType.WEAPON, 1, 2, "stone_sword_inventory", "dropped_sword");
+    this.inventory.getItemStorage().addItem(new InventoryItem(this, stoneSword), 0, 0);
+
+    const woodenShield = new Item(this, "Wooden Shield", ItemType.WEAPON, 2, 2, "wooden_shield_inventory", "dropped_shield");
+    this.inventory.getItemStorage().autoLoot(new InventoryItem(this, woodenShield));
+
+    const chainmailHood = new Item(this, "Chainmail Hood", ItemType.HELMET, 2, 2, "chainmail_hood_inventory", "dropped_chainmail_hood");
+    this.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailHood));
+
+    const chainmailGloves = new Item(this, "Chainmail Gloves", ItemType.GLOVES, 2, 2, "chainmail_gloves_inventory", "dropped_chainmail_gloves");
+    this.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailGloves));
 
     this.gui = new GUI(this, 0, 0);
     this.playerTest = EntityManager.instance.createPlayer(this);
@@ -132,23 +149,6 @@ export default class MainScene extends Phaser.Scene {
     this.gui.spellBar.setSpellBook(this.playerTest.spellBook);
 
     this.input.setDefaultCursor('default');
-
-    // Setup inventory test
-    this.inventory = new Inventory(this);
-    this.input.keyboard!.on('keydown-I', () => this.inventory.visible ? this.inventory.hide() : this.inventory.show());
-    this.input.keyboard!.on('keydown-ESC', () => this.inventory.hide());
-
-    const stoneSword = new Item(this, "Stone Sword", ItemType.WEAPON, 1, 2, "stone_sword_inventory", "dropped_sword");
-    this.inventory.getItemStorage().addItem(new InventoryItem(this, stoneSword), 0, 0);
-
-    const woodenShield = new Item(this, "Wooden Shield", ItemType.WEAPON, 2, 2, "wooden_shield_inventory", "dropped_shield");
-    this.inventory.getItemStorage().autoLoot(new InventoryItem(this, woodenShield));
-
-    const chainmailHood = new Item(this, "Chainmail Hood", ItemType.HELMET, 2, 2, "chainmail_hood_inventory", "dropped_chainmail_hood");
-    this.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailHood));
-
-    const chainmailGloves = new Item(this, "Chainmail Gloves", ItemType.GLOVES, 2, 2, "chainmail_gloves_inventory", "dropped_chainmail_gloves");
-    this.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailGloves));
 
     Tooltip.init(this);
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
@@ -230,7 +230,9 @@ export default class MainScene extends Phaser.Scene {
     soundManager.scene = this;
     soundManager.playerEntity = this.playerTest;
     SoundManager.getInstance().playOutsideBackgroundAmbience();
-    EventManager.addObserver(soundManager);
+
+    GeneralEventManager.getInstance().addObserver(soundManager);
+    PlayerEquipmentEventManager.getInstance().addObserver(this.playerTest);
     // EntityManager.instance.setDebugMode(true);
     (this.plugins.get('rexHorrifiPipeline') as any).add(this.cameras.main, {
       vignetteEnable: true,
@@ -259,29 +261,8 @@ export default class MainScene extends Phaser.Scene {
     );
     this.playerLight.x = this.playerTest.positionX;
     this.playerLight.y = this.playerTest.positionY;
-    // let directionX = this.playerTest.positionX - this.monsterTest2.positionX;
-    // let directionY = this.playerTest.positionY - this.monsterTest2.positionY;
-    // let length = Math.sqrt((directionX * directionX) + (directionY * directionY));
-    // let normalizedDirectionX = directionX / length;
-    // let normalizedDirectionY = directionY / length;
-    // let angle = Math.atan2(normalizedDirectionY, normalizedDirectionX);
-    // let panningValueX = Math.sin(angle);
-    // let panningValueY = Math.cos(angle);
-    // // console.log('panningValueX: ', panningValueX, 'panningValueY: ', panningValueY);
-    // // this.music.setPan(panningValueX);
-    // this.music.x = panningValueX;
-    // this.music.y = panningValueY;
     this.sound.setListenerPosition(this.playerTest.positionX, this.playerTest.positionY);
     SoundManager.getInstance().update(time, deltaTime);
-    // this.sound.setListenerPosition(this.playerTest.positionX - this.cameras.main.width / 2, this.playerTest.positionY - this.cameras.main.height / 2);
-    // console.log('Player pos: ', this.playerTest.positionX, this.playerTest.positionY);
-    // console.log('Listener pos: ', this.sound.listenerPosition);
-    // this.music.x = this.monsterTest2.positionX;
-    // this.music.x = this.playerTest.positionX + this.monsterTest2.positionX - this.cameras.main.width / 2;
-    // this.music.y = this.monsterTest2.positionY;
-    // this.music.y = this.playerTest.positionY + this.monsterTest2.positionY - this.cameras.main.height / 2;
-    // console.log('Music pos: ', this.music.x, this.music.y);
-    // console.log('----------------------------------------------------------------------');
     window['deltaTime'] = deltaTime;
     this.fpsText.update();
     EntityManager.instance.update(time, deltaTime);

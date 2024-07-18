@@ -3,7 +3,7 @@ import InventoryItem from './inventoryItem';
 import { ItemType } from './itemType'
 
 export default class PlayerEquipment extends Phaser.GameObjects.Container {
-  private equipSlots: EquipSlot[];
+  public equipSlots: EquipSlot[];
 
   constructor(scene: Phaser.Scene) {
     super(scene, 0, 360);
