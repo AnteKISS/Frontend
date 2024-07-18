@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self' http://localhost:8180" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
@@ -26,6 +27,49 @@
 
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="http://localhost:8180/js/keycloak.js"></script>
+    <script>
+        var keycloak;
+        function initKeycloak() {
+            keycloak = new Keycloak({
+                "realm": "usager",
+                "auth-server-url": "http://localhost:8180/",
+                "ssl-required": "external",
+                "clientId": "frontend",
+                "public-client": true,
+                "confidential-port": 0
+            });
+            keycloak.init({onLoad: 'login-required'}).then(function (authenticated) {
+                alert(authenticated ? 'authenticated' : 'not authenticated');
+
+            }).catch(function () {
+                alert('failed to initialize');
+            });
+        }
+
+        keycloak.init({onLoad: 'login-required'})
+        .then(function (authenticated) {
+          if (authenticated) {
+            console.log('Authenticated');
+            startGame(); // User is authenticated, start the game
+          } else {
+            console.log('Not authenticated');
+            keycloak.login(); // Redirects to Keycloak login page
+          }
+        })
+        .catch(function (error) {
+          console.error('Failed to initialize Keycloak', error);
+          alert('Failed to initialize Keycloak');
+        });
+
+    function startGame() {
+      // Your game initialization logic goes here
+      console.log('Game starting...');
+    }
+
+      </script>
+
     <title><%= htmlWebpackPlugin.options.gameName %></title>
     <style>
       html,
@@ -47,7 +91,7 @@
       }
     </script> -->
   </head>
-  <body>
+  <body onload="initKeycloak()">
     <div id="phaser-game"></div>
   </body>
 </html>

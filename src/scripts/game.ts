@@ -8,6 +8,7 @@ import Pregame from './scenes/pregame';
 import GlowFilterPipelinePlugin from 'phaser3-rex-plugins/plugins/glowfilterpipeline-plugin.js';
 import HorrifiPipelinePlugin from 'phaser3-rex-plugins/plugins/horrifipipeline-plugin.js';
 import OutlinePipelinePlugin from 'phaser3-rex-plugins/plugins/outlinepipeline-plugin.js';
+import { keycloak, initKeycloak } from './keycloak';
 
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
@@ -51,6 +52,26 @@ const config = {
   }
 }
 
+//async function startApp(): Promise<void> {
+//  try {
+//    await initKeycloak();
+//
+//    if (keycloak.authenticated) {
+//      // Proceed with application initialization
+//    } else {
+//      // Redirect to Keycloak login page if not authenticated
+//      keycloak.login();
+//    }
+//  } catch (error) {
+//    console.error('Failed to initialize Keycloak', error);
+//    throw error;
+//  }
+//}
+
+//startApp().catch((error) => {
+//  console.error('Error starting the application:', error);
+//});
+
 window.addEventListener('load', () => {
   const game = new Phaser.Game(config);
-})
+});

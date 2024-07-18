@@ -19,13 +19,10 @@
     "webpack",
     "starter"
   ],
-  "author": {
-    "name": "AntéKISS",
-    "url": "https://github.com/AnteKISS"
-  },
+  "author": "AntéKISS (https://github.com/AnteKISS)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AnteKISS/Frontend.git"
+    "url": "git+https://github.com/AnteKISS/Frontend.git"
   },
   "template": {
     "name": "phaser-project-template",
@@ -37,6 +34,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "keycloak-js": "^25.0.1",
     "mathjs": "^13.0.1",
     "node": "^20.13.1",
     "phaser": "^3.55.2",
@@ -57,5 +55,8 @@
     "webpack-merge": "^5.8.0",
     "webpack-obfuscator": "^3.5.0",
     "workbox-webpack-plugin": "^6.4.2"
+  },
+  "bugs": {
+    "url": "https://github.com/AnteKISS/Frontend/issues"
   }
 }
