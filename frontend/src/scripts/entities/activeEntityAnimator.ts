@@ -13,7 +13,7 @@ export class ActiveEntityAnimator {
   public sprites: InventorySprite[] = [];
   public onNonRepeatingAnimationComplete: Signal = new Signal();
   public onYoyoAnimationMiddleFrame: Signal = new Signal();
-  
+
   private futureState: ActiveEntityAnimationState.State | null = null;
   private spriteReference: InventorySprite;
 
@@ -26,12 +26,12 @@ export class ActiveEntityAnimator {
 
     let hasOrientationUpdated: Boolean = false;
 
-    switch(this.parent.currentAnimationState.state) {
+    switch (this.parent.currentAnimationState.state) {
       case ActiveEntityAnimationState.State.IDLE:
         if (!this.parent.isDestinationReached()) {
           this.parent.currentAnimationState.state = ActiveEntityAnimationState.State.RUN;
         }
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim.key.split('_')[0] == ActiveEntityAnimationState.State.IDLE) {
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim!.key.split('_')[0] == ActiveEntityAnimationState.State.IDLE) {
           break;
         }
         for (const sprite of this.sprites) {
@@ -44,16 +44,16 @@ export class ActiveEntityAnimator {
           this.parent.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;
           break;
         }
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'RUN' && !hasOrientationUpdated) {
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim!.key.split('_')[0] == 'RUN' && !hasOrientationUpdated) {
           break;
         }
         for (const sprite of this.sprites) {
           sprite.play(`${this.parent.currentAnimationState.state}_${getOrientationString(this.parent.orientation)}_${sprite.textureName.toUpperCase()}`);
         }
-        
+
         break;
       case ActiveEntityAnimationState.State.MELEEATTACK:
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'MELEEATTACK') {
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim!.key.split('_')[0] == 'MELEEATTACK') {
           this.parent.updateOrientationWithTarget();
           break;
         }
@@ -64,7 +64,7 @@ export class ActiveEntityAnimator {
         break;
       case ActiveEntityAnimationState.State.RANGEDATTACK_2:
         hasOrientationUpdated = this.parent.updateOrientationWithTarget();
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'MELEEATTACK_2' && !hasOrientationUpdated) {
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim!.key.split('_')[0] == 'MELEEATTACK_2' && !hasOrientationUpdated) {
           break;
         }
         for (const sprite of this.sprites) {
@@ -76,7 +76,7 @@ export class ActiveEntityAnimator {
       case ActiveEntityAnimationState.State.CHEER:
         break;
       case ActiveEntityAnimationState.State.DEATH:
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'DEATH' && !hasOrientationUpdated) {
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim!.key.split('_')[0] == 'DEATH' && !hasOrientationUpdated) {
           break;
         }
         for (const sprite of this.sprites) {
@@ -133,7 +133,7 @@ export class ActiveEntityAnimator {
   }
 
   onAnimationUpdate = (listener): void => {
-    if (this.spriteReference.anims.currentFrame.index == this.spriteReference.anims.currentAnim.frames.length && this.spriteReference.anims.isPlaying && this.spriteReference.anims.forward == true) {
+    if (this.spriteReference.anims.currentFrame!.index == this.spriteReference.anims.currentAnim!.frames.length && this.spriteReference.anims.isPlaying && this.spriteReference.anims.forward == true) {
       this.onYoyoAnimationMiddleFrame.raise(() => {
         this.parent.currentAnimationState
       });
@@ -163,6 +163,6 @@ export class ActiveEntityAnimator {
   }
 
   onAnimationComplete = (listener): void => {
-    
+
   }
 }

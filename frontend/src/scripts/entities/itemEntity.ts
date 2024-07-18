@@ -27,15 +27,15 @@ export default class ItemEntity extends InactiveEntity {
     this.label.setPosition(this.item.getWidth() / 2, 0);
     this.truncatedSpriteHeight = this.item.height + this.label.getBounds().height;
     this.truncatedSpriteWidth = this.item.width + this.label.getBounds().width;
-    this.item.setInteractive({ 
+    this.item.setInteractive({
       hitArea: new Phaser.Geom.Rectangle(
         (spriteReference.displayWidth * 0.5) - (this.label.getBounds().width * 0.5),
         -(this.label.getBounds().height * 0.5),
-        this.label.getBounds().width, this.label.getBounds().height), 
-        hitAreaCallback: Phaser.Geom.Rectangle.Contains
+        this.label.getBounds().width, this.label.getBounds().height),
+      hitAreaCallback: Phaser.Geom.Rectangle.Contains
     });
     this.label.visible = false;
-    
+
     // this.item.on('pointerover', (pointer: Phaser.Input.Pointer) => {
     //   this.label.setBackgroundColor(0xDDDDDD);
     //   this.label.setTextColor('#000000');
@@ -47,11 +47,11 @@ export default class ItemEntity extends InactiveEntity {
     // });
 
     // this.item.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-      
+
     // });
 
     this.add([this.item, this.label]);
-    this.scene.cameras.getCamera("uiCamera").ignore(this); // TODO: Maybe add this line to base entity
+    this.scene.cameras.getCamera("uiCamera")!.ignore(this); // TODO: Maybe add this line to base entity
   }
 
   public update(deltaTime: number): void { }

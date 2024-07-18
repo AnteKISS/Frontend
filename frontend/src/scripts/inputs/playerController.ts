@@ -25,7 +25,7 @@ export default class PlayerController {
     this.pointerOnInventory = false;
 
     scene.input.on('pointerup', () => this.onPointerUp());
-    scene.input.keyboard.on('keydown-ESC', () => this.player.isDead() ? this.respawnPlayer() : null);
+    scene.input.keyboard!.on('keydown-ESC', () => this.player.isDead() ? this.respawnPlayer() : null);
 
     this.initAllSpellBarInput();
   }
@@ -56,7 +56,7 @@ export default class PlayerController {
   }
 
   private initSpellBarInput(keycode: number, char: string) {
-    const key = this.mainScene.input.keyboard.addKey(keycode);
+    const key = this.mainScene.input.keyboard!.addKey(keycode);
     key.on('down', () => this.player.onSpellKeyDown(char), this.player);
   }
 

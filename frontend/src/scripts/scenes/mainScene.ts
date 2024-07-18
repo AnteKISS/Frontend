@@ -131,8 +131,8 @@ export default class MainScene extends Phaser.Scene {
 
     // Setup inventory test
     this.inventory = new Inventory(this);
-    this.input.keyboard.on('keydown-I', () => this.inventory.visible ? this.inventory.hide() : this.inventory.show());
-    this.input.keyboard.on('keydown-ESC', () => this.inventory.hide());
+    this.input.keyboard!.on('keydown-I', () => this.inventory.visible ? this.inventory.hide() : this.inventory.show());
+    this.input.keyboard!.on('keydown-ESC', () => this.inventory.hide());
 
     const stoneSword = new Item(this, "Stone Sword", ItemType.WEAPON, 1, 2, "stone_sword_inventory", "dropped_sword");
     this.inventory.getItemStorage().addItem(new InventoryItem(this, stoneSword), 0, 0);
@@ -213,7 +213,7 @@ export default class MainScene extends Phaser.Scene {
     if (this.gameInputs.showGroundItemsKey.isDown) {
       EntityManager.instance.toggleGroundItemsTooltip(true);
     } else {
-      EntityManager.instance.toggleGroundItemsTooltip(false);
+      EntityManager.instance.toggleGroundItemsTooltip(true /*false*/); // NOTE: Currently showing all item labels, maybe subject to change later
     }
   }
 
@@ -242,7 +242,7 @@ export default class MainScene extends Phaser.Scene {
     }
 
     const itemEntity: ItemEntity | null = EntityManager.instance.getItemAtPosition(
-      pointer.x + this.playerTest.positionX - this.playerTest.scene.cameras.main.width * 0.5, 
+      pointer.x + this.playerTest.positionX - this.playerTest.scene.cameras.main.width * 0.5,
       pointer.y + this.playerTest.positionY - this.playerTest.scene.cameras.main.height * 0.5
     );
     if (!itemEntity) {
