@@ -20,7 +20,6 @@ export default class DamageOnHit implements IOnHitEffect
 
     public onHit(hitEntity: BaseEntity): void
     {
-        console.log('HIT');
         const totalDamage = this.baseDamage + this.spell.spellOwner.stats.baseMagicalDamage;
         
         const entity = hitEntity as unknown as IFightable;

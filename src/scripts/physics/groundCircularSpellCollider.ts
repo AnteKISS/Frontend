@@ -37,7 +37,6 @@ export class GroundCircularSpellCollider extends SpellCollider
 
         for (let index = 0; index < entities.length; index++)
         {
-            console.log(entities[index]);
             if (entities[index] === this.owner)
             {
                 continue;
