@@ -126,7 +126,7 @@ export class RusherBehavior extends Behavior {
       case ActiveEntityAnimationState.State.MELEEATTACK:
       case ActiveEntityAnimationState.State.MELEEATTACK_2:
         if (this.isTargetValid() && this.isEntityInMeleeRange()) {
-          (this.parent.target! as PlayerEntity).damage(this.parent.stats.basePhysicalDamage);
+          (this.parent.target! as PlayerEntity).damage(this.parent.stats.basePhysicalDamage, this.parent);
         }
         break;
     }

@@ -8,6 +8,11 @@ import MainScene from "../scenes/mainScene";
 import Point from "../types/point";
 import ItemEntity from "../entities/itemEntity";
 import { re } from "mathjs";
+import { ActiveEntityEvents } from "../events/activeEntityEvents";
+import InventoryItem from "../inventory/inventoryItem";
+import { GeneralEventManager } from "../managers/eventManager";
+import Item from "../inventory/item";
+import { ItemType } from "../inventory/itemType";
 
 export default class PlayerController {
   public pointerDown: boolean = false;

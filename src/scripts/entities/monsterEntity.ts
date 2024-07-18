@@ -13,6 +13,9 @@ import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { ActiveEntityAnimationState, ActiveEntityBehaviorState } from './entityState';
 import { Behavior } from '../behaviors/behavior';
 import { RusherBehavior } from '../behaviors/rusherBehavior';
+import { ActiveEntityEvents } from '../events/activeEntityEvents';
+import { GeneralEventManager } from '../managers/eventManager';
+import MainScene from '../scenes/mainScene';
 
 export class MonsterEntity extends ActiveEntity implements IFightable {
 
@@ -44,9 +47,19 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
     this.baseSprite.on('pointerover', (pointer: Phaser.Input.Pointer) => {
       window['selectedMonster'] = this;
+      scene.plugins.get('rexGlowFilterPipeline').add(this.baseSprite, {
+        intensity: 0.02
+      });
+      // scene.plugins.get('rexOutlinePipeline').add(this.baseSprite, {
+      //   thickness: 3,
+      //   outlineColor: 0x000000,
+      //   quality: 0.1
+      // });
     });
     this.baseSprite.on('pointerout', (pointer: Phaser.Input.Pointer) => {
       window['selectedMonster'] = null;
+      scene.plugins.get('rexGlowFilterPipeline').remove(this.baseSprite);
+      // scene.plugins.get('rexOutlinePipeline').remove(this.baseSprite);
     });
 
     this.currentBehaviorState = new ActiveEntityBehaviorState();
@@ -86,7 +99,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     throw new NotImplementedError();
   }
 
-  public damage(amount: number): void {
+  public damage(amount: number, damageSource: ActiveEntity): void {
     // TODO: take into account gear, active effects then apply damage
     if (this.stats.health == 0) {
       return;
@@ -98,6 +111,8 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       this.destinationY = this.positionY;
       this.currentAnimationState.state = ActiveEntityAnimationState.State.DEATH;
       this.currentBehaviorState.state = ActiveEntityBehaviorState.State.DEATH;
+      const deathEvent = new ActiveEntityEvents.KilledEvent(damageSource, this);
+      GeneralEventManager.getInstance().notifyObservers(deathEvent);
     }
   }
 

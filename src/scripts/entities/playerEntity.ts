@@ -22,9 +22,16 @@ import { AttributeAllocation } from '../progression/attributeAllocation';
 import CampaignManager from '../managers/campaignmanager';
 import TileModule from '../tiles/tilemodule';
 import { ActiveEntityStats } from './activeEntityStats';
+import Tile, { TileType } from '../tiles/tile';
+import { ActiveEntityEvents } from '../events/activeEntityEvents';
+import { GeneralEventManager } from '../managers/eventManager';
+import MainScene from '../scenes/mainScene';
+import InventoryItem from '../inventory/inventoryItem';
+import IObserver from '../observer/observer';
+import { PlayerEvents } from '../events/playerEvents';
+import { ItemType } from '../inventory/itemType';
 
-export class PlayerEntity extends ActiveEntity implements IFightable {
-
+export class PlayerEntity extends ActiveEntity implements IFightable, IObserver {
   public headSprite: InventorySprite;
   public bodySprite: InventorySprite;
   public mainHandSprite: InventorySprite;
@@ -203,10 +210,10 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   public attack(target: IFightable): void {
-    target.damage(this.stats.basePhysicalDamage);
+    target.damage(this.stats.basePhysicalDamage, this);
   }
 
-  public damage(amount: number): void {
+  public damage(amount: number, damageSource: ActiveEntity): void {
     // TODO: take into account gear, active effects then apply damage
     if (this.stats.health == 0) {
       return;
@@ -218,6 +225,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       this.destinationY = this.positionY;
       this.currentAnimationState.state = ActiveEntityAnimationState.State.DEATH;
       this.onPlayerDeath.raise();
+      const deathEvent = new ActiveEntityEvents.KilledEvent(damageSource, this);
+      GeneralEventManager.getInstance().notifyObservers(deathEvent);
     }
   }
 
@@ -321,6 +330,27 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     }
   }
 
+  public onNotify(event: any): void {
+    console.log(event.item.getItem().itemType);
+    if (event instanceof PlayerEvents.PlayerEquipItemEvent) {
+      switch (event.item.getItem().itemType) {
+        case ItemType.HELMET:
+          this.headSprite.textureName = "MALE_HEAD1";
+        case ItemType.ARMOR:
+          this.bodySprite.textureName = "STEEL_ARMOR";
+      }
+      event.player.animator.forceUpdateOnce = true;
+    } else if (event instanceof PlayerEvents.PlayerUnequipItemEvent) {
+      switch (event.item.getItem().itemType) {
+        case ItemType.HELMET:
+          this.headSprite.textureName = "MALE_HEAD2";
+        case ItemType.ARMOR:
+          this.bodySprite.textureName = "CLOTHES";
+      }
+      event.player.animator.forceUpdateOnce = true;
+    }
+  }
+
   private handleTileTransition() {
     // Check if current tile has a transition
     if (!(CampaignManager.getInstance() && this.currentTile?.transition))
@@ -338,7 +368,3 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.setY(newPlayerPosition.y);
   }
 }
-
-// if ((module as any).hot) {
-//   (module as any).hot.accept();
-// }
