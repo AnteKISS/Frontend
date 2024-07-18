@@ -69,7 +69,8 @@ export default class ProjectileOnCast implements IOnCastEffect {
             const config = projectile_AnimationConfig[key];
             const scene = this.spell.spellOwner.scene;
 
-            if (!scene.anims.exists(key)) {
+            if (!scene.anims.exists(key)) 
+            {
                 scene.anims.create({
                     key: key,
                     frames: scene.anims.generateFrameNumbers(config.frames.sheet, { start: config.frames.start, end: config.frames.end }),
