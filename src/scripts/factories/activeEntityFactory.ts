@@ -14,8 +14,8 @@ export class ActiveEntityFactory {
       vitality: 0,
       intelligence: 0,
       energy: 0,
-      mana: 150,
-      maxMana: 150,
+      mana: 100,
+      maxMana: 100,
       health: 100,
       maxHealth: 100,
       healthRegeneration: 2,
@@ -57,6 +57,7 @@ export class ActiveEntityFactory {
       isInvisible: false,
       isUntargetable: false
     };
+    entity.attributeConversion();
     return entity;
   }
 

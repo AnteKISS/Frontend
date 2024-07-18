@@ -129,11 +129,9 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
       this.collider.displayDebugGraphics();
     }
     this.collider.checkSpriteCollision();
-
-    this.attributeConversion();
   }
 
-  private attributeConversion(): void
+  public attributeConversion(): void
   {
     this.realVitality = this.stats.vitality + this.attributeAllocation.vitality;
     this.stats.maxHealth = 100 + this.realVitality * 10;

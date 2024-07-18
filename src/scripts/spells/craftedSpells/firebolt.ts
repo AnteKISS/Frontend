@@ -14,7 +14,7 @@ export default class FireBolt extends Spell
         {
             new ProjectileOnCast(this, 480, 1, 128, 128, 'firebolt');
             new SpeedBuffOnCast(this, 200, 1);
-            new DamageOnHit(this);
+            new DamageOnHit(this, 40);
         }
     }
 }

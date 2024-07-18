@@ -12,7 +12,7 @@ export default class Quake extends Spell
         super(3, 300, 10, 0, CastType.GroundTarget, 'Quake', 'quakeIcon', spellOwner)
         {
             new GroundCircleOnCast(this, 75, 2, 'greyQuake');
-            new DamageOnHit(this);
+            new DamageOnHit(this, 20);
         }
     }
 }
