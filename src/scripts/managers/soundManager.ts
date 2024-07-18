@@ -87,7 +87,10 @@ export default class SoundManager implements IObserver {
     } else if (event instanceof ActiveEntityEvents.MovingFinishedEvent) {
 
     } else if (event instanceof ActiveEntityEvents.EarthSpellCastEvent) {
-      this.effectsSoundManager.play('explosion_1');
+      this.effectsSoundManager.play('explosion_1', {
+        volume: 1,
+        
+      });
     } else if (event instanceof ActiveEntityEvents.FireSpellCastEvent) {
       this.effectsSoundManager.play('fire_spell_launch_1');
     } else if (event instanceof ActiveEntityEvents.IceSpellCastEvent) {

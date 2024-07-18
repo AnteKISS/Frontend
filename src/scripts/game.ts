@@ -8,6 +8,7 @@ import Pregame from './scenes/pregame';
 import GlowFilterPipelinePlugin from 'phaser3-rex-plugins/plugins/glowfilterpipeline-plugin.js';
 import HorrifiPipelinePlugin from 'phaser3-rex-plugins/plugins/horrifipipeline-plugin.js';
 import OutlinePipelinePlugin from 'phaser3-rex-plugins/plugins/outlinepipeline-plugin.js';
+import YoutubePlayerPlugin from 'phaser3-rex-plugins/plugins/youtubeplayer-plugin.js';
 
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
@@ -21,6 +22,9 @@ const config = {
     autoCenter: Phaser.Scale.CENTER_BOTH,
     width: DEFAULT_WIDTH,
     height: DEFAULT_HEIGHT
+  },
+  dom: {
+    createContainer: true
   },
   scene: [PreloadScene, MainMenu, MainScene, Setting, Pregame , MapEditor],
   physics: {
@@ -46,7 +50,12 @@ const config = {
         key: 'rexHorrifiPipeline',
         plugin: HorrifiPipelinePlugin,
         start: true
-      }    
+      },
+      {
+        key: 'rexYoutubePlayer',
+        plugin: YoutubePlayerPlugin,
+        start: true
+      }
     ]
   }
 }
