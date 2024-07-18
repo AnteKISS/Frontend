@@ -2,6 +2,8 @@ import Spell from "../spell"
 import { circleSpell_AnimationConfig } from "../../configs/animationConfig";
 import { SpellColliderManager } from "../../managers/spellColliderManager";
 import { GroundCircularSpellCollider } from "../../physics/groundCircularSpellCollider";
+import { ActiveEntityEvents } from "../../events/activeEntityEvents";
+import { GeneralEventManager } from "../../managers/eventManager";
 
 export default class GroundCircleOnCast implements IOnCastEffect
 {
