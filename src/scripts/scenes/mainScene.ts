@@ -30,7 +30,7 @@ import { GeneralEventManager, PlayerEquipmentEventManager } from '../managers/ev
 import { UiEvents } from '../events/uiEvents'
 import { KillQuest } from '../quest/killQuest'
 import { QuestUI } from '../quest/questUI'
-import YoutubePlayer from 'phaser3-rex-plugins/plugins/gameobjects/dom/youtubeplayer/YoutubePlayer'
+//import YoutubePlayer from 'phaser3-rex-plugins/plugins/gameobjects/dom/youtubeplayer/YoutubePlayer'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -267,14 +267,14 @@ export default class MainScene extends Phaser.Scene {
       (this.music.x as unknown as AudioParam).value += 10;
     });
 
-    var youtubePlayer = new YoutubePlayer(this, this.cameras.main.width * 0.5, 100, 300, 150, {
-      videoId: 'dQw4w9WgXcQ',
-      autoPlay: true,
-      controls: true,
-      loop: true
-    });
-    this.add.existing(youtubePlayer);
-    youtubePlayer.play();
+    //var youtubePlayer = new YoutubePlayer(this, this.cameras.main.width * 0.5, 100, 300, 150, {
+    //  videoId: 'dQw4w9WgXcQ',
+    //  autoPlay: true,
+    //  controls: true,
+    //  loop: true
+    //});
+    //this.add.existing(youtubePlayer);
+    //youtubePlayer.play();
     this.sys.game.canvas.style.cursor = 'url(assets/gui/pointer05.png), auto';
   }
 
