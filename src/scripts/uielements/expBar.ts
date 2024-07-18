@@ -1,3 +1,5 @@
+import Tooltip from "../label/tooltip";
+
 export default class ExpBar extends Phaser.GameObjects.Container
 {
     private barFill: Phaser.GameObjects.Sprite;
@@ -7,6 +9,7 @@ export default class ExpBar extends Phaser.GameObjects.Container
     private maxExp: number;
     private currentExp: number;
     private emask: Phaser.GameObjects.Graphics;
+    private tooltip: Tooltip;
     
     constructor(scene: Phaser.Scene, x: number, y: number, maxExp: number)
     {
@@ -56,5 +59,17 @@ export default class ExpBar extends Phaser.GameObjects.Container
 
         this.emask.fillStyle(0x333734);
         this.emask.fillRect(this.barFill.displayWidth/2, -this.barFill.displayHeight/2, -width, this.barFill.displayHeight); 
+    }
+
+    public updateExpToolTip(pointer: Phaser.Input.Pointer)
+    {
+        const CURSOR_ON_BAR = Phaser.Geom.Rectangle.Contains(this.getBounds(), pointer.x, pointer.y);
+        if (CURSOR_ON_BAR) 
+        {
+            const percentage = this.currentExp / this.maxExp * 100;
+            const toNextLevel = this.maxExp - this.currentExp;
+            Tooltip.updateText('Exp to next level: ' + toNextLevel + ' : ' + percentage + '%');
+            Tooltip.requestTooltip(this);
+        }
     }
 }

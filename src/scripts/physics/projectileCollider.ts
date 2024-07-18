@@ -86,8 +86,7 @@ export class ProjectileCollider extends SpellCollider
         	    this.collidingCallback(entities[index]);
 				this.collidingCallbackPierce(this.parentObject, this);
 			}
-            return true;
         }
-        return false;
+        return true;
    }
 }
