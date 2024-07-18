@@ -107,6 +107,7 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest.positionY = 0;
     this.playerTest.area = CampaignManager.getInstance().getCampaign().currentArea();
     new KillQuest(2, 'skeleton_0', 750);
+    new KillQuest(15, 'minotaur_0', 40000);
 
     const playerDeathHandler: SignalHandler = {
       callback: this.onPlayerDeath.bind(this),
