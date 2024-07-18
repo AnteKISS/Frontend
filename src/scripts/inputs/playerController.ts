@@ -6,6 +6,8 @@ import { EntityManager } from "../managers/entityManager";
 import { MathModule } from "../utilities/mathModule";
 import MainScene from "../scenes/mainScene";
 import Point from "../types/point";
+import ItemEntity from "../entities/itemEntity";
+import { re } from "mathjs";
 
 export default class PlayerController {
   public pointerDown: boolean = false;
@@ -14,6 +16,7 @@ export default class PlayerController {
   private destination: Point;
   private mainScene: MainScene;
   private pointerOnInventory: boolean; // TODO: Should only need to call mainScene's "isPointerOnInventory". This is necessary for "update" function
+  private selectedItem: ItemEntity | null = null;
 
   constructor(scene: MainScene, player: PlayerEntity) {
     this.player = player;
@@ -22,7 +25,7 @@ export default class PlayerController {
     this.pointerOnInventory = false;
 
     scene.input.on('pointerup', () => this.onPointerUp());
-    scene.input.keyboard?.on('keydown-ESC', () => this.tryRestart());
+    scene.input.keyboard!.on('keydown-ESC', () => this.player.isDead() ? this.respawnPlayer() : null);
 
     this.initAllSpellBarInput();
   }
@@ -53,8 +56,8 @@ export default class PlayerController {
   }
 
   private initSpellBarInput(keycode: number, char: string) {
-    const key = this.mainScene.input.keyboard?.addKey(keycode);
-    key?.on('down', () => this.player.onSpellKeyDown(char), this.player);
+    const key = this.mainScene.input.keyboard!.addKey(keycode);
+    key.on('down', () => this.player.onSpellKeyDown(char), this.player);
   }
 
   public onPointerDown(pointer: Phaser.Input.Pointer): void {
@@ -122,8 +125,29 @@ export default class PlayerController {
       this.player.target = null;
   }
 
-  private tryRestart() {
-    if (this.player.isDead())
-      this.player.scene.scene.restart();
+  private updateDestinationFromSelectedItem() {
+    if (!this.selectedItem) {
+      return;
+    }
+    if (MathModule.scaledDistanceBetween(this.player.positionX, this.player.positionY, this.selectedItem.positionX, this.selectedItem.positionY) > 100) {
+      this.destination.x = this.selectedItem.positionX;
+      this.destination.y = this.selectedItem.positionY;
+      return;
+    }
+  }
+
+  private updateSelectedItem() {
+    this.selectedItem = EntityManager.instance.getItemAtPosition(this.destination.x, this.destination.y);
+  }
+
+  private respawnPlayer() {
+    this.player.positionX = 0;
+    this.player.positionY = 0;
+    this.player.stats.health = this.player.stats.maxHealth;
+    this.player.stats.mana = this.player.stats.maxMana;
+    this.player.target = null;
+    this.player.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;
+    this.player.setOrientationRad(3 * Math.PI / 4);
+    (this.player.scene as MainScene).hideDeathScreen();
   }
 }

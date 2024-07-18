@@ -21,15 +21,19 @@ import { SpellColliderManager } from '../managers/spellColliderManager'
 import { ActiveEntity } from '../entities/activeEntity'
 import { AttributeGUI } from '../progression/attributeGUI'
 import { AttributeAllocation } from '../progression/attributeAllocation'
+import ItemEntity from '../entities/itemEntity'
+import { MathModule } from '../utilities/mathModule'
+import { GameInput } from '../inputs/gameInputs'
 
 export default class MainScene extends Phaser.Scene {
-  uiCamera: Phaser.Cameras.Scene2D.Camera;
-  fpsText: FpsText;
-  versionText: Phaser.GameObjects.Text
-  pointer: Phaser.Input.Pointer;
-  centerPoint: Point;
-  mapEditorButton: Phaser.GameObjects.Text;
-  spellSpriteColliders: SpellCollider[] = [];
+  public uiCamera: Phaser.Cameras.Scene2D.Camera;
+  public fpsText: FpsText;
+  public versionText: Phaser.GameObjects.Text
+  public campaignManager: CampaignManager;
+  public pointer: Phaser.Input.Pointer;
+  public centerPoint: Point;
+  public mapEditorButton: Phaser.GameObjects.Text;
+  public spellSpriteColliders: SpellCollider[] = [];
 
   private playerTest: PlayerEntity;
   private monsterTest: MonsterEntity;
@@ -41,6 +45,10 @@ export default class MainScene extends Phaser.Scene {
   private inventory: Inventory;
 
   private attributeGUI: AttributeGUI;
+  private gameInputs: GameInput;
+
+  private deathScreenBackground: Phaser.GameObjects.Graphics;
+  private deathScreenText: Phaser.GameObjects.Text;
 
   public constructor() {
     super({ key: 'MainScene' });
@@ -56,11 +64,11 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public create() {
+    this.gameInputs = new GameInput(this);
     this.fpsText = new FpsText(this);
     this.uiCamera = this.cameras.add(0, 0, 1280, 720, false, "uiCamera");
 
     // new GameLogo(this, this.cameras.main.width / 2, this.cameras.main.height / 2);
-    this.fpsText = new FpsText(this);
     //this.campaign = new Campaign("Main");
     CampaignManager.init(this);
     CampaignManager.getInstance().loadCampaign('{"name":"Default Campaign","acts":[{"name":"Act I","areas":[{"name":"Area 1","gameObjects":[["Tile",-5,0,"rocky_floor_tiles",0,""],["Tile",-4,-3,"rocky_floor_tiles",0,""],["Tile",-4,-2,"rocky_floor_tiles",0,""],["Tile",-4,-1,"rocky_floor_tiles",0,""],["Tile",-4,0,"rocky_floor_tiles",0,""],["Tile",-4,1,"rocky_floor_tiles",0,""],["Tile",-4,2,"rocky_floor_tiles",0,""],["Tile",-4,3,"rocky_floor_tiles",0,""],["Tile",-3,-4,"rocky_floor_tiles",0,""],["Tile",-3,-3,"rocky_floor_tiles",0,""],["Tile",-3,-2,"rocky_floor_tiles",0,""],["Tile",-3,-1,"rocky_floor_tiles",0,""],["Tile",-3,0,"rocky_floor_tiles",0,""],["Tile",-3,1,"rocky_floor_tiles",0,""],["Tile",-3,2,"rocky_floor_tiles",0,""],["Tile",-3,3,"rocky_floor_tiles",0,""],["Tile",-3,4,"rocky_floor_tiles",0,""],["Tile",-2,-4,"rocky_floor_tiles",0,""],["Tile",-2,-3,"rocky_floor_tiles",0,""],["Tile",-2,-2,"rocky_floor_tiles",0,""],["Tile",-2,-1,"rocky_floor_tiles",0,""],["Tile",-2,0,"rocky_floor_tiles",0,""],["Tile",-2,1,"rocky_floor_tiles",0,""],["Tile",-2,2,"rocky_floor_tiles",0,""],["Tile",-2,3,"rocky_floor_tiles",0,""],["Tile",-2,4,"rocky_floor_tiles",0,""],["Tile",-1,-4,"rocky_floor_tiles",0,""],["Tile",-1,-3,"rocky_floor_tiles",0,""],["Tile",-1,-2,"rocky_floor_tiles",0,""],["Tile",-1,-1,"rocky_floor_tiles",0,""],["Tile",-1,0,"rocky_floor_tiles",0,""],["Tile",-1,1,"rocky_floor_tiles",0,""],["Tile",-1,2,"rocky_floor_tiles",0,""],["Tile",-1,3,"rocky_floor_tiles",0,""],["Tile",-1,4,"rocky_floor_tiles",0,""],["Tile",0,-5,"rocky_floor_tiles",0,""],["Tile",0,-4,"rocky_floor_tiles",0,""],["Tile",0,-3,"rocky_floor_tiles",0,""],["Tile",0,-2,"rocky_floor_tiles",0,""],["Tile",0,-1,"rocky_floor_tiles",0,""],["Tile",0,0,"rocky_floor_tiles",0,""],["Spawner",0,0,"basic_spawner","zombie_0",2,1],["Tile",0,1,"rocky_floor_tiles",0,""],["Tile",0,2,"rocky_floor_tiles",0,""],["Tile",0,3,"rocky_floor_tiles",0,""],["Tile",0,4,"rocky_floor_tiles",0,""],["Tile",0,5,"rocky_floor_tiles",0,""],["Tile",1,-4,"rocky_floor_tiles",0,""],["Tile",1,-3,"rocky_floor_tiles",0,""],["Tile",1,-2,"rocky_floor_tiles",0,""],["Tile",1,-1,"rocky_floor_tiles",0,""],["Tile",1,0,"rocky_floor_tiles",0,""],["Tile",1,1,"rocky_floor_tiles",0,""],["Tile",1,2,"rocky_floor_tiles",0,""],["Tile",1,3,"rocky_floor_tiles",0,""],["Tile",1,4,"rocky_floor_tiles",0,""],["Tile",2,-4,"rocky_floor_tiles",0,""],["Tile",2,-3,"rocky_floor_tiles",0,""],["Tile",2,-2,"rocky_floor_tiles",0,""],["Tile",2,-1,"rocky_floor_tiles",0,""],["Tile",2,0,"rocky_floor_tiles",0,""],["Tile",2,1,"rocky_floor_tiles",0,""],["Tile",2,2,"rocky_floor_tiles",0,""],["Tile",2,3,"rocky_floor_tiles",0,""],["Tile",2,4,"rocky_floor_tiles",0,""],["Tile",3,-4,"rocky_floor_tiles",0,""],["Tile",3,-3,"rocky_floor_tiles",0,""],["Tile",3,-2,"rocky_floor_tiles",0,""],["Tile",3,-1,"rocky_floor_tiles",0,""],["Tile",3,0,"rocky_floor_tiles",0,""],["Tile",3,1,"rocky_floor_tiles",0,""],["Tile",3,2,"rocky_floor_tiles",0,""],["Tile",3,3,"rocky_floor_tiles",0,""],["Tile",3,4,"rocky_floor_tiles",0,""],["Tile",4,-3,"rocky_floor_tiles",0,""],["Tile",4,-2,"rocky_floor_tiles",0,""],["Tile",4,-1,"rocky_floor_tiles",0,""],["Tile",4,0,"rocky_floor_tiles",0,""],["Tile",4,1,"rocky_floor_tiles",0,""],["Tile",4,2,"rocky_floor_tiles",0,""],["Tile",4,3,"rocky_floor_tiles",0,""],["Tile",5,0,"rocky_floor_tiles",0,""],["Tile",-1,5,"rocky_floor_tiles",0,""],["Tile",0,6,"rocky_floor_tiles",0,""],["Tile",1,5,"rocky_floor_tiles",0,""],["Tile",-1,6,"rocky_floor_tiles",0,""],["Tile",0,7,"rocky_floor_tiles",0,"1 to 2"],["Tile",1,6,"rocky_floor_tiles",0,""],["Tile",-1,7,"rocky_floor_tiles",0,"1 to 2"],["Tile",0,8,"rocky_floor_tiles",0,"1 to 2"],["Tile",1,7,"rocky_floor_tiles",0,"1 to 2"],["Tile",-1,8,"rocky_floor_tiles",0,"1 to 2"],["Tile",1,8,"rocky_floor_tiles",0,"1 to 2"]]},{"name":"Area 2","gameObjects":[["Tile",-5,0,"rocky_floor_tiles",1,""],["Tile",-4,-3,"rocky_floor_tiles",1,""],["Tile",-4,-2,"rocky_floor_tiles",1,""],["Tile",-4,-1,"rocky_floor_tiles",1,""],["Tile",-4,0,"rocky_floor_tiles",1,""],["Tile",-4,1,"rocky_floor_tiles",1,""],["Tile",-4,2,"rocky_floor_tiles",1,""],["Tile",-4,3,"rocky_floor_tiles",1,""],["Tile",-3,-4,"rocky_floor_tiles",1,""],["Tile",-3,-3,"rocky_floor_tiles",1,""],["Tile",-3,-2,"rocky_floor_tiles",1,""],["Tile",-3,-1,"rocky_floor_tiles",1,""],["Tile",-3,0,"rocky_floor_tiles",1,""],["Tile",-3,1,"rocky_floor_tiles",1,""],["Tile",-3,2,"rocky_floor_tiles",1,""],["Tile",-3,3,"rocky_floor_tiles",1,""],["Tile",-3,4,"rocky_floor_tiles",1,""],["Tile",-2,-4,"rocky_floor_tiles",1,""],["Tile",-2,-3,"rocky_floor_tiles",1,""],["Tile",-2,-2,"rocky_floor_tiles",1,""],["Tile",-2,-1,"rocky_floor_tiles",1,""],["Tile",-2,0,"rocky_floor_tiles",1,""],["Tile",-2,1,"rocky_floor_tiles",1,""],["Tile",-2,2,"rocky_floor_tiles",1,""],["Tile",-2,3,"rocky_floor_tiles",1,""],["Tile",-2,4,"rocky_floor_tiles",1,""],["Tile",-1,-4,"rocky_floor_tiles",1,""],["Tile",-1,-3,"rocky_floor_tiles",1,""],["Tile",-1,-2,"rocky_floor_tiles",1,""],["Tile",-1,-1,"rocky_floor_tiles",1,""],["Tile",-1,0,"rocky_floor_tiles",1,""],["Tile",-1,1,"rocky_floor_tiles",1,""],["Tile",-1,2,"rocky_floor_tiles",1,""],["Tile",-1,3,"rocky_floor_tiles",1,""],["Tile",-1,4,"rocky_floor_tiles",1,""],["Tile",0,-5,"rocky_floor_tiles",1,""],["Tile",0,-4,"rocky_floor_tiles",1,""],["Tile",0,-3,"rocky_floor_tiles",1,""],["Tile",0,-2,"rocky_floor_tiles",1,""],["Tile",0,-1,"rocky_floor_tiles",1,""],["Tile",0,0,"rocky_floor_tiles",1,""],["Spawner",0,0,"basic_spawner","skeleton_0",2,1],["Tile",0,1,"rocky_floor_tiles",1,""],["Tile",0,2,"rocky_floor_tiles",1,""],["Tile",0,3,"rocky_floor_tiles",1,""],["Tile",0,4,"rocky_floor_tiles",1,""],["Tile",0,5,"rocky_floor_tiles",1,""],["Tile",1,-4,"rocky_floor_tiles",1,""],["Tile",1,-3,"rocky_floor_tiles",1,""],["Tile",1,-2,"rocky_floor_tiles",1,""],["Tile",1,-1,"rocky_floor_tiles",1,""],["Tile",1,0,"rocky_floor_tiles",1,""],["Tile",1,1,"rocky_floor_tiles",1,""],["Tile",1,2,"rocky_floor_tiles",1,""],["Tile",1,3,"rocky_floor_tiles",1,""],["Tile",1,4,"rocky_floor_tiles",1,""],["Tile",2,-4,"rocky_floor_tiles",1,""],["Tile",2,-3,"rocky_floor_tiles",1,""],["Tile",2,-2,"rocky_floor_tiles",1,""],["Tile",2,-1,"rocky_floor_tiles",1,""],["Tile",2,0,"rocky_floor_tiles",1,""],["Tile",2,1,"rocky_floor_tiles",1,""],["Tile",2,2,"rocky_floor_tiles",1,""],["Tile",2,3,"rocky_floor_tiles",1,""],["Tile",2,4,"rocky_floor_tiles",1,""],["Tile",3,-4,"rocky_floor_tiles",1,""],["Tile",3,-3,"rocky_floor_tiles",1,""],["Tile",3,-2,"rocky_floor_tiles",1,""],["Tile",3,-1,"rocky_floor_tiles",1,""],["Tile",3,0,"rocky_floor_tiles",1,""],["Tile",3,1,"rocky_floor_tiles",1,""],["Tile",3,2,"rocky_floor_tiles",1,""],["Tile",3,3,"rocky_floor_tiles",1,""],["Tile",3,4,"rocky_floor_tiles",1,""],["Tile",4,-3,"rocky_floor_tiles",1,""],["Tile",4,-2,"rocky_floor_tiles",1,""],["Tile",4,-1,"rocky_floor_tiles",1,""],["Tile",4,0,"rocky_floor_tiles",1,""],["Tile",4,1,"rocky_floor_tiles",1,""],["Tile",4,2,"rocky_floor_tiles",1,""],["Tile",4,3,"rocky_floor_tiles",1,""],["Tile",5,0,"rocky_floor_tiles",1,""],["Tile",-1,-5,"rocky_floor_tiles",1,""],["Tile",0,-6,"rocky_floor_tiles",1,""],["Tile",1,-5,"rocky_floor_tiles",1,""],["Tile",-1,-6,"rocky_floor_tiles",1,""],["Tile",0,-7,"rocky_floor_tiles",1,"2 to 1"],["Tile",1,-6,"rocky_floor_tiles",1,""],["Tile",-1,-7,"rocky_floor_tiles",1,"2 to 1"],["Tile",0,-8,"rocky_floor_tiles",1,"2 to 1"],["Tile",1,-7,"rocky_floor_tiles",1,"2 to 1"],["Tile",-1,-8,"rocky_floor_tiles",1,"2 to 1"],["Tile",1,-8,"rocky_floor_tiles",1,"2 to 1"]]}],"transitions":[{"name":"1 to 2","areaName":"Area 2","targetX":0,"targetY":0},{"name":"2 to 1","areaName":"Area 1","targetX":0,"targetY":0}]}]}');
@@ -102,13 +110,14 @@ export default class MainScene extends Phaser.Scene {
     this.monsterTest.name = 'Zembie';
     this.monsterTest.positionX = this.cameras.main.width / 4;
     this.monsterTest.positionY = this.cameras.main.height / 4;
-    this.monsterTest.area = CampaignManager.getInstance().getCampaign().currentArea();
+    this.monsterTest.area = this.campaignManager.getCampaign().currentArea();
     this.monsterTest2 = EntityManager.instance.createMonster(this, 'minotaur_0');
     this.monsterTest2.name = 'Menotaur';
-    this.monsterTest2.positionX = this.monsterTest.positionX;
+    this.monsterTest2.positionX = this.monsterTest.positionX - 240;
     this.monsterTest2.positionY = this.monsterTest.positionY - 60;
     this.monsterTest2.stats.movementSpeed = 150;
-    this.monsterTest2.area = CampaignManager.getInstance().getCampaign().currentArea();
+    this.monsterTest2.stats.basePhysicalDamage = 20;
+    this.monsterTest2.area = this.campaignManager.getCampaign().currentArea();
     this.monsterTest3 = EntityManager.instance.createMonster(this, 'skeleton_0');
     this.monsterTest3.name = 'Skeletenotaur';
     this.monsterTest3.positionX = this.monsterTest.positionX - 250;
@@ -117,7 +126,7 @@ export default class MainScene extends Phaser.Scene {
     */
     this.entityHealthBar = new EntityHealthBar(this);
     // this.entityHealthBar.entity = this.monsterTest;
-    this.gui.spellBar.setSpellBook(this.playerTest.mySpellBook);
+    this.gui.spellBar.setSpellBook(this.playerTest.spellBook);
 
     this.input.setDefaultCursor('default');
 
@@ -129,8 +138,8 @@ export default class MainScene extends Phaser.Scene {
 
     // Setup inventory test
     this.inventory = new Inventory(this);
-    this.input.keyboard?.on('keydown-I', () => this.inventory.show());
-    this.input.keyboard?.on('keydown-ESC', () => this.inventory.hide());
+    this.input.keyboard!.on('keydown-I', () => this.inventory.visible ? this.inventory.hide() : this.inventory.show());
+    this.input.keyboard!.on('keydown-ESC', () => this.inventory.hide());
 
     const stoneSword = new Item(this, "Stone Sword", ItemType.WEAPON, 1, 2, "stone_sword_inventory", "dropped_sword");
     this.inventory.getItemStorage().addItem(new InventoryItem(this, stoneSword), 0, 0);
@@ -204,6 +213,12 @@ export default class MainScene extends Phaser.Scene {
     // this.drawDebugTileSet();
     this.attributeGUI.update();
     SpellColliderManager.getInstance.update();
+
+    if (this.gameInputs.showGroundItemsKey.isDown) {
+      EntityManager.instance.toggleGroundItemsTooltip(true);
+    } else {
+      EntityManager.instance.toggleGroundItemsTooltip(true /*false*/); // NOTE: Currently showing all item labels, maybe subject to change later
+    }
   }
 
   public isPointerOnInventory(pointer: Phaser.Input.Pointer): boolean {
@@ -226,8 +241,23 @@ export default class MainScene extends Phaser.Scene {
   private onPointerDown(pointer: Phaser.Input.Pointer): void {
     this.inventory.onPointerDown(pointer);
 
-    if (!this.inventory.wasItemDroppedLastClick())
+    if (!this.inventory.wasItemDroppedLastClick()) {
       this.playerTest.controller.onPointerDown(pointer);
+    }
+
+    const itemEntity: ItemEntity | null = EntityManager.instance.getItemAtPosition(
+      pointer.x + this.playerTest.positionX - this.playerTest.scene.cameras.main.width * 0.5,
+      pointer.y + this.playerTest.positionY - this.playerTest.scene.cameras.main.height * 0.5
+    );
+    if (!itemEntity) {
+      return;
+    }
+    if (MathModule.scaledDistanceBetween(this.playerTest.positionX, this.playerTest.positionY, itemEntity.x, itemEntity.y) < 100) {
+      const itemAddedToInventory: boolean = this.inventory.getItemStorage().autoLoot(new InventoryItem(this, itemEntity.item));
+      if (itemAddedToInventory) {
+        EntityManager.instance.destroyItem(itemEntity);
+      }
+    }
   }
 
   private drawDebugTileSet(): void {
@@ -253,15 +283,24 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public onPlayerDeath(): void {
-    let background = this.add.graphics({ fillStyle: { color: 0x0F0000, alpha: 0.8 } });
-    background.fillRect(0, 0, this.sys.game.config.width as number, this.sys.game.config.height as number);
+    this.showDeathScreen();
+  }
 
-    let deathText = this.add.text(this.sys.game.config.width as number / 2, this.sys.game.config.height as number / 2, 'You are deader than dead\n Press  \'ESC\' to continue', {
+  public showDeathScreen(): void {
+    this.deathScreenBackground = this.add.graphics({ fillStyle: { color: 0x0F0000, alpha: 0.8 } });
+    this.deathScreenBackground.fillRect(0, 0, this.sys.game.config.width as number, this.sys.game.config.height as number);
+
+    this.deathScreenText = this.add.text(this.sys.game.config.width as number / 2, this.sys.game.config.height as number / 2, 'You are deader than dead\n Press  \'ESC\' to continue', {
       fontSize: '64px',
       color: '#ff0000',
       fontFamily: 'Doodle'
     });
-    deathText.setOrigin(0.5, 0.5);
-    this.cameras.main.ignore([background, deathText]);
+    this.deathScreenText.setOrigin(0.5, 0.5);
+    this.cameras.main.ignore([this.deathScreenBackground, this.deathScreenText]);
+  }
+
+  public hideDeathScreen(): void {
+    this.deathScreenBackground.clear();
+    this.deathScreenText.destroy();
   }
 }

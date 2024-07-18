@@ -23,4 +23,16 @@ export default class Label extends Phaser.GameObjects.Container {
   public updateText(text: string) {
     this.text.setText(text);
   }
+
+  public setBackgroundColor(color: number) {
+    this.background.setFillStyle(color);
+  }
+
+  public setBackgroundAlpha(alpha: number) {
+    this.background.setAlpha(alpha);
+  }
+
+  public setTextColor(color: string) {
+    this.text.setColor(color);
+  }
 }

@@ -90,6 +90,8 @@ export class EntityManager {
     for (let entity of this.getCurrentAreaEntityPool()) {
       let entitySprite: Phaser.GameObjects.Sprite = entity.getAll().filter(gameObject => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite;
 
+      console.log(entity);
+
       if (positionX > entity.positionX - (entity.truncatedSpriteWidth / 2) &&
         positionX < entity.positionX + (entity.truncatedSpriteWidth / 2) &&
         positionY < entity.positionY + (entity.truncatedSpriteHeight - (entity.truncatedSpriteHeight * entitySprite.originY)) &&
@@ -107,6 +109,15 @@ export class EntityManager {
       }
     }
     return topMostEntity;
+  }
+
+  public getItemAtPosition(positionX: number, positionY: number): ItemEntity | null {
+    console.log(this.getCurrentAreaEntityPool());
+    const entity = this.getAreaEntityAtPosition(positionX, positionY);
+    console.log(entity);
+    if (entity instanceof ItemEntity)
+      return entity;
+    return null;
   }
 
   public getPlayers(): PlayerEntity[] {
@@ -143,6 +154,20 @@ export class EntityManager {
   public setDebugMode(enableDebugMode: boolean): void {
     this.getCurrentAreaEntityPool().forEach(entity => {
       entity.setDebugMode(enableDebugMode);
+    });
+  }
+
+  public destroyItem(itemEntity: ItemEntity): void {
+    this.removeAreaEntity(itemEntity);
+    itemEntity.destroy();
+  }
+
+  // TODO: Add function to create npc
+
+  public toggleGroundItemsTooltip(showTooltip: boolean): void {
+    const itemEntities = this.getCurrentAreaEntityPool().filter(entity => entity instanceof ItemEntity) as ItemEntity[];
+    itemEntities.forEach(itemEntity => {
+      itemEntity.label.visible = showTooltip;
     });
   }
 

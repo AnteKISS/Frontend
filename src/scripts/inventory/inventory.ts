@@ -3,7 +3,6 @@ import ItemStorage from './itemStorage'
 import InventoryConfig from './inventoryConfig'
 import InventoryItem from './inventoryItem'
 import EquipSlot from './equipSlot'
-import Tooltip from '../label/tooltip'
 import { EntityManager } from '../managers/entityManager'
 
 export default class Inventory extends Phaser.GameObjects.Container {
@@ -24,7 +23,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
     this.background = new Phaser.GameObjects.Sprite(scene, 0, 360, 'black_rock_background');
 
     this.closeButton = new Phaser.GameObjects.Sprite(scene, 243, 37, 'close_button').setInteractive();
-    this.closeButton.on('pointerdown', () => this.hide());
+    this.closeButton.on('pointerdown', (event) => {this.hide(); event.stopPropagation();});
 
     this.selectedItem = null;
     this.isLastClickDropItem = false;
@@ -33,6 +32,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
 
     this.add([this.background, this.closeButton, this.itemStorage, this.playerEquipment]);
     scene.add.existing(this);
+    this.hide();
   }
 
   private onPointerMove(pointer: Phaser.Input.Pointer): void {
