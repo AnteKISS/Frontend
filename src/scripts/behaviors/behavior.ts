@@ -89,7 +89,7 @@ export abstract class Behavior {
     // for (let entity: ActiveEntity of this.parent.area.getEntities) {
 
     // }
-    for (let entity of EntityManager.instance.getAreaEntities()) {
+    for (let entity of EntityManager.instance.getPlayers()) {
       if (entity.type != nameOf(PlayerEntity)) {
         continue;
       }

@@ -23,7 +23,7 @@ export default class DamageOnHit implements IOnHitEffect
         const totalDamage = this.baseDamage + this.spell.spellOwner.stats.baseMagicalDamage;
         
         const entity = hitEntity as unknown as IFightable;
-        entity.damage(totalDamage);
+        entity.damage(totalDamage, this.spell.spellOwner);
     }
 
     public onMaxRange(position: any, castDirection: any, movementDirection: any): void {

@@ -22,7 +22,7 @@ import { AttributeAllocation } from '../progression/attributeAllocation';
 import CampaignManager from '../managers/campaignmanager';
 import TileModule from '../tiles/tilemodule';
 import { ActiveEntityStats } from './activeEntityStats';
-import Tile, { TileType } from '../tiles/tile';
+import Tile from '../tiles/tile';
 import { ActiveEntityEvents } from '../events/activeEntityEvents';
 import { GeneralEventManager } from '../managers/eventManager';
 import MainScene from '../scenes/mainScene';
@@ -64,7 +64,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     this.headSprite.slot = InventorySlots.HELMET;
     this.headSprite.scale = 1.5;
     this.bodySprite = scene.add.sprite(0, 0, 'chestplateTexture');
-    this.bodySprite.textureName = 'STEEL_ARMOR';
+    this.bodySprite.textureName = 'CLOTHES';
     this.bodySprite.slot = InventorySlots.CHESTPLATE;
     this.bodySprite.scale = 1.5;
     this.mainHandSprite = scene.add.sprite(0, 0, 'mainHandTexture');
