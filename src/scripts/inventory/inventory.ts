@@ -4,8 +4,14 @@ import InventoryConfig from './inventoryConfig'
 import InventoryItem from './inventoryItem'
 import EquipSlot from './equipSlot'
 import { EntityManager } from '../managers/entityManager'
+import { Signal, SignalHandler } from '../events/signal'
+import MainScene from '../scenes/mainScene'
+import { PlayerEvents } from '../events/playerEvents'
+import { GeneralEventManager, PlayerEquipmentEventManager } from '../managers/eventManager'
 
 export default class Inventory extends Phaser.GameObjects.Container {
+  public onItemEquip: Signal = new Signal();
+
   private closeButton: Phaser.GameObjects.Sprite;
   private background: Phaser.GameObjects.Sprite;
 
@@ -23,7 +29,7 @@ export default class Inventory extends Phaser.GameObjects.Container {
     this.background = new Phaser.GameObjects.Sprite(scene, 0, 360, 'black_rock_background');
 
     this.closeButton = new Phaser.GameObjects.Sprite(scene, 243, 37, 'close_button').setInteractive();
-    this.closeButton.on('pointerdown', (event) => {this.hide(); event.stopPropagation();});
+    this.closeButton.on('pointerdown', (pointer, localX, localY, event) => {this.hide(); event.stopPropagation();});
 
     this.selectedItem = null;
     this.isLastClickDropItem = false;
@@ -54,7 +60,12 @@ export default class Inventory extends Phaser.GameObjects.Container {
     // Check if clicking an equip slot
     const EQUIP_SLOT = this.playerEquipment.getEquipSlotUnderMouse(pointer);
     if (EQUIP_SLOT) {
-      this.setSelectedItem(EQUIP_SLOT.unequipItem());
+      const item = EQUIP_SLOT.unequipItem();
+      this.setSelectedItem(item);
+      if (item) {
+        const unequipEvent = new PlayerEvents.PlayerUnequipItemEvent(EntityManager.instance.getPlayers()[0], item);
+        PlayerEquipmentEventManager.getInstance().notifyObservers(unequipEvent);
+      }
       this.updateSelectedItemPosition(pointer);
       return;
     }
@@ -124,11 +135,15 @@ export default class Inventory extends Phaser.GameObjects.Container {
     let itemAlreadyDropped = false;
 
     const EQUIP_SLOT = this.playerEquipment.getEquipSlotUnderMouse(pointer);
-    if (EQUIP_SLOT)
+    if (EQUIP_SLOT) {
+      const equipEvent = new PlayerEvents.PlayerEquipItemEvent(EntityManager.instance.getPlayers()[0], this.selectedItem);
+      PlayerEquipmentEventManager.getInstance().notifyObservers(equipEvent);
       itemAlreadyDropped = this.dropItemInEquipSlot(EQUIP_SLOT);
+    }
 
-    if (!itemAlreadyDropped)
+    if (!itemAlreadyDropped) {
       itemAlreadyDropped = this.dropItemInItemStorage(pointer);
+    }
 
     if (!itemAlreadyDropped && !this.isPointerOnInventory(pointer)) {
       this.isLastClickDropItem = true;
@@ -146,11 +161,12 @@ export default class Inventory extends Phaser.GameObjects.Container {
     if (UNEQUIPPED_ITEM === this.selectedItem) // Couldn't place item
       return false;
 
-    if (UNEQUIPPED_ITEM) // Replaced item in equip slot
+    if (UNEQUIPPED_ITEM) {// Replaced item in equip slot
       this.setSelectedItem(UNEQUIPPED_ITEM);
-    else // No item was in equip slot
+    }
+    else { // No item was in equip slot
       this.setSelectedItem(null);
-
+    }
     return true;
   }
 

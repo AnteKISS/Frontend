@@ -90,8 +90,6 @@ export class EntityManager {
     for (let entity of this.getCurrentAreaEntityPool()) {
       let entitySprite: Phaser.GameObjects.Sprite = entity.getAll().filter(gameObject => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite;
 
-      console.log(entity.type, positionX, positionY, entity.positionX, entity.positionY);
-
       if (positionX > entity.positionX - (entity.truncatedSpriteWidth / 2) &&
         positionX < entity.positionX + (entity.truncatedSpriteWidth / 2) &&
         positionY < entity.positionY + (entity.truncatedSpriteHeight - (entity.truncatedSpriteHeight * entitySprite.originY)) &&

@@ -9,7 +9,7 @@ abstract class NpcEntity extends ActiveEntity {
   }
 
   // Getters/Setters
-
+  
 
   // Methods
   abstract update(time: number, deltaTime: number): void;

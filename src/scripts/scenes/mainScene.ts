@@ -24,6 +24,10 @@ import { AttributeAllocation } from '../progression/attributeAllocation'
 import ItemEntity from '../entities/itemEntity'
 import { MathModule } from '../utilities/mathModule'
 import { GameInput } from '../inputs/gameInputs'
+import { GameObjects } from 'phaser'
+import SoundManager from '../managers/soundManager'
+import { GeneralEventManager, PlayerEquipmentEventManager } from '../managers/eventManager'
+import { UiEvents } from '../events/uiEvents'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -42,25 +46,22 @@ export default class MainScene extends Phaser.Scene {
   private entityHealthBar: EntityHealthBar;
   private gui: GUI;
 
-  private inventory: Inventory;
-
   private attributeGUI: AttributeGUI;
   private gameInputs: GameInput;
 
   private deathScreenBackground: Phaser.GameObjects.Graphics;
   private deathScreenText: Phaser.GameObjects.Text;
 
+  public inventory: Inventory;
+
+  private music: Phaser.Sound.WebAudioSound;
+  private playerLight: Phaser.GameObjects.PointLight;
+
   public constructor() {
     super({ key: 'MainScene' });
   }
 
   public init(data: any): void {
-    if (this.game.renderer instanceof Phaser.Renderer.WebGL.WebGLRenderer) {
-      this.game.renderer.pipelines.add(
-        OutlinePipeline.KEY,
-        new OutlinePipeline(this.game)
-      );
-    }
   }
 
   public create() {
@@ -89,6 +90,8 @@ export default class MainScene extends Phaser.Scene {
         this.scene.launch('MapEditor');
         this.scene.pause('MainScene');
         this.scene.setVisible(false, 'MainScene');
+        const clickEvent = new UiEvents.ButtonClickEvent(this.mapEditorButton);
+        GeneralEventManager.getInstance().notifyObservers(clickEvent);
       });
 
     this.input!.mouse!.disableContextMenu();
@@ -141,6 +144,12 @@ export default class MainScene extends Phaser.Scene {
     this.input.keyboard!.on('keydown-I', () => this.inventory.visible ? this.inventory.hide() : this.inventory.show());
     this.input.keyboard!.on('keydown-ESC', () => this.inventory.hide());
 
+    // this.input.keyboard!.on('keydown-ESC', () => {
+    //   if (this.playerTest.isDead()) {
+    //     this.playerTest.resp
+    //   }
+    // });
+
     const stoneSword = new Item(this, "Stone Sword", ItemType.WEAPON, 1, 2, "stone_sword_inventory", "dropped_sword");
     this.inventory.getItemStorage().addItem(new InventoryItem(this, stoneSword), 0, 0);
 
@@ -169,9 +178,38 @@ export default class MainScene extends Phaser.Scene {
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
 
-    // let music: Phaser.Sound.BaseSound;
-    // music = this.sound.add('spinning_rat_power', { loop: true});
-    // music.play();
+    // let distanceThreshold = 400; //This is the max distance from the object. Any farther and no sound is played.
+    // let distanceToObject = Phaser.Math.Distance.Between(player.x, player.y, soundObj.x, soundObj.y);
+    // let normalizedSound = 1 - (distanceToObject / distanceThreshold);
+    // sound.volume = normalizedSound; turns into sound.volume = Phaser.Math.Easing.Sine.In(normalizedSound);
+    // this.music = this.sound.add('spinning_rat_power', {
+    //   mute: false,
+    //   volume: 0.9,
+    //   rate: 1,
+    //   detune: 0,
+    //   seek: 0,
+    //   loop: true,
+    //   delay: 0,
+    //   // source of the spatial sound
+    //   source: {
+    //       x: this.monsterTest2.positionX,// - this.cameras.main.width / 2,
+    //       y: this.monsterTest2.positionY,// - this.cameras.main.height / 2,
+    //       z: 0,
+    //       panningModel: 'equalpower',
+    //       distanceModel: 'inverse',
+    //       orientationX: 0,
+    //       orientationY: 0,
+    //       orientationZ: -1,
+    //       refDistance: 1,
+    //       maxDistance: 1000,
+    //       rolloffFactor: 0.25,
+    //       coneInnerAngle: 360,
+    //       coneOuterAngle: 0,
+    //       coneOuterGain: 0,
+    //       follow: undefined
+    //   }
+    // }) as Phaser.Sound.WebAudioSound;
+    // this.music.play();
     this.cameras.main.ignore(
       [
         this.fpsText,
@@ -186,17 +224,41 @@ export default class MainScene extends Phaser.Scene {
       ]
     );
     // TODO: Find a way to make the ignore list more dynamic
+    this.playerLight = this.add.pointlight(this.playerTest.positionX, this.playerTest.positionY, 0xE0E0E0, 250, 3, 0.01);
+    this.playerLight.depth = 100;
     this.uiCamera.ignore(
       [
-        /*
+        this.playerTest,
         this.playerTest.collider.debugGraphics,
-        this.monsterTest.collider.debugGraphics,
-        this.monsterTest2.collider.debugGraphics,
-        this.monsterTest3.collider.debugGraphics,
-        */
+        this.playerLight
       ]
     );
+    let soundManager = SoundManager.getInstance();
+    soundManager.scene = this;
+    soundManager.playerEntity = this.playerTest;
+    SoundManager.getInstance().playOutsideBackgroundAmbience();
+
+    GeneralEventManager.getInstance().addObserver(soundManager);
+    PlayerEquipmentEventManager.getInstance().addObserver(this.playerTest);
     // EntityManager.instance.setDebugMode(true);
+    (this.plugins.get('rexHorrifiPipeline') as any).add(this.cameras.main, {
+      vignetteEnable: true,
+      vignetteStrength: 1, 
+      vignetteIntensity: 1.5,
+    });
+    this.input.keyboard!.on('keydown-W', () => {
+      (this.music.y as unknown as AudioParam).value -= 10;
+      console.log('Y: ', this.music.y);
+    });
+    this.input.keyboard!.on('keydown-S', () => {
+      (this.music.y as unknown as AudioParam).value += 10;
+    });
+    this.input.keyboard!.on('keydown-A', () => {
+      (this.music.x as unknown as AudioParam).value -= 10;
+    });
+    this.input.keyboard!.on('keydown-D', () => {
+      (this.music.x as unknown as AudioParam).value += 10;
+    });
   }
 
   public update(time: number, deltaTime: number) {
@@ -204,7 +266,10 @@ export default class MainScene extends Phaser.Scene {
       this.playerTest.positionX - this.cameras.main.width / 2,
       this.playerTest.positionY - this.cameras.main.height / 2
     );
-
+    this.playerLight.x = this.playerTest.positionX;
+    this.playerLight.y = this.playerTest.positionY;
+    this.sound.setListenerPosition(this.playerTest.positionX, this.playerTest.positionY);
+    SoundManager.getInstance().update(time, deltaTime);
     window['deltaTime'] = deltaTime;
     this.fpsText.update();
     EntityManager.instance.update(time, deltaTime);
@@ -217,7 +282,7 @@ export default class MainScene extends Phaser.Scene {
     if (this.gameInputs.showGroundItemsKey.isDown) {
       EntityManager.instance.toggleGroundItemsTooltip(true);
     } else {
-      EntityManager.instance.toggleGroundItemsTooltip(true /*false*/); // NOTE: Currently showing all item labels, maybe subject to change later
+      EntityManager.instance.toggleGroundItemsTooltip(false);
     }
   }
 
@@ -246,7 +311,7 @@ export default class MainScene extends Phaser.Scene {
     }
 
     const itemEntity: ItemEntity | null = EntityManager.instance.getItemAtPosition(
-      pointer.x + this.playerTest.positionX - this.playerTest.scene.cameras.main.width * 0.5,
+      pointer.x + this.playerTest.positionX - this.playerTest.scene.cameras.main.width * 0.5, 
       pointer.y + this.playerTest.positionY - this.playerTest.scene.cameras.main.height * 0.5
     );
     if (!itemEntity) {

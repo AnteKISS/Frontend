@@ -43,17 +43,14 @@ export default class MainMenu extends Phaser.Scene {
             }
         
           startGame() {
-            console.log('Play button clicked');
             this.scene.start('Pregame');
           }
         
           openSettings() {
-            console.log('Settings button clicked');
             this.scene.start('Setting');
           }
         
           exitGame() {
-            console.log('Exit button clicked');
             //fermer tous ???
           }
     

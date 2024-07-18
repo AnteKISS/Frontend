@@ -4,7 +4,7 @@ import InventoryItem from './inventoryItem';
 
 export default class EquipSlot extends Phaser.GameObjects.Container {
   private item: InventoryItem | null;
-  private itemType: ItemType;
+  public itemType: ItemType;
 
   private slot: Phaser.GameObjects.Sprite;
   private emptySlotSpritePath: string;
