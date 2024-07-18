@@ -5,6 +5,7 @@ import MapEditor from './scenes/mapEditor'
 import MainMenu from './scenes/mainMenu';
 import Setting from './scenes/setting';
 import Pregame from './scenes/pregame';
+import LoadingScreen from './scenes/loadingScreen';
 
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
@@ -19,7 +20,7 @@ const config = {
     width: DEFAULT_WIDTH,
     height: DEFAULT_HEIGHT
   },
-  scene: [PreloadScene, MainMenu, MainScene, Setting, Pregame , MapEditor],
+  scene: [PreloadScene, MainMenu, MainScene, Setting, LoadingScreen , Pregame , MapEditor],
   physics: {
     default: 'arcade',
     arcade: {

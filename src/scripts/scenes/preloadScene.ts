@@ -26,7 +26,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('arrowRight', 'assets/gui/editor/arrows/Arrow_E0001.png');
     this.load.image('whiteGlow', 'assets/gui/editor/white_glow.png');
     this.load.image('button', 'assets/gui/progression/button.png');
-    this.load.image('backGround', 'assets/gui/mainMenu/diablo2WP1080.png');
+    this.load.image('backGround', 'assets/gui/mainMenu/wpTeamArt.png');
     this.load.image('play', 'assets/gui/mainMenu/play30.png');
     this.load.image('exit', 'assets/gui/mainMenu/exit30.png');
     this.load.image('setting', 'assets/gui/mainMenu/setting30.png');

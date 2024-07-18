@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
-//import { readFile } from 'fs/promises';
 import { join } from 'path';
+//import { readFile } from 'fs/promises';
 
 
 
@@ -10,14 +10,14 @@ export default class Pregame extends Phaser.Scene {
     TintColorUnclicked: number = 0xff0000;
     muteClicked: boolean = false;
     volume: number = 50;
-    tempVolume;number = 0;
+    tempVolume:number = 0;
 
     constructor() {
         super('Pregame');
     }
 
     create() {
-    this.add.image(600, 400, 'backGround');
+        this.add.image(635, 360, 'backGround');
     
     // Créer les boutons
     const soundupButton = this.createButtonPlayer(500, 350, 'female', () => this.FemaleNewGame());

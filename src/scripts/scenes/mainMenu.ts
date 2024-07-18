@@ -9,7 +9,7 @@ export default class MainMenu extends Phaser.Scene {
     }
 
       create() {
-        this.add.image(600, 400, 'backGround');
+        this.add.image(635, 360, 'backGround');
         
             // Créer les boutons
             const playButton = this.createButton(625, 400, 'play', () => this.startGame());
