@@ -117,11 +117,9 @@ export default class PlayerController {
   private updateTarget() {
     const entity = EntityManager.instance.getAreaEntityAtPosition(this.destination.x, this.destination.y);
 
-    if ((entity !== undefined && entity !== null) && entity !== this.player) {
-      if (!(entity as unknown as IFightable).isDead()) {
-        this.player.target = entity;
-      }
-    } else
+    if (entity?.type === "MonsterEntity")
+      this.player.target = entity;
+    else
       this.player.target = null;
   }
 
