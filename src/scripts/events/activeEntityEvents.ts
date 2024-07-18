@@ -52,6 +52,24 @@ export namespace ActiveEntityEvents {
     }
   }
 
+  export class FireSpellCastEvent extends MagicEvent {
+    constructor(entity: ActiveEntity, spell: Spell) {
+      super(entity, spell);
+    }
+  }
+
+  export class IceSpellCastEvent extends MagicEvent {
+    constructor(entity: ActiveEntity, spell: Spell) {
+      super(entity, spell);
+    }
+  }
+
+  export class EarthSpellCastEvent extends MagicEvent {
+    constructor(entity: ActiveEntity, spell: Spell) {
+      super(entity, spell);
+    }
+  }
+
   export class MeleeWeaponAttackEvent extends WeaponEvent {
     constructor(attacker: ActiveEntity, weapon: Item) {
       super(attacker, weapon);

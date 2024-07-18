@@ -9,10 +9,10 @@ export default class Quake extends Spell
 {
     constructor(spellOwner: PlayerEntity)
     {
-        super(3, 300, 10, 0, CastType.GroundTarget, 'Quake', 'quakeIcon', spellOwner)
+        super(45, 300, 50, 0, CastType.GroundTarget, 'Quake', 'quakeIcon', spellOwner)
         {
-            new GroundCircleOnCast(this, 500, 2, 'greyQuake');
-            new DamageOnHit(this, 20);
+            new GroundCircleOnCast(this, 500, 10, 'greyQuake');
+            new DamageOnHit(this, 100);
         }
     }
 }

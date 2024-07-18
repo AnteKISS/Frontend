@@ -36,6 +36,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('return', 'assets/gui/mainMenu/return.png');
     this.load.image('male', 'assets/gui/mainMenu/male.png');
     this.load.image('female', 'assets/gui/mainMenu/female_warrior.png');
+    this.load.image('customPointer', 'assets/gui/pointer05.png')
 
     // GAME OBJECTS
     this.load.image('basic_spawner', 'assets/sprites/spawner/basic_spawner.png');
@@ -94,6 +95,10 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.audio('step_dirt_6', 'assets/sound/step_dirt_6.wav');
     this.load.audio('step_dirt_7', 'assets/sound/step_dirt_7.wav');
     this.load.audio('step_dirt_8', 'assets/sound/step_dirt_8.wav');
+    this.load.audio('explosion_1', 'assets/sound/explosion_1.flac');
+    this.load.audio('fire_spell_launch_1', 'assets/sound/fire_spell_launch_1.wav');
+    this.load.audio('ice_spell_1', 'assets/sound/ice_spell_1.wav');
+    this.load.audio('hit_flesh_1', 'assets/sound/hit_flesh_1.ogg');
 
     this.initializeSpritesheets();
   }

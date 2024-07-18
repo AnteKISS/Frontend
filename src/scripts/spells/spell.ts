@@ -2,6 +2,8 @@ import { ActiveEntity } from "../entities/activeEntity";
 import { BaseEntity } from "../entities/baseEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import { CastType } from "../enums/castTypes"
+import { ActiveEntityEvents } from "../events/activeEntityEvents";
+import { GeneralEventManager } from "../managers/eventManager";
 
 export default class Spell
 {
@@ -53,6 +55,18 @@ export default class Spell
                         this.spellOwner.stats.mana -= this.manaCost;
                         this.timeSinceLastCast = Date.now();
                         this.remainingCooldown = this.cooldown*1000;
+                        if (this.spellName === 'undefined') {
+                            return true;
+                        } else if (this.spellName === 'Fire Bolt') {
+                            const castEvent = new ActiveEntityEvents.FireSpellCastEvent(this.spellOwner, this);
+                            GeneralEventManager.getInstance().notifyObservers(castEvent);
+                        } else if (this.spellName === 'Ice Shard') {
+                            const castEvent = new ActiveEntityEvents.IceSpellCastEvent(this.spellOwner, this);
+                            GeneralEventManager.getInstance().notifyObservers(castEvent);
+                        } else if (this.spellName === 'Quake') {
+                            const castEvent = new ActiveEntityEvents.EarthSpellCastEvent(this.spellOwner, this);
+                            GeneralEventManager.getInstance().notifyObservers(castEvent);
+                        }
                         return true;
                     }
             }

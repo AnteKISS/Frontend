@@ -21,14 +21,14 @@ export default class MainMenu extends Phaser.Scene {
               
           }
     
-           createButton(x: number, y: number, key: string, callback: () => void) {
+            createButton(x: number, y: number, key: string, callback: () => void) {
               const button = this.add.image(x, y, key).setInteractive();
           
               button.setTint(0xff0000);
           
               button.on('pointerout', () => {
                 button.setTint(0xff0000);
-              });
+              }) ;
           
               button.on('pointerdown', () => {
                 button.setTint(0x660000);

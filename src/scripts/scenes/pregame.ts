@@ -10,7 +10,7 @@ export default class Pregame extends Phaser.Scene {
     TintColorUnclicked: number = 0xff0000;
     muteClicked: boolean = false;
     volume: number = 50;
-    tempVolume;number = 0;
+    tempVolume: number = 0;
 
     constructor() {
         super('Pregame');
