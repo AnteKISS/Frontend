@@ -26,6 +26,16 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('arrowRight', 'assets/gui/editor/arrows/Arrow_E0001.png');
     this.load.image('whiteGlow', 'assets/gui/editor/white_glow.png');
     this.load.image('button', 'assets/gui/progression/button.png');
+    this.load.image('backGround', 'assets/gui/mainMenu/diablo2WP1080.png');
+    this.load.image('play', 'assets/gui/mainMenu/play30.png');
+    this.load.image('exit', 'assets/gui/mainMenu/exit30.png');
+    this.load.image('setting', 'assets/gui/mainMenu/setting30.png');
+    this.load.image('mute', 'assets/gui/mainMenu/mute.png');
+    this.load.image('plus', 'assets/gui/mainMenu/plus.png');
+    this.load.image('moins', 'assets/gui/mainMenu/moins.png');
+    this.load.image('return', 'assets/gui/mainMenu/return.png');
+    this.load.image('male', 'assets/gui/mainMenu/male.png');
+    this.load.image('female', 'assets/gui/mainMenu/female_warrior.png');
 
     // GAME OBJECTS
     this.load.image('basic_spawner', 'assets/sprites/spawner/basic_spawner.png');
@@ -77,7 +87,7 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start('MainScene');
+    this.scene.start('MainMenu');
   }
 
   initializeSpritesheets(): void {
