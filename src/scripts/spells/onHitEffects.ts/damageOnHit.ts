@@ -11,19 +11,19 @@ export default class DamageOnHit implements IOnHitEffect
     scaling: number;
     scalingStat;
 
-    constructor(spell: Spell)
+    constructor(spell: Spell, baseDamage: number)
     {
         this.spell = spell;
+        this.baseDamage = baseDamage;
         spell.addOnHitEffect(this);
     }
 
     public onHit(hitEntity: BaseEntity): void
     {
-        console.log('HIT');
-        //const totalDamage = (this.baseDamage + (this.scaling * this.spell.spellOwner.)) * this.spell.spellOwner.damageTypeBonus(this.damageType);
-        //hitEntity.takeDamage(this.damageType, totalDamage);
+        const totalDamage = this.baseDamage + this.spell.spellOwner.stats.baseMagicalDamage;
+        
         const entity = hitEntity as unknown as IFightable;
-        entity.damage(50);
+        entity.damage(totalDamage);
     }
 
     public onMaxRange(position: any, castDirection: any, movementDirection: any): void {

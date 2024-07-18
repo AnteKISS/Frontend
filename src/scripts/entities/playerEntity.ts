@@ -21,6 +21,7 @@ import { SkillTree } from '../progression/skillTree';
 import { AttributeAllocation } from '../progression/attributeAllocation';
 import CampaignManager from '../managers/campaignmanager';
 import TileModule from '../tiles/tilemodule';
+import { ActiveEntityStats } from './activeEntityStats';
 
 export class PlayerEntity extends ActiveEntity implements IFightable {
 
@@ -31,12 +32,20 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   public onPlayerDeath: Signal = new Signal();
   public maxMana: number = 150; //Pour test
   public spellBook: SpellBook;
+
+  mySpellBook: SpellBook;
+  private equippedSpells: Spell[] = [];
   public controller: PlayerController;
   public exp: Exp;
 
-  private equippedSpells: Spell[] = [];
   private skillTree: SkillTree;
   public attributeAllocation: AttributeAllocation;
+  private manaRegenEvent: Phaser.Time.TimerEvent;
+  private healthRegenEvent: Phaser.Time.TimerEvent;
+  private realStrenght: number;
+  private realDexterity: number;
+  private realIntelligence: number;
+  private realVitality: number;
 
   constructor(scene) {
     super(scene);
@@ -91,6 +100,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.truncatedSpriteHeight = 64 * this.bodySprite.scaleY;
     this.collider = new Physics.Collider(this, this.bodySprite, this.onSpriteColliding, this.onEntityColliding);
     this.animator = new ActiveEntityAnimator(this);
+    this.startManaRegen(scene);
+    this.startHealthRegen(scene);
     const animationCompleteHandler: SignalHandler = {
       callback: this.onNonRepeatingAnimationEnd.bind(this),
       parameters: [this.currentAnimationState]
@@ -124,12 +135,75 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.collider.checkSpriteCollision();
   }
 
+  public attributeConversion(): void
+  {
+    this.realVitality = this.stats.vitality + this.attributeAllocation.vitality;
+    this.stats.maxHealth = 100 + this.realVitality * 10;
+    this.stats.healthRegeneration = 2 + this.realVitality * 0.2;
+
+    this.realStrenght = this.stats.strength + this.attributeAllocation.strength;
+    
+    this.realDexterity = this.stats.dexterity + this.attributeAllocation.dexterity;
+    this.stats.movementSpeed = this.stats.baseMovementSpeed + this.realDexterity * 0.5;
+
+    this.stats.basePhysicalDamage = 10 + this.realStrenght * 2 + this.realDexterity;
+
+    this.realIntelligence = this.stats.intelligence + this.attributeAllocation.intelligence;
+    this.stats.maxMana = 100 + this.realIntelligence * 5;
+    this.stats.manaRegeneration = 2 + this.realIntelligence * 0.2;
+    this.stats.baseMagicalDamage = 10 + this.realIntelligence * 2;
+  }
+
+  private startManaRegen(scene: Phaser.Scene) 
+  {
+    this.manaRegenEvent = scene.time.addEvent({
+        delay: 1000,                
+        callback: this.regenerateMana,
+        callbackScope: this,
+        loop: true
+    });
+  }
+
+  private startHealthRegen(scene: Phaser.Scene) 
+  {
+    this.healthRegenEvent = scene.time.addEvent({
+        delay: 1000,                
+        callback: this.regenerateHealth,
+        callbackScope: this,
+        loop: true
+    });
+  }
+
+  private regenerateMana() 
+  {
+    if (this.stats.mana < this.stats.maxMana) 
+    {
+      this.stats.mana += this.stats.manaRegeneration;
+    }
+    if (this.stats.mana > this.stats.maxMana) 
+    {
+      this.stats.mana = this.stats.maxMana;
+    }
+  }
+
+  private regenerateHealth() 
+  {
+    if (this.stats.health < this.stats.maxHealth) 
+    {
+      this.stats.health += this.stats.healthRegeneration;
+    }
+    if (this.stats.health > this.stats.maxHealth) 
+    {
+      this.stats.health = this.stats.maxHealth;
+    }
+  }
+
   public reset(): void {
     throw new NotImplementedError();
   }
 
   public attack(target: IFightable): void {
-    target.damage(10);
+    target.damage(this.stats.basePhysicalDamage);
   }
 
   public damage(amount: number): void {

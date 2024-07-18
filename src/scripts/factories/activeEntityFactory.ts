@@ -12,12 +12,14 @@ export class ActiveEntityFactory {
       strength: 0,
       dexterity: 0,
       vitality: 0,
+      intelligence: 0,
       energy: 0,
-      mana: 150,
-      maxMana: 150,
+      mana: 100,
+      maxMana: 100,
       health: 100,
       maxHealth: 100,
-      healthRegeneration: 0,
+      healthRegeneration: 2,
+      manaRegeneration: 2,
       basePhysicalDamage: 0,
       baseMagicalDamage: 0,
       attackAccuracy: 0,
@@ -40,8 +42,8 @@ export class ActiveEntityFactory {
       coldAbsorption: 0,
       lightningAbsorption: 0,
       poisonAbsorption: 0,
-      baseMovementSpeed: 1,
-      movementSpeed: 300,
+      baseMovementSpeed: 150,
+      movementSpeed: 0,
       level: 1,
       experience: 0,
       isInvincible: false,
@@ -55,6 +57,7 @@ export class ActiveEntityFactory {
       isInvisible: false,
       isUntargetable: false
     };
+    entity.attributeConversion();
     return entity;
   }
 
@@ -67,12 +70,14 @@ export class ActiveEntityFactory {
       strength: 0,
       dexterity: 0,
       vitality: 0,
+      intelligence: 0,
       energy: 0,
       mana: 0,
       maxMana: 0,
       health: 100,
       maxHealth: 100,
       healthRegeneration: 0,
+      manaRegeneration: 0,
       basePhysicalDamage: 5,
       baseMagicalDamage: 0,
       attackAccuracy: 0,

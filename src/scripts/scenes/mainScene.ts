@@ -274,12 +274,13 @@ export default class MainScene extends Phaser.Scene {
 
   private updateGUI(): void {
     this.gui.manaBar.setCurrentValue(this.playerTest.stats.mana);
-    this.gui.manaBar.setMaxValue(this.playerTest.maxMana);
+    this.gui.manaBar.setMaxValue(this.playerTest.stats.maxMana);
     this.gui.healthBar.setCurrentValue(this.playerTest.stats.health);
     this.gui.healthBar.setMaxValue(this.playerTest.stats.maxHealth);
     this.gui.spellBar.updateSlots();
     this.gui.expBar.setMaxExp(this.playerTest.exp.getLevelExpToMax());
     this.gui.expBar.setCurrentExp(this.playerTest.exp.getcurrentExpToMax());
+    this.gui.expBar.updateExpToolTip(this.pointer);
   }
 
   public onPlayerDeath(): void {

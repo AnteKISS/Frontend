@@ -92,6 +92,7 @@ export class AttributeAllocation {
         this.tempStrength = 0;
         this.tempDexterity = 0;
         this.tempIntelligence = 0;
+        this.player.attributeConversion();
     }
 
     public cancelSelection() {

@@ -38,7 +38,7 @@ export class SpellColliderManager
     public update(): void 
     {
         this.colliders.forEach(collider => {
-          collider.displayDebugGraphics();
+          //collider.displayDebugGraphics();
           collider.checkCollision();
         });
     }
