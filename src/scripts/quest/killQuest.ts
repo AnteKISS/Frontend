@@ -1,6 +1,6 @@
 import { MonsterEntity } from "../entities/monsterEntity";
 import { EntityManager } from "../managers/entityManager";
-import EventManager from "../managers/eventManager";
+import { EventManager, GeneralEventManager } from "../managers/eventManager";
 import { QuestManager } from "../managers/questManager";
 import { KillQuestObserver } from "../observer/killQuestObserver";
 
@@ -22,7 +22,7 @@ export class KillQuest
         this.amountKilled = 0;
         this.succeeded = false;
         this.observer = new KillQuestObserver(this);
-        EventManager.addObserver(this.observer);
+        GeneralEventManager.getInstance().addObserver(this.observer);
         QuestManager.getInstance.addQuest(this);
     }
 

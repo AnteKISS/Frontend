@@ -28,6 +28,8 @@ import { GameObjects } from 'phaser'
 import SoundManager from '../managers/soundManager'
 import { GeneralEventManager, PlayerEquipmentEventManager } from '../managers/eventManager'
 import { UiEvents } from '../events/uiEvents'
+import { KillQuest } from '../quest/killQuest'
+import { QuestUI } from '../quest/questUI'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -45,6 +47,7 @@ export default class MainScene extends Phaser.Scene {
   private monsterTest3: MonsterEntity;
   private entityHealthBar: EntityHealthBar;
   private gui: GUI;
+  private questUI: QuestUI;
 
   private attributeGUI: AttributeGUI;
   private gameInputs: GameInput;
@@ -97,10 +100,12 @@ export default class MainScene extends Phaser.Scene {
     this.input!.mouse!.disableContextMenu();
 
     this.gui = new GUI(this, 0, 0);
+    this.questUI = new QuestUI(this);
     this.playerTest = EntityManager.instance.createPlayer(this);
     this.playerTest.positionX = 0;
     this.playerTest.positionY = 0;
     this.playerTest.area = CampaignManager.getInstance().getCampaign().currentArea();
+    new KillQuest(2, 'skeleton_0', 750);
 
     const playerDeathHandler: SignalHandler = {
       callback: this.onPlayerDeath.bind(this),
@@ -278,6 +283,7 @@ export default class MainScene extends Phaser.Scene {
     // this.drawDebugTileSet();
     this.attributeGUI.update();
     SpellColliderManager.getInstance.update();
+    this.questUI.drawUI(this);
 
     if (this.gameInputs.showGroundItemsKey.isDown) {
       EntityManager.instance.toggleGroundItemsTooltip(true);
