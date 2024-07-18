@@ -264,6 +264,8 @@ export default class MainScene extends Phaser.Scene {
     this.input.keyboard!.on('keydown-D', () => {
       (this.music.x as unknown as AudioParam).value += 10;
     });
+
+    this.sys.game.canvas.style.cursor = 'url(assets/gui/pointer05.png), auto';
   }
 
   public update(time: number, deltaTime: number) {
