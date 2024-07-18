@@ -144,6 +144,12 @@ export default class MainScene extends Phaser.Scene {
     this.input.keyboard!.on('keydown-I', () => this.inventory.visible ? this.inventory.hide() : this.inventory.show());
     this.input.keyboard!.on('keydown-ESC', () => this.inventory.hide());
 
+    // this.input.keyboard!.on('keydown-ESC', () => {
+    //   if (this.playerTest.isDead()) {
+    //     this.playerTest.resp
+    //   }
+    // });
+
     const stoneSword = new Item(this, "Stone Sword", ItemType.WEAPON, 1, 2, "stone_sword_inventory", "dropped_sword");
     this.inventory.getItemStorage().addItem(new InventoryItem(this, stoneSword), 0, 0);
 

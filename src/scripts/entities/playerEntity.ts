@@ -183,6 +183,9 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
 
   private regenerateMana() 
   {
+    if (this.isDead()) {
+      return;
+    }
     if (this.stats.mana < this.stats.maxMana) 
     {
       this.stats.mana += this.stats.manaRegeneration;
@@ -195,6 +198,9 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
 
   private regenerateHealth() 
   {
+    if (this.isDead()) {
+      return;
+    }
     if (this.stats.health < this.stats.maxHealth) 
     {
       this.stats.health += this.stats.healthRegeneration;
