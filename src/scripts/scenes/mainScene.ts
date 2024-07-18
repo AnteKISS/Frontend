@@ -274,6 +274,7 @@ export default class MainScene extends Phaser.Scene {
     });
     this.add.existing(youtubePlayer);
     youtubePlayer.play();
+    this.sys.game.canvas.style.cursor = 'url(assets/gui/pointer05.png), auto';
   }
 
   public update(time: number, deltaTime: number) {
