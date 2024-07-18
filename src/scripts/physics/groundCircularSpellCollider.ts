@@ -37,6 +37,7 @@ export class GroundCircularSpellCollider extends SpellCollider
 
         for (let index = 0; index < entities.length; index++)
         {
+            console.log(entities[index]);
             if (entities[index] === this.owner)
             {
                 continue;
@@ -54,9 +55,8 @@ export class GroundCircularSpellCollider extends SpellCollider
                 this.alreadyHitEntities.push(entities[index]);
                 this.collidingCallback(entities[index]);
             }
-            return true;
         }
-        return false;
+        return true;
     }
 
     private checkCollisonWithPoint(x: number, y: number): boolean
