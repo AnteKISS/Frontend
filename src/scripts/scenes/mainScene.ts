@@ -42,10 +42,7 @@ export default class MainScene extends Phaser.Scene {
   public mapEditorButton: Phaser.GameObjects.Text;
   public spellSpriteColliders: SpellCollider[] = [];
 
-  private playerTest: PlayerEntity;
-  private monsterTest: MonsterEntity;
-  private monsterTest2: MonsterEntity;
-  private monsterTest3: MonsterEntity;
+  public playerTest: PlayerEntity;
   private entityHealthBar: EntityHealthBar;
   private gui: GUI;
   private questUI: QuestUI;
@@ -55,8 +52,6 @@ export default class MainScene extends Phaser.Scene {
 
   private deathScreenBackground: Phaser.GameObjects.Graphics;
   private deathScreenText: Phaser.GameObjects.Text;
-
-  public inventory: Inventory;
 
   private music: Phaser.Sound.WebAudioSound;
   private playerLight: Phaser.GameObjects.PointLight;
@@ -115,25 +110,6 @@ export default class MainScene extends Phaser.Scene {
     }
     this.playerTest.onPlayerDeath.addHandler(playerDeathHandler);
 
-    /*
-    this.monsterTest = EntityManager.instance.createMonster(this, 'zombie_0');
-    this.monsterTest.name = 'Zembie';
-    this.monsterTest.positionX = this.cameras.main.width / 4;
-    this.monsterTest.positionY = this.cameras.main.height / 4;
-    this.monsterTest.area = this.campaignManager.getCampaign().currentArea();
-    this.monsterTest2 = EntityManager.instance.createMonster(this, 'minotaur_0');
-    this.monsterTest2.name = 'Menotaur';
-    this.monsterTest2.positionX = this.monsterTest.positionX - 240;
-    this.monsterTest2.positionY = this.monsterTest.positionY - 60;
-    this.monsterTest2.stats.movementSpeed = 150;
-    this.monsterTest2.stats.basePhysicalDamage = 20;
-    this.monsterTest2.area = this.campaignManager.getCampaign().currentArea();
-    this.monsterTest3 = EntityManager.instance.createMonster(this, 'skeleton_0');
-    this.monsterTest3.name = 'Skeletenotaur';
-    this.monsterTest3.positionX = this.monsterTest.positionX - 250;
-    this.monsterTest3.positionY = this.monsterTest.positionY + 120;
-    this.monsterTest3.area = CampaignManager.getInstance().getCampaign().currentArea();
-    */
     this.entityHealthBar = new EntityHealthBar(this);
     // this.entityHealthBar.entity = this.monsterTest;
     this.gui.spellBar.setSpellBook(this.playerTest.spellBook);
@@ -147,9 +123,8 @@ export default class MainScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown-ESC', () => this.attributeGUI.hide());
 
     // Setup inventory test
-    this.inventory = new Inventory(this);
-    this.input.keyboard!.on('keydown-I', () => this.inventory.visible ? this.inventory.hide() : this.inventory.show());
-    this.input.keyboard!.on('keydown-ESC', () => this.inventory.hide());
+    this.input.keyboard!.on('keydown-I', () => this.playerTest.inventory.visible ? this.playerTest.inventory.hide() : this.playerTest.inventory.show());
+    this.input.keyboard!.on('keydown-ESC', () => this.playerTest.inventory.hide());
 
     // this.input.keyboard!.on('keydown-ESC', () => {
     //   if (this.playerTest.isDead()) {
@@ -157,17 +132,18 @@ export default class MainScene extends Phaser.Scene {
     //   }
     // });
 
+    // Add items to player inventory
     const stoneSword = new Item(this, "Stone Sword", ItemType.WEAPON, 1, 2, "stone_sword_inventory", "dropped_sword");
-    this.inventory.getItemStorage().addItem(new InventoryItem(this, stoneSword), 0, 0);
+    this.playerTest.inventory.getItemStorage().addItem(new InventoryItem(this, stoneSword), 0, 0);
 
     const woodenShield = new Item(this, "Wooden Shield", ItemType.WEAPON, 2, 2, "wooden_shield_inventory", "dropped_shield");
-    this.inventory.getItemStorage().autoLoot(new InventoryItem(this, woodenShield));
+    this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, woodenShield));
 
     const chainmailHood = new Item(this, "Chainmail Hood", ItemType.HELMET, 2, 2, "chainmail_hood_inventory", "dropped_chainmail_hood");
-    this.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailHood));
+    this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailHood));
 
     const chainmailGloves = new Item(this, "Chainmail Gloves", ItemType.GLOVES, 2, 2, "chainmail_gloves_inventory", "dropped_chainmail_gloves");
-    this.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailGloves));
+    this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailGloves));
 
     Tooltip.init(this);
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
@@ -226,7 +202,7 @@ export default class MainScene extends Phaser.Scene {
         this.entityHealthBar.graphics,
         this.entityHealthBar.lblEntityName,
         this.entityHealthBar.lblEntityDescription,
-        this.inventory,
+        this.playerTest.inventory,
         this.attributeGUI
       ]
     );
@@ -250,7 +226,7 @@ export default class MainScene extends Phaser.Scene {
     // EntityManager.instance.setDebugMode(true);
     (this.plugins.get('rexHorrifiPipeline') as any).add(this.cameras.main, {
       vignetteEnable: true,
-      vignetteStrength: 1, 
+      vignetteStrength: 1,
       vignetteIntensity: 1.5,
     });
     this.input.keyboard!.on('keydown-W', () => {
@@ -305,38 +281,38 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public isPointerOnInventory(pointer: Phaser.Input.Pointer): boolean {
-    return this.isInventoryOpen() && this.inventory.isPointerOnInventory(pointer);
+    return this.isInventoryOpen() && this.playerTest.inventory.isPointerOnInventory(pointer);
   }
 
   public isInventoryOpen(): boolean {
-    return this.inventory.visible;
+    return this.playerTest.inventory.visible;
   }
 
   public isItemPickedUp(): boolean {
-    return this.inventory.isItemPickedUp();
+    return this.playerTest.inventory.isItemPickedUp();
   }
 
   private onPointerMove(pointer: Phaser.Input.Pointer): void {
-    if (!this.inventory.wasItemDroppedLastClick())
+    if (!this.playerTest.inventory.wasItemDroppedLastClick())
       this.playerTest.controller.onPointerMove(pointer);
   }
 
   private onPointerDown(pointer: Phaser.Input.Pointer): void {
-    this.inventory.onPointerDown(pointer);
+    this.playerTest.inventory.onPointerDown(pointer);
 
-    if (!this.inventory.wasItemDroppedLastClick()) {
+    if (!this.playerTest.inventory.wasItemDroppedLastClick()) {
       this.playerTest.controller.onPointerDown(pointer);
     }
 
     const itemEntity: ItemEntity | null = EntityManager.instance.getItemAtPosition(
-      pointer.x + this.playerTest.positionX - this.playerTest.scene.cameras.main.width * 0.5, 
+      pointer.x + this.playerTest.positionX - this.playerTest.scene.cameras.main.width * 0.5,
       pointer.y + this.playerTest.positionY - this.playerTest.scene.cameras.main.height * 0.5
     );
     if (!itemEntity) {
       return;
     }
     if (MathModule.scaledDistanceBetween(this.playerTest.positionX, this.playerTest.positionY, itemEntity.x, itemEntity.y) < 100) {
-      const itemAddedToInventory: boolean = this.inventory.getItemStorage().autoLoot(new InventoryItem(this, itemEntity.item));
+      const itemAddedToInventory: boolean = this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, itemEntity.item));
       if (itemAddedToInventory) {
         EntityManager.instance.destroyItem(itemEntity);
       }

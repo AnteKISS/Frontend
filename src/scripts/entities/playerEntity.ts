@@ -30,6 +30,7 @@ import InventoryItem from '../inventory/inventoryItem';
 import IObserver from '../observer/observer';
 import { PlayerEvents } from '../events/playerEvents';
 import { ItemType } from '../inventory/itemType';
+import Inventory from '../inventory/inventory';
 
 export class PlayerEntity extends ActiveEntity implements IFightable, IObserver {
   public headSprite: InventorySprite;
@@ -44,6 +45,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   private equippedSpells: Spell[] = [];
   public controller: PlayerController;
   public exp: Exp;
+  public inventory: Inventory;
 
   private skillTree: SkillTree;
   public attributeAllocation: AttributeAllocation;
@@ -57,6 +59,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   constructor(scene) {
     super(scene);
     scene.add.existing(this);
+    this.inventory = new Inventory(this.scene);
     this.type = 'PlayerEntity';
     this.code = "player";
     this.headSprite = scene.add.sprite(0, 0, 'helmetTexture');
@@ -142,14 +145,13 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     this.collider.checkSpriteCollision();
   }
 
-  public attributeConversion(): void
-  {
+  public attributeConversion(): void {
     this.realVitality = this.stats.vitality + this.attributeAllocation.vitality;
     this.stats.maxHealth = 100 + this.realVitality * 10;
     this.stats.healthRegeneration = 2 + this.realVitality * 0.2;
 
     this.realStrenght = this.stats.strength + this.attributeAllocation.strength;
-    
+
     this.realDexterity = this.stats.dexterity + this.attributeAllocation.dexterity;
     this.stats.movementSpeed = this.stats.baseMovementSpeed + this.realDexterity * 0.5;
 
@@ -161,52 +163,44 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     this.stats.baseMagicalDamage = 10 + this.realIntelligence * 2;
   }
 
-  private startManaRegen(scene: Phaser.Scene) 
-  {
+  private startManaRegen(scene: Phaser.Scene) {
     this.manaRegenEvent = scene.time.addEvent({
-        delay: 1000,                
-        callback: this.regenerateMana,
-        callbackScope: this,
-        loop: true
+      delay: 1000,
+      callback: this.regenerateMana,
+      callbackScope: this,
+      loop: true
     });
   }
 
-  private startHealthRegen(scene: Phaser.Scene) 
-  {
+  private startHealthRegen(scene: Phaser.Scene) {
     this.healthRegenEvent = scene.time.addEvent({
-        delay: 1000,                
-        callback: this.regenerateHealth,
-        callbackScope: this,
-        loop: true
+      delay: 1000,
+      callback: this.regenerateHealth,
+      callbackScope: this,
+      loop: true
     });
   }
 
-  private regenerateMana() 
-  {
+  private regenerateMana() {
     if (this.isDead()) {
       return;
     }
-    if (this.stats.mana < this.stats.maxMana) 
-    {
+    if (this.stats.mana < this.stats.maxMana) {
       this.stats.mana += this.stats.manaRegeneration;
     }
-    if (this.stats.mana > this.stats.maxMana) 
-    {
+    if (this.stats.mana > this.stats.maxMana) {
       this.stats.mana = this.stats.maxMana;
     }
   }
 
-  private regenerateHealth() 
-  {
+  private regenerateHealth() {
     if (this.isDead()) {
       return;
     }
-    if (this.stats.health < this.stats.maxHealth) 
-    {
+    if (this.stats.health < this.stats.maxHealth) {
       this.stats.health += this.stats.healthRegeneration;
     }
-    if (this.stats.health > this.stats.maxHealth) 
-    {
+    if (this.stats.health > this.stats.maxHealth) {
       this.stats.health = this.stats.maxHealth;
     }
   }
