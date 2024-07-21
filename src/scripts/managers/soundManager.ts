@@ -1,7 +1,5 @@
 import { ActiveEntity } from "../entities/activeEntity";
-import { BaseEntity } from "../entities/baseEntity";
 import { EntitySound, SoundType } from "../entities/entitySound";
-import { MonsterEntity } from "../entities/monsterEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import { ActiveEntityEvents } from "../events/activeEntityEvents";
 import { UiEvents } from "../events/uiEvents";
@@ -89,7 +87,7 @@ export default class SoundManager implements IObserver {
     } else if (event instanceof ActiveEntityEvents.EarthSpellCastEvent) {
       this.effectsSoundManager.play('explosion_1', {
         volume: 1,
-        
+
       });
     } else if (event instanceof ActiveEntityEvents.FireSpellCastEvent) {
       this.effectsSoundManager.play('fire_spell_launch_1');
@@ -172,7 +170,7 @@ export default class SoundManager implements IObserver {
     //   }
     // };
     const sound = this.effectsSoundManager.add('step_dirt_' + random, {
-      rate: entity.stats.movementSpeed / 150,
+      rate: entity.modifierStats.movementSpeed / 150,
       volume: 0.25,
       source: {
         x: entity.positionX,

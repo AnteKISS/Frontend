@@ -16,7 +16,7 @@ class RusherBehaviorFactors implements BehaviorFactors {
 }
 
 export class RusherBehavior extends Behavior {
-  
+
   public constructor(parent: ActiveEntity) {
     super(parent);
     this.factors = new RusherBehaviorFactors();
@@ -38,7 +38,7 @@ export class RusherBehavior extends Behavior {
 
     this.attackCooldown_ms -= deltaTime;
     this.roamCooldown_ms -= deltaTime;
-    
+
     switch (monster.currentBehaviorState.state) {
       case ActiveEntityBehaviorState.State.IDLE:
         if (this.factors.roamFactor <= 0) {
@@ -57,7 +57,7 @@ export class RusherBehavior extends Behavior {
         if (this.parent.animator.isNonReapeatingAnimationPlaying()) {
           return;
         }
-        if (!this.isTargetValid() || !this.isTargetInRange(this.parent.stats.sightDistance)) {
+        if (!this.isTargetValid() || !this.isTargetInRange(this.parent.modifierStats.sightDistance)) {
           this.parent.target = null;
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         }
@@ -66,7 +66,7 @@ export class RusherBehavior extends Behavior {
         } else {
           this.setBehaviorState(ActiveEntityBehaviorState.State.MELEE_ATTACKING);
         }
-        break;        
+        break;
       case ActiveEntityBehaviorState.State.RUN:
         // Might not be necessary
         break;
@@ -126,7 +126,7 @@ export class RusherBehavior extends Behavior {
       case ActiveEntityAnimationState.State.MELEEATTACK:
       case ActiveEntityAnimationState.State.MELEEATTACK_2:
         if (this.isTargetValid() && this.isEntityInMeleeRange()) {
-          (this.parent.target! as PlayerEntity).damage(this.parent.stats.basePhysicalDamage, this.parent);
+          (this.parent.target! as PlayerEntity).damage(this.parent.modifierStats.basePhysicalDamage, this.parent);
         }
         break;
     }

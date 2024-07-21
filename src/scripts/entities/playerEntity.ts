@@ -21,12 +21,8 @@ import { SkillTree } from '../progression/skillTree';
 import { AttributeAllocation } from '../progression/attributeAllocation';
 import CampaignManager from '../managers/campaignmanager';
 import TileModule from '../tiles/tilemodule';
-import { ActiveEntityStats } from './activeEntityStats';
-import Tile from '../tiles/tile';
 import { ActiveEntityEvents } from '../events/activeEntityEvents';
 import { GeneralEventManager } from '../managers/eventManager';
-import MainScene from '../scenes/mainScene';
-import InventoryItem from '../inventory/inventoryItem';
 import IObserver from '../observer/observer';
 import { PlayerEvents } from '../events/playerEvents';
 import { ItemType } from '../inventory/itemType';
@@ -97,8 +93,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     this.spellBook.addSpell(new IceShard(this));
     this.spellBook.addSpell(new Quake(this));
 
-    this.stats.mana = 150; //Pour test
-    this.stats.maxHealth = 150; //Pour test
+    this.dynamicStats.mana = 150; //Pour test
+    this.modifierStats.maxHealth = 150; //Pour test
 
     this.headSprite.setOrigin(0.5, 0.75);
     this.bodySprite.setOrigin(0.5, 0.75);
@@ -146,21 +142,21 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   }
 
   public attributeConversion(): void {
-    this.realVitality = this.stats.vitality + this.attributeAllocation.vitality;
-    this.stats.maxHealth = 100 + this.realVitality * 10;
-    this.stats.healthRegeneration = 2 + this.realVitality * 0.2;
+    this.realVitality = this.modifierStats.vitality + this.attributeAllocation.vitality;
+    this.realStrenght = this.modifierStats.strength + this.attributeAllocation.strength;
+    this.realDexterity = this.modifierStats.dexterity + this.attributeAllocation.dexterity;
+    this.realIntelligence = this.modifierStats.intelligence + this.attributeAllocation.intelligence;
+    this.updateStats();
+  }
 
-    this.realStrenght = this.stats.strength + this.attributeAllocation.strength;
-
-    this.realDexterity = this.stats.dexterity + this.attributeAllocation.dexterity;
-    this.stats.movementSpeed = this.stats.baseMovementSpeed + this.realDexterity * 0.5;
-
-    this.stats.basePhysicalDamage = 10 + this.realStrenght * 2 + this.realDexterity;
-
-    this.realIntelligence = this.stats.intelligence + this.attributeAllocation.intelligence;
-    this.stats.maxMana = 100 + this.realIntelligence * 5;
-    this.stats.manaRegeneration = 2 + this.realIntelligence * 0.2;
-    this.stats.baseMagicalDamage = 10 + this.realIntelligence * 2;
+  public updateStats(): void {
+    this.modifierStats.maxHealth = 100 + this.realVitality * 10;
+    this.modifierStats.healthRegeneration = 2 + this.realVitality * 0.2;
+    this.modifierStats.movementSpeed = this.modifierStats.baseMovementSpeed + this.realDexterity * 0.5;
+    this.modifierStats.basePhysicalDamage = 10 + this.realStrenght * 2 + this.realDexterity;
+    this.modifierStats.maxMana = 100 + this.realIntelligence * 5;
+    this.modifierStats.manaRegeneration = 2 + this.realIntelligence * 0.2;
+    this.modifierStats.baseMagicalDamage = 10 + this.realIntelligence * 2;
   }
 
   private startManaRegen(scene: Phaser.Scene) {
@@ -185,11 +181,11 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     if (this.isDead()) {
       return;
     }
-    if (this.stats.mana < this.stats.maxMana) {
-      this.stats.mana += this.stats.manaRegeneration;
+    if (this.dynamicStats.mana < this.modifierStats.maxMana) {
+      this.dynamicStats.mana += this.modifierStats.manaRegeneration;
     }
-    if (this.stats.mana > this.stats.maxMana) {
-      this.stats.mana = this.stats.maxMana;
+    if (this.dynamicStats.mana > this.modifierStats.maxMana) {
+      this.dynamicStats.mana = this.modifierStats.maxMana;
     }
   }
 
@@ -197,11 +193,11 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     if (this.isDead()) {
       return;
     }
-    if (this.stats.health < this.stats.maxHealth) {
-      this.stats.health += this.stats.healthRegeneration;
+    if (this.dynamicStats.health < this.modifierStats.maxHealth) {
+      this.dynamicStats.health += this.modifierStats.healthRegeneration;
     }
-    if (this.stats.health > this.stats.maxHealth) {
-      this.stats.health = this.stats.maxHealth;
+    if (this.dynamicStats.health > this.modifierStats.maxHealth) {
+      this.dynamicStats.health = this.modifierStats.maxHealth;
     }
   }
 
@@ -210,17 +206,17 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   }
 
   public attack(target: IFightable): void {
-    target.damage(this.stats.basePhysicalDamage, this);
+    target.damage(this.modifierStats.basePhysicalDamage, this);
   }
 
   public damage(amount: number, damageSource: ActiveEntity): void {
     // TODO: take into account gear, active effects then apply damage
-    if (this.stats.health == 0) {
+    if (this.dynamicStats.health == 0) {
       return;
     }
-    this.stats.health -= amount;
-    if (this.stats.health <= 0) {
-      this.stats.health = 0;
+    this.dynamicStats.health -= amount;
+    if (this.dynamicStats.health <= 0) {
+      this.dynamicStats.health = 0;
       this.destinationX = this.positionX;
       this.destinationY = this.positionY;
       this.currentAnimationState.state = ActiveEntityAnimationState.State.DEATH;
@@ -236,7 +232,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   }
 
   public isDead(): boolean {
-    return this.stats.health <= 0;
+    return this.dynamicStats.health <= 0;
   }
 
   // Event Handlers
@@ -280,7 +276,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   }
 
   public levelUp() {
-    this.stats.level++;
+    this.dynamicStats.level++;
     this.skillTree.levelUp();
     this.attributeAllocation.levelUp();
   }

@@ -1,14 +1,11 @@
 import FpsText from '../objects/fpsText'
-import Inventory from '../inventory/inventory'
 import Item from '../inventory/item'
 import InventoryItem from '../inventory/inventoryItem'
 import { ItemType } from '../inventory/itemType'
 
 import GUI from '../objects/gui'
 import { PlayerEntity } from '../entities/playerEntity';
-import { MonsterEntity } from '../entities/monsterEntity';
 import { EntityManager } from '../managers/entityManager';
-import { OutlinePipeline } from '../pipelines/outlinePipeline';
 
 import { TileColor } from '../tiles/tiledrawer'
 import CampaignManager from '../managers/campaignmanager'
@@ -18,19 +15,15 @@ import { SignalHandler } from '../events/signal';
 import Tooltip from '../label/tooltip'
 import { SpellCollider } from '../physics/spellCollider';
 import { SpellColliderManager } from '../managers/spellColliderManager'
-import { ActiveEntity } from '../entities/activeEntity'
 import { AttributeGUI } from '../progression/attributeGUI'
-import { AttributeAllocation } from '../progression/attributeAllocation'
 import ItemEntity from '../entities/itemEntity'
 import { MathModule } from '../utilities/mathModule'
 import { GameInput } from '../inputs/gameInputs'
-import { GameObjects } from 'phaser'
 import SoundManager from '../managers/soundManager'
 import { GeneralEventManager, PlayerEquipmentEventManager } from '../managers/eventManager'
 import { UiEvents } from '../events/uiEvents'
 import { KillQuest } from '../quest/killQuest'
 import { QuestUI } from '../quest/questUI'
-//import YoutubePlayer from 'phaser3-rex-plugins/plugins/gameobjects/dom/youtubeplayer/YoutubePlayer'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -332,10 +325,10 @@ export default class MainScene extends Phaser.Scene {
   }
 
   private updateGUI(): void {
-    this.gui.manaBar.setCurrentValue(this.playerTest.stats.mana);
-    this.gui.manaBar.setMaxValue(this.playerTest.stats.maxMana);
-    this.gui.healthBar.setCurrentValue(this.playerTest.stats.health);
-    this.gui.healthBar.setMaxValue(this.playerTest.stats.maxHealth);
+    this.gui.manaBar.setCurrentValue(this.playerTest.dynamicStats.mana);
+    this.gui.manaBar.setMaxValue(this.playerTest.modifierStats.maxMana);
+    this.gui.healthBar.setCurrentValue(this.playerTest.dynamicStats.health);
+    this.gui.healthBar.setMaxValue(this.playerTest.modifierStats.maxHealth);
     this.gui.spellBar.updateSlots();
     this.gui.expBar.setMaxExp(this.playerTest.exp.getLevelExpToMax());
     this.gui.expBar.setCurrentExp(this.playerTest.exp.getcurrentExpToMax());
