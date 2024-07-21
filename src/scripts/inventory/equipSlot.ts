@@ -25,7 +25,7 @@ export default class EquipSlot extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
-  public getItem(): InventoryItem | null {
+  public getInventoryItem(): InventoryItem | null {
     if (this.item)
       return this.item;
     return null;
