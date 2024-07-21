@@ -75,7 +75,7 @@ const minotaur_0_downOrientationSpriteOffset = 144;
 const minotaur_0_downLeftOrientationSpriteOffset = 168;
 // --------------------------------
 
-// ---------- minotaur_0 ----------
+// ---------- skeleton_0 ----------
 const skeleton_0_idleAnimationStartFrame = 0;
 const skeleton_0_idleAnimationEndFrame = 3;
 const skeleton_0_runAnimationStartFrame = 4;
@@ -97,6 +97,88 @@ const skeleton_0_rightOrientationSpriteOffset = 112;
 const skeleton_0_downRightOrientationSpriteOffset = 140;
 const skeleton_0_downOrientationSpriteOffset = 168;
 const skeleton_0_downLeftOrientationSpriteOffset = 196;
+// ------------------------------
+
+// ---------- goblin_0 ----------
+const goblin_0_idleAnimationStartFrame = 0;
+const goblin_0_idleAnimationEndFrame = 3;
+const goblin_0_jumpAnimationStartFrame = 4;
+const goblin_0_jumpAnimationEndFrame = 11;
+const goblin_0_runAnimationStartFrame = 12;
+const goblin_0_runAnimationEndFrame = 19;
+const goblin_0_meleeAttackAnimationStartFrame = 20;
+const goblin_0_meleeAttackAnimationEndFrame = 23;
+const goblin_0_throwAnimationStartFrame = 24;
+const goblin_0_throwAnimationEndFrame = 27;
+const goblin_0_blockAnimationStartFrame = 28;
+const goblin_0_blockAnimationEndFrame = 31;
+const goblin_0_hitAnimationStartFrame = 32;
+const goblin_0_hitAnimationEndFrame = 33;
+const goblin_0_deathAnimationStartFrame = 34;
+const goblin_0_deathAnimationEndFrame = 39;
+const goblin_0_criticalDeathAnimationStartFrame = 40;
+const goblin_0_criticalDeathAnimationEndFrame = 47;
+
+const goblin_0_leftOrientationSpriteOffset = 0;
+const goblin_0_upLeftOrientationSpriteOffset = 48;
+const goblin_0_upOrientationSpriteOffset = 96;
+const goblin_0_upRightOrientationSpriteOffset = 144;
+const goblin_0_rightOrientationSpriteOffset = 192;
+const goblin_0_downRightOrientationSpriteOffset = 240;
+const goblin_0_downOrientationSpriteOffset = 288;
+const goblin_0_downLeftOrientationSpriteOffset = 336;
+// --------------------------------------
+
+// ---------- goblin_lumberjack_black ----------
+const goblin_lumberjack_black_idleAnimationStartFrame = 0;
+const goblin_lumberjack_black_idleAnimationEndFrame = 3;
+const goblin_lumberjack_black_runAnimationStartFrame = 4;
+const goblin_lumberjack_black_runAnimationEndFrame = 11;
+const goblin_lumberjack_black_carryAnimationStartFrame = 12;
+const goblin_lumberjack_black_carryAnimationEndFrame = 19;
+const goblin_lumberjack_black_meleeAttackAnimationStartFrame = 20;
+const goblin_lumberjack_black_meleeAttackAnimationEndFrame = 25;
+const goblin_lumberjack_black_pickupPutdownAnimationStartFrame = 26;
+const goblin_lumberjack_black_pickupPutdownAnimationEndFrame = 29;
+const goblin_lumberjack_black_blockAnimationStartFrame = 30;
+const goblin_lumberjack_black_blockAnimationEndFrame = 31;
+const goblin_lumberjack_black_hitAndDeathAnimationStartFrame = 32;
+const goblin_lumberjack_black_hitAndDeathAnimationEndFrame = 37;
+
+const goblin_lumberjack_black_leftOrientationSpriteOffset = 228;
+const goblin_lumberjack_black_upLeftOrientationSpriteOffset = 266;
+const goblin_lumberjack_black_upOrientationSpriteOffset = 0;
+const goblin_lumberjack_black_upRightOrientationSpriteOffset = 38;
+const goblin_lumberjack_black_rightOrientationSpriteOffset = 76;
+const goblin_lumberjack_black_downRightOrientationSpriteOffset = 114;
+const goblin_lumberjack_black_downOrientationSpriteOffset = 152;
+const goblin_lumberjack_black_downLeftOrientationSpriteOffset = 190;
+// --------------------------------------
+
+// ---------- wyvern_composite ----------
+const wyvern_composite_idleAnimationStartFrame = 0;
+const wyvern_composite_idleAnimationEndFrame = 7;
+const wyvern_composite_runAnimationStartFrame = 8;
+const wyvern_composite_runAnimationEndFrame = 15;
+const wyvern_composite_meleeAttackAnimationStartFrame = 16;
+const wyvern_composite_meleeAttackAnimationEndFrame = 23;
+const wyvern_composite_castAnimationStartFrame = 24;
+const wyvern_composite_castAnimationEndFrame = 31;
+const wyvern_composite_meleeAttack2AnimationStartFrame = 32;
+const wyvern_composite_meleeAttack2AnimationEndFrame = 39;
+const wyvern_composite_hitAnimationStartFrame = 40;
+const wyvern_composite_hitAnimationEndFrame = 47;
+const wyvern_composite_deathAnimationStartFrame = 48;
+const wyvern_composite_deathAnimationEndFrame = 55;
+
+const wyvern_composite_leftOrientationSpriteOffset = 0;
+const wyvern_composite_upLeftOrientationSpriteOffset = 56;
+const wyvern_composite_upOrientationSpriteOffset = 112;
+const wyvern_composite_upRightOrientationSpriteOffset = 168;
+const wyvern_composite_rightOrientationSpriteOffset = 224;
+const wyvern_composite_downRightOrientationSpriteOffset = 280;
+const wyvern_composite_downOrientationSpriteOffset = 336;
+const wyvern_composite_downLeftOrientationSpriteOffset = 392;
 // --------------------------------
 
 export const player_AnimationConfig = {
@@ -1525,6 +1607,337 @@ export const skeleton_0_AnimationConfig = {
   }
 };
 
+export const goblin_0_AnimationConfig = {
+  idle: {
+    frames: [
+      { start: goblin_0_idleAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_idleAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
+      { start: goblin_0_idleAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_idleAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_0_idleAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_idleAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
+      { start: goblin_0_idleAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_idleAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_0_idleAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_idleAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
+      { start: goblin_0_idleAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_idleAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_0_idleAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_idleAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
+      { start: goblin_0_idleAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_idleAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.IDLE,
+    frameRate: 6
+  },
+  jump: {
+    frames: [
+      { start: goblin_0_jumpAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_jumpAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
+      { start: goblin_0_jumpAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_jumpAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_0_jumpAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_jumpAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
+      { start: goblin_0_jumpAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_jumpAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_0_jumpAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_jumpAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
+      { start: goblin_0_jumpAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_jumpAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_0_jumpAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_jumpAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
+      { start: goblin_0_jumpAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_jumpAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.IDLE,
+    frameRate: 6
+  },
+  run: {
+    frames: [
+      { start: goblin_0_runAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_runAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
+      { start: goblin_0_runAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_runAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_0_runAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_runAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
+      { start: goblin_0_runAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_runAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_0_runAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_runAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
+      { start: goblin_0_runAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_runAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_0_runAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_runAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
+      { start: goblin_0_runAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_runAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.RUN,
+    frameRate: 8
+  },
+  meleeAttack: {
+    frames: [
+      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
+      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
+      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
+      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
+      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.MELEEATTACK,
+    frameRate: 16
+  },
+  throw: {
+    frames: [
+      { start: goblin_0_throwAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_throwAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
+      { start: goblin_0_throwAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_throwAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_0_throwAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_throwAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
+      { start: goblin_0_throwAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_throwAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_0_throwAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_throwAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
+      { start: goblin_0_throwAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_throwAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_0_throwAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_throwAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
+      { start: goblin_0_throwAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_throwAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.RANGEDATTACK,
+    frameRate: 8
+  },
+  block: {
+    frames: [
+      { start: goblin_0_blockAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_blockAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
+      { start: goblin_0_blockAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_blockAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_0_blockAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_blockAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
+      { start: goblin_0_blockAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_blockAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_0_blockAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_blockAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
+      { start: goblin_0_blockAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_blockAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_0_blockAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_blockAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
+      { start: goblin_0_blockAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_blockAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.BLOCK,
+    frameRate: 8
+  },
+  hit: {
+    frames: [
+      { start: goblin_0_hitAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_hitAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
+      { start: goblin_0_hitAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_hitAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_0_hitAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_hitAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
+      { start: goblin_0_hitAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_hitAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_0_hitAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_hitAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
+      { start: goblin_0_hitAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_hitAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_0_hitAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_hitAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
+      { start: goblin_0_hitAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_hitAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.HIT,
+    frameRate: 8
+  },
+  death: {
+    frames: [
+      { start: goblin_0_deathAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_deathAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
+      { start: goblin_0_deathAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_deathAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_0_deathAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_deathAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
+      { start: goblin_0_deathAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_deathAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_0_deathAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_deathAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
+      { start: goblin_0_deathAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_deathAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_0_deathAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_deathAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
+      { start: goblin_0_deathAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_deathAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.DEATH,
+    frameRate: 8
+  },
+  criticalDeath: {
+    frames: [
+      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
+      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
+      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
+      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
+      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.DEATH,
+    frameRate: 8
+  }
+};
+
+export const goblin_lumberjack_black_AnimationConfig = {
+  idle: {
+    frames: [
+      { start: goblin_lumberjack_black_idleAnimationStartFrame + goblin_lumberjack_black_leftOrientationSpriteOffset,      end: goblin_lumberjack_black_idleAnimationEndFrame + goblin_lumberjack_black_leftOrientationSpriteOffset,      sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.LEFT },
+      { start: goblin_lumberjack_black_idleAnimationStartFrame + goblin_lumberjack_black_upLeftOrientationSpriteOffset,    end: goblin_lumberjack_black_idleAnimationEndFrame + goblin_lumberjack_black_upLeftOrientationSpriteOffset,    sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_lumberjack_black_idleAnimationStartFrame + goblin_lumberjack_black_upOrientationSpriteOffset,        end: goblin_lumberjack_black_idleAnimationEndFrame + goblin_lumberjack_black_upOrientationSpriteOffset,        sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP },
+      { start: goblin_lumberjack_black_idleAnimationStartFrame + goblin_lumberjack_black_upRightOrientationSpriteOffset,   end: goblin_lumberjack_black_idleAnimationEndFrame + goblin_lumberjack_black_upRightOrientationSpriteOffset,   sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_lumberjack_black_idleAnimationStartFrame + goblin_lumberjack_black_rightOrientationSpriteOffset,     end: goblin_lumberjack_black_idleAnimationEndFrame + goblin_lumberjack_black_rightOrientationSpriteOffset,     sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.RIGHT },
+      { start: goblin_lumberjack_black_idleAnimationStartFrame + goblin_lumberjack_black_downRightOrientationSpriteOffset, end: goblin_lumberjack_black_idleAnimationEndFrame + goblin_lumberjack_black_downRightOrientationSpriteOffset, sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_lumberjack_black_idleAnimationStartFrame + goblin_lumberjack_black_downOrientationSpriteOffset,      end: goblin_lumberjack_black_idleAnimationEndFrame + goblin_lumberjack_black_downOrientationSpriteOffset,      sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN },
+      { start: goblin_lumberjack_black_idleAnimationStartFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  end: goblin_lumberjack_black_idleAnimationEndFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.IDLE,
+    frameRate: 6
+  },
+  run: {
+    frames: [
+      { start: goblin_lumberjack_black_runAnimationStartFrame + goblin_lumberjack_black_leftOrientationSpriteOffset,      end: goblin_lumberjack_black_runAnimationEndFrame + goblin_lumberjack_black_leftOrientationSpriteOffset,      sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.LEFT },
+      { start: goblin_lumberjack_black_runAnimationStartFrame + goblin_lumberjack_black_upLeftOrientationSpriteOffset,    end: goblin_lumberjack_black_runAnimationEndFrame + goblin_lumberjack_black_upLeftOrientationSpriteOffset,    sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_lumberjack_black_runAnimationStartFrame + goblin_lumberjack_black_upOrientationSpriteOffset,        end: goblin_lumberjack_black_runAnimationEndFrame + goblin_lumberjack_black_upOrientationSpriteOffset,        sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP },
+      { start: goblin_lumberjack_black_runAnimationStartFrame + goblin_lumberjack_black_upRightOrientationSpriteOffset,   end: goblin_lumberjack_black_runAnimationEndFrame + goblin_lumberjack_black_upRightOrientationSpriteOffset,   sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_lumberjack_black_runAnimationStartFrame + goblin_lumberjack_black_rightOrientationSpriteOffset,     end: goblin_lumberjack_black_runAnimationEndFrame + goblin_lumberjack_black_rightOrientationSpriteOffset,     sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.RIGHT },
+      { start: goblin_lumberjack_black_runAnimationStartFrame + goblin_lumberjack_black_downRightOrientationSpriteOffset, end: goblin_lumberjack_black_runAnimationEndFrame + goblin_lumberjack_black_downRightOrientationSpriteOffset, sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_lumberjack_black_runAnimationStartFrame + goblin_lumberjack_black_downOrientationSpriteOffset,      end: goblin_lumberjack_black_runAnimationEndFrame + goblin_lumberjack_black_downOrientationSpriteOffset,      sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN },
+      { start: goblin_lumberjack_black_runAnimationStartFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  end: goblin_lumberjack_black_runAnimationEndFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.RUN,
+    frameRate: 8
+  },
+  meleeAttack: {
+    frames: [
+      { start: goblin_lumberjack_black_meleeAttackAnimationStartFrame + goblin_lumberjack_black_leftOrientationSpriteOffset,      end: goblin_lumberjack_black_meleeAttackAnimationEndFrame + goblin_lumberjack_black_leftOrientationSpriteOffset,      sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.LEFT },
+      { start: goblin_lumberjack_black_meleeAttackAnimationStartFrame + goblin_lumberjack_black_upLeftOrientationSpriteOffset,    end: goblin_lumberjack_black_meleeAttackAnimationEndFrame + goblin_lumberjack_black_upLeftOrientationSpriteOffset,    sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_lumberjack_black_meleeAttackAnimationStartFrame + goblin_lumberjack_black_upOrientationSpriteOffset,        end: goblin_lumberjack_black_meleeAttackAnimationEndFrame + goblin_lumberjack_black_upOrientationSpriteOffset,        sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP },
+      { start: goblin_lumberjack_black_meleeAttackAnimationStartFrame + goblin_lumberjack_black_upRightOrientationSpriteOffset,   end: goblin_lumberjack_black_meleeAttackAnimationEndFrame + goblin_lumberjack_black_upRightOrientationSpriteOffset,   sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_lumberjack_black_meleeAttackAnimationStartFrame + goblin_lumberjack_black_rightOrientationSpriteOffset,     end: goblin_lumberjack_black_meleeAttackAnimationEndFrame + goblin_lumberjack_black_rightOrientationSpriteOffset,     sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.RIGHT },
+      { start: goblin_lumberjack_black_meleeAttackAnimationStartFrame + goblin_lumberjack_black_downRightOrientationSpriteOffset, end: goblin_lumberjack_black_meleeAttackAnimationEndFrame + goblin_lumberjack_black_downRightOrientationSpriteOffset, sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_lumberjack_black_meleeAttackAnimationStartFrame + goblin_lumberjack_black_downOrientationSpriteOffset,      end: goblin_lumberjack_black_meleeAttackAnimationEndFrame + goblin_lumberjack_black_downOrientationSpriteOffset,      sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN },
+      { start: goblin_lumberjack_black_meleeAttackAnimationStartFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  end: goblin_lumberjack_black_meleeAttackAnimationEndFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.MELEEATTACK,
+    frameRate: 16
+  },
+  carry: {
+    frames: [
+      { start: goblin_lumberjack_black_carryAnimationStartFrame + goblin_lumberjack_black_leftOrientationSpriteOffset,      end: goblin_lumberjack_black_carryAnimationEndFrame + goblin_lumberjack_black_leftOrientationSpriteOffset,      sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.LEFT },
+      { start: goblin_lumberjack_black_carryAnimationStartFrame + goblin_lumberjack_black_upLeftOrientationSpriteOffset,    end: goblin_lumberjack_black_carryAnimationEndFrame + goblin_lumberjack_black_upLeftOrientationSpriteOffset,    sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_lumberjack_black_carryAnimationStartFrame + goblin_lumberjack_black_upOrientationSpriteOffset,        end: goblin_lumberjack_black_carryAnimationEndFrame + goblin_lumberjack_black_upOrientationSpriteOffset,        sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP },
+      { start: goblin_lumberjack_black_carryAnimationStartFrame + goblin_lumberjack_black_upRightOrientationSpriteOffset,   end: goblin_lumberjack_black_carryAnimationEndFrame + goblin_lumberjack_black_upRightOrientationSpriteOffset,   sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_lumberjack_black_carryAnimationStartFrame + goblin_lumberjack_black_rightOrientationSpriteOffset,     end: goblin_lumberjack_black_carryAnimationEndFrame + goblin_lumberjack_black_rightOrientationSpriteOffset,     sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.RIGHT },
+      { start: goblin_lumberjack_black_carryAnimationStartFrame + goblin_lumberjack_black_downRightOrientationSpriteOffset, end: goblin_lumberjack_black_carryAnimationEndFrame + goblin_lumberjack_black_downRightOrientationSpriteOffset, sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_lumberjack_black_carryAnimationStartFrame + goblin_lumberjack_black_downOrientationSpriteOffset,      end: goblin_lumberjack_black_carryAnimationEndFrame + goblin_lumberjack_black_downOrientationSpriteOffset,      sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN },
+      { start: goblin_lumberjack_black_carryAnimationStartFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  end: goblin_lumberjack_black_carryAnimationEndFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.RUN,
+    frameRate: 6
+  },
+  pickupPutdown: {
+    frames: [
+      { start: goblin_lumberjack_black_pickupPutdownAnimationStartFrame + goblin_lumberjack_black_leftOrientationSpriteOffset,      end: goblin_lumberjack_black_pickupPutdownAnimationEndFrame + goblin_lumberjack_black_leftOrientationSpriteOffset,      sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.LEFT },
+      { start: goblin_lumberjack_black_pickupPutdownAnimationStartFrame + goblin_lumberjack_black_upLeftOrientationSpriteOffset,    end: goblin_lumberjack_black_pickupPutdownAnimationEndFrame + goblin_lumberjack_black_upLeftOrientationSpriteOffset,    sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_lumberjack_black_pickupPutdownAnimationStartFrame + goblin_lumberjack_black_upOrientationSpriteOffset,        end: goblin_lumberjack_black_pickupPutdownAnimationEndFrame + goblin_lumberjack_black_upOrientationSpriteOffset,        sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP },
+      { start: goblin_lumberjack_black_pickupPutdownAnimationStartFrame + goblin_lumberjack_black_upRightOrientationSpriteOffset,   end: goblin_lumberjack_black_pickupPutdownAnimationEndFrame + goblin_lumberjack_black_upRightOrientationSpriteOffset,   sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_lumberjack_black_pickupPutdownAnimationStartFrame + goblin_lumberjack_black_rightOrientationSpriteOffset,     end: goblin_lumberjack_black_pickupPutdownAnimationEndFrame + goblin_lumberjack_black_rightOrientationSpriteOffset,     sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.RIGHT },
+      { start: goblin_lumberjack_black_pickupPutdownAnimationStartFrame + goblin_lumberjack_black_downRightOrientationSpriteOffset, end: goblin_lumberjack_black_pickupPutdownAnimationEndFrame + goblin_lumberjack_black_downRightOrientationSpriteOffset, sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_lumberjack_black_pickupPutdownAnimationStartFrame + goblin_lumberjack_black_downOrientationSpriteOffset,      end: goblin_lumberjack_black_pickupPutdownAnimationEndFrame + goblin_lumberjack_black_downOrientationSpriteOffset,      sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN },
+      { start: goblin_lumberjack_black_pickupPutdownAnimationStartFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  end: goblin_lumberjack_black_pickupPutdownAnimationEndFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.IDLE,
+    frameRate: 8
+  },
+  block: {
+    frames: [
+      { start: goblin_lumberjack_black_blockAnimationStartFrame + goblin_lumberjack_black_leftOrientationSpriteOffset,      end: goblin_lumberjack_black_blockAnimationEndFrame + goblin_lumberjack_black_leftOrientationSpriteOffset,      sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.LEFT },
+      { start: goblin_lumberjack_black_blockAnimationStartFrame + goblin_lumberjack_black_upLeftOrientationSpriteOffset,    end: goblin_lumberjack_black_blockAnimationEndFrame + goblin_lumberjack_black_upLeftOrientationSpriteOffset,    sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_lumberjack_black_blockAnimationStartFrame + goblin_lumberjack_black_upOrientationSpriteOffset,        end: goblin_lumberjack_black_blockAnimationEndFrame + goblin_lumberjack_black_upOrientationSpriteOffset,        sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP },
+      { start: goblin_lumberjack_black_blockAnimationStartFrame + goblin_lumberjack_black_upRightOrientationSpriteOffset,   end: goblin_lumberjack_black_blockAnimationEndFrame + goblin_lumberjack_black_upRightOrientationSpriteOffset,   sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_lumberjack_black_blockAnimationStartFrame + goblin_lumberjack_black_rightOrientationSpriteOffset,     end: goblin_lumberjack_black_blockAnimationEndFrame + goblin_lumberjack_black_rightOrientationSpriteOffset,     sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.RIGHT },
+      { start: goblin_lumberjack_black_blockAnimationStartFrame + goblin_lumberjack_black_downRightOrientationSpriteOffset, end: goblin_lumberjack_black_blockAnimationEndFrame + goblin_lumberjack_black_downRightOrientationSpriteOffset, sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_lumberjack_black_blockAnimationStartFrame + goblin_lumberjack_black_downOrientationSpriteOffset,      end: goblin_lumberjack_black_blockAnimationEndFrame + goblin_lumberjack_black_downOrientationSpriteOffset,      sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN },
+      { start: goblin_lumberjack_black_blockAnimationStartFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  end: goblin_lumberjack_black_blockAnimationEndFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.BLOCK,
+    frameRate: 8
+  },
+  death: {
+    frames: [
+      { start: goblin_lumberjack_black_hitAndDeathAnimationStartFrame + goblin_lumberjack_black_leftOrientationSpriteOffset,      end: goblin_lumberjack_black_hitAndDeathAnimationEndFrame + goblin_lumberjack_black_leftOrientationSpriteOffset,      sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.LEFT },
+      { start: goblin_lumberjack_black_hitAndDeathAnimationStartFrame + goblin_lumberjack_black_upLeftOrientationSpriteOffset,    end: goblin_lumberjack_black_hitAndDeathAnimationEndFrame + goblin_lumberjack_black_upLeftOrientationSpriteOffset,    sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_lumberjack_black_hitAndDeathAnimationStartFrame + goblin_lumberjack_black_upOrientationSpriteOffset,        end: goblin_lumberjack_black_hitAndDeathAnimationEndFrame + goblin_lumberjack_black_upOrientationSpriteOffset,        sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP },
+      { start: goblin_lumberjack_black_hitAndDeathAnimationStartFrame + goblin_lumberjack_black_upRightOrientationSpriteOffset,   end: goblin_lumberjack_black_hitAndDeathAnimationEndFrame + goblin_lumberjack_black_upRightOrientationSpriteOffset,   sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_lumberjack_black_hitAndDeathAnimationStartFrame + goblin_lumberjack_black_rightOrientationSpriteOffset,     end: goblin_lumberjack_black_hitAndDeathAnimationEndFrame + goblin_lumberjack_black_rightOrientationSpriteOffset,     sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.RIGHT },
+      { start: goblin_lumberjack_black_hitAndDeathAnimationStartFrame + goblin_lumberjack_black_downRightOrientationSpriteOffset, end: goblin_lumberjack_black_hitAndDeathAnimationEndFrame + goblin_lumberjack_black_downRightOrientationSpriteOffset, sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_lumberjack_black_hitAndDeathAnimationStartFrame + goblin_lumberjack_black_downOrientationSpriteOffset,      end: goblin_lumberjack_black_hitAndDeathAnimationEndFrame + goblin_lumberjack_black_downOrientationSpriteOffset,      sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN },
+      { start: goblin_lumberjack_black_hitAndDeathAnimationStartFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  end: goblin_lumberjack_black_hitAndDeathAnimationEndFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.DEATH,
+    frameRate: 8
+  }
+};
+
+export const wyvern_composite_AnimationConfig = {
+  idle: {
+    frames: [
+      { start: wyvern_composite_idleAnimationStartFrame + wyvern_composite_leftOrientationSpriteOffset,      end: wyvern_composite_idleAnimationEndFrame + wyvern_composite_leftOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.LEFT },
+      { start: wyvern_composite_idleAnimationStartFrame + wyvern_composite_upLeftOrientationSpriteOffset,    end: wyvern_composite_idleAnimationEndFrame + wyvern_composite_upLeftOrientationSpriteOffset,    sheet: 'wyvern_composite', orientation: EntityOrientation.UP_LEFT },
+      { start: wyvern_composite_idleAnimationStartFrame + wyvern_composite_upOrientationSpriteOffset,        end: wyvern_composite_idleAnimationEndFrame + wyvern_composite_upOrientationSpriteOffset,        sheet: 'wyvern_composite', orientation: EntityOrientation.UP },
+      { start: wyvern_composite_idleAnimationStartFrame + wyvern_composite_upRightOrientationSpriteOffset,   end: wyvern_composite_idleAnimationEndFrame + wyvern_composite_upRightOrientationSpriteOffset,   sheet: 'wyvern_composite', orientation: EntityOrientation.UP_RIGHT },
+      { start: wyvern_composite_idleAnimationStartFrame + wyvern_composite_rightOrientationSpriteOffset,     end: wyvern_composite_idleAnimationEndFrame + wyvern_composite_rightOrientationSpriteOffset,     sheet: 'wyvern_composite', orientation: EntityOrientation.RIGHT },
+      { start: wyvern_composite_idleAnimationStartFrame + wyvern_composite_downRightOrientationSpriteOffset, end: wyvern_composite_idleAnimationEndFrame + wyvern_composite_downRightOrientationSpriteOffset, sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: wyvern_composite_idleAnimationStartFrame + wyvern_composite_downOrientationSpriteOffset,      end: wyvern_composite_idleAnimationEndFrame + wyvern_composite_downOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN },
+      { start: wyvern_composite_idleAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_idleAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.IDLE,
+    frameRate: 6
+  },
+  run: {
+    frames: [
+      { start: wyvern_composite_runAnimationStartFrame + wyvern_composite_leftOrientationSpriteOffset,      end: wyvern_composite_runAnimationEndFrame + wyvern_composite_leftOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.LEFT },
+      { start: wyvern_composite_runAnimationStartFrame + wyvern_composite_upLeftOrientationSpriteOffset,    end: wyvern_composite_runAnimationEndFrame + wyvern_composite_upLeftOrientationSpriteOffset,    sheet: 'wyvern_composite', orientation: EntityOrientation.UP_LEFT },
+      { start: wyvern_composite_runAnimationStartFrame + wyvern_composite_upOrientationSpriteOffset,        end: wyvern_composite_runAnimationEndFrame + wyvern_composite_upOrientationSpriteOffset,        sheet: 'wyvern_composite', orientation: EntityOrientation.UP },
+      { start: wyvern_composite_runAnimationStartFrame + wyvern_composite_upRightOrientationSpriteOffset,   end: wyvern_composite_runAnimationEndFrame + wyvern_composite_upRightOrientationSpriteOffset,   sheet: 'wyvern_composite', orientation: EntityOrientation.UP_RIGHT },
+      { start: wyvern_composite_runAnimationStartFrame + wyvern_composite_rightOrientationSpriteOffset,     end: wyvern_composite_runAnimationEndFrame + wyvern_composite_rightOrientationSpriteOffset,     sheet: 'wyvern_composite', orientation: EntityOrientation.RIGHT },
+      { start: wyvern_composite_runAnimationStartFrame + wyvern_composite_downRightOrientationSpriteOffset, end: wyvern_composite_runAnimationEndFrame + wyvern_composite_downRightOrientationSpriteOffset, sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: wyvern_composite_runAnimationStartFrame + wyvern_composite_downOrientationSpriteOffset,      end: wyvern_composite_runAnimationEndFrame + wyvern_composite_downOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN },
+      { start: wyvern_composite_runAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_runAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.RUN,
+    frameRate: 8
+  },
+  meleeAttack: {
+    frames: [
+      { start: wyvern_composite_meleeAttackAnimationStartFrame + wyvern_composite_leftOrientationSpriteOffset,      end: wyvern_composite_meleeAttackAnimationEndFrame + wyvern_composite_leftOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.LEFT },
+      { start: wyvern_composite_meleeAttackAnimationStartFrame + wyvern_composite_upLeftOrientationSpriteOffset,    end: wyvern_composite_meleeAttackAnimationEndFrame + wyvern_composite_upLeftOrientationSpriteOffset,    sheet: 'wyvern_composite', orientation: EntityOrientation.UP_LEFT },
+      { start: wyvern_composite_meleeAttackAnimationStartFrame + wyvern_composite_upOrientationSpriteOffset,        end: wyvern_composite_meleeAttackAnimationEndFrame + wyvern_composite_upOrientationSpriteOffset,        sheet: 'wyvern_composite', orientation: EntityOrientation.UP },
+      { start: wyvern_composite_meleeAttackAnimationStartFrame + wyvern_composite_upRightOrientationSpriteOffset,   end: wyvern_composite_meleeAttackAnimationEndFrame + wyvern_composite_upRightOrientationSpriteOffset,   sheet: 'wyvern_composite', orientation: EntityOrientation.UP_RIGHT },
+      { start: wyvern_composite_meleeAttackAnimationStartFrame + wyvern_composite_rightOrientationSpriteOffset,     end: wyvern_composite_meleeAttackAnimationEndFrame + wyvern_composite_rightOrientationSpriteOffset,     sheet: 'wyvern_composite', orientation: EntityOrientation.RIGHT },
+      { start: wyvern_composite_meleeAttackAnimationStartFrame + wyvern_composite_downRightOrientationSpriteOffset, end: wyvern_composite_meleeAttackAnimationEndFrame + wyvern_composite_downRightOrientationSpriteOffset, sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: wyvern_composite_meleeAttackAnimationStartFrame + wyvern_composite_downOrientationSpriteOffset,      end: wyvern_composite_meleeAttackAnimationEndFrame + wyvern_composite_downOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN },
+      { start: wyvern_composite_meleeAttackAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_meleeAttackAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.MELEEATTACK,
+    frameRate: 8
+  },
+  cast: {
+    frames: [
+      { start: wyvern_composite_castAnimationStartFrame + wyvern_composite_leftOrientationSpriteOffset,      end: wyvern_composite_castAnimationEndFrame + wyvern_composite_leftOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.LEFT },
+      { start: wyvern_composite_castAnimationStartFrame + wyvern_composite_upLeftOrientationSpriteOffset,    end: wyvern_composite_castAnimationEndFrame + wyvern_composite_upLeftOrientationSpriteOffset,    sheet: 'wyvern_composite', orientation: EntityOrientation.UP_LEFT },
+      { start: wyvern_composite_castAnimationStartFrame + wyvern_composite_upOrientationSpriteOffset,        end: wyvern_composite_castAnimationEndFrame + wyvern_composite_upOrientationSpriteOffset,        sheet: 'wyvern_composite', orientation: EntityOrientation.UP },
+      { start: wyvern_composite_castAnimationStartFrame + wyvern_composite_upRightOrientationSpriteOffset,   end: wyvern_composite_castAnimationEndFrame + wyvern_composite_upRightOrientationSpriteOffset,   sheet: 'wyvern_composite', orientation: EntityOrientation.UP_RIGHT },
+      { start: wyvern_composite_castAnimationStartFrame + wyvern_composite_rightOrientationSpriteOffset,     end: wyvern_composite_castAnimationEndFrame + wyvern_composite_rightOrientationSpriteOffset,     sheet: 'wyvern_composite', orientation: EntityOrientation.RIGHT },
+      { start: wyvern_composite_castAnimationStartFrame + wyvern_composite_downRightOrientationSpriteOffset, end: wyvern_composite_castAnimationEndFrame + wyvern_composite_downRightOrientationSpriteOffset, sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: wyvern_composite_castAnimationStartFrame + wyvern_composite_downOrientationSpriteOffset,      end: wyvern_composite_castAnimationEndFrame + wyvern_composite_downOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN },
+      { start: wyvern_composite_castAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_castAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.CASTSPELL,
+    frameRate: 8
+  },
+  meleeAttack_2: {
+    frames: [
+      { start: wyvern_composite_meleeAttack2AnimationStartFrame + wyvern_composite_leftOrientationSpriteOffset,      end: wyvern_composite_meleeAttack2AnimationEndFrame + wyvern_composite_leftOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.LEFT },
+      { start: wyvern_composite_meleeAttack2AnimationStartFrame + wyvern_composite_upLeftOrientationSpriteOffset,    end: wyvern_composite_meleeAttack2AnimationEndFrame + wyvern_composite_upLeftOrientationSpriteOffset,    sheet: 'wyvern_composite', orientation: EntityOrientation.UP_LEFT },
+      { start: wyvern_composite_meleeAttack2AnimationStartFrame + wyvern_composite_upOrientationSpriteOffset,        end: wyvern_composite_meleeAttack2AnimationEndFrame + wyvern_composite_upOrientationSpriteOffset,        sheet: 'wyvern_composite', orientation: EntityOrientation.UP },
+      { start: wyvern_composite_meleeAttack2AnimationStartFrame + wyvern_composite_upRightOrientationSpriteOffset,   end: wyvern_composite_meleeAttack2AnimationEndFrame + wyvern_composite_upRightOrientationSpriteOffset,   sheet: 'wyvern_composite', orientation: EntityOrientation.UP_RIGHT },
+      { start: wyvern_composite_meleeAttack2AnimationStartFrame + wyvern_composite_rightOrientationSpriteOffset,     end: wyvern_composite_meleeAttack2AnimationEndFrame + wyvern_composite_rightOrientationSpriteOffset,     sheet: 'wyvern_composite', orientation: EntityOrientation.RIGHT },
+      { start: wyvern_composite_meleeAttack2AnimationStartFrame + wyvern_composite_downRightOrientationSpriteOffset, end: wyvern_composite_meleeAttack2AnimationEndFrame + wyvern_composite_downRightOrientationSpriteOffset, sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: wyvern_composite_meleeAttack2AnimationStartFrame + wyvern_composite_downOrientationSpriteOffset,      end: wyvern_composite_meleeAttack2AnimationEndFrame + wyvern_composite_downOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN },
+      { start: wyvern_composite_meleeAttack2AnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_meleeAttack2AnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.MELEEATTACK_2,
+    frameRate: 8
+  },
+  hit: {
+    frames: [
+      { start: wyvern_composite_hitAnimationStartFrame + wyvern_composite_leftOrientationSpriteOffset,      end: wyvern_composite_hitAnimationEndFrame + wyvern_composite_leftOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.LEFT },
+      { start: wyvern_composite_hitAnimationStartFrame + wyvern_composite_upLeftOrientationSpriteOffset,    end: wyvern_composite_hitAnimationEndFrame + wyvern_composite_upLeftOrientationSpriteOffset,    sheet: 'wyvern_composite', orientation: EntityOrientation.UP_LEFT },
+      { start: wyvern_composite_hitAnimationStartFrame + wyvern_composite_upOrientationSpriteOffset,        end: wyvern_composite_hitAnimationEndFrame + wyvern_composite_upOrientationSpriteOffset,        sheet: 'wyvern_composite', orientation: EntityOrientation.UP },
+      { start: wyvern_composite_hitAnimationStartFrame + wyvern_composite_upRightOrientationSpriteOffset,   end: wyvern_composite_hitAnimationEndFrame + wyvern_composite_upRightOrientationSpriteOffset,   sheet: 'wyvern_composite', orientation: EntityOrientation.UP_RIGHT },
+      { start: wyvern_composite_hitAnimationStartFrame + wyvern_composite_rightOrientationSpriteOffset,     end: wyvern_composite_hitAnimationEndFrame + wyvern_composite_rightOrientationSpriteOffset,     sheet: 'wyvern_composite', orientation: EntityOrientation.RIGHT },
+      { start: wyvern_composite_hitAnimationStartFrame + wyvern_composite_downRightOrientationSpriteOffset, end: wyvern_composite_hitAnimationEndFrame + wyvern_composite_downRightOrientationSpriteOffset, sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: wyvern_composite_hitAnimationStartFrame + wyvern_composite_downOrientationSpriteOffset,      end: wyvern_composite_hitAnimationEndFrame + wyvern_composite_downOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN },
+      { start: wyvern_composite_hitAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_hitAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.HIT,
+    frameRate: 8
+  },
+  death: {
+    frames: [
+      { start: wyvern_composite_deathAnimationStartFrame + wyvern_composite_leftOrientationSpriteOffset,      end: wyvern_composite_deathAnimationEndFrame + wyvern_composite_leftOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.LEFT },
+      { start: wyvern_composite_deathAnimationStartFrame + wyvern_composite_upLeftOrientationSpriteOffset,    end: wyvern_composite_deathAnimationEndFrame + wyvern_composite_upLeftOrientationSpriteOffset,    sheet: 'wyvern_composite', orientation: EntityOrientation.UP_LEFT },
+      { start: wyvern_composite_deathAnimationStartFrame + wyvern_composite_upOrientationSpriteOffset,        end: wyvern_composite_deathAnimationEndFrame + wyvern_composite_upOrientationSpriteOffset,        sheet: 'wyvern_composite', orientation: EntityOrientation.UP },
+      { start: wyvern_composite_deathAnimationStartFrame + wyvern_composite_upRightOrientationSpriteOffset,   end: wyvern_composite_deathAnimationEndFrame + wyvern_composite_upRightOrientationSpriteOffset,   sheet: 'wyvern_composite', orientation: EntityOrientation.UP_RIGHT },
+      { start: wyvern_composite_deathAnimationStartFrame + wyvern_composite_rightOrientationSpriteOffset,     end: wyvern_composite_deathAnimationEndFrame + wyvern_composite_rightOrientationSpriteOffset,     sheet: 'wyvern_composite', orientation: EntityOrientation.RIGHT },
+      { start: wyvern_composite_deathAnimationStartFrame + wyvern_composite_downRightOrientationSpriteOffset, end: wyvern_composite_deathAnimationEndFrame + wyvern_composite_downRightOrientationSpriteOffset, sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: wyvern_composite_deathAnimationStartFrame + wyvern_composite_downOrientationSpriteOffset,      end: wyvern_composite_deathAnimationEndFrame + wyvern_composite_downOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN },
+      { start: wyvern_composite_deathAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_deathAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
+    ],
+    state: ActiveEntityAnimationState.State.DEATH,
+    frameRate: 8
+  }
+};
+
 const icicle_AnimationStartFrame = 0;
 const icicle_AnimationEndFrame = 7; 
 
@@ -1580,5 +1993,8 @@ export const animationConfigKeys = {
   "player_AnimationConfig": player_AnimationConfig,
   "zombie_0_AnimationConfig": zombie_0_AnimationConfig,
   "minotaur_0_AnimationConfig": minotaur_0_AnimationConfig,
-  "skeleton_0_AnimationConfig": skeleton_0_AnimationConfig
+  "skeleton_0_AnimationConfig": skeleton_0_AnimationConfig,
+  "goblin_0_AnimationConfig": goblin_0_AnimationConfig,
+  "goblin_lumberjack_black_AnimationConfig": goblin_lumberjack_black_AnimationConfig,
+  "wyvern_composite_AnimationConfig": wyvern_composite_AnimationConfig,
 };
