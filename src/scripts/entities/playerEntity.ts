@@ -27,6 +27,7 @@ import IObserver from '../observer/observer';
 import { PlayerEvents } from '../events/playerEvents';
 import { ItemType } from '../inventory/itemType';
 import Inventory from '../inventory/inventory';
+import StatModule from './statModule';
 
 export class PlayerEntity extends ActiveEntity implements IFightable, IObserver {
   public headSprite: InventorySprite;
@@ -150,13 +151,22 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   }
 
   public updateStats(): void {
+    this.modifierStats.maxMana = 100 + this.realIntelligence * 5;
     this.modifierStats.maxHealth = 100 + this.realVitality * 10;
     this.modifierStats.healthRegeneration = 2 + this.realVitality * 0.2;
+    this.modifierStats.manaRegeneration = 2 + this.realIntelligence * 0.2;
     this.modifierStats.movementSpeed = this.modifierStats.baseMovementSpeed + this.realDexterity * 0.5;
     this.modifierStats.basePhysicalDamage = 10 + this.realStrenght * 2 + this.realDexterity;
-    this.modifierStats.maxMana = 100 + this.realIntelligence * 5;
-    this.modifierStats.manaRegeneration = 2 + this.realIntelligence * 0.2;
     this.modifierStats.baseMagicalDamage = 10 + this.realIntelligence * 2;
+
+    this.modifierStats.defense = 0;
+
+    // TODO: Current implementation of items requires resetting of all player stats to a base value. We should have two ActiveEntityModifierStats, one with base modifiers, and a second affected by items
+
+    for (const item of this.inventory.getPlayerEquipment().getEquippedItems())
+      StatModule.affectModifierStatChange(this.modifierStats, item.stats);
+
+    console.log(this.modifierStats);
   }
 
   private startManaRegen(scene: Phaser.Scene) {
