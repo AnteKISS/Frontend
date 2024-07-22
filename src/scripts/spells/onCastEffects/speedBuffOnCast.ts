@@ -13,10 +13,10 @@ export default class SpeedBuffOnCast implements IOnCastEffect {
     }
 
     onCast() {
-        this.spell.spellOwner.modifierStats.movementSpeed += this.buffAmount;
+        this.spell.spellOwner.totalModifierStats.movementSpeed += this.buffAmount;
 
         this.spell.spellOwner.scene.time.delayedCall(this.duration * 1000, () => {
-            this.spell.spellOwner.modifierStats.movementSpeed -= this.buffAmount;
+            this.spell.spellOwner.totalModifierStats.movementSpeed -= this.buffAmount;
         }, [], this);
     }
 }

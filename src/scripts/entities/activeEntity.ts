@@ -13,12 +13,15 @@ import CampaignManager from '../managers/campaignmanager';
 import Tile from '../tiles/tile';
 import Vector from '../types/vector';
 import SoundManager from '../managers/soundManager';
+import StatModule from './statModule';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
   public currentAnimationState: ActiveEntityAnimationState;
   public dynamicStats: ActiveEntityDynamicStats;
-  public modifierStats: ActiveEntityModifierStats;
+  public baseModifierStats: ActiveEntityModifierStats;
+  public tempModifierStats: ActiveEntityModifierStats;
+  public totalModifierStats: ActiveEntityModifierStats;
   public states: ActiveEntityStates;
   public species: EntitySpecies;
   public destinationX: number;
@@ -39,7 +42,10 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     scene.add.existing(this);
     this.type = 'ActiveEntity';
     this.dynamicStats = new ActiveEntityDynamicStats();
-    this.modifierStats = new ActiveEntityModifierStats();
+    this.baseModifierStats = new ActiveEntityModifierStats();
+    this.tempModifierStats = new ActiveEntityModifierStats();
+    StatModule.resetModifierStats(this.tempModifierStats);
+    this.totalModifierStats = new ActiveEntityModifierStats();
     this.states = new ActiveEntityStates();
     this.destinationX = this.positionX;
     this.destinationY = this.positionY;
@@ -99,7 +105,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     }
     SoundManager.getInstance().playFootstepsSound(this);
     this._isMoving = true;
-    let distance: number = this.modifierStats.movementSpeed * (window['deltaTime'] / 1000);
+    let distance: number = this.totalModifierStats.movementSpeed * (window['deltaTime'] / 1000);
     let distanceMultiplier: number = 1 - (Math.abs(Math.sin(this._orientation_rad)) / 2);
     distance *= distanceMultiplier;
     let deltaX: number = distance * Math.cos(this._orientation_rad);

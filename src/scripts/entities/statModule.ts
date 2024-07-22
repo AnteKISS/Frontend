@@ -35,4 +35,39 @@ export default class StatModule {
     target.baseMovementSpeed += source.baseMovementSpeed;
     target.movementSpeed += source.movementSpeed;
   }
+
+  public static resetModifierStats(stats: ActiveEntityModifierStats): void {
+    stats.strength = 0;
+    stats.dexterity = 0;
+    stats.vitality = 0;
+    stats.intelligence = 0;
+    stats.maxMana = 0;
+    stats.maxHealth = 0;
+    stats.healthRegeneration = 0;
+    stats.manaRegeneration = 0;
+    stats.basePhysicalDamage = 0;
+    stats.baseMagicalDamage = 0;
+    stats.attackAccuracy = 0;
+    stats.criticalChance = 0;
+    stats.criticalMultiplier = 0;
+    stats.attackSpeed = 0;
+    stats.sightDistance = 0;
+    stats.meleeRange = 0;
+    stats.projectileRange = 0;
+    stats.defense = 0;
+    stats.physicalResistance = 0;
+    stats.magicResistance = 0;
+    stats.fireResistance = 0;
+    stats.coldResistance = 0;
+    stats.lightningResistance = 0;
+    stats.poisonResistance = 0;
+    stats.physicalAbsorption = 0;
+    stats.magicAbsorption = 0;
+    stats.fireAbsorption = 0;
+    stats.coldAbsorption = 0;
+    stats.lightningAbsorption = 0;
+    stats.poisonAbsorption = 0;
+    stats.baseMovementSpeed = 0;
+    stats.movementSpeed = 0;
+  }
 }

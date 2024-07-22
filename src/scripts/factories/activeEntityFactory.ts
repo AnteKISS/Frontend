@@ -14,7 +14,7 @@ export class ActiveEntityFactory {
       level: 1,
       experience: 0,
     };
-    entity.modifierStats = {
+    entity.baseModifierStats = {
       strength: 0,
       dexterity: 0,
       vitality: 0,
@@ -75,7 +75,7 @@ export class ActiveEntityFactory {
       level: 1,
       experience: 0,
     };
-    entity.modifierStats = {
+    entity.totalModifierStats = {
       strength: 0,
       dexterity: 0,
       vitality: 0,

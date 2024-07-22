@@ -90,7 +90,7 @@ export class EntityHealthBar extends Phaser.GameObjects.GameObject {
   }
 
   private updateData(): void {
-    let newHealth_perc = this.entity.dynamicStats.health / this.entity.modifierStats.maxHealth;
+    let newHealth_perc = this.entity.dynamicStats.health / this.entity.totalModifierStats.maxHealth;
     this.hasEntityHealthChanged = newHealth_perc != this.health_perc;
     this.health_perc = newHealth_perc < 0 ? 0 : newHealth_perc;
   }

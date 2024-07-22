@@ -170,7 +170,7 @@ export default class SoundManager implements IObserver {
     //   }
     // };
     const sound = this.effectsSoundManager.add('step_dirt_' + random, {
-      rate: entity.modifierStats.movementSpeed / 150,
+      rate: entity.totalModifierStats.movementSpeed / 150,
       volume: 0.25,
       source: {
         x: entity.positionX,

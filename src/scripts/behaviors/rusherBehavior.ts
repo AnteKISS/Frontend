@@ -57,7 +57,7 @@ export class RusherBehavior extends Behavior {
         if (this.parent.animator.isNonReapeatingAnimationPlaying()) {
           return;
         }
-        if (!this.isTargetValid() || !this.isTargetInRange(this.parent.modifierStats.sightDistance)) {
+        if (!this.isTargetValid() || !this.isTargetInRange(this.parent.totalModifierStats.sightDistance)) {
           this.parent.target = null;
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         }
@@ -126,7 +126,7 @@ export class RusherBehavior extends Behavior {
       case ActiveEntityAnimationState.State.MELEEATTACK:
       case ActiveEntityAnimationState.State.MELEEATTACK_2:
         if (this.isTargetValid() && this.isEntityInMeleeRange()) {
-          (this.parent.target! as PlayerEntity).damage(this.parent.modifierStats.basePhysicalDamage, this.parent);
+          (this.parent.target! as PlayerEntity).damage(this.parent.totalModifierStats.basePhysicalDamage, this.parent);
         }
         break;
     }

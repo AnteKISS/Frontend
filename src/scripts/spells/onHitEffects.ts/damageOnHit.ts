@@ -19,7 +19,7 @@ export default class DamageOnHit implements IOnHitEffect {
     }
 
     public onHit(hitEntity: BaseEntity): void {
-        const totalDamage = this.baseDamage + this.spell.spellOwner.modifierStats.baseMagicalDamage;
+        const totalDamage = this.baseDamage + this.spell.spellOwner.totalModifierStats.baseMagicalDamage;
 
         const entity = hitEntity as unknown as IFightable;
         entity.damage(totalDamage, this.spell.spellOwner);
