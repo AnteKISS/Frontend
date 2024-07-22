@@ -17,7 +17,7 @@ export default class Pregame extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(635, 360, 'backGround');
+        this.add.image(635, 400, 'backGround');
     
     // Créer les boutons
     const soundupButton = this.createButtonPlayer(500, 350, 'female', () => this.FemaleNewGame());

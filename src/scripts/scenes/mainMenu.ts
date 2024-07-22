@@ -9,7 +9,7 @@ export default class MainMenu extends Phaser.Scene {
     }
 
       create() {
-        this.add.image(635, 360, 'backGround');
+        this.add.image(635, 400, 'backGround');
         
             // Créer les boutons
             const playButton = this.createButton(625, 400, 'play', () => this.startGame());
@@ -54,6 +54,7 @@ export default class MainMenu extends Phaser.Scene {
         
           exitGame() {
             console.log('Exit button clicked');
+            this.scene.start('LoadingScreen');
             //fermer tous ???
           }
     

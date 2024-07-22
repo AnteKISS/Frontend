@@ -15,7 +15,7 @@ export default class Setting extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(635, 360, 'backGround');
+        this.add.image(635, 400, 'backGround');
     
     // Créer les boutons
     const soundupButton = this.createButton(500, 400, 'plus', () => this.increaseSound());
