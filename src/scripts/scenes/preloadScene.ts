@@ -42,10 +42,6 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('basic_spawner', 'assets/sprites/spawner/basic_spawner.png');
 
     // INVENTORY
-    this.load.image('stone_sword_inventory', 'assets/inventory/stone_sword.png');
-    this.load.image('wooden_shield_inventory', 'assets/inventory/wooden_shield.png');
-    this.load.image('chainmail_hood_inventory', 'assets/inventory/chainmail_hood.png');
-    this.load.image('chainmail_gloves_inventory', 'assets/inventory/chainmail_gloves.png');
     this.load.image('helmet_slot', 'assets/inventory/slots/helmet_slot.png');
     this.load.image('amulet_slot', 'assets/inventory/slots/amulet_slot.png');
     this.load.image('armor_slot', 'assets/inventory/slots/armor_slot.png');
@@ -64,7 +60,29 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('close_button', 'assets/inventory/buttons/close_button.png');
     this.load.image('black_rock_background', 'assets/inventory/background/black_rock_background.png');
 
-    // ITEMS
+    // INVENTORY ITEMS
+    this.load.image('baphomets_talisman_inv', 'assets/inventory/items/baphomets_talisman.png');
+    this.load.image('bone_sword_inv', 'assets/inventory/items/bone_sword.png');
+    this.load.image('bronze_ring_inv', 'assets/inventory/items/bronze_ring.png');
+    this.load.image('chainmail_armor_inv', 'assets/inventory/items/chainmail_armor.png');
+    this.load.image('chainmail_belt_inv', 'assets/inventory/items/chainmail_belt.png');
+    this.load.image('chainmail_boots_inv', 'assets/inventory/items/chainmail_boots.png');
+    this.load.image('chainmail_hood_inv', 'assets/inventory/items/chainmail_hood.png');
+    this.load.image('chainmail_gloves_inv', 'assets/inventory/items/chainmail_gloves.png');
+    this.load.image('gold_ring_inv', 'assets/inventory/items/gold_ring.png');
+    this.load.image('golden_kopis_inv', 'assets/inventory/items/golden_kopis.png');
+    this.load.image('knight_helmet_inv', 'assets/inventory/items/knight_helmet.png');
+    this.load.image('leather_armor_inv', 'assets/inventory/items/leather_armor.png');
+    this.load.image('leather_belt_inv', 'assets/inventory/items/leather_belt.png');
+    this.load.image('leather_boots_inv', 'assets/inventory/items/leather_boots.png');
+    this.load.image('leather_gloves_inv', 'assets/inventory/items/leather_gloves.png');
+    this.load.image('leather_hood_inv', 'assets/inventory/items/leather_hood.png');
+    this.load.image('silver_ring_inv', 'assets/inventory/items/silver_ring.png');
+    this.load.image('stone_dagger_inv', 'assets/inventory/items/stone_dagger.png');
+    this.load.image('temple_amulet_inv', 'assets/inventory/items/temple_amulet.png');
+    this.load.image('wooden_shield_inv', 'assets/inventory/items/wooden_shield.png');
+
+    // DROPPED ITEMS
     this.load.image('dropped_sword', 'assets/dropped_items/dropped_sword.png');
     this.load.image('dropped_shield', 'assets/dropped_items/dropped_shield.png');
     this.load.image('dropped_chainmail_hood', 'assets/dropped_items/dropped_chainmail_hood.png');
