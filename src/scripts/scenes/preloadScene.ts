@@ -83,10 +83,16 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('wooden_shield_inv', 'assets/inventory/items/wooden_shield.png');
 
     // DROPPED ITEMS
-    this.load.image('dropped_sword', 'assets/dropped_items/dropped_sword.png');
+    this.load.image('dropped_amulet', 'assets/dropped_items/dropped_amulet.png');
+    this.load.image('dropped_armor', 'assets/dropped_items/dropped_armor.png');
+    this.load.image('dropped_belt', 'assets/dropped_items/dropped_belt.png');
+    this.load.image('dropped_boots', 'assets/dropped_items/dropped_boots.png');
+    this.load.image('dropped_gloves', 'assets/dropped_items/dropped_gloves.png');
+    this.load.image('dropped_helmet', 'assets/dropped_items/dropped_helmet.png');
+    this.load.image('dropped_hood', 'assets/dropped_items/dropped_hood.png');
+    this.load.image('dropped_ring', 'assets/dropped_items/dropped_ring.png');
     this.load.image('dropped_shield', 'assets/dropped_items/dropped_shield.png');
-    this.load.image('dropped_chainmail_hood', 'assets/dropped_items/dropped_chainmail_hood.png');
-    this.load.image('dropped_chainmail_gloves', 'assets/dropped_items/dropped_chainmail_gloves.png');
+    this.load.image('dropped_sword', 'assets/dropped_items/dropped_sword.png');
 
     // AUDIO
     this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');

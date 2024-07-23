@@ -132,56 +132,56 @@ export default class MainScene extends Phaser.Scene {
     const woodenShield = new Item(this, "Wooden Shield", ItemType.WEAPON, 2, 2, "wooden_shield_inv", "dropped_shield");
     this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, woodenShield));
 
-    // const chainmailHood = new Item(this, "Chainmail Hood", ItemType.HELMET, 2, 2, "chainmail_hood_inv", "dropped_chainmail_hood");
-    // this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailHood));
+    const chainmailHood = new Item(this, "Chainmail Hood", ItemType.HELMET, 2, 2, "chainmail_hood_inv", "dropped_hood");
+    this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailHood));
 
-    // const chainmailGloves = new Item(this, "Chainmail Gloves", ItemType.GLOVES, 2, 2, "chainmail_gloves_inv", "dropped_chainmail_gloves");
+    // const chainmailGloves = new Item(this, "Chainmail Gloves", ItemType.GLOVES, 2, 2, "chainmail_gloves_inv", "dropped_gloves");
     // this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailGloves));
 
-    // const leatherBoots = new Item(this, "Leather Boots", ItemType.BOOTS, 2, 2, "leather_boots_inv", "dropped_chainmail_gloves");
+    // const leatherBoots = new Item(this, "Leather Boots", ItemType.BOOTS, 2, 2, "leather_boots_inv", "dropped_boots");
     // this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, leatherBoots));
 
-    const chainmailBelt = new Item(this, "Chainmail Belt", ItemType.BELT, 2, 1, "chainmail_belt_inv", "dropped_chainmail_gloves");
+    const chainmailBelt = new Item(this, "Chainmail Belt", ItemType.BELT, 2, 1, "chainmail_belt_inv", "dropped_belt");
     this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailBelt));
 
-    // const chainmailArmor = new Item(this, "Chainmail Armor", ItemType.ARMOR, 2, 3, "chainmail_armor_inv", "dropped_chainmail_gloves");
-    // this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailArmor));
+    const chainmailArmor = new Item(this, "Chainmail Armor", ItemType.ARMOR, 2, 3, "chainmail_armor_inv", "dropped_armor");
+    this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailArmor));
 
-    const leatherBelt = new Item(this, "Leather Belt", ItemType.BELT, 2, 1, "leather_belt_inv", "dropped_chainmail_gloves");
-    this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, leatherBelt));
+    // const leatherBelt = new Item(this, "Leather Belt", ItemType.BELT, 2, 1, "leather_belt_inv", "dropped_belt");
+    // this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, leatherBelt));
 
-    // const knightHelmet = new Item(this, "Knight Helmet", ItemType.HELMET, 2, 2, "knight_helmet_inv", "dropped_chainmail_gloves");
-    // this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, knightHelmet));
+    const knightHelmet = new Item(this, "Knight Helmet", ItemType.HELMET, 2, 2, "knight_helmet_inv", "dropped_helmet");
+    this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, knightHelmet));
 
-    const leatherGloves = new Item(this, "Leather Gloves", ItemType.GLOVES, 2, 2, "leather_gloves_inv", "dropped_chainmail_gloves");
-    this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, leatherGloves));
+    // const leatherGloves = new Item(this, "Leather Gloves", ItemType.GLOVES, 2, 2, "leather_gloves_inv", "dropped_gloves");
+    // this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, leatherGloves));
 
-    // const leatherArmor = new Item(this, "Leather Armor", ItemType.ARMOR, 2, 3, "leather_armor_inv", "dropped_chainmail_gloves");
+    // const leatherArmor = new Item(this, "Leather Armor", ItemType.ARMOR, 2, 3, "leather_armor_inv", "dropped_armor");
     // this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, leatherArmor));
 
-    // const chainmailBoots = new Item(this, "Chainmail Boots", ItemType.BOOTS, 2, 2, "chainmail_boots_inv", "dropped_chainmail_gloves");
+    // const chainmailBoots = new Item(this, "Chainmail Boots", ItemType.BOOTS, 2, 2, "chainmail_boots_inv", "dropped_boots");
     // this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailBoots));
 
-    const boneSword = new Item(this, "Bone Sword", ItemType.WEAPON, 1, 3, "bone_sword_inv", "dropped_chainmail_gloves");
-    this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, boneSword));
+    // const boneSword = new Item(this, "Bone Sword", ItemType.WEAPON, 1, 3, "bone_sword_inv", "dropped_sword");
+    // this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, boneSword));
 
-    const goldenKopis = new Item(this, "Golden Kopis", ItemType.WEAPON, 1, 3, "golden_kopis_inv", "dropped_chainmail_gloves");
-    this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, goldenKopis));
+    // const goldenKopis = new Item(this, "Golden Kopis", ItemType.WEAPON, 1, 3, "golden_kopis_inv", "dropped_sword");
+    // this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, goldenKopis));
 
-    const bronzeRing = new Item(this, "Bronze Ring", ItemType.RING, 1, 1, "bronze_ring_inv", "dropped_chainmail_gloves");
-    const silverRing = new Item(this, "Silver Ring", ItemType.RING, 1, 1, "silver_ring_inv", "dropped_chainmail_gloves");
-    const goldRing = new Item(this, "Gold Ring", ItemType.RING, 1, 1, "gold_ring_inv", "dropped_chainmail_gloves");
+    const bronzeRing = new Item(this, "Bronze Ring", ItemType.RING, 1, 1, "bronze_ring_inv", "dropped_ring");
+    const silverRing = new Item(this, "Silver Ring", ItemType.RING, 1, 1, "silver_ring_inv", "dropped_ring");
+    const goldRing = new Item(this, "Gold Ring", ItemType.RING, 1, 1, "gold_ring_inv", "dropped_ring");
     this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, bronzeRing));
     this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, silverRing));
     this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, goldRing));
 
-    const baphometsTalisman = new Item(this, "Baphomet's Talisman", ItemType.AMULET, 1, 1, "baphomets_talisman_inv", "dropped_chainmail_gloves");
-    const templeAmulet = new Item(this, "Temple Amulet", ItemType.AMULET, 1, 1, "temple_amulet_inv", "dropped_chainmail_gloves");
+    const baphometsTalisman = new Item(this, "Baphomet's Talisman", ItemType.AMULET, 1, 1, "baphomets_talisman_inv", "dropped_amulet");
+    const templeAmulet = new Item(this, "Temple Amulet", ItemType.AMULET, 1, 1, "temple_amulet_inv", "dropped_amulet");
     this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, baphometsTalisman));
     this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, templeAmulet));
 
-    const leatherHood = new Item(this, "Leather Hood", ItemType.HELMET, 2, 2, "leather_hood_inv", "dropped_chainmail_gloves");
-    this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, leatherHood));
+    // const leatherHood = new Item(this, "Leather Hood", ItemType.HELMET, 2, 2, "leather_hood_inv", "dropped_hood");
+    // this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, leatherHood));
 
     Tooltip.init(this);
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
