@@ -44,7 +44,6 @@ export default class PauseMenu extends Phaser.GameObjects.Container {
     this.hide();
   }
 
-
   createButton(x: number, y: number, frameKey: string, textKey: string, callback: () => void) {
     const buttonContainer = this.scene.add.container(x, y);
 
@@ -111,5 +110,3 @@ export default class PauseMenu extends Phaser.GameObjects.Container {
     this.setVisible(false);
   }
 }
-
-
