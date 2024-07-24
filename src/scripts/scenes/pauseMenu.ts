@@ -35,11 +35,18 @@ export default class PauseMenu extends Phaser.GameObjects.Container {
       event.stopPropagation();
     });
 
+    /*this.on('pointerdown', (pointer, localX, localY, event) => {
+      event.stopPropagation();
+    });*/
+
+
     this.pauseMenuElements.add([this.resume , this.options, this.save, this.exit , this.pause]);
 
     this.add([this.background, this.closeButton, this.pauseMenuElements , this.inGameOptions]);
     scene.add.existing(this);
     this.hide();
+
+    
   }
 
 
