@@ -9,15 +9,20 @@ export default class PauseMenu extends Phaser.GameObjects.Container {
   private save: Phaser.GameObjects.Container;
   private exit: Phaser.GameObjects.Container;
   private pause : Phaser.GameObjects.Image;
+  private pauseMenuElements: Phaser.GameObjects.Container;
   private inGameOptions: InGameOptions;
 
   constructor(scene: Phaser.Scene) {
     super(scene, 640, 0);
-
     this.background = new Phaser.GameObjects.Sprite(scene, 0, 360, 'black_rock_background');
+
+    this.inGameOptions = new InGameOptions(scene);
+    this.pauseMenuElements = new Phaser.GameObjects.Container(scene);
+
 
     this.pause = new Phaser.GameObjects.Image(scene, 0, 150 , 'pause');
     this.pause.setScale(0.25);
+
 
     this.resume = this.createButton(0, 300, 'button','resumetxt', () => this.startGame());
     this.options = this.createButton(0, 400, 'button','optionstxt', () => this.openOptions());
@@ -25,12 +30,14 @@ export default class PauseMenu extends Phaser.GameObjects.Container {
     this.exit = this.createButton(0, 600, 'button','exittxt', () => this.exitGame());
 
     this.closeButton = new Phaser.GameObjects.Sprite(scene, 243, 37, 'close_button').setInteractive();
-    this.closeButton.on('pointerdown', (event: { stopPropagation: () => void; }) => {
+    this.closeButton.on('pointerdown', (pointer, localX, localY, event) => {
       this.hide();
       event.stopPropagation();
     });
 
-    this.add([this.background, this.closeButton, this.resume, this.options, this.save, this.exit,this.pause]);
+    this.pauseMenuElements.add([this.resume , this.options, this.save, this.exit , this.pause]);
+
+    this.add([this.background, this.closeButton, this.pauseMenuElements , this.inGameOptions]);
     scene.add.existing(this);
     this.hide();
   }
@@ -71,8 +78,8 @@ export default class PauseMenu extends Phaser.GameObjects.Container {
 
   openOptions() {
     console.log('Options button clicked');
-    this.hide();
-    this.inGameOptions.show();
+    this.pauseMenuElements.setVisible(false);
+    this.inGameOptions.setVisible(true);
     
   }
 
@@ -87,6 +94,8 @@ export default class PauseMenu extends Phaser.GameObjects.Container {
 
   public show(): void {
     this.setVisible(true);
+    this.pauseMenuElements.setVisible(true);
+    this.inGameOptions.setVisible(false);
   }
 
   public hide(): void {

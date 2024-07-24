@@ -25,6 +25,7 @@ import ItemEntity from '../entities/itemEntity'
 import { MathModule } from '../utilities/mathModule'
 import { GameInput } from '../inputs/gameInputs'
 import PauseMenu from './pauseMenu'
+import InGameOptions from './inGameOptions'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -192,7 +193,8 @@ export default class MainScene extends Phaser.Scene {
         this.entityHealthBar.lblEntityDescription,
         this.inventory,
         this.attributeGUI,
-        this.pauseMenu
+        this.pauseMenu,
+      
       ]
     );
     // TODO: Find a way to make the ignore list more dynamic
