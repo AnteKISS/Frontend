@@ -3,19 +3,24 @@ import Phaser from 'phaser';
 
 
 export default class MainMenu extends Phaser.Scene {
+  
+  private WP : Phaser.GameObjects.Image;
 
     constructor() {
         super('MainMenu');
     }
 
       create() {
-        this.add.image(635, 400, 'backGround');
-        
-            // Créer les boutons
-            const playButton = this.createButton(625, 400, 'play', () => this.startGame());
-            const settingsButton = this.createButton(625, 450, 'setting', () => this.openSettings());
-            const exitButton = this.createButton(625, 500, 'exit', () => this.exitGame());
-            //this.add.rectangle(600, 300, 30, 200, 0xff4444);
+        const { width, height } = this.scale;
+        this.WP = this.add.image(width/2, height/2.5, 'backGround');
+        this.WP.setScale(1.7); 
+            
+        // Créer les boutons
+        const playButton = this.createButton(width/2, 400, 'play', () => this.startGame());
+        const settingsButton = this.createButton(width/2, 470, 'settings', () => this.openSettings());
+        const exitButton = this.createButton(width/2, 540, 'exit', () => this.exitGame());
+            
+            
     
     
               
@@ -24,19 +29,21 @@ export default class MainMenu extends Phaser.Scene {
            createButton(x: number, y: number, key: string, callback: () => void) {
               const button = this.add.image(x, y, key).setInteractive();
           
-              button.setTint(0xff0000);
+              button.on('pointerover', () => {
+                button.setTint(0x909090);
+              });
           
               button.on('pointerout', () => {
-                button.setTint(0xff0000);
+                button.clearTint();
               });
           
               button.on('pointerdown', () => {
-                button.setTint(0x660000);
+                button.setTint(0xff4444);
                 callback();
               });
           
               button.on('pointerup', () => {
-                button.setTint(0xff0000);
+                button.clearTint();
               });
           
               return button;

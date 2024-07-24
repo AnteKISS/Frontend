@@ -11,13 +11,16 @@ export default class Pregame extends Phaser.Scene {
     muteClicked: boolean = false;
     volume: number = 50;
     tempVolume:number = 0;
+    private WP : Phaser.GameObjects.Image;
 
     constructor() {
         super('Pregame');
     }
 
     create() {
-        this.add.image(635, 400, 'backGround');
+        const { width, height } = this.scale;
+        this.WP = this.add.image(width/2, height/2.5, 'backGround');
+        this.WP.setScale(1.7); 
     
     // Créer les boutons
     const soundupButton = this.createButtonPlayer(500, 350, 'female', () => this.FemaleNewGame());

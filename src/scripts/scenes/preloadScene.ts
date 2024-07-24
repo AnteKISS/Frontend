@@ -26,11 +26,11 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('arrowRight', 'assets/gui/editor/arrows/Arrow_E0001.png');
     this.load.image('whiteGlow', 'assets/gui/editor/white_glow.png');
     this.load.image('button', 'assets/gui/progression/button.png');
-    this.load.image('backGround', 'assets/gui/mainMenu/destroyed.jpeg');
+    this.load.image('backGround', 'assets/gui/mainMenu/WP.png');
     
-    this.load.image('play', 'assets/gui/mainMenu/play30.png');
-    this.load.image('exit', 'assets/gui/mainMenu/exit30.png');
-    this.load.image('setting', 'assets/gui/mainMenu/setting30.png');
+    this.load.image('play', 'assets/gui/progression/button2.png');
+    this.load.image('exit', 'assets/gui/progression/button4.png');
+    this.load.image('settings','assets/gui/progression/button3.png');
     this.load.image('mute', 'assets/gui/mainMenu/mute.png');
     this.load.image('plus', 'assets/gui/mainMenu/plus.png');
     this.load.image('moins', 'assets/gui/mainMenu/moins.png');
@@ -122,6 +122,8 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.spritesheet('quake', 'assets/sprites/spell/quake.png', { frameWidth: 256, frameHeight: 128 });
     this.load.spritesheet('rocky_floor_tiles', 'assets/sprites/tiles/rocky.png', { frameWidth: 256, frameHeight: 128 });
     this.load.spritesheet('flat_stone_walls', 'assets/sprites/tiles/flat_stone_walls.png', { frameWidth: 128, frameHeight: 192 });
+    this.load.spritesheet('sliderBar', 'assets/sprites/settings/sliderBar.png', { frameWidth: 128, frameHeight: 192 });
+    this.load.spritesheet('slider', 'assets/sprites/settings/slider.png', { frameWidth: 128, frameHeight: 192 });
   }
 }
 

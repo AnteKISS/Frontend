@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 export default class LoadingScreen extends Phaser.Scene {
 
+    private WP : Phaser.GameObjects.Image;
     private rat : Phaser.GameObjects.Image;
 
     constructor() {
@@ -9,18 +10,22 @@ export default class LoadingScreen extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(635, 400, 'backGround');
+
+        const { width, height } = this.scale;
+        this.WP = this.add.image(width/2, height/2.5, 'backGround');
+        this.WP.setScale(1.7);
+
         const returnButton = this.createButton(60,60 , 'return', () => this.return());
         const graphics = this.add.graphics();
-        const { width, height } = this.scale;
+        
         graphics.fillStyle(0x000000, 0.5); 
         graphics.fillRect(0, 0, width, height);
         this.rat = this.add.image(width-40, height -40, 'game-logo');
         this.rat.setScale(0.15); 
 
         const text = this.add.text(width / 2, height - 30, 'loading...', {
-            font: '20px Arial',
-            color: '#ffffff'
+            font: '40px Arial',
+            color: '#000000'
           });
           text.setOrigin(0.5, 0.5); 
     

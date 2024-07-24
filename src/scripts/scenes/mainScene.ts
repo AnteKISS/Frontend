@@ -2,6 +2,7 @@ import FpsText from '../objects/fpsText'
 import Inventory from '../inventory/inventory'
 import Item from '../inventory/item'
 import InventoryItem from '../inventory/inventoryItem'
+
 import { ItemType } from '../inventory/itemType'
 
 import GUI from '../objects/gui'
@@ -9,7 +10,6 @@ import { PlayerEntity } from '../entities/playerEntity';
 import { MonsterEntity } from '../entities/monsterEntity';
 import { EntityManager } from '../managers/entityManager';
 import { OutlinePipeline } from '../pipelines/outlinePipeline';
-
 import { TileColor } from '../tiles/tiledrawer'
 import CampaignManager from '../managers/campaignmanager'
 import Point from '../types/point'
@@ -24,6 +24,7 @@ import { AttributeAllocation } from '../progression/attributeAllocation'
 import ItemEntity from '../entities/itemEntity'
 import { MathModule } from '../utilities/mathModule'
 import { GameInput } from '../inputs/gameInputs'
+import PauseMenu from './pauseMenu'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -43,6 +44,7 @@ export default class MainScene extends Phaser.Scene {
   private gui: GUI;
 
   private inventory: Inventory;
+  private pauseMenu: PauseMenu;
 
   private attributeGUI: AttributeGUI;
   private gameInputs: GameInput;
@@ -136,6 +138,13 @@ export default class MainScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown-A', () => this.attributeGUI.aKeyPressed());
     this.input.keyboard?.on('keydown-ESC', () => this.attributeGUI.hide());
 
+    //Setup pause menu
+    this.pauseMenu = new PauseMenu(this);
+    this.input.keyboard!.on('keydown-P', () => this.pauseMenu.visible ? this.pauseMenu.hide() : this.pauseMenu.show());
+    this.input.keyboard!.on('keydown-ESC', () => this.pauseMenu.hide());
+
+
+
     // Setup inventory test
     this.inventory = new Inventory(this);
     this.input.keyboard!.on('keydown-I', () => this.inventory.visible ? this.inventory.hide() : this.inventory.show());
@@ -182,7 +191,8 @@ export default class MainScene extends Phaser.Scene {
         this.entityHealthBar.lblEntityName,
         this.entityHealthBar.lblEntityDescription,
         this.inventory,
-        this.attributeGUI
+        this.attributeGUI,
+        this.pauseMenu
       ]
     );
     // TODO: Find a way to make the ignore list more dynamic

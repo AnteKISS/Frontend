@@ -4,83 +4,111 @@ import Phaser from 'phaser';
 
 export default class Setting extends Phaser.Scene {
 
-    TintColorClicked: number = 0x660000;
-    TintColorUnclicked: number = 0xff0000;
+    private WP : Phaser.GameObjects.Image;
+    private gameSound: number = 50;
+    private effectSound: number = 50;
+    private menuSound: number = 50;
+
+    
     muteClicked: boolean = false;
     volume: number = 50;
     tempVolume;number = 0;
+
+    private slider!: Phaser.GameObjects.Sprite;
+    private sliderBar!: Phaser.GameObjects.Sprite;
 
     constructor() {
         super('Setting');
     }
 
     create() {
-        this.add.image(635, 400, 'backGround');
-    
-    // Créer les boutons
-    const soundupButton = this.createButton(500, 400, 'plus', () => this.increaseSound());
-    const sounddownButton = this.createButton(600, 400, 'moins', () => this.decreaseSound());
-    const muteButton = this.createButtonMute(700, 400, 'mute', () => this.mute());
+        
+    const { width, height } = this.scale;
+    this.WP = this.add.image(width/2, height/2.5, 'backGround');
+    this.WP.setScale(1.7); 
+
+    this.createSlider(`Game Sound:`,700, 200, (value: number) => {
+        this.gameSound = value;
+        console.log(`Game Sound: ${this.gameSound}`);
+    });
+    this.createSlider(`Effect Sound:`,700, 300, (value: number) => {
+        this.effectSound = value;
+        console.log(`Effect Sound: ${this.effectSound}`);
+    });
+    this.createSlider(`Menu Sound:`,700, 400, (value: number) => {
+        this.menuSound = value;
+        console.log(`Menu Sound: ${this.menuSound}`);
+    });
+
     const returnButton = this.createButton(60,60 , 'return', () => this.return());
-    //bouton retour
+
+    
     }
     
+
+
+    createSlider(textToAdd: string ,x: number, y: number, toChange: (value: number) => void): void {
+        
+        const text = this.add.text(x-200 , y, textToAdd, {
+            font: '30px Arial',
+            color: '#606060'
+          });
+          text.setOrigin(0.5, 0.5);
+        
+        const sliderBar = this.add.sprite(x, y, 'sliderBar');
+        sliderBar.setInteractive();
+
+        const slider = this.add.sprite(x, y, 'slider');
+        slider.setInteractive();
+        this.input.setDraggable(slider);
+
+        this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+            if (gameObject === slider) {
+                if (dragX >= sliderBar.x - sliderBar.width / 2 && dragX <= sliderBar.x + sliderBar.width / 2) {
+                    gameObject.x = dragX;
+                    const value = this.updateSliderValue(slider, sliderBar);
+                    toChange(value);
+                }
+            }
+        });
+    }
+
     createButton(x: number, y: number, key: string, callback: () => void) {
         const button = this.add.image(x, y, key).setInteractive();
     
-        button.setTint(this.TintColorUnclicked);
+        button.on('pointerover', () => {
+          button.setTint(0x909090);
+        });
     
         button.on('pointerout', () => {
-        button.setTint(this.TintColorUnclicked);
+          button.clearTint();
         });
     
         button.on('pointerdown', () => {
-        button.setTint(this.TintColorClicked);
-        callback();
+          button.setTint(0xff4444);
+          callback();
         });
     
         button.on('pointerup', () => {
-        button.setTint(this.TintColorUnclicked);
+          button.clearTint();
         });
     
         return button;
     }
+    
+    
 
-    createButtonMute(x: number, y: number, key: string, callback: () => void) {
-        const button = this.add.image(x, y, key).setInteractive();
-    
-        
-        if(!this.muteClicked){
-            button.setTint(this.TintColorUnclicked);
-
-            button.on('pointerdown', () => {
-            button.setTint(this.TintColorClicked);
-            callback();
-            });
-        
-            button.on('pointerup', () => {
-            this.muteClicked = true;
-            button.setTint(this.TintColorUnclicked);
-            });
-        }
-        else if(this.muteClicked){
-            button.setTint(this.TintColorClicked);
-    
-            button.on('pointerdown', () => {
-            button.setTint(this.TintColorUnclicked);
-            callback();
-            });
-        
-            button.on('pointerup', () => {
-            this.muteClicked = false;
-            button.setTint(this.TintColorClicked);
-            });
-        
-        }
-    
-        return button;
+    private updateSliderValue(slider: Phaser.GameObjects.Sprite, sliderBar: Phaser.GameObjects.Sprite): number {
+        const sliderPosition = slider.x - (sliderBar.x - sliderBar.width / 2);
+        const value = (sliderPosition / sliderBar.width) * 100;
+        return value;
     }
-        
+
+    update(): void {
+        // Mettre à jour les éléments si nécessaire
+    }
+
+    
     increaseSound() {
     console.log('increaseSound button clicked');
     // increase sound by 5
