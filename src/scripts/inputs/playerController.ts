@@ -55,6 +55,7 @@ export default class PlayerController {
       this.initSpellBarInput(Phaser.Input.Keyboard.KeyCodes.E, 'E');
       this.initSpellBarInput(Phaser.Input.Keyboard.KeyCodes.R, 'R');
       this.initSpellBarInput(Phaser.Input.Keyboard.KeyCodes.T, 'T');
+      this.initSpellBarInput(Phaser.Input.Keyboard.KeyCodes.FOUR, '4');
     } else {
       console.error("Player or scene not initialized");
     }

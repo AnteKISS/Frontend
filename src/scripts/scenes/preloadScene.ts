@@ -37,6 +37,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('male', 'assets/gui/mainMenu/male.png');
     this.load.image('female', 'assets/gui/mainMenu/female_warrior.png');
     this.load.image('customPointer', 'assets/gui/pointer05.png')
+    this.load.image('potionIcon', 'assets/gui/icons/potionIcon.png')
 
     // GAME OBJECTS
     this.load.image('basic_spawner', 'assets/sprites/spawner/basic_spawner.png');

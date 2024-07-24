@@ -28,6 +28,7 @@ import { PlayerEvents } from '../events/playerEvents';
 import { ItemType } from '../inventory/itemType';
 import Inventory from '../inventory/inventory';
 import StatModule from './statModule';
+import { PotionPouch } from '../otherItems/potionPouch';
 
 export class PlayerEntity extends ActiveEntity implements IFightable, IObserver {
   public headSprite: InventorySprite;
@@ -38,11 +39,12 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   public maxMana: number = 150; //Pour test
   public spellBook: SpellBook;
 
-  mySpellBook: SpellBook;
+  public mySpellBook: SpellBook;
   private equippedSpells: Spell[] = [];
   public controller: PlayerController;
   public exp: Exp;
   public inventory: Inventory;
+  public potionPouch: PotionPouch;
 
   private skillTree: SkillTree;
   public attributeAllocation: AttributeAllocation;
@@ -88,6 +90,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     this.exp = new Exp(this);
     this.skillTree = new SkillTree(this);
     this.attributeAllocation = new AttributeAllocation(this);
+    this.potionPouch = new PotionPouch(this);
 
     this.spellBook = new SpellBook(this);
     this.spellBook.addSpell(new Firebolt(this));
@@ -281,6 +284,9 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
       case 'T':
         if (this.equippedSpells[7])
           this.equippedSpells[7].onCast();
+        break;
+      case '4':
+        this.potionPouch.usePotion()
         break;
       default:
         break;
