@@ -5,9 +5,9 @@ import Phaser from 'phaser';
 export default class Setting extends Phaser.Scene {
 
     private WP : Phaser.GameObjects.Image;
-    private gameSound: number = 50;
-    private effectSound: number = 50;
-    private menuSound: number = 50;
+    public backgroundSound: number = 50;
+    public effectSound: number = 50;
+    public musicSound: number = 50;
 
     
     muteClicked: boolean = false;
@@ -27,17 +27,17 @@ export default class Setting extends Phaser.Scene {
     this.WP = this.add.image(width/2, height/2.5, 'backGround');
     this.WP.setScale(1.7); 
 
-    this.createSlider(`Game Sound:`,700, 200, (value: number) => {
-        this.gameSound = value;
-        console.log(`Game Sound: ${this.gameSound}`);
+    this.createSlider(`background Sound :`,700, 200, (value: number) => {
+        this.backgroundSound = value;
+        console.log(`background Sound : ${this.backgroundSound}`);
     });
     this.createSlider(`Effect Sound:`,700, 300, (value: number) => {
         this.effectSound = value;
         console.log(`Effect Sound: ${this.effectSound}`);
     });
-    this.createSlider(`Menu Sound:`,700, 400, (value: number) => {
-        this.menuSound = value;
-        console.log(`Menu Sound: ${this.menuSound}`);
+    this.createSlider(`Music Sound:`,700, 400, (value: number) => {
+        this.musicSound = value;
+        console.log(`Music Sound: ${this.musicSound}`);
     });
 
     const returnButton = this.createButton(60,60 , 'return', () => this.return());

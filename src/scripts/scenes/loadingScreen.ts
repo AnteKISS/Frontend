@@ -30,7 +30,7 @@ export default class LoadingScreen extends Phaser.Scene {
           text.setOrigin(0.5, 0.5); 
     
     }
-    createButton(x: number, y: number, key: string, callback: () => void) {
+    createButton(x: number, y: number, key: string , callback: () => void) {
         const button = this.add.image(x, y, key).setInteractive();
     
         button.setTint(0xffffff);

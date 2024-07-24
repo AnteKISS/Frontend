@@ -26,6 +26,11 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('arrowRight', 'assets/gui/editor/arrows/Arrow_E0001.png');
     this.load.image('whiteGlow', 'assets/gui/editor/white_glow.png');
     this.load.image('button', 'assets/gui/progression/button.png');
+    this.load.image('pause', 'assets/gui/progression/Pause.png');
+    this.load.image('exittxt', 'assets/gui/progression/EXIT1.png');
+    this.load.image('savetxt', 'assets/gui/progression/SAVE1.png');
+    this.load.image('optionstxt', 'assets/gui/progression/OPTIONS1.png');
+    this.load.image('resumetxt', 'assets/gui/progression/RESUME1.png');
     this.load.image('backGround', 'assets/gui/mainMenu/WP.png');
     
     this.load.image('play', 'assets/gui/progression/button2.png');
