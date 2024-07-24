@@ -21,9 +21,15 @@ import { SkillTree } from '../progression/skillTree';
 import { AttributeAllocation } from '../progression/attributeAllocation';
 import CampaignManager from '../managers/campaignmanager';
 import TileModule from '../tiles/tilemodule';
+import { ActiveEntityEvents } from '../events/activeEntityEvents';
+import { GeneralEventManager } from '../managers/eventManager';
+import IObserver from '../observer/observer';
+import { PlayerEvents } from '../events/playerEvents';
+import { ItemType } from '../inventory/itemType';
+import Inventory from '../inventory/inventory';
+import StatModule from './statModule';
 
-export class PlayerEntity extends ActiveEntity implements IFightable {
-
+export class PlayerEntity extends ActiveEntity implements IFightable, IObserver {
   public headSprite: InventorySprite;
   public bodySprite: InventorySprite;
   public mainHandSprite: InventorySprite;
@@ -31,16 +37,26 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   public onPlayerDeath: Signal = new Signal();
   public maxMana: number = 150; //Pour test
   public spellBook: SpellBook;
+
+  mySpellBook: SpellBook;
+  private equippedSpells: Spell[] = [];
   public controller: PlayerController;
   public exp: Exp;
+  public inventory: Inventory;
 
-  private equippedSpells: Spell[] = [];
   private skillTree: SkillTree;
   public attributeAllocation: AttributeAllocation;
+  private manaRegenEvent: Phaser.Time.TimerEvent;
+  private healthRegenEvent: Phaser.Time.TimerEvent;
+  private realStrenght: number;
+  private realDexterity: number;
+  private realIntelligence: number;
+  private realVitality: number;
 
   constructor(scene) {
     super(scene);
     scene.add.existing(this);
+    this.inventory = new Inventory(this.scene);
     this.type = 'PlayerEntity';
     this.code = "player";
     this.headSprite = scene.add.sprite(0, 0, 'helmetTexture');
@@ -48,7 +64,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.headSprite.slot = InventorySlots.HELMET;
     this.headSprite.scale = 1.5;
     this.bodySprite = scene.add.sprite(0, 0, 'chestplateTexture');
-    this.bodySprite.textureName = 'STEEL_ARMOR';
+    this.bodySprite.textureName = 'CLOTHES';
     this.bodySprite.slot = InventorySlots.CHESTPLATE;
     this.bodySprite.scale = 1.5;
     this.mainHandSprite = scene.add.sprite(0, 0, 'mainHandTexture');
@@ -78,8 +94,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.spellBook.addSpell(new IceShard(this));
     this.spellBook.addSpell(new Quake(this));
 
-    this.stats.mana = 150; //Pour test
-    this.stats.maxHealth = 150; //Pour test
+    this.dynamicStats.mana = 150; //Pour test
+    this.totalModifierStats.maxHealth = 150; //Pour test
 
     this.headSprite.setOrigin(0.5, 0.75);
     this.bodySprite.setOrigin(0.5, 0.75);
@@ -91,6 +107,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.truncatedSpriteHeight = 64 * this.bodySprite.scaleY;
     this.collider = new Physics.Collider(this, this.bodySprite, this.onSpriteColliding, this.onEntityColliding);
     this.animator = new ActiveEntityAnimator(this);
+    this.startManaRegen(scene);
+    this.startHealthRegen(scene);
     const animationCompleteHandler: SignalHandler = {
       callback: this.onNonRepeatingAnimationEnd.bind(this),
       parameters: [this.currentAnimationState]
@@ -124,26 +142,99 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.collider.checkSpriteCollision();
   }
 
+  public attributeConversion(): void {
+    this.realVitality = this.totalModifierStats.vitality + this.attributeAllocation.vitality;
+    this.realStrenght = this.totalModifierStats.strength + this.attributeAllocation.strength;
+    this.realDexterity = this.totalModifierStats.dexterity + this.attributeAllocation.dexterity;
+    this.realIntelligence = this.totalModifierStats.intelligence + this.attributeAllocation.intelligence;
+    this.updateStats();
+  }
+
+  public updateStats(): void {
+    this.baseModifierStats.maxMana = 100 + this.realIntelligence * 5;
+    this.baseModifierStats.maxHealth = 100 + this.realVitality * 10;
+    this.baseModifierStats.healthRegeneration = 2 + this.realVitality * 0.2;
+    this.baseModifierStats.manaRegeneration = 2 + this.realIntelligence * 0.2;
+    this.baseModifierStats.movementSpeed = this.baseModifierStats.baseMovementSpeed + this.realDexterity * 0.5;
+    this.baseModifierStats.basePhysicalDamage = 10 + this.realStrenght * 2 + this.realDexterity;
+    this.baseModifierStats.baseMagicalDamage = 10 + this.realIntelligence * 2;
+
+    StatModule.resetModifierStats(this.tempModifierStats);
+    StatModule.resetModifierStats(this.totalModifierStats);
+
+    for (const item of this.inventory.getPlayerEquipment().getEquippedItems())
+      StatModule.affectModifierStatChange(this.tempModifierStats, item.stats);
+
+    StatModule.affectModifierStatChange(this.totalModifierStats, this.baseModifierStats);
+    StatModule.affectModifierStatChange(this.totalModifierStats, this.tempModifierStats);
+
+    console.log(this.totalModifierStats);
+  }
+
+  private startManaRegen(scene: Phaser.Scene) {
+    this.manaRegenEvent = scene.time.addEvent({
+      delay: 1000,
+      callback: this.regenerateMana,
+      callbackScope: this,
+      loop: true
+    });
+  }
+
+  private startHealthRegen(scene: Phaser.Scene) {
+    this.healthRegenEvent = scene.time.addEvent({
+      delay: 1000,
+      callback: this.regenerateHealth,
+      callbackScope: this,
+      loop: true
+    });
+  }
+
+  private regenerateMana() {
+    if (this.isDead()) {
+      return;
+    }
+    if (this.dynamicStats.mana < this.totalModifierStats.maxMana) {
+      this.dynamicStats.mana += this.totalModifierStats.manaRegeneration;
+    }
+    if (this.dynamicStats.mana > this.totalModifierStats.maxMana) {
+      this.dynamicStats.mana = this.totalModifierStats.maxMana;
+    }
+  }
+
+  private regenerateHealth() {
+    if (this.isDead()) {
+      return;
+    }
+    if (this.dynamicStats.health < this.totalModifierStats.maxHealth) {
+      this.dynamicStats.health += this.totalModifierStats.healthRegeneration;
+    }
+    if (this.dynamicStats.health > this.totalModifierStats.maxHealth) {
+      this.dynamicStats.health = this.totalModifierStats.maxHealth;
+    }
+  }
+
   public reset(): void {
     throw new NotImplementedError();
   }
 
   public attack(target: IFightable): void {
-    target.damage(10);
+    target.damage(this.totalModifierStats.basePhysicalDamage, this);
   }
 
-  public damage(amount: number): void {
+  public damage(amount: number, damageSource: ActiveEntity): void {
     // TODO: take into account gear, active effects then apply damage
-    if (this.stats.health == 0) {
+    if (this.dynamicStats.health == 0) {
       return;
     }
-    this.stats.health -= amount;
-    if (this.stats.health <= 0) {
-      this.stats.health = 0;
+    this.dynamicStats.health -= amount;
+    if (this.dynamicStats.health <= 0) {
+      this.dynamicStats.health = 0;
       this.destinationX = this.positionX;
       this.destinationY = this.positionY;
       this.currentAnimationState.state = ActiveEntityAnimationState.State.DEATH;
       this.onPlayerDeath.raise();
+      const deathEvent = new ActiveEntityEvents.KilledEvent(damageSource, this);
+      GeneralEventManager.getInstance().notifyObservers(deathEvent);
     }
   }
 
@@ -153,7 +244,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   public isDead(): boolean {
-    return this.stats.health <= 0;
+    return this.dynamicStats.health <= 0;
   }
 
   // Event Handlers
@@ -197,7 +288,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
   }
 
   public levelUp() {
-    this.stats.level++;
+    this.dynamicStats.level++;
     this.skillTree.levelUp();
     this.attributeAllocation.levelUp();
   }
@@ -247,6 +338,27 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     }
   }
 
+  public onNotify(event: any): void {
+    console.log(event.item.getItem().itemType);
+    if (event instanceof PlayerEvents.PlayerEquipItemEvent) {
+      switch (event.item.getItem().itemType) {
+        case ItemType.HELMET:
+          this.headSprite.textureName = "MALE_HEAD1";
+        case ItemType.ARMOR:
+          this.bodySprite.textureName = "STEEL_ARMOR";
+      }
+      event.player.animator.forceUpdateOnce = true;
+    } else if (event instanceof PlayerEvents.PlayerUnequipItemEvent) {
+      switch (event.item.getItem().itemType) {
+        case ItemType.HELMET:
+          this.headSprite.textureName = "MALE_HEAD2";
+        case ItemType.ARMOR:
+          this.bodySprite.textureName = "CLOTHES";
+      }
+      event.player.animator.forceUpdateOnce = true;
+    }
+  }
+
   private handleTileTransition() {
     // Check if current tile has a transition
     if (!(CampaignManager.getInstance() && this.currentTile?.transition))
@@ -263,8 +375,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable {
     this.setX(newPlayerPosition.x);
     this.setY(newPlayerPosition.y);
   }
-}
 
-// if ((module as any).hot) {
-//   (module as any).hot.accept();
-// }
+  public getSprite(): Phaser.GameObjects.Sprite {
+    return this.headSprite;
+  }
+}

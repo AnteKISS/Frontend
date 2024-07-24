@@ -28,7 +28,6 @@ export default class Spawner extends GameObject {
       const yTileOffset = MathModule.getRandomInt(-this.range, this.range + 1);
       const pos = TileModule.getUnitPosFromTilePos(this.tileX + xTileOffset, this.tileY + yTileOffset);
 
-      console.log(entity);
       entity.positionX = pos.x;
       entity.positionY = pos.y;
       entity.area = CampaignManager.getInstance().getCampaign().currentArea();

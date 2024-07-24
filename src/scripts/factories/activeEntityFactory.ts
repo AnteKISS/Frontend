@@ -8,16 +8,21 @@ export class ActiveEntityFactory {
     let entity: PlayerEntity = new PlayerEntity(scene);
     entity.code = 'player';
     entity.species = EntitySpecies.HUMAN;
-    entity.stats = {
+    entity.dynamicStats = {
+      mana: 100,
+      health: 100,
+      level: 1,
+      experience: 0,
+    };
+    entity.baseModifierStats = {
       strength: 0,
       dexterity: 0,
       vitality: 0,
-      energy: 0,
-      mana: 150,
-      maxMana: 150,
-      health: 100,
+      intelligence: 0,
+      maxMana: 100,
       maxHealth: 100,
-      healthRegeneration: 0,
+      healthRegeneration: 2,
+      manaRegeneration: 2,
       basePhysicalDamage: 0,
       baseMagicalDamage: 0,
       attackAccuracy: 0,
@@ -40,10 +45,10 @@ export class ActiveEntityFactory {
       coldAbsorption: 0,
       lightningAbsorption: 0,
       poisonAbsorption: 0,
-      baseMovementSpeed: 1,
-      movementSpeed: 300,
-      level: 1,
-      experience: 0,
+      baseMovementSpeed: 150,
+      movementSpeed: 0,
+    };
+    entity.states = {
       isInvincible: false,
       isStunned: false,
       isSilenced: false,
@@ -55,6 +60,7 @@ export class ActiveEntityFactory {
       isInvisible: false,
       isUntargetable: false
     };
+    entity.attributeConversion();
     return entity;
   }
 
@@ -63,17 +69,22 @@ export class ActiveEntityFactory {
     let entity: MonsterEntity = new MonsterEntity(scene, monsterCode);
     entity.code = monsterCode;
     entity.species = EntitySpecies.UNDEAD;
-    entity.stats = {
+    entity.dynamicStats = {
+      mana: 0,
+      health: 100,
+      level: 1,
+      experience: 0,
+    };
+    entity.totalModifierStats = {
       strength: 0,
       dexterity: 0,
       vitality: 0,
-      energy: 0,
-      mana: 0,
+      intelligence: 0,
       maxMana: 0,
-      health: 100,
       maxHealth: 100,
       healthRegeneration: 0,
-      basePhysicalDamage: 5,
+      manaRegeneration: 0,
+      basePhysicalDamage: 10,
       baseMagicalDamage: 0,
       attackAccuracy: 0,
       criticalChance: 0,
@@ -96,9 +107,9 @@ export class ActiveEntityFactory {
       lightningAbsorption: 0,
       poisonAbsorption: 0,
       baseMovementSpeed: 1,
-      movementSpeed: 50,
-      level: 1,
-      experience: 0,
+      movementSpeed: 100,
+    };
+    entity.states = {
       isInvincible: false,
       isStunned: false,
       isSilenced: false,

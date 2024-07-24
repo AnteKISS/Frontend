@@ -8,6 +8,11 @@ import MainScene from "../scenes/mainScene";
 import Point from "../types/point";
 import ItemEntity from "../entities/itemEntity";
 import { re } from "mathjs";
+import { ActiveEntityEvents } from "../events/activeEntityEvents";
+import InventoryItem from "../inventory/inventoryItem";
+import { GeneralEventManager } from "../managers/eventManager";
+import Item from "../inventory/item";
+import { ItemType } from "../inventory/itemType";
 
 export default class PlayerController {
   public pointerDown: boolean = false;
@@ -117,11 +122,9 @@ export default class PlayerController {
   private updateTarget() {
     const entity = EntityManager.instance.getAreaEntityAtPosition(this.destination.x, this.destination.y);
 
-    if ((entity !== undefined && entity !== null) && entity !== this.player) {
-      if (!(entity as unknown as IFightable).isDead()) {
-        this.player.target = entity;
-      }
-    } else
+    if (entity?.type === "MonsterEntity")
+      this.player.target = entity;
+    else
       this.player.target = null;
   }
 
@@ -143,8 +146,8 @@ export default class PlayerController {
   private respawnPlayer() {
     this.player.positionX = 0;
     this.player.positionY = 0;
-    this.player.stats.health = this.player.stats.maxHealth;
-    this.player.stats.mana = this.player.stats.maxMana;
+    this.player.dynamicStats.health = this.player.totalModifierStats.maxHealth;
+    this.player.dynamicStats.mana = this.player.totalModifierStats.maxMana;
     this.player.target = null;
     this.player.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;
     this.player.setOrientationRad(3 * Math.PI / 4);

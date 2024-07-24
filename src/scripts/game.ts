@@ -6,13 +6,17 @@ import MainMenu from './scenes/mainMenu';
 import Setting from './scenes/setting';
 import Pregame from './scenes/pregame';
 import LoadingScreen from './scenes/loadingScreen';
+import GlowFilterPipelinePlugin from 'phaser3-rex-plugins/plugins/glowfilterpipeline-plugin.js';
+import HorrifiPipelinePlugin from 'phaser3-rex-plugins/plugins/horrifipipeline-plugin.js';
+import OutlinePipelinePlugin from 'phaser3-rex-plugins/plugins/outlinepipeline-plugin.js';
+import YoutubePlayerPlugin from 'phaser3-rex-plugins/plugins/youtubeplayer-plugin.js';
 
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
 
 const config = {
   type: Phaser.AUTO,
-  backgroundColor: '#666666',
+  backgroundColor: '#000000',
   scale: {
     parent: 'phaser-game',
     mode: Phaser.Scale.FIT,
@@ -21,12 +25,40 @@ const config = {
     height: DEFAULT_HEIGHT
   },
   scene: [PreloadScene, MainMenu, MainScene, Setting, LoadingScreen , Pregame , MapEditor],
+  dom: {
+    createContainer: true
+  },
+  
   physics: {
     default: 'arcade',
     arcade: {
       debug: false,
       gravity: {x: 0, y: 0 }
     }
+  },
+  plugins: {
+    global: [
+      {
+        key: 'rexGlowFilterPipeline',
+        plugin: GlowFilterPipelinePlugin,
+        start: true
+      },
+      {
+        key: 'rexOutlinePipeline',
+        plugin: OutlinePipelinePlugin,
+        start: true
+      },
+      {
+        key: 'rexHorrifiPipeline',
+        plugin: HorrifiPipelinePlugin,
+        start: true
+      },
+      {
+        key: 'rexYoutubePlayer',
+        plugin: YoutubePlayerPlugin,
+        start: true
+      }
+    ]
   }
 }
 

@@ -43,15 +43,12 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('return', 'assets/gui/mainMenu/return.png');
     this.load.image('male', 'assets/gui/mainMenu/male.png');
     this.load.image('female', 'assets/gui/mainMenu/female_warrior.png');
+    this.load.image('customPointer', 'assets/gui/pointer05.png')
 
     // GAME OBJECTS
     this.load.image('basic_spawner', 'assets/sprites/spawner/basic_spawner.png');
 
     // INVENTORY
-    this.load.image('stone_sword_inventory', 'assets/inventory/stone_sword.png');
-    this.load.image('wooden_shield_inventory', 'assets/inventory/wooden_shield.png');
-    this.load.image('chainmail_hood_inventory', 'assets/inventory/chainmail_hood.png');
-    this.load.image('chainmail_gloves_inventory', 'assets/inventory/chainmail_gloves.png');
     this.load.image('helmet_slot', 'assets/inventory/slots/helmet_slot.png');
     this.load.image('amulet_slot', 'assets/inventory/slots/amulet_slot.png');
     this.load.image('armor_slot', 'assets/inventory/slots/armor_slot.png');
@@ -70,27 +67,71 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('close_button', 'assets/inventory/buttons/close_button.png');
     this.load.image('black_rock_background', 'assets/inventory/background/black_rock_background.png');
 
-    // ITEMS
-    this.load.image('dropped_sword', 'assets/dropped_items/dropped_sword.png');
+    // INVENTORY ITEMS
+    this.load.image('baphomets_talisman_inv', 'assets/inventory/items/baphomets_talisman.png');
+    this.load.image('bone_sword_inv', 'assets/inventory/items/bone_sword.png');
+    this.load.image('bronze_ring_inv', 'assets/inventory/items/bronze_ring.png');
+    this.load.image('chainmail_armor_inv', 'assets/inventory/items/chainmail_armor.png');
+    this.load.image('chainmail_belt_inv', 'assets/inventory/items/chainmail_belt.png');
+    this.load.image('chainmail_boots_inv', 'assets/inventory/items/chainmail_boots.png');
+    this.load.image('chainmail_hood_inv', 'assets/inventory/items/chainmail_hood.png');
+    this.load.image('chainmail_gloves_inv', 'assets/inventory/items/chainmail_gloves.png');
+    this.load.image('gold_ring_inv', 'assets/inventory/items/gold_ring.png');
+    this.load.image('golden_kopis_inv', 'assets/inventory/items/golden_kopis.png');
+    this.load.image('knight_helmet_inv', 'assets/inventory/items/knight_helmet.png');
+    this.load.image('leather_armor_inv', 'assets/inventory/items/leather_armor.png');
+    this.load.image('leather_belt_inv', 'assets/inventory/items/leather_belt.png');
+    this.load.image('leather_boots_inv', 'assets/inventory/items/leather_boots.png');
+    this.load.image('leather_gloves_inv', 'assets/inventory/items/leather_gloves.png');
+    this.load.image('leather_hood_inv', 'assets/inventory/items/leather_hood.png');
+    this.load.image('silver_ring_inv', 'assets/inventory/items/silver_ring.png');
+    this.load.image('stone_dagger_inv', 'assets/inventory/items/stone_dagger.png');
+    this.load.image('temple_amulet_inv', 'assets/inventory/items/temple_amulet.png');
+    this.load.image('wooden_shield_inv', 'assets/inventory/items/wooden_shield.png');
+
+    // DROPPED ITEMS
+    this.load.image('dropped_amulet', 'assets/dropped_items/dropped_amulet.png');
+    this.load.image('dropped_armor', 'assets/dropped_items/dropped_armor.png');
+    this.load.image('dropped_belt', 'assets/dropped_items/dropped_belt.png');
+    this.load.image('dropped_boots', 'assets/dropped_items/dropped_boots.png');
+    this.load.image('dropped_gloves', 'assets/dropped_items/dropped_gloves.png');
+    this.load.image('dropped_helmet', 'assets/dropped_items/dropped_helmet.png');
+    this.load.image('dropped_hood', 'assets/dropped_items/dropped_hood.png');
+    this.load.image('dropped_ring', 'assets/dropped_items/dropped_ring.png');
     this.load.image('dropped_shield', 'assets/dropped_items/dropped_shield.png');
-    this.load.image('dropped_chainmail_hood', 'assets/dropped_items/dropped_chainmail_hood.png');
-    this.load.image('dropped_chainmail_gloves', 'assets/dropped_items/dropped_chainmail_gloves.png');
+    this.load.image('dropped_sword', 'assets/dropped_items/dropped_sword.png');
 
     // AUDIO
     this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
     this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');
+    this.load.audio('outside_ambience_1', 'assets/sound/outside_ambience_1.mp3');
+    this.load.audio('buttonClick_1', 'assets/sound/click_1.wav');
+    this.load.audio('buttonClick_2', 'assets/sound/click_2.wav');
+    this.load.audio('melee_swing_and_hit_armor_1', 'assets/sound/melee_swing_and_hit_armor_1.wav');
+    this.load.audio('melee_swing_and_hit_armor_2', 'assets/sound/melee_swing_and_hit_armor_2.wav');
+    this.load.audio('melee_swing_and_hit_armor_3', 'assets/sound/melee_swing_and_hit_armor_3.wav');
+    this.load.audio('melee_swing_and_hit_armor_4', 'assets/sound/melee_swing_and_hit_armor_4.wav');
+    this.load.audio('melee_swing_and_hit_flesh_1', 'assets/sound/melee_swing_and_hit_flesh_1.wav');
+    this.load.audio('melee_swing_and_hit_flesh_2', 'assets/sound/melee_swing_and_hit_flesh_2.wav');
+    this.load.audio('melee_swing_and_hit_flesh_3', 'assets/sound/melee_swing_and_hit_flesh_3.wav');
+    this.load.audio('melee_swing_and_hit_flesh_4', 'assets/sound/melee_swing_and_hit_flesh_4.wav');
+    this.load.audio('human_male_death_1', 'assets/sound/human_male_death_1.mp3');
+    this.load.audio('human_male_death_2', 'assets/sound/human_male_death_2.mp3');
+    this.load.audio('human_male_death_3', 'assets/sound/human_male_death_3.wav');
+    this.load.audio('step_dirt_1', 'assets/sound/step_dirt_1.wav');
+    this.load.audio('step_dirt_2', 'assets/sound/step_dirt_2.wav');
+    this.load.audio('step_dirt_3', 'assets/sound/step_dirt_3.wav');
+    this.load.audio('step_dirt_4', 'assets/sound/step_dirt_4.wav');
+    this.load.audio('step_dirt_5', 'assets/sound/step_dirt_5.wav');
+    this.load.audio('step_dirt_6', 'assets/sound/step_dirt_6.wav');
+    this.load.audio('step_dirt_7', 'assets/sound/step_dirt_7.wav');
+    this.load.audio('step_dirt_8', 'assets/sound/step_dirt_8.wav');
+    this.load.audio('explosion_1', 'assets/sound/explosion_1.flac');
+    this.load.audio('fire_spell_launch_1', 'assets/sound/fire_spell_launch_1.wav');
+    this.load.audio('ice_spell_1', 'assets/sound/ice_spell_1.wav');
+    this.load.audio('hit_flesh_1', 'assets/sound/hit_flesh_1.ogg');
 
     this.initializeSpritesheets();
-
-    // this.load.image('sky', 'assets/sky.png');
-    // this.load.image('ground', 'assets/platform.png');
-    // this.load.image('star', 'assets/star.png');
-    // this.load.image('bomb', 'assets/bomb.png');
-    // this.load.spritesheet('dude',
-    //     'assets/dude.png',
-    //     { frameWidth: 32, frameHeight: 48 }
-    // );
-
   }
 
   create() {

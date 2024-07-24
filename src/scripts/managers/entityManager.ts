@@ -71,7 +71,7 @@ export class EntityManager {
     let foundEntities: BaseEntity[] = [];
 
     for (let entity of this.getCurrentAreaEntityPool()) {
-      let entitySprite: Phaser.GameObjects.Sprite = entity.getAll().filter(gameObject => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite;
+      let entitySprite: Phaser.GameObjects.Sprite = entity.getSprite();
 
       if (positionX > entity.positionX - (entity.truncatedSpriteWidth / 2) &&
         positionX < entity.positionX + (entity.truncatedSpriteWidth / 2) &&
@@ -88,9 +88,7 @@ export class EntityManager {
     let foundEntities: BaseEntity[] = [];
 
     for (let entity of this.getCurrentAreaEntityPool()) {
-      let entitySprite: Phaser.GameObjects.Sprite = entity.getAll().filter(gameObject => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite;
-
-      console.log(entity);
+      let entitySprite: Phaser.GameObjects.Sprite = entity.getSprite();
 
       if (positionX > entity.positionX - (entity.truncatedSpriteWidth / 2) &&
         positionX < entity.positionX + (entity.truncatedSpriteWidth / 2) &&
@@ -112,12 +110,29 @@ export class EntityManager {
   }
 
   public getItemAtPosition(positionX: number, positionY: number): ItemEntity | null {
-    console.log(this.getCurrentAreaEntityPool());
-    const entity = this.getAreaEntityAtPosition(positionX, positionY);
-    console.log(entity);
-    if (entity instanceof ItemEntity)
-      return entity;
-    return null;
+    let topMostEntity: ItemEntity | null = null;
+    let foundEntities: ItemEntity[] = [];
+
+    const entities = this.getCurrentAreaEntityPool().filter(entity => entity instanceof ItemEntity) as ItemEntity[];
+
+    for (let entity of entities) {
+      const item = entity.item;
+
+      const isItemUnderCursor = Phaser.Geom.Rectangle.Contains(item.getBounds(), positionX, positionY);
+      if (isItemUnderCursor) {
+        foundEntities.push(entity);
+      }
+    }
+    for (let entity of foundEntities) {
+      if (!topMostEntity) {
+        topMostEntity = entity;
+      } else {
+        if (entity.depth > topMostEntity.depth) {
+          topMostEntity = entity;
+        }
+      }
+    }
+    return topMostEntity;
   }
 
   public getPlayers(): PlayerEntity[] {

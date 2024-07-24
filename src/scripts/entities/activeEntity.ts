@@ -1,6 +1,8 @@
 import { BaseEntity } from './baseEntity';
 import NotImplementedError from '../errors/notImplementedError';
-import { ActiveEntityStats } from './activeEntityStats';
+import ActiveEntityDynamicStats from './activeEntityDynamicStats';
+import ActiveEntityModifierStats from './activeEntityModifierStats';
+import ActiveEntityStates from './activeEntityStates';
 import { EntitySpecies } from '../enums/entitySpecies';
 import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { MathModule } from '../utilities/mathModule';
@@ -10,12 +12,17 @@ import { Physics } from '../physics/collider';
 import CampaignManager from '../managers/campaignmanager';
 import Tile from '../tiles/tile';
 import Vector from '../types/vector';
-import Point from '../types/point';
+import SoundManager from '../managers/soundManager';
+import StatModule from './statModule';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
   public currentAnimationState: ActiveEntityAnimationState;
-  public stats: ActiveEntityStats;
+  public dynamicStats: ActiveEntityDynamicStats;
+  public baseModifierStats: ActiveEntityModifierStats;
+  public tempModifierStats: ActiveEntityModifierStats;
+  public totalModifierStats: ActiveEntityModifierStats;
+  public states: ActiveEntityStates;
   public species: EntitySpecies;
   public destinationX: number;
   public destinationY: number;
@@ -34,7 +41,12 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     super(scene);
     scene.add.existing(this);
     this.type = 'ActiveEntity';
-    this.stats = new ActiveEntityStats();
+    this.dynamicStats = new ActiveEntityDynamicStats();
+    this.baseModifierStats = new ActiveEntityModifierStats();
+    this.tempModifierStats = new ActiveEntityModifierStats();
+    StatModule.resetModifierStats(this.tempModifierStats);
+    this.totalModifierStats = new ActiveEntityModifierStats();
+    this.states = new ActiveEntityStates();
     this.destinationX = this.positionX;
     this.destinationY = this.positionY;
     this.currentAnimationState = new ActiveEntityAnimationState();
@@ -70,6 +82,13 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     if (this.isDestinationReached()) {
       this.destinationX = this.positionX;
       this.destinationY = this.positionY;
+
+      // const random = Math.floor(Math.random() * 8) + 1;
+      // const soundConfig = {
+      //   rate: this.stats.movementSpeed / 150,
+      //   volume: 0.25
+      // };
+      // SoundManager.getInstance().effectsSoundManager.play('step_dirt_' + random, soundConfig);
       return;
     }
 
@@ -84,9 +103,9 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
       collisionInfo.collidingEntity!.positionY -= Math.sin(angle) * 2;
       return;
     }
-
+    SoundManager.getInstance().playFootstepsSound(this);
     this._isMoving = true;
-    let distance: number = this.stats.movementSpeed * (window['deltaTime'] / 1000);
+    let distance: number = this.totalModifierStats.movementSpeed * (window['deltaTime'] / 1000);
     let distanceMultiplier: number = 1 - (Math.abs(Math.sin(this._orientation_rad)) / 2);
     distance *= distanceMultiplier;
     let deltaX: number = distance * Math.cos(this._orientation_rad);

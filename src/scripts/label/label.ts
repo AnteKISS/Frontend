@@ -21,6 +21,10 @@ export default class Label extends Phaser.GameObjects.Container {
   }
 
   public updateText(text: string) {
+    const BG_WIDTH = this.text.width + Label.PADDING * 2;
+    const BG_HEIGHT = this.text.height + Label.PADDING * 2;
+
+    this.background.setSize(BG_WIDTH, BG_HEIGHT);
     this.text.setText(text);
   }
 

@@ -89,7 +89,7 @@ export default class RessourceBar extends Phaser.GameObjects.Container
         const sphereCenterX = this.barSprite.x;
         const sphereCenterY = this.barSprite.y;
         
-        this.text.setText(`${this.currentValue} / ${this.maxValue}`);
+        this.text.setText(`${Math.floor(this.currentValue)} / ${Math.floor(this.maxValue)}`);
 
         const textX = sphereCenterX - this.text.displayWidth / 2;
         const textY = sphereCenterY - this.text.displayHeight / 2;

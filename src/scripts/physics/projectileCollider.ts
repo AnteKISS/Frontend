@@ -1,4 +1,6 @@
+import { ActiveEntity } from "../entities/activeEntity";
 import { BaseEntity } from "../entities/baseEntity";
+import { IFightable } from "../entities/IFightable";
 import { EntityManager } from "../managers/entityManager";
 import { SpellCollider } from "./spellCollider";
 
@@ -46,8 +48,18 @@ export class ProjectileCollider extends SpellCollider {
         const originX: number = this.parentObject.originX;
         const originY: number = this.parentObject.originY;
 
-        for (let index = 0; index < entities.length; index++) {
-            if (entities[index] === this.owner) {
+        for (let index = 0; index < entities.length; index++) 
+        {
+	        if(entities[index] === this.owner)
+            {
+				continue;
+			}
+            if((entities[index] as unknown as IFightable).isDead() == true)
+            {
+                continue;
+            }
+            if (!(positionX + (this.truncatedSpriteWidth / 2) > entities[index].positionX - (entities[index].truncatedSpriteWidth / 2))) 
+            {
                 continue;
             }
             if (!(positionX + (this.truncatedSpriteWidth / 2) > entities[index].positionX - (entities[index].truncatedSpriteWidth / 2))) {
@@ -59,16 +71,13 @@ export class ProjectileCollider extends SpellCollider {
             if (!(positionY - (this.truncatedSpriteHeight / 2) < entities[index].positionY + (entities[index].truncatedSpriteHeight - (entities[index].truncatedSpriteHeight * originY)))) {
                 continue;
             }
-            if (!(positionY + (this.truncatedSpriteHeight / 2) > entities[index].positionY - (entities[index].truncatedSpriteHeight * originY))) {
-                continue;
-            }
-            if (!this.alreadyHitEntities.includes(entities[index])) {
-                this.alreadyHitEntities.push(entities[index]);
-                this.collidingCallback(entities[index]);
-                this.collidingCallbackPierce(this.parentObject, this);
-            }
-            return true;
+			if(!this.alreadyHitEntities.includes(entities[index]))
+			{
+				this.alreadyHitEntities.push(entities[index]);
+        	    this.collidingCallback(entities[index]);
+				this.collidingCallbackPierce(this.parentObject, this);
+			}
         }
-        return false;
-    }
+        return true;
+   }
 }

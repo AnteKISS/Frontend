@@ -7,12 +7,18 @@ import { getOrientationString } from "../enums/entityOrientation";
 import { InventorySprite } from "./inventorySprite";
 import { InventorySlots } from "../enums/inventorySlots";
 import { Signal } from "../events/signal";
+import Item from "../inventory/item";
+import { ActiveEntityEvents } from "../events/activeEntityEvents";
+import { ItemType } from "../inventory/itemType";
+import { GeneralEventManager } from "../managers/eventManager";
+import MainScene from "../scenes/mainScene";
 
 export class ActiveEntityAnimator {
   public parent: ActiveEntity;
   public sprites: InventorySprite[] = [];
   public onNonRepeatingAnimationComplete: Signal = new Signal();
   public onYoyoAnimationMiddleFrame: Signal = new Signal();
+  public forceUpdateOnce: boolean = false;
 
   private futureState: ActiveEntityAnimationState.State | null = null;
   private spriteReference: InventorySprite;
@@ -31,9 +37,10 @@ export class ActiveEntityAnimator {
         if (!this.parent.isDestinationReached()) {
           this.parent.currentAnimationState.state = ActiveEntityAnimationState.State.RUN;
         }
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim!.key.split('_')[0] == ActiveEntityAnimationState.State.IDLE) {
+        if (this.spriteReference.anims && this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim && this.spriteReference.anims.currentAnim.key.split('_')[0] == ActiveEntityAnimationState.State.IDLE && !this.forceUpdateOnce) {
           break;
         }
+        this.forceUpdateOnce = false;
         for (const sprite of this.sprites) {
           sprite.play(`${this.parent.currentAnimationState.state}_${getOrientationString(this.parent.orientation)}_${sprite.textureName.toUpperCase()}`);
         }
@@ -44,7 +51,7 @@ export class ActiveEntityAnimator {
           this.parent.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;
           break;
         }
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim!.key.split('_')[0] == 'RUN' && !hasOrientationUpdated) {
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'RUN' && !hasOrientationUpdated) {
           break;
         }
         for (const sprite of this.sprites) {
@@ -53,7 +60,7 @@ export class ActiveEntityAnimator {
 
         break;
       case ActiveEntityAnimationState.State.MELEEATTACK:
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim!.key.split('_')[0] == 'MELEEATTACK') {
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'MELEEATTACK') {
           this.parent.updateOrientationWithTarget();
           break;
         }
@@ -64,7 +71,7 @@ export class ActiveEntityAnimator {
         break;
       case ActiveEntityAnimationState.State.RANGEDATTACK_2:
         hasOrientationUpdated = this.parent.updateOrientationWithTarget();
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim!.key.split('_')[0] == 'MELEEATTACK_2' && !hasOrientationUpdated) {
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'MELEEATTACK_2' && !hasOrientationUpdated) {
           break;
         }
         for (const sprite of this.sprites) {
@@ -76,7 +83,7 @@ export class ActiveEntityAnimator {
       case ActiveEntityAnimationState.State.CHEER:
         break;
       case ActiveEntityAnimationState.State.DEATH:
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim!.key.split('_')[0] == 'DEATH' && !hasOrientationUpdated) {
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'DEATH' && !hasOrientationUpdated) {
           break;
         }
         for (const sprite of this.sprites) {
@@ -128,14 +135,38 @@ export class ActiveEntityAnimator {
   }
 
   onAnimationStart = (listener): void => {
-
+    const action: string = listener.key.split('_')[0].toUpperCase();
+    switch (action) {
+      case ActiveEntityAnimationState.State.MELEEATTACK:
+        // Some rat code since I'm not sure how the inventory system works
+        const parentScene = this.parent.scene as MainScene;
+        let equippedWeapon: Item = parentScene.playerTest.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite");
+        const meleeAttackEvent = new ActiveEntityEvents.MeleeWeaponAttackEvent(this.parent, equippedWeapon);
+        meleeAttackEvent.isStartingAttack = true;
+        GeneralEventManager.getInstance().notifyObservers(meleeAttackEvent);
+    }
   }
 
   onAnimationUpdate = (listener): void => {
-    if (this.spriteReference.anims.currentFrame!.index == this.spriteReference.anims.currentAnim!.frames.length && this.spriteReference.anims.isPlaying && this.spriteReference.anims.forward == true) {
+    if (this.spriteReference.anims &&
+      this.spriteReference.anims.currentFrame &&
+      this.spriteReference.anims.currentAnim &&
+      this.spriteReference.anims.currentFrame.index == this.spriteReference.anims.currentAnim.frames.length &&
+      this.spriteReference.anims.isPlaying &&
+      this.spriteReference.anims.forward == true) {
       this.onYoyoAnimationMiddleFrame.raise(() => {
         this.parent.currentAnimationState
       });
+      const action: string = listener.key.split('_')[0].toUpperCase();
+      switch (action) {
+        case ActiveEntityAnimationState.State.MELEEATTACK:
+          // Some rat code since I'm not sure how the inventory system works
+          const parentScene = this.parent.scene as MainScene;
+          let equippedWeapon: Item = parentScene.playerTest.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite");
+          const meleeAttackEvent = new ActiveEntityEvents.MeleeWeaponAttackEvent(this.parent, equippedWeapon);
+          meleeAttackEvent.isMiddleOfAttack = true;
+          GeneralEventManager.getInstance().notifyObservers(meleeAttackEvent);
+      }
     }
   }
 

@@ -1,8 +1,10 @@
 import EquipSlot from './equipSlot'
+import InventoryItem from './inventoryItem';
+import Item from './item';
 import { ItemType } from './itemType'
 
 export default class PlayerEquipment extends Phaser.GameObjects.Container {
-  private equipSlots: EquipSlot[];
+  public equipSlots: EquipSlot[];
 
   constructor(scene: Phaser.Scene) {
     super(scene, 0, 360);
@@ -26,7 +28,7 @@ export default class PlayerEquipment extends Phaser.GameObjects.Container {
   }
 
   public updateEquipSlotItems(pointer: Phaser.Input.Pointer) {
-    this.equipSlots.forEach((equipSlot: EquipSlot) => equipSlot.getItem()?.update(pointer));
+    this.equipSlots.forEach((equipSlot: EquipSlot) => equipSlot.getInventoryItem()?.update(pointer));
   }
 
   public getEquipSlotUnderMouse(pointer: Phaser.Input.Pointer): EquipSlot | null {
@@ -34,5 +36,24 @@ export default class PlayerEquipment extends Phaser.GameObjects.Container {
       if (Phaser.Geom.Rectangle.Contains(SLOT.getBounds(), pointer.x, pointer.y))
         return SLOT;
     return null;
+  }
+
+  public getEquippedWeapon(): InventoryItem | null {
+    for (const SLOT of this.equipSlots) {
+      if (SLOT.itemType === ItemType.WEAPON) {
+        return SLOT.getInventoryItem();
+      }
+    }
+    return null;
+  }
+
+  public getEquippedItems(): Item[] {
+    const equippedItems = new Array<Item>();
+    for (const equipSlot of this.equipSlots) {
+      const inventoryItem = equipSlot.getInventoryItem();
+      if (inventoryItem)
+        equippedItems.push(inventoryItem.getItem());
+    }
+    return equippedItems;
   }
 }

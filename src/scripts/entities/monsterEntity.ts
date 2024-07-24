@@ -13,6 +13,9 @@ import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { ActiveEntityAnimationState, ActiveEntityBehaviorState } from './entityState';
 import { Behavior } from '../behaviors/behavior';
 import { RusherBehavior } from '../behaviors/rusherBehavior';
+import { ActiveEntityEvents } from '../events/activeEntityEvents';
+import { GeneralEventManager } from '../managers/eventManager';
+import MainScene from '../scenes/mainScene';
 
 export class MonsterEntity extends ActiveEntity implements IFightable {
 
@@ -44,9 +47,19 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
     this.baseSprite.on('pointerover', (pointer: Phaser.Input.Pointer) => {
       window['selectedMonster'] = this;
+      scene.plugins.get('rexGlowFilterPipeline').add(this.baseSprite, {
+        intensity: 0.02
+      });
+      // scene.plugins.get('rexOutlinePipeline').add(this.baseSprite, {
+      //   thickness: 3,
+      //   outlineColor: 0x000000,
+      //   quality: 0.1
+      // });
     });
     this.baseSprite.on('pointerout', (pointer: Phaser.Input.Pointer) => {
       window['selectedMonster'] = null;
+      scene.plugins.get('rexGlowFilterPipeline').remove(this.baseSprite);
+      // scene.plugins.get('rexOutlinePipeline').remove(this.baseSprite);
     });
 
     this.currentBehaviorState = new ActiveEntityBehaviorState();
@@ -62,7 +75,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
   // Methods
   public update(time: number, deltaTime: number): void {
-    
+
     this.updatePosition();
     this.animator.update(time, deltaTime);
     this.behavior.update(time, deltaTime);
@@ -86,18 +99,21 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     throw new NotImplementedError();
   }
 
-  public damage(amount: number): void {
+  public damage(amount: number, damageSource: ActiveEntity): void {
     // TODO: take into account gear, active effects then apply damage
-    if (this.stats.health == 0) {
+    if (this.dynamicStats.health == 0) {
       return;
     }
-    this.stats.health -= amount;
-    if (this.stats.health <= 0) {
-      this.stats.health = 0;
+    this.dynamicStats.health -= amount;
+    if (this.dynamicStats.health <= 0) {
+      this.dynamicStats.health = 0;
       this.destinationX = this.positionX;
       this.destinationY = this.positionY;
       this.currentAnimationState.state = ActiveEntityAnimationState.State.DEATH;
       this.currentBehaviorState.state = ActiveEntityBehaviorState.State.DEATH;
+      const deathEvent = new ActiveEntityEvents.KilledEvent(damageSource, this);
+      GeneralEventManager.getInstance().notifyObservers(deathEvent);
+      EntityManager.instance.getPlayers()[0].exp.addExp(Math.floor(Math.random() * 250) + 50);
     }
   }
 
@@ -107,7 +123,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
   }
 
   public isDead(): boolean {
-    return this.stats.health <= 0;
+    return this.dynamicStats.health <= 0;
   }
 
   public onPointerOver(): void {
@@ -131,5 +147,9 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
   onEntityColliding = (hitEntity: BaseEntity): void => {
 
+  }
+
+  public getSprite(): Phaser.GameObjects.Sprite {
+    return this.baseSprite;
   }
 }

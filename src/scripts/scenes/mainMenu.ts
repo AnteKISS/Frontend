@@ -26,7 +26,7 @@ export default class MainMenu extends Phaser.Scene {
               
           }
     
-           createButton(x: number, y: number, key: string, callback: () => void) {
+            createButton(x: number, y: number, key: string, callback: () => void) {
               const button = this.add.image(x, y, key).setInteractive();
           
               button.on('pointerover', () => {
@@ -50,12 +50,10 @@ export default class MainMenu extends Phaser.Scene {
             }
         
           startGame() {
-            console.log('Play button clicked');
             this.scene.start('Pregame');
           }
         
           openSettings() {
-            console.log('Settings button clicked');
             this.scene.start('Setting');
           }
         
