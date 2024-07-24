@@ -4,9 +4,9 @@ import Setting from './setting'
 export default class InGameOptions extends Phaser.GameObjects.Container {
   private closeButton: Phaser.GameObjects.Sprite;
   private background: Phaser.GameObjects.Sprite;
-  
+
   private back: Phaser.GameObjects.Container;
-  private optionstxt : Phaser.GameObjects.Image;
+  private optionstxt: Phaser.GameObjects.Image;
 
   //private setting: Setting;
 
@@ -23,24 +23,25 @@ export default class InGameOptions extends Phaser.GameObjects.Container {
 
     //this.background = new Phaser.GameObjects.Sprite(scene, 0, 360, 'black_rock_background');
 
-    this.optionstxt = new Phaser.GameObjects.Image(scene, 0, 150 , 'largeOptionstxt');
+    this.optionstxt = new Phaser.GameObjects.Image(scene, 0, 150, 'largeOptionstxt')
+      .setInteractive().on('pointerdown', (_, __, ___, event) => event.stopPropagation());
     this.optionstxt.setScale(0.35);
 
-    this.sliderGameSound = this.createSlider(`Game Sound:`,55, 140, (value: number) => {
+    this.sliderGameSound = this.createSlider(`Game Sound:`, 55, 140, (value: number) => {
       this.backgroundSound = value;
       console.log(`Game Sound: ${this.backgroundSound}`);
     });
-    this.sliderEffectSound = this.createSlider(`Effect Sound:`,55, 200, (value: number) => {
+    this.sliderEffectSound = this.createSlider(`Effect Sound:`, 55, 200, (value: number) => {
       this.effectSound = value;
       console.log(`Effect Sound: ${this.effectSound}`);
     });
-    this.sliderMenuSound = this.createSlider(`Menu Sound:`,55, 260, (value: number) => {
+    this.sliderMenuSound = this.createSlider(`Menu Sound:`, 55, 260, (value: number) => {
       this.musicSound = value;
       console.log(`Menu Sound: ${this.musicSound}`);
     });
 
 
-    
+
     //this.back = this.createButton(0, 600, 'button','exittxt', () => this.previousScreen());
 
     /*this.closeButton = new Phaser.GameObjects.Sprite(scene, 243, 37, 'close_button').setInteractive();
@@ -56,8 +57,10 @@ export default class InGameOptions extends Phaser.GameObjects.Container {
   createButton(x: number, y: number, frameKey: string, textKey: string, callback: () => void) {
     const buttonContainer = this.scene.add.container(x, y);
 
-    const frame = this.scene.add.sprite(0, 0, frameKey).setInteractive();
-    const text = this.scene.add.sprite(0, 0, textKey);
+    const frame = this.scene.add.sprite(0, 0, frameKey)
+      .setInteractive().on('pointerdown', (_, __, ___, event) => event.stopPropagation());
+    const text = this.scene.add.sprite(0, 0, textKey)
+      .setInteractive().on('pointerdown', (_, __, ___, event) => event.stopPropagation());
 
     buttonContainer.add([frame, text]);
 
@@ -81,7 +84,7 @@ export default class InGameOptions extends Phaser.GameObjects.Container {
     return buttonContainer;
   }
 
-  
+
 
   previousScreen() {
     console.log('Exit button clicked');
@@ -96,36 +99,35 @@ export default class InGameOptions extends Phaser.GameObjects.Container {
     this.setVisible(false);
   }
 
-  createSlider(textToAdd: string ,x: number, y: number, toChange: (value: number) => void) {
+  createSlider(textToAdd: string, x: number, y: number, toChange: (value: number) => void) {
     const sliderContainer = this.scene.add.container(x, y);
-  
-        
-    const text = this.scene.add.text(x-200 , y, textToAdd, {
-        font: '30px Arial',
-        color: '#ffffff'
-      });
-      text.setOrigin(0.5, 0.5);
-    
-    const sliderBar = this.scene.add.sprite(x, y, 'sliderBar');
-    sliderBar.setInteractive();
 
-    const slider = this.scene.add.sprite(x, y, 'slider');
-    slider.setInteractive();
+    const text = this.scene.add.text(x - 200, y, textToAdd, {
+      font: '30px Arial',
+      color: '#ffffff'
+    });
+    text.setOrigin(0.5, 0.5)
+      .setInteractive().on('pointerdown', (_, __, ___, event) => event.stopPropagation());
+
+    const sliderBar = this.scene.add.sprite(x, y, 'sliderBar')
+      .setInteractive().on('pointerdown', (_, __, ___, event) => event.stopPropagation());
+
+    const slider = this.scene.add.sprite(x, y, 'slider')
+      .setInteractive().on('pointerdown', (_, __, ___, event) => event.stopPropagation());
     this.scene.input.setDraggable(slider);
 
     this.scene.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-      console.log("je suis la");  
+      console.log("je suis la");
       if (gameObject === slider) {
-            if (dragX >= sliderBar.x - sliderBar.width / 2 && dragX <= sliderBar.x + sliderBar.width / 2) {
-                gameObject.x = dragX;
-                const value = this.updateSliderValue(slider, sliderBar);
-                toChange(value);
-            }
+        if (dragX >= sliderBar.x - sliderBar.width / 2 && dragX <= sliderBar.x + sliderBar.width / 2) {
+          gameObject.x = dragX;
+          const value = this.updateSliderValue(slider, sliderBar);
+          toChange(value);
         }
+      }
     });
 
-    sliderContainer.add([sliderBar,slider,text]);
-
+    sliderContainer.add([sliderBar, slider, text]);
     return sliderContainer;
   }
 
@@ -134,7 +136,6 @@ export default class InGameOptions extends Phaser.GameObjects.Container {
     const value = (sliderPosition / sliderBar.width) * 100;
     return value;
   }
-  
 }
 
 
