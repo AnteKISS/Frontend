@@ -24,6 +24,11 @@ export default class GameObjectSprite extends Phaser.GameObjects.Sprite {
         this.setOrigin(0, 0.66666666);
     }
 
+    // TODO: Only show on debug?
+    if (gameObject instanceof Spawner) {
+      this.setVisible(false);
+    }
+
     scene.add.existing(this);
     this.setDepth(TILE_UNIT_POS.y + gameObject.getCollectionDepth());
   }

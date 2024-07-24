@@ -55,7 +55,7 @@ export abstract class Behavior {
       this.parent.positionY,
       this.parent.target!.positionX,
       this.parent.target!.positionY
-    ) <= this.parent.stats.meleeRange;
+    ) <= this.parent.totalModifierStats.meleeRange;
   }
 
   protected isEntityInProjectileRange(): boolean {
@@ -67,7 +67,7 @@ export abstract class Behavior {
       this.parent.positionY,
       this.parent.target!.positionX,
       this.parent.target!.positionY
-    ) <= this.parent.stats.projectileRange;
+    ) <= this.parent.totalModifierStats.projectileRange;
   }
 
   protected isTargetValid(): boolean {
@@ -84,7 +84,7 @@ export abstract class Behavior {
 
   protected getNearbyEnemies(): ActiveEntity[] {
     let entities: ActiveEntity[] = [];
-    const sightDistance = this.parent.stats.sightDistance;
+    const sightDistance = this.parent.totalModifierStats.sightDistance;
     // TODO: Use this when area has list of entities
     // for (let entity: ActiveEntity of this.parent.area.getEntities) {
 
@@ -99,7 +99,7 @@ export abstract class Behavior {
         entity.positionX,
         entity.positionY
       )
-      if (distanceBetweenEntities > this.parent.stats.sightDistance) {
+      if (distanceBetweenEntities > this.parent.totalModifierStats.sightDistance) {
         continue;
       }
       entities.push(entity as ActiveEntity);

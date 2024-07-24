@@ -1,6 +1,7 @@
 import { ItemType } from "./itemType";
 import InventoryConfig from "./inventoryConfig";
 import InventoryItem from './inventoryItem';
+import { EntityManager } from "../managers/entityManager";
 
 export default class EquipSlot extends Phaser.GameObjects.Container {
   private item: InventoryItem | null;
@@ -25,7 +26,7 @@ export default class EquipSlot extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
-  public getItem(): InventoryItem | null {
+  public getInventoryItem(): InventoryItem | null {
     if (this.item)
       return this.item;
     return null;
@@ -39,6 +40,7 @@ export default class EquipSlot extends Phaser.GameObjects.Container {
     this.remove(this.item);
     this.item = null;
     this.slot.setTexture(this.emptySlotSpritePath);
+    EntityManager.instance.getPlayers()[0].updateStats();
     return UNEQUIPPED_ITEM;
   }
 
@@ -51,8 +53,10 @@ export default class EquipSlot extends Phaser.GameObjects.Container {
       this.remove(LAST_ITEM);
     this.item = item;
     this.item.setPosition(-this.item.width / 2, -this.item.height / 2);
+    console.log(this.item.x, this.item.y);
     this.add(this.item);
     this.slot.setTexture(this.filledSlotSpritePath);
+    EntityManager.instance.getPlayers()[0].updateStats();
     return LAST_ITEM;
   }
 }

@@ -8,15 +8,18 @@ export class ActiveEntityFactory {
     let entity: PlayerEntity = new PlayerEntity(scene);
     entity.code = 'player';
     entity.species = EntitySpecies.HUMAN;
-    entity.stats = {
+    entity.dynamicStats = {
+      mana: 100,
+      health: 100,
+      level: 1,
+      experience: 0,
+    };
+    entity.baseModifierStats = {
       strength: 0,
       dexterity: 0,
       vitality: 0,
       intelligence: 0,
-      energy: 0,
-      mana: 100,
       maxMana: 100,
-      health: 100,
       maxHealth: 100,
       healthRegeneration: 2,
       manaRegeneration: 2,
@@ -44,8 +47,8 @@ export class ActiveEntityFactory {
       poisonAbsorption: 0,
       baseMovementSpeed: 150,
       movementSpeed: 0,
-      level: 1,
-      experience: 0,
+    };
+    entity.states = {
       isInvincible: false,
       isStunned: false,
       isSilenced: false,
@@ -66,15 +69,18 @@ export class ActiveEntityFactory {
     let entity: MonsterEntity = new MonsterEntity(scene, monsterCode);
     entity.code = monsterCode;
     entity.species = EntitySpecies.UNDEAD;
-    entity.stats = {
+    entity.dynamicStats = {
+      mana: 0,
+      health: 100,
+      level: 1,
+      experience: 0,
+    };
+    entity.totalModifierStats = {
       strength: 0,
       dexterity: 0,
       vitality: 0,
       intelligence: 0,
-      energy: 0,
-      mana: 0,
       maxMana: 0,
-      health: 100,
       maxHealth: 100,
       healthRegeneration: 0,
       manaRegeneration: 0,
@@ -102,8 +108,8 @@ export class ActiveEntityFactory {
       poisonAbsorption: 0,
       baseMovementSpeed: 1,
       movementSpeed: 100,
-      level: 1,
-      experience: 0,
+    };
+    entity.states = {
       isInvincible: false,
       isStunned: false,
       isSilenced: false,

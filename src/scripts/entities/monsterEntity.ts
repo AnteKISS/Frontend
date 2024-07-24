@@ -75,7 +75,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
   // Methods
   public update(time: number, deltaTime: number): void {
-    
+
     this.updatePosition();
     this.animator.update(time, deltaTime);
     this.behavior.update(time, deltaTime);
@@ -101,12 +101,12 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
   public damage(amount: number, damageSource: ActiveEntity): void {
     // TODO: take into account gear, active effects then apply damage
-    if (this.stats.health == 0) {
+    if (this.dynamicStats.health == 0) {
       return;
     }
-    this.stats.health -= amount;
-    if (this.stats.health <= 0) {
-      this.stats.health = 0;
+    this.dynamicStats.health -= amount;
+    if (this.dynamicStats.health <= 0) {
+      this.dynamicStats.health = 0;
       this.destinationX = this.positionX;
       this.destinationY = this.positionY;
       this.currentAnimationState.state = ActiveEntityAnimationState.State.DEATH;
@@ -123,7 +123,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
   }
 
   public isDead(): boolean {
-    return this.stats.health <= 0;
+    return this.dynamicStats.health <= 0;
   }
 
   public onPointerOver(): void {
@@ -147,5 +147,9 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
   onEntityColliding = (hitEntity: BaseEntity): void => {
 
+  }
+
+  public getSprite(): Phaser.GameObjects.Sprite {
+    return this.baseSprite;
   }
 }

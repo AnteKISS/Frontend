@@ -1,3 +1,5 @@
+import ActiveEntityModifierStats from '../entities/activeEntityModifierStats';
+import StatModule from '../entities/statModule';
 import InventoryConfig from './inventoryConfig'
 import { ItemType } from './itemType'
 
@@ -7,6 +9,7 @@ export default class Item extends Phaser.GameObjects.Container {
   inventoryWidth: number;
   inventoryHeight: number;
   itemType: ItemType;
+  stats: ActiveEntityModifierStats;
 
   inventorySprite: string;
   entitySprite: string;
@@ -24,6 +27,11 @@ export default class Item extends Phaser.GameObjects.Container {
     this.sprite = new Phaser.GameObjects.Sprite(scene, 0, 0, inventorySprite);
     this.sprite.setOrigin(0, 0);
     this.changeToInventorySprite();
+
+    this.stats = new ActiveEntityModifierStats();
+    StatModule.resetModifierStats(this.stats);
+    this.stats.defense = 10;
+    this.stats.movementSpeed = 100;
 
     this.add(this.sprite);
     scene.add.existing(this);
