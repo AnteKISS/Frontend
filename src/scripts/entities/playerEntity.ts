@@ -375,4 +375,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     this.setX(newPlayerPosition.x);
     this.setY(newPlayerPosition.y);
   }
+
+  public getSprite(): Phaser.GameObjects.Sprite {
+    return this.headSprite;
+  }
 }

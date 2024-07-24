@@ -59,4 +59,8 @@ export default class ItemEntity extends InactiveEntity {
   public initializeAnimations(): void { }
   public onSpriteColliding(hitEntity: BaseEntity): void { }
   public onEntityColliding(hitEntity: BaseEntity): void { }
+
+  public getSprite(): Phaser.GameObjects.Sprite {
+    return this.item.sprite;
+  }
 }

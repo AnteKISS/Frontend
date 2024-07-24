@@ -148,4 +148,8 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
   onEntityColliding = (hitEntity: BaseEntity): void => {
 
   }
+
+  public getSprite(): Phaser.GameObjects.Sprite {
+    return this.baseSprite;
+  }
 }
