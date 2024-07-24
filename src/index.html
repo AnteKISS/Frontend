@@ -51,8 +51,8 @@
         keycloak.init({onLoad: 'login-required'})
         .then(function (authenticated) {
           if (authenticated) {
-            console.log('Authenticated');
-            startGame(); // User is authenticated, start the game
+            console.log('Authenticated as' + profile.username);
+            startGame(profile.username); // User is authenticated, start the game
           } else {
             console.log('Not authenticated');
             keycloak.login(); // Redirects to Keycloak login page
@@ -63,9 +63,9 @@
           alert('Failed to initialize Keycloak');
         });
 
-    function startGame() {
+    function startGame(username) {
       // Your game initialization logic goes here
-      console.log('Game starting...');
+      console.log('Game starting for user: ' + username);
     }
 
       </script>
