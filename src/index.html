@@ -38,38 +38,38 @@
   <div id="username"></div>
 
   <script>
-    var keycloak;
-
     window.onload = function() {
       keycloak = new Keycloak({
-        realm: "usager",
-        "auth-server-url": "http://localhost:8180/auth/",
-        "ssl-required": "external",
-        clientId: "frontend",
-        "public-client": true,
-        "confidential-port": 0
-      });
+      realm: "usager",
+      "auth-server-url": "http://localhost:8180/auth/",
+      "ssl-required": "external",
+      clientId: "frontend",
+      "public-client": true,
+      "confidential-port": 0
+    });
 
-      keycloak.init({ onLoad: 'login-required' })
-        .then(function(authenticated) {
-          if (authenticated) {
-            console.log('Authenticated');
-            keycloak.loadUserProfile().then(function(profile) {
-              alert('Authenticated as ' + profile.username);
-              startGame(profile.username); // Pass the username to the game start function
-            }).catch(function() {
-              alert('Failed to load user profile');
-            });
-          } else {
-            console.log('Not authenticated');
-            keycloak.login(); // Redirects to Keycloak login page
-          }
-        })
-        .catch(function(error) {
-          console.error('Failed to initialize Keycloak', error);
-          alert('Failed to initialize Keycloak');
-        });
+    keycloak.init({ onLoad: 'login-required' })
+      .then(function(authenticated) {
+        if (authenticated) {
+          console.log('Authenticated');
+          console.log('Token:', keycloak.token); // Log the token
+          keycloak.loadUserProfile().then(function(profile) {
+            alert('Authenticated as ' + profile.username);
+            startGame(profile.username); // Pass the username to the game start function
+          }).catch(function() {
+            alert('Failed to load user profile');
+          });
+        } else {
+          console.log('Not authenticated');
+          keycloak.login(); // Redirects to Keycloak login page
+        }
+      })
+      .catch(function(error) {
+        console.error('Failed to initialize Keycloak', error);
+        alert('Failed to initialize Keycloak');
+      });
     }
+
 
     function startGame(username) {
       // Your game initialization logic goes here
