@@ -1777,7 +1777,7 @@ export const goblin_lumberjack_black_AnimationConfig = {
       { start: goblin_lumberjack_black_meleeAttackAnimationStartFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  end: goblin_lumberjack_black_meleeAttackAnimationEndFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.MELEEATTACK,
-    frameRate: 16
+    frameRate: 20
   },
   carry: {
     frames: [
@@ -1850,7 +1850,7 @@ export const wyvern_composite_AnimationConfig = {
       { start: wyvern_composite_idleAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_idleAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.IDLE,
-    frameRate: 6
+    frameRate: 8
   },
   run: {
     frames: [
@@ -1878,9 +1878,9 @@ export const wyvern_composite_AnimationConfig = {
       { start: wyvern_composite_meleeAttackAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_meleeAttackAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.MELEEATTACK,
-    frameRate: 8
+    frameRate: 12
   },
-  cast: {
+  castSpell: {
     frames: [
       { start: wyvern_composite_castAnimationStartFrame + wyvern_composite_leftOrientationSpriteOffset,      end: wyvern_composite_castAnimationEndFrame + wyvern_composite_leftOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.LEFT },
       { start: wyvern_composite_castAnimationStartFrame + wyvern_composite_upLeftOrientationSpriteOffset,    end: wyvern_composite_castAnimationEndFrame + wyvern_composite_upLeftOrientationSpriteOffset,    sheet: 'wyvern_composite', orientation: EntityOrientation.UP_LEFT },

@@ -2,6 +2,7 @@ import { SpellCollider } from "./spellCollider";
 import { BaseEntity } from "../entities/baseEntity";
 import { EntityManager } from "../managers/entityManager";
 import { IFightable } from "../entities/IFightable";
+import ItemEntity from "../entities/itemEntity";
 
 export class GroundCircularSpellCollider extends SpellCollider {
     constructor(owner: BaseEntity, parentObject: Phaser.Physics.Arcade.Sprite, collidingCallback: (hitEntity: BaseEntity) => void) {
@@ -25,6 +26,9 @@ export class GroundCircularSpellCollider extends SpellCollider {
     public checkCollision(): boolean {
         for (const entity of EntityManager.instance.getCurrentAreaEntities()) {
             if (entity === this.owner) {
+                continue;
+            }
+            if (entity instanceof ItemEntity) {
                 continue;
             }
             if ((entity as unknown as IFightable).isDead() == true) {
