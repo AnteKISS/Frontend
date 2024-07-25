@@ -3,6 +3,7 @@ import { SkirmisherBehavior } from '../behaviors/skirmisherBehavior';
 import { MonsterEntity } from '../entities/monsterEntity';
 import { PlayerEntity } from '../entities/playerEntity';
 import { EntitySpecies } from '../enums/entitySpecies';
+import FireBolt from '../spells/craftedSpells/firebolt';
 import ThrowSpear from '../spells/craftedSpells/throwSpear';
 
 export class ActiveEntityFactory {
@@ -127,6 +128,25 @@ export class ActiveEntityFactory {
     if (monsterCode === 'goblin_0') {
       entity.spellBook.addSpell(new ThrowSpear(entity));
       entity.behavior = new SkirmisherBehavior(entity);
+      entity.baseModifierStats.maxHealth = 50;
+      entity.dynamicStats.health = 50;
+    } else if (monsterCode === 'wyvern_composite') {
+      entity.spellBook.addSpell(new FireBolt(entity));
+      entity.behavior = new SkirmisherBehavior(entity);
+      entity.dynamicStats.mana = 1000000;
+      entity.totalModifierStats.movementSpeed = 200;
+      entity.totalModifierStats.maxHealth = 250;
+      entity.baseModifierStats.maxHealth = 250;
+      entity.dynamicStats.health = 250;
+      entity.totalModifierStats.sightDistance = 1000;
+    } else if (monsterCode === 'goblin_lumberjack_black') {
+      entity.behavior = new RusherBehavior(entity);
+      entity.totalModifierStats.movementSpeed = 100;
+      entity.totalModifierStats.maxHealth = 500;
+      entity.baseModifierStats.maxHealth = 500
+      entity.dynamicStats.health = 500;
+      entity.totalModifierStats.sightDistance = 1000;
+      entity.totalModifierStats.basePhysicalDamage = 20;
     } else {
       entity.behavior = new RusherBehavior(entity);
     }

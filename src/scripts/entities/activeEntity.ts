@@ -191,6 +191,30 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     return currentOrientation != this.orientation;
   }
 
+  public updateOrientationWithPointerPosition(pointerX: number, pointerY: number): boolean {
+    this.setOrientationRad(Phaser.Math.Angle.Between(this.positionX, this.positionY, pointerX, pointerY));
+    let orientation_deg = Phaser.Math.RadToDeg(this._orientation_rad);
+    let currentOrientation = this.orientation;
+    if ((orientation_deg >= -22.5 && orientation_deg < 0) || (orientation_deg >= 0 && orientation_deg < 22.5)) {
+      this.orientation = EntityOrientation.RIGHT;
+    } else if (orientation_deg >= 22.5 && orientation_deg < 67.5) {
+      this.orientation = EntityOrientation.DOWN_RIGHT;
+    } else if (orientation_deg >= 67.5 && orientation_deg < 112.5) {
+      this.orientation = EntityOrientation.DOWN;
+    } else if (orientation_deg >= 112.5 && orientation_deg < 157.5) {
+      this.orientation = EntityOrientation.DOWN_LEFT;
+    } else if ((orientation_deg >= 157.5 && orientation_deg <= 180) || (orientation_deg >= -180 && orientation_deg < -157.5)) {
+      this.orientation = EntityOrientation.LEFT;
+    } else if (orientation_deg >= -157.5 && orientation_deg < -112.5) {
+      this.orientation = EntityOrientation.UP_LEFT;
+    } else if (orientation_deg >= -112.5 && orientation_deg < -67.5) {
+      this.orientation = EntityOrientation.UP;
+    } else if (orientation_deg >= -67.5 && orientation_deg < -22.5) {
+      this.orientation = EntityOrientation.UP_RIGHT;
+    }
+    return currentOrientation != this.orientation;
+  }
+
   public setDestination(x: number, y: number): void {
     this.destinationX = x;
     this.destinationY = y;

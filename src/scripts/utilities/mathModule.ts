@@ -40,10 +40,14 @@ export class MathModule {
   }
 
   public static getVectorLinearComposition(v: Vector, v1: Vector, v2: Vector): [Vector, Vector] {
-    const m = math.matrix([[v1.x, v2.x], [v1.y, v2.y]]);
-    const c = math.lusolve(m, [v.x, v.y]).toArray();
-    const [c1, c2] = [c[0][0], c[1][0]];
-    return [new Vector(v1.x * c1, v1.y * c1), new Vector(v2.x * c2, v2.y * c2)];
+    try {
+      const m = math.matrix([[v1.x, v2.x], [v1.y, v2.y]]);
+      const c = math.lusolve(m, [v.x, v.y]).toArray();
+      const [c1, c2] = [c[0][0], c[1][0]];
+      return [new Vector(v1.x * c1, v1.y * c1), new Vector(v2.x * c2, v2.y * c2)];
+    } catch (e) {
+      return [new Vector(0, 0), new Vector(0, 0)];
+    }
   }
 
   public static getRandomInt(min: number, max: number) {

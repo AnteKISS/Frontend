@@ -63,7 +63,11 @@ export class SkirmisherBehavior extends Behavior {
         }
         else if (this.isTargetValid() && !this.isEntityInMeleeRange()) {
           if (this.parent.spellBook.getAllSpells()[0].canCast()) {
-            this.setBehaviorState(ActiveEntityBehaviorState.State.RANGED_ATTACKING);
+            if (this.parent.code === 'wyvern_composite') {
+              this.setBehaviorState(ActiveEntityBehaviorState.State.CASTING_SPELL);
+            } else {
+              this.setBehaviorState(ActiveEntityBehaviorState.State.RANGED_ATTACKING);
+            }
           } else {
             this.parent.setDestination(this.parent.target!.positionX, this.parent.target!.positionY);
           }
@@ -119,6 +123,15 @@ export class SkirmisherBehavior extends Behavior {
         if (!this.isTargetValid()) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         }
+        if (!this.parent.spellBook.getAllSpells()[0].canCast()) {
+          if (this.isEntityInMeleeRange()) {
+            this.setBehaviorState(ActiveEntityBehaviorState.State.MELEE_ATTACKING);
+          } else {
+            this.setBehaviorState(ActiveEntityBehaviorState.State.CHARGING);
+          }
+          return;
+        }
+        this.parent.setDestination(this.parent.positionX, this.parent.positionY);
         this.parent.animator.setAnimatorState(ActiveEntityAnimationState.State.CASTSPELL);
         break;
       case ActiveEntityBehaviorState.State.BLOCKING:
@@ -143,6 +156,7 @@ export class SkirmisherBehavior extends Behavior {
         }
         break;
       case ActiveEntityAnimationState.State.RANGEDATTACK:
+      case ActiveEntityAnimationState.State.CASTSPELL:
         this.parent.spellBook.getAllSpells()[0].onCast();
         break;
     }
