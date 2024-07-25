@@ -23,7 +23,8 @@ export class GroundCircularSpellCollider extends SpellCollider {
     }
 
     public checkCollision(): boolean {
-        const entities: BaseEntity[] = EntityManager.instance.getAreaEntities();
+        let entities: BaseEntity[] = EntityManager.instance.getAreaEntities();
+        entities.push(EntityManager.instance.getPlayers()[0]);
         if (!entities) {
             console.error("Entities are undefined.");
             return false;

@@ -1,6 +1,7 @@
 import { ActiveEntity } from "../entities/activeEntity";
 import { BaseEntity } from "../entities/baseEntity";
 import { IFightable } from "../entities/IFightable";
+import { MonsterEntity } from "../entities/monsterEntity";
 import { EntityManager } from "../managers/entityManager";
 import { SpellCollider } from "./spellCollider";
 
@@ -37,7 +38,8 @@ export class ProjectileCollider extends SpellCollider {
     }
 
     public checkCollision(): boolean {
-        const entities: BaseEntity[] = EntityManager.instance.getAreaEntities();
+        let entities: BaseEntity[] = EntityManager.instance.getAreaEntities();
+        entities.push(EntityManager.instance.getPlayers()[0]);
         if (!entities) {
             console.error("Entities are undefined.");
             return false;
@@ -48,12 +50,15 @@ export class ProjectileCollider extends SpellCollider {
         const originX: number = this.parentObject.originX;
         const originY: number = this.parentObject.originY;
 
-        for (let index = 0; index < entities.length; index++) 
+        for (let index = 0; index < entities.length; index++)
         {
 	        if(entities[index] === this.owner)
             {
 				continue;
 			}
+            if (this.owner instanceof MonsterEntity && entities[index] instanceof MonsterEntity) {
+                continue;
+            }
             if((entities[index] as unknown as IFightable).isDead() == true)
             {
                 continue;
