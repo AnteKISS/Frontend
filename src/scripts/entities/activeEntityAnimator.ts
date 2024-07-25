@@ -69,9 +69,9 @@ export class ActiveEntityAnimator {
           sprite.play(`${this.parent.currentAnimationState.state}_${getOrientationString(this.parent.orientation)}_${sprite.textureName.toUpperCase()}`);
         }
         break;
-      case ActiveEntityAnimationState.State.RANGEDATTACK_2:
+      case ActiveEntityAnimationState.State.RANGEDATTACK:
         hasOrientationUpdated = this.parent.updateOrientationWithTarget();
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim &&this.spriteReference.anims.currentAnim.key.split('_')[0] == 'MELEEATTACK_2' && !hasOrientationUpdated) {
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim &&this.spriteReference.anims.currentAnim.key.split('_')[0] == 'RANGEDATTACK' && !hasOrientationUpdated) {
           break;
         }
         for (const sprite of this.sprites) {
@@ -113,6 +113,13 @@ export class ActiveEntityAnimator {
 
   public isNonReapeatingAnimationPlaying(): boolean {
     return ActiveEntityAnimationState.getNonRepeatingAnimationState().filter((state) => state === this.parent.currentAnimationState.state).length > 0;
+  }
+
+  public getCurrentAnimationPlaying(): string {
+    if (this.spriteReference.anims && this.spriteReference.anims.currentAnim) {
+      return this.spriteReference.anims.currentAnim.key;
+    }
+    return "";
   }
 
   private initialize(): void {

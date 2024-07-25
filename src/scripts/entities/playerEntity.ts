@@ -37,11 +37,8 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   public mainHandSprite: InventorySprite;
   public offHandSprite: InventorySprite;
   public onPlayerDeath: Signal = new Signal();
-  public maxMana: number = 150; //Pour test
-  public spellBook: SpellBook;
+  public maxMana: number = 150;
 
-  mySpellBook: SpellBook;
-  private equippedSpells: Spell[] = [];
   public controller: PlayerController;
   public exp: Exp;
 
@@ -89,7 +86,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     this.skillTree = new SkillTree(this);
     this.attributeAllocation = new AttributeAllocation(this);
 
-    this.spellBook = new SpellBook(this);
     this.spellBook.addSpell(new Firebolt(this));
     this.spellBook.addSpell(new IceShard(this));
     this.spellBook.addSpell(new Quake(this));
@@ -122,9 +118,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   }
 
   // Getters/Setters
-  public equipSpell(index, spell: Spell): void {
-    this.equippedSpells[index] = spell;
-  }
 
   // Methods
   public update(time: number, deltaTime: number): void {

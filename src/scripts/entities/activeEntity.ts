@@ -12,6 +12,8 @@ import Tile from '../tiles/tile';
 import Vector from '../types/vector';
 import Point from '../types/point';
 import SoundManager from '../managers/soundManager';
+import Spell from '../spells/spell';
+import SpellBook from '../spells/spellBook';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
@@ -24,9 +26,10 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   public animator: ActiveEntityAnimator;
   public lastValidPositionX: number;
   public lastValidPositionY: number;
+  public spellBook: SpellBook;
 
   protected currentTile: Tile | undefined;
-
+  protected equippedSpells: Spell[] = [];
   protected _isMoving: boolean = false;
 
   private tileHitboxSize: number;
@@ -41,8 +44,8 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this.currentAnimationState = new ActiveEntityAnimationState();
     this.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;
     this.isTargetable = true;
-
     this.tileHitboxSize = 68;
+    this.spellBook = new SpellBook(this);
   }
 
   // Getters/Setters
@@ -180,6 +183,10 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   public setDestination(x: number, y: number): void {
     this.destinationX = x;
     this.destinationY = y;
+  }
+
+  public equipSpell(index, spell: Spell): void {
+    this.equippedSpells[index] = spell;
   }
 
   public isMoving(): boolean {

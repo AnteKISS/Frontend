@@ -1664,7 +1664,7 @@ export const goblin_0_AnimationConfig = {
     state: ActiveEntityAnimationState.State.MELEEATTACK,
     frameRate: 16
   },
-  throw: {
+  rangedAttack: {
     frames: [
       { start: goblin_0_throwAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_throwAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
       { start: goblin_0_throwAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_throwAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
@@ -1942,7 +1942,18 @@ const icicle_AnimationStartFrame = 0;
 const icicle_AnimationEndFrame = 7; 
 
 const firebolt_AnimationStartFrame = 0;
-const firebolt_AnimationEndFrame = 7; 
+const firebolt_AnimationEndFrame = 7;
+
+const throwSpear_AnimationsStartFrame = 0;
+const throwSpear_AnimationsEndFrame = 0;
+const throwSpear_leftOrientationSpriteOffset = 0;
+const throwSpear_upLeftOrientationSpriteOffset = 1;
+const throwSpear_upOrientationSpriteOffset = 2;
+const throwSpear_upRightOrientationSpriteOffset = 3;
+const throwSpear_rightOrientationSpriteOffset = 4;
+const throwSpear_downRightOrientationSpriteOffset = 5;
+const throwSpear_downOrientationSpriteOffset = 6;
+const throwSpear_downLeftOrientationSpriteOffset = 7;
 
 const greyQuake_AnimationStartFrame = 0;
 const greyQuake_AnimationEndFrame = 5;
@@ -1966,7 +1977,27 @@ export const projectile_AnimationConfig = {
     frames:{ start: firebolt_AnimationStartFrame, end: firebolt_AnimationEndFrame, sheet: 'firebolt' },
     frameRate: 8,
     repeat: -1
-  } 
+  },
+
+  throwSpear: {
+    frames: { start: throwSpear_AnimationsStartFrame, end: throwSpear_AnimationsEndFrame, sheet: 'throwSpear' },
+    frameRate: 666,
+    repeat: -1
+  }
+  // throwSpear: {
+  //   frames: [
+  //     { start: throwSpear_AnimationsStartFrame + throwSpear_leftOrientationSpriteOffset,      end: throwSpear_AnimationsEndFrame + throwSpear_leftOrientationSpriteOffset,      sheet: 'throwSpear', orientation: EntityOrientation.LEFT },
+  //     { start: throwSpear_AnimationsStartFrame + throwSpear_upLeftOrientationSpriteOffset,    end: throwSpear_AnimationsEndFrame + throwSpear_upLeftOrientationSpriteOffset,    sheet: 'throwSpear', orientation: EntityOrientation.UP_LEFT },
+  //     { start: throwSpear_AnimationsStartFrame + throwSpear_upOrientationSpriteOffset,        end: throwSpear_AnimationsEndFrame + throwSpear_upOrientationSpriteOffset,        sheet: 'throwSpear', orientation: EntityOrientation.UP },
+  //     { start: throwSpear_AnimationsStartFrame + throwSpear_upRightOrientationSpriteOffset,   end: throwSpear_AnimationsEndFrame + throwSpear_upRightOrientationSpriteOffset,   sheet: 'throwSpear', orientation: EntityOrientation.UP_RIGHT },
+  //     { start: throwSpear_AnimationsStartFrame + throwSpear_rightOrientationSpriteOffset,     end: throwSpear_AnimationsEndFrame + throwSpear_rightOrientationSpriteOffset,     sheet: 'throwSpear', orientation: EntityOrientation.RIGHT },
+  //     { start: throwSpear_AnimationsStartFrame + throwSpear_downRightOrientationSpriteOffset, end: throwSpear_AnimationsEndFrame + throwSpear_downRightOrientationSpriteOffset, sheet: 'throwSpear', orientation: EntityOrientation.DOWN_RIGHT },
+  //     { start: throwSpear_AnimationsStartFrame + throwSpear_downOrientationSpriteOffset,      end: throwSpear_AnimationsEndFrame + throwSpear_downOrientationSpriteOffset,      sheet: 'throwSpear', orientation: EntityOrientation.DOWN },
+  //     { start: throwSpear_AnimationsStartFrame + throwSpear_downLeftOrientationSpriteOffset,  end: throwSpear_AnimationsEndFrame + throwSpear_downLeftOrientationSpriteOffset,  sheet: 'throwSpear', orientation: EntityOrientation.DOWN_LEFT }    
+  //   ],
+  //   frameRate: 666,
+  //   repeat: -1
+  // }
 };
 
 export const circleSpell_AnimationConfig = {

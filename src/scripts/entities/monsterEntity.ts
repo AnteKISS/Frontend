@@ -1,12 +1,9 @@
 import { ActiveEntity } from './activeEntity';
 import NotImplementedError from '../errors/notImplementedError';
 import { AnimationManager } from '../managers/animationManager';
-import { getOrientationString } from '../enums/entityOrientation';
-import { MathModule } from '../utilities/mathModule';
 import { Physics } from '../physics/collider';
 import { IFightable } from './IFightable';
 import { BaseEntity } from './baseEntity';
-import { time } from 'console';
 import { EntityManager } from '../managers/entityManager';
 import { InventorySprite } from './inventorySprite';
 import { ActiveEntityAnimator } from './activeEntityAnimator';
@@ -15,7 +12,7 @@ import { Behavior } from '../behaviors/behavior';
 import { RusherBehavior } from '../behaviors/rusherBehavior';
 import { ActiveEntityEvents } from '../events/activeEntityEvents';
 import { GeneralEventManager } from '../managers/eventManager';
-import MainScene from '../scenes/mainScene';
+import SpellBook from '../spells/spellBook';
 
 export class MonsterEntity extends ActiveEntity implements IFightable {
 
@@ -50,16 +47,10 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       scene.plugins.get('rexGlowFilterPipeline').add(this.baseSprite, {
         intensity: 0.02
       });
-      // scene.plugins.get('rexOutlinePipeline').add(this.baseSprite, {
-      //   thickness: 3,
-      //   outlineColor: 0x000000,
-      //   quality: 0.1
-      // });
     });
     this.baseSprite.on('pointerout', (pointer: Phaser.Input.Pointer) => {
       window['selectedMonster'] = null;
       scene.plugins.get('rexGlowFilterPipeline').remove(this.baseSprite);
-      // scene.plugins.get('rexOutlinePipeline').remove(this.baseSprite);
     });
 
     this.currentBehaviorState = new ActiveEntityBehaviorState();
@@ -67,7 +58,6 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
     this.collider = new Physics.Collider(this, this.baseSprite, this.onSpriteColliding, this.onEntityColliding);
     this.animator = new ActiveEntityAnimator(this);
-    this.behavior = new RusherBehavior(this);
   }
 
   // Getters/Setters
