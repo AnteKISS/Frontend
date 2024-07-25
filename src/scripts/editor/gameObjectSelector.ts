@@ -33,8 +33,15 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
     this.selectedObjectIndex = 0;
     this.gameObjectSpriteLists = new Map();
 
-    this.setupTileSprites([['rocky_floor_tiles', 15]]);
-    this.setupWallSprites([['flat_stone_walls', 24]]);
+    this.setupTileSprites([
+      ['rocky_floor_tiles', 15],
+      ['dirt_tiles', 5],
+      ['wood_tiles', 9]
+    ]);
+    this.setupWallSprites([
+      ['flat_stone_walls', 24],
+      ['brick_walls', 24]
+    ]);
     this.setupSpawnerSprites();
     this.setupTabs();
 
@@ -67,6 +74,7 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
 
   private setupWallSprites(sourceArray: Array<[string, number]>) {
     const SPRITE_ARRAY = new Array<any>;
+    console.log(sourceArray);
 
     for (const BITMAP of sourceArray)
       for (let i = 0; i < BITMAP[1]; i++)
@@ -99,6 +107,7 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
 
   private changeTab(tabKey: string): void {
     this.selectedTab = tabKey;
+    this.row = 0;
     this.updateDisplayObjects();
   }
 
@@ -109,13 +118,13 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
   public previousRow() {
     this.row--;
     if (this.row < 0)
-      this.row = Math.floor(this.gameObjectSpriteLists.get(this.selectedTab)!.length / GameObjectSelector.OBJECTS_PER_ROW);
+      this.row = Math.floor((this.gameObjectSpriteLists.get(this.selectedTab)!.length - 1) / GameObjectSelector.OBJECTS_PER_ROW);
     this.updateDisplayObjects();
   }
 
   public nextRow() {
     this.row++;
-    if (this.row * GameObjectSelector.OBJECTS_PER_ROW > this.gameObjectSpriteLists.get(this.selectedTab)!.length)
+    if (this.row * GameObjectSelector.OBJECTS_PER_ROW >= this.gameObjectSpriteLists.get(this.selectedTab)!.length)
       this.row = 0;
     this.updateDisplayObjects();
   }

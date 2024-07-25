@@ -54,10 +54,10 @@ export default class PreloadScene extends Phaser.Scene {
 
 
     this.load.image('backGround', 'assets/gui/mainMenu/WP.png');
-    
+
     this.load.image('play', 'assets/gui/progression/button2.png');
     this.load.image('exit', 'assets/gui/progression/button4.png');
-    this.load.image('settings','assets/gui/progression/button3.png');
+    this.load.image('settings', 'assets/gui/progression/button3.png');
     this.load.image('mute', 'assets/gui/mainMenu/mute.png');
     this.load.image('plus', 'assets/gui/mainMenu/plus.png');
     this.load.image('moins', 'assets/gui/mainMenu/moins.png');
@@ -193,8 +193,6 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.spritesheet('firebolt', 'assets/sprites/spell/firebolt.png', { frameWidth: 64, frameHeight: 64 });
     this.load.spritesheet('quake', 'assets/sprites/spell/quake.png', { frameWidth: 256, frameHeight: 128 });
     this.load.spritesheet('throwSpear', 'assets/sprites/spell/throwSpear.png', { frameWidth: 64, frameHeight: 64 });
-    this.load.spritesheet('rocky_floor_tiles', 'assets/sprites/tiles/rocky.png', { frameWidth: 256, frameHeight: 128 });
-    this.load.spritesheet('flat_stone_walls', 'assets/sprites/tiles/flat_stone_walls.png', { frameWidth: 128, frameHeight: 192 });
     this.load.spritesheet('goblin_0', 'assets/sprites/monster/goblin_0.png', { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet('goblin_lumberjack_black', 'assets/sprites/monster/goblin_lumberjack_black.png', { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet('spider_0', 'assets/sprites/monster/spider_0.png', { frameWidth: 128, frameHeight: 128 });
@@ -205,6 +203,12 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.spritesheet('sliderBar', 'assets/sprites/settings/sliderBar.png', { frameWidth: 128, frameHeight: 192 });
     this.load.spritesheet('slider', 'assets/sprites/settings/slider.png', { frameWidth: 128, frameHeight: 192 });
     this.load.spritesheet('wandering_trader_128', 'assets/sprites/npc/wandering_trader_128.png', { frameWidth: 128, frameHeight: 128 });
+
+    this.load.spritesheet('rocky_floor_tiles', 'assets/sprites/tiles/rocky.png', { frameWidth: 256, frameHeight: 128 });
+    this.load.spritesheet('dirt_tiles', 'assets/sprites/tiles/dirt.png', { frameWidth: 128, frameHeight: 64 });
+    this.load.spritesheet('wood_tiles', 'assets/sprites/tiles/wood.png', { frameWidth: 256, frameHeight: 128 });
+    this.load.spritesheet('flat_stone_walls', 'assets/sprites/tiles/flat_stone_walls.png', { frameWidth: 128, frameHeight: 192 });
+    this.load.spritesheet('brick_walls', 'assets/sprites/tiles/brick_walls.png', { frameWidth: 128, frameHeight: 192 });
   }
 }
 
