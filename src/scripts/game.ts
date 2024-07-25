@@ -5,10 +5,13 @@ import MapEditor from './scenes/mapEditor'
 import MainMenu from './scenes/mainMenu';
 import Setting from './scenes/setting';
 import Pregame from './scenes/pregame';
+import LoadingScreen from './scenes/loadingScreen';
 import GlowFilterPipelinePlugin from 'phaser3-rex-plugins/plugins/glowfilterpipeline-plugin.js';
 import HorrifiPipelinePlugin from 'phaser3-rex-plugins/plugins/horrifipipeline-plugin.js';
 import OutlinePipelinePlugin from 'phaser3-rex-plugins/plugins/outlinepipeline-plugin.js';
 import YoutubePlayerPlugin from 'phaser3-rex-plugins/plugins/youtubeplayer-plugin.js';
+import PregameOpenSave from './scenes/pregameOpenSave';
+import PregameNewGame from './scenes/pregameNewGame';
 
 const DEFAULT_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
@@ -23,10 +26,11 @@ const config = {
     width: DEFAULT_WIDTH,
     height: DEFAULT_HEIGHT
   },
+  scene: [PreloadScene, MainMenu, MainScene, Setting, LoadingScreen , Pregame , MapEditor, PregameOpenSave, PregameNewGame],
   dom: {
     createContainer: true
   },
-  scene: [PreloadScene, MainMenu, MainScene, Setting, Pregame , MapEditor],
+  
   physics: {
     default: 'arcade',
     arcade: {

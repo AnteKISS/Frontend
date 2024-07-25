@@ -1,12 +1,13 @@
 import FpsText from '../objects/fpsText'
 import Item from '../inventory/item'
 import InventoryItem from '../inventory/inventoryItem'
+
 import { ItemType } from '../inventory/itemType'
 
 import GUI from '../objects/gui'
 import { PlayerEntity } from '../entities/playerEntity';
 import { EntityManager } from '../managers/entityManager';
-
+import { OutlinePipeline } from '../pipelines/outlinePipeline';
 import { TileColor } from '../tiles/tiledrawer'
 import CampaignManager from '../managers/campaignmanager'
 import Point from '../types/point'
@@ -19,6 +20,8 @@ import { AttributeGUI } from '../progression/attributeGUI'
 import ItemEntity from '../entities/itemEntity'
 import { MathModule } from '../utilities/mathModule'
 import { GameInput } from '../inputs/gameInputs'
+import PauseMenu from './pauseMenu'
+import InGameOptions from './inGameOptions'
 import SoundManager from '../managers/soundManager'
 import { GeneralEventManager, PlayerEquipmentEventManager } from '../managers/eventManager'
 import { UiEvents } from '../events/uiEvents'
@@ -38,6 +41,8 @@ export default class MainScene extends Phaser.Scene {
   public playerTest: PlayerEntity;
   private entityHealthBar: EntityHealthBar;
   private gui: GUI;
+
+  private pauseMenu: PauseMenu;
   private questUI: QuestUI;
 
   private attributeGUI: AttributeGUI;
@@ -114,6 +119,13 @@ export default class MainScene extends Phaser.Scene {
 
     this.input.keyboard?.on('keydown-A', () => this.attributeGUI.aKeyPressed());
     this.input.keyboard?.on('keydown-ESC', () => this.attributeGUI.hide());
+
+    //Setup pause menu
+    this.pauseMenu = new PauseMenu(this);
+    this.input.keyboard!.on('keydown-P', () => this.pauseMenu.visible ? this.pauseMenu.hide() : this.pauseMenu.show());
+    this.input.keyboard!.on('keydown-ESC', () => this.pauseMenu.hide());
+
+
 
     // Setup inventory test
     this.input.keyboard!.on('keydown-I', () => this.playerTest.inventory.visible ? this.playerTest.inventory.hide() : this.playerTest.inventory.show());
@@ -240,6 +252,8 @@ export default class MainScene extends Phaser.Scene {
         this.entityHealthBar.graphics,
         this.entityHealthBar.lblEntityName,
         this.entityHealthBar.lblEntityDescription,
+        this.attributeGUI,
+        this.pauseMenu,
         this.playerTest.inventory,
         this.attributeGUI,
         this.questUI
