@@ -84,4 +84,5 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
   abstract initializeAnimations(): void;
   abstract onSpriteColliding(hitEntity: BaseEntity): void;
   abstract onEntityColliding(hitEntity: BaseEntity): void;
+  abstract getSprite(): Phaser.GameObjects.Sprite;
 }

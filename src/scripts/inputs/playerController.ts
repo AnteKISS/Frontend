@@ -146,8 +146,8 @@ export default class PlayerController {
   private respawnPlayer() {
     this.player.positionX = 0;
     this.player.positionY = 0;
-    this.player.stats.health = this.player.stats.maxHealth;
-    this.player.stats.mana = this.player.stats.maxMana;
+    this.player.dynamicStats.health = this.player.totalModifierStats.maxHealth;
+    this.player.dynamicStats.mana = this.player.totalModifierStats.maxMana;
     this.player.target = null;
     this.player.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;
     this.player.setOrientationRad(3 * Math.PI / 4);

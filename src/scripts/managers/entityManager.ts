@@ -71,7 +71,7 @@ export class EntityManager {
     let foundEntities: BaseEntity[] = [];
 
     for (let entity of this.getCurrentAreaEntityPool()) {
-      let entitySprite: Phaser.GameObjects.Sprite = entity.getAll().filter(gameObject => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite;
+      let entitySprite: Phaser.GameObjects.Sprite = entity.getSprite();
 
       if (positionX > entity.positionX - (entity.truncatedSpriteWidth / 2) &&
         positionX < entity.positionX + (entity.truncatedSpriteWidth / 2) &&
@@ -88,7 +88,7 @@ export class EntityManager {
     let foundEntities: BaseEntity[] = [];
 
     for (let entity of this.getCurrentAreaEntityPool()) {
-      let entitySprite: Phaser.GameObjects.Sprite = entity.getAll().filter(gameObject => gameObject instanceof Phaser.GameObjects.Sprite)[0] as Phaser.GameObjects.Sprite;
+      let entitySprite: Phaser.GameObjects.Sprite = entity.getSprite();
 
       if (positionX > entity.positionX - (entity.truncatedSpriteWidth / 2) &&
         positionX < entity.positionX + (entity.truncatedSpriteWidth / 2) &&

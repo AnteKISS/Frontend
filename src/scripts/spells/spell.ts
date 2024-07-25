@@ -4,8 +4,7 @@ import { CastType } from "../enums/castTypes"
 import { ActiveEntityEvents } from "../events/activeEntityEvents";
 import { GeneralEventManager } from "../managers/eventManager";
 
-export default class Spell
-{
+export default class Spell {
     cooldown: number;
     range: number;
     manaCost: number;
@@ -38,8 +37,7 @@ export default class Spell
         this.castTime = castTime;
     }
 
-    public canCast(): boolean
-    {
+    public canCast(): boolean {
         const currentTime = Date.now();
         const timeDiff = currentTime - this.timeSinceLastCast;
         const cooldownOver = timeDiff >= this.cooldown * 1000;
@@ -57,30 +55,27 @@ export default class Spell
         return cooldownOver && enoughMana;
     }
 
-    public onCast(): boolean
-    {
-        if(this.canCast())
-            {
-                if(this.castSpell())
-                    {
-                        this.spellOwner.stats.mana -= this.manaCost;
-                        this.timeSinceLastCast = Date.now();
-                        this.remainingCooldown = this.cooldown*1000;
-                        if (this.spellName === 'undefined') {
-                            return true;
-                        } else if (this.spellName === 'Fire Bolt') {
-                            const castEvent = new ActiveEntityEvents.FireSpellCastEvent(this.spellOwner, this);
-                            GeneralEventManager.getInstance().notifyObservers(castEvent);
-                        } else if (this.spellName === 'Ice Shard') {
-                            const castEvent = new ActiveEntityEvents.IceSpellCastEvent(this.spellOwner, this);
-                            GeneralEventManager.getInstance().notifyObservers(castEvent);
-                        } else if (this.spellName === 'Quake') {
-                            const castEvent = new ActiveEntityEvents.EarthSpellCastEvent(this.spellOwner, this);
-                            GeneralEventManager.getInstance().notifyObservers(castEvent);
-                        }
-                        return true;
-                    }
+    public onCast(): boolean {
+        if (this.canCast()) {
+            if (this.castSpell()) {
+                this.spellOwner.dynamicStats.mana -= this.manaCost;
+                this.timeSinceLastCast = Date.now();
+                this.remainingCooldown = this.cooldown * 1000;
+                if (this.spellName === 'undefined') {
+                    return true;
+                } else if (this.spellName === 'Fire Bolt') {
+                    const castEvent = new ActiveEntityEvents.FireSpellCastEvent(this.spellOwner, this);
+                    GeneralEventManager.getInstance().notifyObservers(castEvent);
+                } else if (this.spellName === 'Ice Shard') {
+                    const castEvent = new ActiveEntityEvents.IceSpellCastEvent(this.spellOwner, this);
+                    GeneralEventManager.getInstance().notifyObservers(castEvent);
+                } else if (this.spellName === 'Quake') {
+                    const castEvent = new ActiveEntityEvents.EarthSpellCastEvent(this.spellOwner, this);
+                    GeneralEventManager.getInstance().notifyObservers(castEvent);
+                }
+                return true;
             }
+        }
         return false;
     }
 
@@ -102,41 +97,37 @@ export default class Spell
         switch (this.castType) {
             case CastType.SkillShot:
                 setTimeout(() => {
-                this.onCastEffects.forEach(onCastEffect =>  
-                    {
+                    this.onCastEffects.forEach(onCastEffect => {
                         onCastEffect.onCast(Phaser.Math.Angle.Between(centerX, centerY, x, y)); // TODO : fix bad code
                     });
-                }, this.castTime*1000);
-                    break;
+                }, this.castTime * 1000);
+                break;
 
             case CastType.GroundTarget:
-                if(Phaser.Math.Distance.Between(this.spellOwner.positionX, this.spellOwner.positionY, x + this.spellOwner.positionX - centerX, y + this.spellOwner.positionY - centerY) > this.range) // TODO : fix
+                if (Phaser.Math.Distance.Between(this.spellOwner.positionX, this.spellOwner.positionY, x + this.spellOwner.positionX - centerX, y + this.spellOwner.positionY - centerY) > this.range) // TODO : fix
                     return false;
                 setTimeout(() => {
-                this.onCastEffects.forEach(onCastEffect =>  
-                    {
-                            onCastEffect.onCast(undefined, x + this.spellOwner.positionX - centerX, y + this.spellOwner.positionY - centerY); // TODO : fix code mettre calcul dans constante stp
+                    this.onCastEffects.forEach(onCastEffect => {
+                        onCastEffect.onCast(undefined, x + this.spellOwner.positionX - centerX, y + this.spellOwner.positionY - centerY); // TODO : fix code mettre calcul dans constante stp
                     });
-                }, this.castTime*1000);
-                    break;
+                }, this.castTime * 1000);
+                break;
 
             case CastType.PointNClick:
                 setTimeout(() => {
-                this.onCastEffects.forEach(onCastEffect =>  
-                    {
+                    this.onCastEffects.forEach(onCastEffect => {
                         onCastEffect.onCast(undefined, x, y);
                     });
-                }, this.castTime*1000);
-                    break;
+                }, this.castTime * 1000);
+                break;
 
             case CastType.SelfBuff:
                 setTimeout(() => {
-                this.onCastEffects.forEach(onCastEffect =>  
-                    {
+                    this.onCastEffects.forEach(onCastEffect => {
                         onCastEffect.onCast();
                     });
-                }, this.castTime*1000);
-                    break;
+                }, this.castTime * 1000);
+                break;
 
             default:
                 break;
@@ -144,43 +135,35 @@ export default class Spell
         return true;
     }
 
-    spellHit = (hitEntity: BaseEntity): void =>
-    {
-        this.onHitEffects.forEach(onHitEffect =>
-        {
+    spellHit = (hitEntity: BaseEntity): void => {
+        this.onHitEffects.forEach(onHitEffect => {
             onHitEffect.onHit(hitEntity);
         });
     }
 
-    public updateRemainingCooldown(): number
-    {
+    public updateRemainingCooldown(): number {
         const currentTime = Date.now();
         const timeDiff = currentTime - this.timeSinceLastCast;
-        this.remainingCooldown = this.cooldown*1000 - timeDiff; 
-        if(this.remainingCooldown < 0)
-        {
-                this.remainingCooldown = 0;
+        this.remainingCooldown = this.cooldown * 1000 - timeDiff;
+        if (this.remainingCooldown < 0) {
+            this.remainingCooldown = 0;
         }
         return this.remainingCooldown;
     }
 
-    private getPointerX(): number
-    {
+    private getPointerX(): number {
         return this.spellOwner.scene.input.activePointer.x;
     }
 
-    private getPointerY(): number
-    {
+    private getPointerY(): number {
         return this.spellOwner.scene.input.activePointer.y;
     }
 
-    public addOnHitEffect(onHitEffect: IOnHitEffect)
-    {
+    public addOnHitEffect(onHitEffect: IOnHitEffect) {
         this.onHitEffects.push(onHitEffect);
     }
 
-    public addOnCastEffect(onCastEffect: IOnCastEffect)
-    {
+    public addOnCastEffect(onCastEffect: IOnCastEffect) {
         this.onCastEffects.push(onCastEffect);
     }
 }

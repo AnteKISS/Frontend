@@ -1,14 +1,12 @@
-export class ActiveEntityStats {
+export default class ActiveEntityModifierStats {
   public strength: number = 0;
   public dexterity: number = 0;
   public vitality: number = 0;
   public intelligence: number = 0;
-  public energy: number = 0;
-  public mana: number = 0;
+
   public maxMana: number = 0;
-  
-  public health: number = 1;
   public maxHealth: number = 1;
+
   public healthRegeneration: number = 0;
   public manaRegeneration: number = 0;
 
@@ -38,19 +36,4 @@ export class ActiveEntityStats {
 
   public baseMovementSpeed: number = 1;
   public movementSpeed: number = 1;
-
-  public level: number = 1;
-  public experience: number = 0;
-
-  public isInvincible: boolean = false;
-  public isStunned: boolean = false;
-  public isSilenced: boolean = false;
-  public isRooted: boolean = false;
-  public isFeared: boolean = false;
-  public isCharmed: boolean = false;
-  public isTaunted: boolean = false;
-  public isBlinded: boolean = false;
-
-  public isInvisible: boolean = false;
-  public isUntargetable: boolean = false;
 }

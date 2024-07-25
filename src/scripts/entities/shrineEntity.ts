@@ -33,4 +33,8 @@ export class ShrineEntity extends InactiveEntity {
   initializeAnimations(): void {
 
   }
+
+  public getSprite(): Phaser.GameObjects.Sprite {
+    throw new NotImplementedError();
+  }
 }

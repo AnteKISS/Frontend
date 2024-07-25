@@ -19,7 +19,7 @@ export class ActiveEntityAnimator {
   public onNonRepeatingAnimationComplete: Signal = new Signal();
   public onYoyoAnimationMiddleFrame: Signal = new Signal();
   public forceUpdateOnce: boolean = false;
-  
+
   private futureState: ActiveEntityAnimationState.State | null = null;
   private spriteReference: InventorySprite;
 
@@ -51,7 +51,7 @@ export class ActiveEntityAnimator {
           this.parent.currentAnimationState.state = ActiveEntityAnimationState.State.IDLE;
           break;
         }
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim &&this.spriteReference.anims.currentAnim.key.split('_')[0] == 'RUN' && !hasOrientationUpdated) {
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'RUN' && !hasOrientationUpdated) {
           break;
         }
         for (const sprite of this.sprites) {
@@ -60,7 +60,7 @@ export class ActiveEntityAnimator {
 
         break;
       case ActiveEntityAnimationState.State.MELEEATTACK:
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim &&this.spriteReference.anims.currentAnim.key.split('_')[0] == 'MELEEATTACK') {
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'MELEEATTACK') {
           this.parent.updateOrientationWithTarget();
           break;
         }
@@ -83,7 +83,7 @@ export class ActiveEntityAnimator {
       case ActiveEntityAnimationState.State.CHEER:
         break;
       case ActiveEntityAnimationState.State.DEATH:
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim &&this.spriteReference.anims.currentAnim.key.split('_')[0] == 'DEATH' && !hasOrientationUpdated) {
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'DEATH' && !hasOrientationUpdated) {
           break;
         }
         for (const sprite of this.sprites) {
@@ -147,7 +147,7 @@ export class ActiveEntityAnimator {
       case ActiveEntityAnimationState.State.MELEEATTACK:
         // Some rat code since I'm not sure how the inventory system works
         const parentScene = this.parent.scene as MainScene;
-        let equippedWeapon: Item = parentScene.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite");
+        let equippedWeapon: Item = parentScene.playerTest.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite");
         const meleeAttackEvent = new ActiveEntityEvents.MeleeWeaponAttackEvent(this.parent, equippedWeapon);
         meleeAttackEvent.isStartingAttack = true;
         GeneralEventManager.getInstance().notifyObservers(meleeAttackEvent);
@@ -155,12 +155,12 @@ export class ActiveEntityAnimator {
   }
 
   onAnimationUpdate = (listener): void => {
-    if (this.spriteReference.anims && 
-        this.spriteReference.anims.currentFrame && 
-        this.spriteReference.anims.currentAnim && 
-        this.spriteReference.anims.currentFrame.index == this.spriteReference.anims.currentAnim.frames.length && 
-        this.spriteReference.anims.isPlaying && 
-        this.spriteReference.anims.forward == true) {
+    if (this.spriteReference.anims &&
+      this.spriteReference.anims.currentFrame &&
+      this.spriteReference.anims.currentAnim &&
+      this.spriteReference.anims.currentFrame.index == this.spriteReference.anims.currentAnim.frames.length &&
+      this.spriteReference.anims.isPlaying &&
+      this.spriteReference.anims.forward == true) {
       this.onYoyoAnimationMiddleFrame.raise(() => {
         this.parent.currentAnimationState
       });
@@ -169,7 +169,7 @@ export class ActiveEntityAnimator {
         case ActiveEntityAnimationState.State.MELEEATTACK:
           // Some rat code since I'm not sure how the inventory system works
           const parentScene = this.parent.scene as MainScene;
-          let equippedWeapon: Item = parentScene.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite");
+          let equippedWeapon: Item = parentScene.playerTest.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite");
           const meleeAttackEvent = new ActiveEntityEvents.MeleeWeaponAttackEvent(this.parent, equippedWeapon);
           meleeAttackEvent.isMiddleOfAttack = true;
           GeneralEventManager.getInstance().notifyObservers(meleeAttackEvent);

@@ -76,7 +76,7 @@ export class EntityHealthBar extends Phaser.GameObjects.GameObject {
     }
     this.lblEntityName.visible = true;
     this.lblEntityDescription.visible = true;
-    this.graphics.clear();    
+    this.graphics.clear();
     this.drawBackground();
     this.drawBorder();
     this.drawEntityName();
@@ -90,11 +90,11 @@ export class EntityHealthBar extends Phaser.GameObjects.GameObject {
   }
 
   private updateData(): void {
-    let newHealth_perc = this.entity.stats.health / this.entity.stats.maxHealth;
+    let newHealth_perc = this.entity.dynamicStats.health / this.entity.totalModifierStats.maxHealth;
     this.hasEntityHealthChanged = newHealth_perc != this.health_perc;
     this.health_perc = newHealth_perc < 0 ? 0 : newHealth_perc;
   }
-  
+
   private drawBorder(): void {
     this.graphics.fillRoundedRect(this.x, this.y, this.width, this.height, EntityHealthBar.HEALTH_BAR_BORDER_RADIUS);
   }
