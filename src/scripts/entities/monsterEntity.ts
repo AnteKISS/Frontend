@@ -13,8 +13,13 @@ import { RusherBehavior } from '../behaviors/rusherBehavior';
 import { ActiveEntityEvents } from '../events/activeEntityEvents';
 import { GeneralEventManager } from '../managers/eventManager';
 import SpellBook from '../spells/spellBook';
+import { ILootable } from './lootable';
+import Item from '../inventory/item';
+import { ItemType } from '../inventory/itemType';
+import { InactiveEntityFactory } from '../factories/inactiveEntityFactory';
+import ItemEntity from './itemEntity';
 
-export class MonsterEntity extends ActiveEntity implements IFightable {
+export class MonsterEntity extends ActiveEntity implements IFightable, ILootable {
 
   public baseSprite: InventorySprite;
   public hitArea: Phaser.Geom.Rectangle;
@@ -104,6 +109,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
       const deathEvent = new ActiveEntityEvents.KilledEvent(damageSource, this);
       GeneralEventManager.getInstance().notifyObservers(deathEvent);
       EntityManager.instance.getPlayers()[0].exp.addExp(Math.floor(Math.random() * 250) + 50);
+      this.generateLoot();
     }
   }
 
@@ -118,6 +124,17 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
 
   public onPointerOver(): void {
     // console.log('pointerover');
+  }
+
+  public generateLoot(): void {
+    const random = Math.random();
+    if (random > 0.5) {
+      return;
+    }
+    const item: Item = InactiveEntityFactory.createRandomItem(this.scene);
+    let itemEntity: ItemEntity = EntityManager.instance.createItem(this.scene, item);
+    itemEntity.positionX = this.positionX;
+    itemEntity.positionY = this.positionY;
   }
 
   onSpriteColliding = (hitEntity: BaseEntity): void => {

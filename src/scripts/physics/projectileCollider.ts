@@ -1,6 +1,7 @@
 import { ActiveEntity } from "../entities/activeEntity";
 import { BaseEntity } from "../entities/baseEntity";
 import { IFightable } from "../entities/IFightable";
+import ItemEntity from "../entities/itemEntity";
 import { MonsterEntity } from "../entities/monsterEntity";
 import { EntityManager } from "../managers/entityManager";
 import { SpellCollider } from "./spellCollider";
@@ -45,6 +46,9 @@ export class ProjectileCollider extends SpellCollider {
 
         for (const entity of EntityManager.instance.getCurrentAreaEntities()) {
             if (entity === this.owner) {
+                continue;
+            }
+            if (entity instanceof ItemEntity) {
                 continue;
             }
             if (this.owner instanceof MonsterEntity && entity instanceof MonsterEntity) {
