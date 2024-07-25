@@ -12,6 +12,7 @@ import { ActiveEntityEvents } from "../events/activeEntityEvents";
 import { ItemType } from "../inventory/itemType";
 import { GeneralEventManager } from "../managers/eventManager";
 import MainScene from "../scenes/mainScene";
+import StatModule from "./statModule";
 import { PlayerEntity } from "./playerEntity";
 
 export class ActiveEntityAnimator {
@@ -72,7 +73,7 @@ export class ActiveEntityAnimator {
         break;
       case ActiveEntityAnimationState.State.RANGEDATTACK:
         hasOrientationUpdated = this.parent.updateOrientationWithTarget();
-        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim &&this.spriteReference.anims.currentAnim.key.split('_')[0] == 'RANGEDATTACK' && !hasOrientationUpdated) {
+        if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'RANGEDATTACK' && !hasOrientationUpdated) {
           break;
         }
         for (const sprite of this.sprites) {
@@ -95,17 +96,17 @@ export class ActiveEntityAnimator {
       case ActiveEntityAnimationState.State.CASTSPELL:
         // hasOrientationUpdated = this.parent.updateOrientationWithTarget();
         if (this.parent instanceof PlayerEntity) {
-          if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim &&this.spriteReference.anims.currentAnim.key.split('_')[0] == 'CHEER' && !hasOrientationUpdated) {
+          if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'CHEER' && !hasOrientationUpdated) {
             break;
           }
         } else {
-          if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim &&this.spriteReference.anims.currentAnim.key.split('_')[0] == 'CASTSPELL' && !hasOrientationUpdated) {
+          if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim && this.spriteReference.anims.currentAnim.key.split('_')[0] == 'CASTSPELL' && !hasOrientationUpdated) {
             break;
           }
         }
         for (const sprite of this.sprites) {
           if (this.parent instanceof PlayerEntity) {
-            sprite.play(`CHEER_${getOrientationString(this.parent.orientation)}_${sprite.textureName.toUpperCase()}`);  
+            sprite.play(`CHEER_${getOrientationString(this.parent.orientation)}_${sprite.textureName.toUpperCase()}`);
           } else {
             sprite.play(`${this.parent.currentAnimationState.state}_${getOrientationString(this.parent.orientation)}_${sprite.textureName.toUpperCase()}`);
           }
@@ -166,7 +167,7 @@ export class ActiveEntityAnimator {
       case ActiveEntityAnimationState.State.MELEEATTACK:
         // Some rat code since I'm not sure how the inventory system works
         const parentScene = this.parent.scene as MainScene;
-        let equippedWeapon: Item = parentScene.playerTest.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite");
+        let equippedWeapon: Item = parentScene.playerTest.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite", StatModule.getNullModifierStats());
         const meleeAttackEvent = new ActiveEntityEvents.MeleeWeaponAttackEvent(this.parent, equippedWeapon);
         meleeAttackEvent.isStartingAttack = true;
         GeneralEventManager.getInstance().notifyObservers(meleeAttackEvent);
@@ -188,7 +189,7 @@ export class ActiveEntityAnimator {
         case ActiveEntityAnimationState.State.MELEEATTACK:
           // Some rat code since I'm not sure how the inventory system works
           const parentScene = this.parent.scene as MainScene;
-          let equippedWeapon: Item = parentScene.playerTest.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite");
+          let equippedWeapon: Item = parentScene.playerTest.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite", StatModule.getNullModifierStats());
           const meleeAttackEvent = new ActiveEntityEvents.MeleeWeaponAttackEvent(this.parent, equippedWeapon);
           meleeAttackEvent.isMiddleOfAttack = true;
           GeneralEventManager.getInstance().notifyObservers(meleeAttackEvent);
