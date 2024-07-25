@@ -1777,7 +1777,7 @@ export const goblin_lumberjack_black_AnimationConfig = {
       { start: goblin_lumberjack_black_meleeAttackAnimationStartFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  end: goblin_lumberjack_black_meleeAttackAnimationEndFrame + goblin_lumberjack_black_downLeftOrientationSpriteOffset,  sheet: 'goblin_lumberjack_black', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.MELEEATTACK,
-    frameRate: 16
+    frameRate: 32
   },
   carry: {
     frames: [

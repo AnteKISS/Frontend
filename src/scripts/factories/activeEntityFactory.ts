@@ -129,6 +129,7 @@ export class ActiveEntityFactory {
       entity.spellBook.addSpell(new ThrowSpear(entity));
       entity.behavior = new SkirmisherBehavior(entity);
       entity.baseModifierStats.maxHealth = 50;
+      entity.dynamicStats.health = 50;
     } else if (monsterCode === 'wyvern_composite') {
       entity.spellBook.addSpell(new FireBolt(entity));
       entity.behavior = new SkirmisherBehavior(entity);
@@ -136,7 +137,16 @@ export class ActiveEntityFactory {
       entity.totalModifierStats.movementSpeed = 200;
       entity.totalModifierStats.maxHealth = 250;
       entity.baseModifierStats.maxHealth = 250;
+      entity.dynamicStats.health = 250;
       entity.totalModifierStats.sightDistance = 1000;
+    } else if (monsterCode === 'goblin_lumberjack_black') {
+      entity.behavior = new RusherBehavior(entity);
+      entity.totalModifierStats.movementSpeed = 100;
+      entity.totalModifierStats.maxHealth = 500;
+      entity.baseModifierStats.maxHealth = 500
+      entity.dynamicStats.health = 500;
+      entity.totalModifierStats.sightDistance = 1000;
+      entity.totalModifierStats.basePhysicalDamage = 20;
     } else {
       entity.behavior = new RusherBehavior(entity);
     }
