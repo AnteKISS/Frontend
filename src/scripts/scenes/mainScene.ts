@@ -31,11 +31,9 @@ import { QuestUI } from '../quest/questUI'
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
   public fpsText: FpsText;
-  public versionText: Phaser.GameObjects.Text
   public campaignManager: CampaignManager;
   public pointer: Phaser.Input.Pointer;
   public centerPoint: Point;
-  public mapEditorButton: Phaser.GameObjects.Text;
   public spellSpriteColliders: SpellCollider[] = [];
 
   public playerTest: PlayerEntity;
@@ -76,20 +74,6 @@ export default class MainScene extends Phaser.Scene {
       this.cameras.main.width / 2,
       this.cameras.main.height / 2
     );
-    this.mapEditorButton = this.add
-      .text(13, 50, 'Map Editor (Click me!)', {
-        color: '#000000',
-        fontSize: '24px'
-      })
-      .setInteractive()
-      .on('pointerdown', (pointer, localX, localY, event) => {
-        event.stopPropagation();
-        this.scene.launch('MapEditor');
-        this.scene.pause('MainScene');
-        this.scene.setVisible(false, 'MainScene');
-        const clickEvent = new UiEvents.ButtonClickEvent(this.mapEditorButton);
-        GeneralEventManager.getInstance().notifyObservers(clickEvent);
-      });
 
     this.input!.mouse!.disableContextMenu();
 
@@ -207,14 +191,6 @@ export default class MainScene extends Phaser.Scene {
       Tooltip.update(pointer);
     });
 
-    // display the Phaser.VERSION
-    this.versionText = this.add
-      .text(1250, 30, ``, {
-        color: '#000000',
-        fontSize: '24px'
-      })
-      .setOrigin(1, 0);
-
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => this.onPointerMove(pointer));
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => this.onPointerDown(pointer));
 
@@ -253,8 +229,6 @@ export default class MainScene extends Phaser.Scene {
     this.cameras.main.ignore(
       [
         this.fpsText,
-        this.versionText,
-        this.mapEditorButton,
         this.gui,
         this.entityHealthBar.graphics,
         this.entityHealthBar.lblEntityName,
