@@ -23,28 +23,19 @@ export class GroundCircularSpellCollider extends SpellCollider {
     }
 
     public checkCollision(): boolean {
-        let entities: BaseEntity[] = EntityManager.instance.getAreaEntities();
-        entities.push(EntityManager.instance.getPlayers()[0]);
-        if (!entities) {
-            console.error("Entities are undefined.");
-            return false;
-        }
-
-        for (let index = 0; index < entities.length; index++) {
-            if (entities[index] === this.owner) {
+        for (const entity of EntityManager.instance.getCurrentAreaEntities()) {
+            if (entity === this.owner) {
                 continue;
             }
-            if((entities[index] as unknown as IFightable).isDead() == true)
-            {
+            if ((entity as unknown as IFightable).isDead() == true) {
                 continue;
             }
-            if(!this.checkCollisionWithEntity(entities[index]))
-            {
+            if (!this.checkCollisionWithEntity(entity)) {
                 continue;
             }
-            if (!this.alreadyHitEntities.includes(entities[index])) {
-                this.alreadyHitEntities.push(entities[index]);
-                this.collidingCallback(entities[index]);
+            if (!this.alreadyHitEntities.includes(entity)) {
+                this.alreadyHitEntities.push(entity);
+                this.collidingCallback(entity);
             }
         }
         return true;
