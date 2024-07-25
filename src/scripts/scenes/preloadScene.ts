@@ -125,6 +125,23 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('dropped_shield', 'assets/dropped_items/dropped_shield.png');
     this.load.image('dropped_sword', 'assets/dropped_items/dropped_sword.png');
 
+    // PROPS
+    this.load.image('pine_none01', 'assets/sprites/props/pine-none01.png');
+    this.load.image('pine_none05', 'assets/sprites/props/pine-none05.png');
+    this.load.image('pine_none06', 'assets/sprites/props/pine-none06.png');
+    this.load.image('pine_none08', 'assets/sprites/props/pine-none08.png');
+    this.load.image('pine_half03', 'assets/sprites/props/pine-half03.png');
+    this.load.image('pine_half05', 'assets/sprites/props/pine-half05.png');
+    this.load.image('pine_half06', 'assets/sprites/props/pine-half06.png');
+    this.load.image('grasses01', 'assets/sprites/props/grasses01.png');
+    this.load.image('cactus01', 'assets/sprites/props/cactus01.png');
+    this.load.image('cactus04', 'assets/sprites/props/cactus04.png');
+    this.load.image('shrub2_03', 'assets/sprites/props/shrub2-03.png');
+    this.load.image('shrub2_04', 'assets/sprites/props/shrub2-04.png');
+    this.load.image('big_rock01', 'assets/sprites/props/big-rock01.png');
+    this.load.image('big_rock02', 'assets/sprites/props/big-rock02.png');
+    this.load.image('cart', 'assets/sprites/props/cart.png');
+
     // AUDIO
     this.load.audio('spinning_rat_normal', 'assets/sound/FREEBIRD.mp3');
     this.load.audio('spinning_rat_power', 'assets/sound/FREEBIRD_POWER.mp3');
@@ -204,6 +221,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.spritesheet('slider', 'assets/sprites/settings/slider.png', { frameWidth: 128, frameHeight: 192 });
     this.load.spritesheet('wandering_trader_128', 'assets/sprites/npc/wandering_trader_128.png', { frameWidth: 128, frameHeight: 128 });
 
+    // TILES / WALLS
     this.load.spritesheet('rocky_floor_tiles', 'assets/sprites/tiles/rocky.png', { frameWidth: 256, frameHeight: 128 });
     this.load.spritesheet('dirt_tiles', 'assets/sprites/tiles/dirt.png', { frameWidth: 128, frameHeight: 64 });
     this.load.spritesheet('wood_tiles', 'assets/sprites/tiles/wood.png', { frameWidth: 256, frameHeight: 128 });

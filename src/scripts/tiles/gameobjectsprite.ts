@@ -1,4 +1,5 @@
 import GameObject from './gameobject';
+import Prop from './prop';
 import Spawner from './spawner';
 import Tile from './tile';
 import TileModule from './tilemodule';
@@ -22,6 +23,9 @@ export default class GameObjectSprite extends Phaser.GameObjects.Sprite {
         this.setOrigin(1, 0.66666666);
       else if (WALL.type === WallType.Right)
         this.setOrigin(0, 0.66666666);
+    }
+    else if (gameObject instanceof Prop) {
+      this.setOrigin(0.5, 0.85);
     }
 
     if (gameObject instanceof Spawner && !showDebugSprites) {

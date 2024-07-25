@@ -16,6 +16,7 @@ import SoundManager from '../managers/soundManager';
 import Spell from '../spells/spell';
 import SpellBook from '../spells/spellBook';
 import StatModule from './statModule';
+import Prop from '../tiles/prop';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
@@ -264,10 +265,13 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     if (!(P1 && P2))
       return false;
 
-    for (let tx = P1.x; tx <= P2.x; tx++)
-      for (let ty = P1.y; ty <= P2.y; ty++)
-        if (!CampaignManager.getInstance().getTile(tx, ty))
+    for (let tx = P1.x; tx <= P2.x; tx++) {
+      for (let ty = P1.y; ty <= P2.y; ty++) {
+        const prop = CampaignManager.getInstance().getGameObjectByType(tx, ty, Prop);
+        if (!CampaignManager.getInstance().getTile(tx, ty) || (prop && !prop.clippable))
           return false;
+      }
+    }
 
     return true;
   }

@@ -2,6 +2,7 @@ import GameObjectSprite from '../tiles/gameobjectsprite';
 import Tab from './tab';
 import { WallType } from '../tiles/wall';
 import { GameObjectRegistry } from '../tiles/gameObjectRegistry';
+import Prop from '../tiles/prop';
 
 export default class GameObjectSelector extends Phaser.GameObjects.Container {
   private static readonly OBJECTS_PER_ROW = 6;
@@ -10,6 +11,7 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
   public static readonly TILES_TAB_KEY = "Tile";
   public static readonly WALLS_TAB_KEY = "Wall";
   public static readonly SPAWNERS_TAB_KEY = "Spawner";
+  public static readonly PROPS_TAB_KEY = "Prop";
 
   private gameObjectSpriteLists: Map<string, Array<any>>;
   private row: number;
@@ -43,6 +45,7 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
       ['brick_walls', 24]
     ]);
     this.setupSpawnerSprites();
+    this.setupPropSprites();
     this.setupTabs();
 
     this.scene = scene;
@@ -89,6 +92,26 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
     ]);
   }
 
+  private setupPropSprites() {
+    this.gameObjectSpriteLists.set(GameObjectSelector.PROPS_TAB_KEY, [
+      ["Prop", "pine_none01", false],
+      ["Prop", "pine_none05", false],
+      ["Prop", "pine_none06", false],
+      ["Prop", "pine_none08", false],
+      ["Prop", "pine_half03", false],
+      ["Prop", "pine_half05", false],
+      ["Prop", "pine_half06", false],
+      ["Prop", "grasses01", true],
+      ["Prop", "cactus01", true],
+      ["Prop", "cactus04", true],
+      ["Prop", "shrub2_03", true],
+      ["Prop", "shrub2_04", true],
+      ["Prop", "big_rock01", false],
+      ["Prop", "big_rock02", false],
+      ["Prop", "cart", false],
+    ]);
+  }
+
   private setupTabs() {
     this.tabs = [];
 
@@ -103,6 +126,10 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
     const SPAWNERS_TAB = new Tab(this.scene, -75, -34, 100, 25, "Spawners");
     SPAWNERS_TAB.setOnPointerDown(() => this.changeTab(GameObjectSelector.SPAWNERS_TAB_KEY));
     this.tabs.push(SPAWNERS_TAB);
+
+    const PROPS_TAB = new Tab(this.scene, -25, -34, 100, 24, "Props");
+    PROPS_TAB.setOnPointerDown(() => this.changeTab(GameObjectSelector.PROPS_TAB_KEY));
+    this.tabs.push(PROPS_TAB);
   }
 
   private changeTab(tabKey: string): void {
@@ -155,6 +182,9 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
         .setInteractive();
 
       OBJECT.setScale(GameObjectSprite.getSpriteScale(this.selectedTab, OBJECT) / 2);
+
+      if (this.selectedTab === GameObjectSelector.PROPS_TAB_KEY)
+        OBJECT.setOrigin(0.5, 0.7);
 
       OBJECT.on('pointerdown', () => {
         this.selectedObjectTab = this.selectedTab;
