@@ -160,8 +160,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
 
     StatModule.affectModifierStatChange(this.totalModifierStats, this.baseModifierStats);
     StatModule.affectModifierStatChange(this.totalModifierStats, this.tempModifierStats);
-
-    console.log(this.totalModifierStats);
   }
 
   private startManaRegen(scene: Phaser.Scene) {
@@ -358,7 +356,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
       return;
 
     // Make sure transition is valid in current act
-    const transition = CampaignManager.getInstance().transition(this.currentTile.transition);
+    const transition = CampaignManager.getInstance().transition(this, this.currentTile.transition);
     if (!transition)
       return;
 
