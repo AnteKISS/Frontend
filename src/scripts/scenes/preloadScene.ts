@@ -169,6 +169,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.spritesheet('spider_large', 'assets/sprites/monster/spider_large.png', { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet('spider_giant', 'assets/sprites/monster/spider_giant.png', { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet('wyvern_composite', 'assets/sprites/monster/wyvern_composite.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('wandering_trader_128', 'assets/sprites/npc/wandering_trader_128.png', { frameWidth: 128, frameHeight: 128 });
   }
 }
 

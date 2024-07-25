@@ -9,13 +9,10 @@ import { InventorySprite } from './inventorySprite';
 import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { ActiveEntityAnimationState, ActiveEntityBehaviorState } from './entityState';
 import { Behavior } from '../behaviors/behavior';
-import { RusherBehavior } from '../behaviors/rusherBehavior';
 import { ActiveEntityEvents } from '../events/activeEntityEvents';
 import { GeneralEventManager } from '../managers/eventManager';
-import SpellBook from '../spells/spellBook';
 import { ILootable } from './lootable';
 import Item from '../inventory/item';
-import { ItemType } from '../inventory/itemType';
 import { InactiveEntityFactory } from '../factories/inactiveEntityFactory';
 import ItemEntity from './itemEntity';
 
