@@ -5,6 +5,7 @@ import { ActiveEntityFactory } from "../factories/activeEntityFactory";
 import Item from "../inventory/item";
 import ItemEntity from "../entities/itemEntity";
 import CampaignManager from "./campaignmanager";
+import { NpcEntity } from "../entities/npcEntity";
 
 export class EntityManager {
   private static _instance: EntityManager;
@@ -156,14 +157,18 @@ export class EntityManager {
     return monster;
   }
 
+  public createNpc(scene: Phaser.Scene, npcCode: string): NpcEntity {
+    let npc: NpcEntity = ActiveEntityFactory.createNPC(scene, npcCode);
+    this.addAreaEntity(npc);
+    return npc;
+  }
+
   public createItem(scene: Phaser.Scene, item: Item): ItemEntity {
     item.changeToEntitySprite();
     let itemEntity: ItemEntity = new ItemEntity(scene, item);
     this.addAreaEntity(itemEntity);
     return itemEntity;
   }
-
-  // TODO: Add function to create npc
 
   public setDebugMode(enableDebugMode: boolean): void {
     for (const entity of this.getCurrentAreaEntities())

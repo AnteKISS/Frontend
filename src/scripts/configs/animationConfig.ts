@@ -179,6 +179,11 @@ const wyvern_composite_rightOrientationSpriteOffset = 224;
 const wyvern_composite_downRightOrientationSpriteOffset = 280;
 const wyvern_composite_downOrientationSpriteOffset = 336;
 const wyvern_composite_downLeftOrientationSpriteOffset = 392;
+// ------------------------------------------
+
+// ---------- wandering_trader_128 ----------
+const wandering_trader_128_idleAnimationStartFrame = 0;
+const wandering_trader_128_idleAnimationEndFrame = 5;
 // --------------------------------
 
 export const player_AnimationConfig = {
@@ -1938,6 +1943,23 @@ export const wyvern_composite_AnimationConfig = {
   }
 };
 
+export const wandering_trader_128_AnimationConfig = {
+  idle: {
+    frames: [
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT },
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT },
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT },
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT },
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT },
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT },
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT },
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT }
+    ],
+    state: ActiveEntityAnimationState.State.IDLE,
+    frameRate: 4
+  },
+};
+
 const icicle_AnimationStartFrame = 0;
 const icicle_AnimationEndFrame = 7; 
 
@@ -2028,4 +2050,5 @@ export const animationConfigKeys = {
   "goblin_0_AnimationConfig": goblin_0_AnimationConfig,
   "goblin_lumberjack_black_AnimationConfig": goblin_lumberjack_black_AnimationConfig,
   "wyvern_composite_AnimationConfig": wyvern_composite_AnimationConfig,
+  "wandering_trader_128_AnimationConfig": wandering_trader_128_AnimationConfig
 };

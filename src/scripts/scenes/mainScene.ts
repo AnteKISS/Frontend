@@ -24,6 +24,7 @@ import { GeneralEventManager, PlayerEquipmentEventManager } from '../managers/ev
 import { UiEvents } from '../events/uiEvents'
 import { KillQuest } from '../quest/killQuest'
 import { QuestUI } from '../quest/questUI'
+import { NpcEntity } from '../entities/npcEntity'
 // import APIManager from '../managers/APIManager'
 
 export default class MainScene extends Phaser.Scene {
@@ -37,6 +38,7 @@ export default class MainScene extends Phaser.Scene {
   public spellSpriteColliders: SpellCollider[] = [];
 
   public playerTest: PlayerEntity;
+  public npcTest: NpcEntity;
   private entityHealthBar: EntityHealthBar;
   private gui: GUI;
   private questUI: QuestUI;
@@ -95,6 +97,10 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest.positionX = 0;
     this.playerTest.positionY = 0;
     this.playerTest.area = CampaignManager.getInstance().getCampaign().currentArea();
+    this.npcTest = EntityManager.instance.createNpc(this, 'wandering_trader_128');
+    this.npcTest.positionX = 0;
+    this.npcTest.positionY = 0;
+    this.npcTest.area = CampaignManager.getInstance().getCampaign().currentArea();
     new KillQuest(2, 'skeleton_0', 750);
     new KillQuest(15, 'minotaur_0', 40000);
 

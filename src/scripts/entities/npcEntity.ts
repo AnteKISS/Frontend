@@ -1,3 +1,4 @@
+import { AnimationManager } from '../managers/animationManager';
 import { Physics } from '../physics/collider';
 import { ActiveEntity } from './activeEntity';
 import { ActiveEntityAnimator } from './activeEntityAnimator';
@@ -10,6 +11,7 @@ export class NpcEntity extends ActiveEntity {
 
   constructor(scene, npcCode) {
     super(scene);
+    this.code = npcCode;
     scene.add.existing(this);
     this.type = 'NpcEntity';
     this.baseSprite = scene.add.sprite(0, 0, 'baseTexture');
@@ -40,7 +42,10 @@ export class NpcEntity extends ActiveEntity {
     });
 
     this.collider = new Physics.Collider(this, this.baseSprite, this.onSpriteColliding, this.onEntityColliding);
-    this.animator = new ActiveEntityAnimator(this);    
+    this.animator = new ActiveEntityAnimator(this);
+    
+    this.baseSprite.play(`IDLE_DOWN_LEFT_WANDERING_TRADER_128`); 
+    console.log(this.scene.anims);
   }
 
   // Getters/Setters
@@ -56,14 +61,28 @@ export class NpcEntity extends ActiveEntity {
   }
 
   public initializeAnimations(): void {
-    throw new Error('Method not implemented.');
+    AnimationManager.createAnimations(this, `${this.code}_AnimationConfig`);
   }
+
   public onSpriteColliding(hitEntity: BaseEntity): void {
-    throw new Error('Method not implemented.');
+    if (hitEntity.list.length == 0) {
+      return;
+    }
+    let selfHeight: number = this.positionY + this.baseSprite.displayHeight;
+    let otherHeight: number = hitEntity.positionY + (hitEntity.list.at(0) as Phaser.GameObjects.Sprite).displayHeight;
+    if (selfHeight < otherHeight) {
+      this.depth = 0;
+      hitEntity.depth = 1;
+    } else {
+      this.depth = 1;
+      hitEntity.depth = 0;
+    }
   }
+
   public onEntityColliding(hitEntity: BaseEntity): void {
-    throw new Error('Method not implemented.');
+    
   }
+
   public getSprite(): Phaser.GameObjects.Sprite {
     return this.baseSprite;
   }
