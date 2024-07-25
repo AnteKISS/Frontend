@@ -128,7 +128,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
 
   public generateLoot(): void {
     const random = Math.random();
-    if (random > 0.5) {
+    if (random > 0.2) {
       return;
     }
     const item: Item = InactiveEntityFactory.createRandomItem(this.scene);
