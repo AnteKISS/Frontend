@@ -100,6 +100,7 @@ export default class MapEditor extends Phaser.Scene {
   }
 
   create() {
+    this.cameras.main.setBackgroundColor('#02563F');
     this.uiCamera = this.cameras.add(0, 0, 1280, 720);
     this.uiCamera.setName('uiCamera');
 
