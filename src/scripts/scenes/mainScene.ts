@@ -24,7 +24,7 @@ import { GeneralEventManager, PlayerEquipmentEventManager } from '../managers/ev
 import { UiEvents } from '../events/uiEvents'
 import { KillQuest } from '../quest/killQuest'
 import { QuestUI } from '../quest/questUI'
-import APIManager from '../managers/APIManager'
+// import APIManager from '../managers/APIManager'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -138,19 +138,19 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailHood));
     */
 
-    const woodenShield = APIManager.getNewItem(this, "Gold Ring");
-    if (woodenShield)
-      this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, woodenShield));
+    // const woodenShield = APIManager.getNewItem(this, "Gold Ring");
+    // if (woodenShield)
+    //   this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, woodenShield));
 
-    const bruhMomento = APIManager.getNewItem(this, "Talisman of Baphomet");
-    if (bruhMomento)
-      this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, bruhMomento));
+    // const bruhMomento = APIManager.getNewItem(this, "Talisman of Baphomet");
+    // if (bruhMomento)
+    //   this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, bruhMomento));
 
-    const lelelelle = APIManager.getNewItem(this, "Lethal Dagger");
-    if (lelelelle) {
-      console.log(lelelelle);
-      this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, lelelelle));
-    }
+    // const lelelelle = APIManager.getNewItem(this, "Lethal Dagger");
+    // if (lelelelle) {
+    //   console.log(lelelelle);
+    //   this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, lelelelle));
+    // }
 
     Tooltip.init(this);
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {

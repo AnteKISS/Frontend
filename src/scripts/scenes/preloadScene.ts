@@ -1,4 +1,4 @@
-import APIManager from "../managers/APIManager";
+// import APIManager from "../managers/APIManager";
 
 export default class PreloadScene extends Phaser.Scene {
   constructor() {
@@ -127,7 +127,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.audio('hit_flesh_1', 'assets/sound/hit_flesh_1.ogg');
 
     this.initializeSpritesheets();
-    APIManager.loadItems();
+    // APIManager.loadItems();
   }
 
   create() {

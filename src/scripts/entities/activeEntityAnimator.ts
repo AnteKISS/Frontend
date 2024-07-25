@@ -167,7 +167,7 @@ export class ActiveEntityAnimator {
       case ActiveEntityAnimationState.State.MELEEATTACK:
         // Some rat code since I'm not sure how the inventory system works
         const parentScene = this.parent.scene as MainScene;
-        let equippedWeapon: Item = parentScene.playerTest.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite", StatModule.getNullModifierStats());
+        let equippedWeapon: Item = parentScene.playerTest.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite");//, StatModule.getNullModifierStats());
         const meleeAttackEvent = new ActiveEntityEvents.MeleeWeaponAttackEvent(this.parent, equippedWeapon);
         meleeAttackEvent.isStartingAttack = true;
         GeneralEventManager.getInstance().notifyObservers(meleeAttackEvent);
@@ -189,7 +189,7 @@ export class ActiveEntityAnimator {
         case ActiveEntityAnimationState.State.MELEEATTACK:
           // Some rat code since I'm not sure how the inventory system works
           const parentScene = this.parent.scene as MainScene;
-          let equippedWeapon: Item = parentScene.playerTest.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite", StatModule.getNullModifierStats());
+          let equippedWeapon: Item = parentScene.playerTest.inventory.getPlayerEquipment().getEquippedWeapon()?.getItem() ?? new Item(parentScene, "Default Weapon", ItemType.WEAPON, 0, 0, "default-sprite", "default-sprite");//, StatModule.getNullModifierStats());
           const meleeAttackEvent = new ActiveEntityEvents.MeleeWeaponAttackEvent(this.parent, equippedWeapon);
           meleeAttackEvent.isMiddleOfAttack = true;
           GeneralEventManager.getInstance().notifyObservers(meleeAttackEvent);
