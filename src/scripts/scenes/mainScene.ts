@@ -267,19 +267,6 @@ export default class MainScene extends Phaser.Scene {
       vignetteStrength: 1,
       vignetteIntensity: 1.5,
     });
-    this.input.keyboard!.on('keydown-W', () => {
-      (this.music.y as unknown as AudioParam).value -= 10;
-      console.log('Y: ', this.music.y);
-    });
-    this.input.keyboard!.on('keydown-S', () => {
-      (this.music.y as unknown as AudioParam).value += 10;
-    });
-    this.input.keyboard!.on('keydown-A', () => {
-      (this.music.x as unknown as AudioParam).value -= 10;
-    });
-    this.input.keyboard!.on('keydown-D', () => {
-      (this.music.x as unknown as AudioParam).value += 10;
-    });
 
     //var youtubePlayer = new YoutubePlayer(this, this.cameras.main.width * 0.5, 100, 300, 150, {
     //  videoId: 'dQw4w9WgXcQ',
