@@ -29,7 +29,9 @@ import { ItemType } from '../inventory/itemType';
 import Inventory from '../inventory/inventory';
 import StatModule from './statModule';
 import { PotionPouch } from '../otherItems/potionPouch';
-import ThrowSpear from '../spells/craftedSpells/throwSpear';
+import FrostStomp from '../spells/craftedSpells/frostStomp';
+import Rage from '../spells/craftedSpells/rage';
+import { UnlockOrder } from '../spells/unlockOrder';
 
 export class PlayerEntity extends ActiveEntity implements IFightable, IObserver {
   public headSprite: InventorySprite;
@@ -45,6 +47,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   public exp: Exp;
   public inventory: Inventory;
   public potionPouch: PotionPouch;
+  public unlockOrder: UnlockOrder;
 
   private skillTree: SkillTree;
   public attributeAllocation: AttributeAllocation;
@@ -91,13 +94,13 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     this.skillTree = new SkillTree(this);
     this.attributeAllocation = new AttributeAllocation(this);
     this.potionPouch = new PotionPouch(this);
+    this.unlockOrder = new UnlockOrder(this);
 
-    this.spellBook.addSpell(new Firebolt(this));
-    this.spellBook.addSpell(new IceShard(this));
-    this.spellBook.addSpell(new Quake(this));
-
-    this.dynamicStats.mana = 150; //Pour test
-    this.totalModifierStats.maxHealth = 150; //Pour test
+    //this.spellBook.addSpell(new Firebolt(this));
+    //this.spellBook.addSpell(new IceShard(this));
+    //this.spellBook.addSpell(new Quake(this));
+    //this.spellBook.addSpell(new FrostStomp(this));
+    //this.spellBook.addSpell(new Rage(this));
 
     this.headSprite.setOrigin(0.5, 0.75);
     this.bodySprite.setOrigin(0.5, 0.75);
@@ -290,6 +293,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     this.dynamicStats.level++;
     this.skillTree.levelUp();
     this.attributeAllocation.levelUp();
+    this.unlockOrder.checkLevel();
   }
 
   onSpriteColliding = (hitEntity: BaseEntity): void => {

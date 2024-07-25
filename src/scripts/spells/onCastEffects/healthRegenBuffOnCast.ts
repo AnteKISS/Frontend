@@ -1,7 +1,7 @@
 import Spell from "../spell"
 import { aura_AnimationConfig } from "../../configs/animationConfig";
 
-export default class SpeedBuffOnCast implements IOnCastEffect {
+export default class HealthRegenBuffOnCast implements IOnCastEffect {
     spell: Spell;
     buffAmount: number;
     duration: number;
@@ -25,7 +25,7 @@ export default class SpeedBuffOnCast implements IOnCastEffect {
 
         this.sprite.anims.play('aura');
 
-        this.sprite.setTintFill(0x1EB833);
+        this.sprite.setTintFill(0xFC0707);
 
         this.spell.spellOwner.scene.time.addEvent({
             delay: 1000/30,
@@ -33,10 +33,10 @@ export default class SpeedBuffOnCast implements IOnCastEffect {
             callbackScope: this,
             loop: true
         });
-        this.spell.spellOwner.totalModifierStats.movementSpeed += this.buffAmount;
+        this.spell.spellOwner.totalModifierStats.healthRegeneration += this.buffAmount;
 
         this.spell.spellOwner.scene.time.delayedCall(this.duration * 1000, () => {
-            this.spell.spellOwner.totalModifierStats.movementSpeed -= this.buffAmount;
+            this.spell.spellOwner.totalModifierStats.healthRegeneration -= this.buffAmount;
             this.sprite.destroy();
         }, [], this);
     }
