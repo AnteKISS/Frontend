@@ -5,7 +5,7 @@ import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { BaseEntity } from './baseEntity';
 import { InventorySprite } from './inventorySprite';
 
-export class NpcEntity extends ActiveEntity {
+export class NpcEntity extends ActiveEntity implements ITalkable {
   public baseSprite: InventorySprite;
   public hitArea: Phaser.Geom.Rectangle;
 
