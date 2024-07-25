@@ -3,6 +3,7 @@ import { SkirmisherBehavior } from '../behaviors/skirmisherBehavior';
 import { MonsterEntity } from '../entities/monsterEntity';
 import { PlayerEntity } from '../entities/playerEntity';
 import { EntitySpecies } from '../enums/entitySpecies';
+import FireBolt from '../spells/craftedSpells/firebolt';
 import ThrowSpear from '../spells/craftedSpells/throwSpear';
 
 export class ActiveEntityFactory {
@@ -127,6 +128,15 @@ export class ActiveEntityFactory {
     if (monsterCode === 'goblin_0') {
       entity.spellBook.addSpell(new ThrowSpear(entity));
       entity.behavior = new SkirmisherBehavior(entity);
+      entity.baseModifierStats.maxHealth = 50;
+    } else if (monsterCode === 'wyvern_composite') {
+      entity.spellBook.addSpell(new FireBolt(entity));
+      entity.behavior = new SkirmisherBehavior(entity);
+      entity.dynamicStats.mana = 1000000;
+      entity.totalModifierStats.movementSpeed = 200;
+      entity.totalModifierStats.maxHealth = 250;
+      entity.baseModifierStats.maxHealth = 250;
+      entity.totalModifierStats.sightDistance = 1000;
     } else {
       entity.behavior = new RusherBehavior(entity);
     }

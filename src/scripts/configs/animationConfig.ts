@@ -1880,7 +1880,7 @@ export const wyvern_composite_AnimationConfig = {
     state: ActiveEntityAnimationState.State.MELEEATTACK,
     frameRate: 8
   },
-  cast: {
+  castSpell: {
     frames: [
       { start: wyvern_composite_castAnimationStartFrame + wyvern_composite_leftOrientationSpriteOffset,      end: wyvern_composite_castAnimationEndFrame + wyvern_composite_leftOrientationSpriteOffset,      sheet: 'wyvern_composite', orientation: EntityOrientation.LEFT },
       { start: wyvern_composite_castAnimationStartFrame + wyvern_composite_upLeftOrientationSpriteOffset,    end: wyvern_composite_castAnimationEndFrame + wyvern_composite_upLeftOrientationSpriteOffset,    sheet: 'wyvern_composite', orientation: EntityOrientation.UP_LEFT },
