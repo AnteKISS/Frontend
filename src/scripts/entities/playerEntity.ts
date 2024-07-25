@@ -28,6 +28,7 @@ import { PlayerEvents } from '../events/playerEvents';
 import { ItemType } from '../inventory/itemType';
 import Inventory from '../inventory/inventory';
 import StatModule from './statModule';
+import ThrowSpear from '../spells/craftedSpells/throwSpear';
 
 export class PlayerEntity extends ActiveEntity implements IFightable, IObserver {
   public headSprite: InventorySprite;
@@ -121,7 +122,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
 
   // Methods
   public update(time: number, deltaTime: number): void {
-
     this.controller.update(time, deltaTime);
     this.updatePosition();
     this.handleTileTransition();
