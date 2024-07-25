@@ -38,24 +38,6 @@
   <div id="username"></div>
 
   <script>
-    const express = require('express');
-    const cors = require('cors');
-    const app = express();
-
-    app.use(cors({
-      origin: 'http://localhost:8080', // Allow requests from your Phaser game's origin
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-      credentials: true
-    }));
-
-    app.get('/realms/usager/account', (req, res) => {
-      res.json({ message: 'CORS enabled for this route' });
-    });
-
-    app.listen(8180, () => {
-      console.log('Server running on port 8180');
-    });
-
     var keycloak;
 
     window.onload = function() {
