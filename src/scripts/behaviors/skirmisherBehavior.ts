@@ -57,7 +57,7 @@ export class SkirmisherBehavior extends Behavior {
         if (this.parent.animator.isNonReapeatingAnimationPlaying()) {
           return;
         }
-        if (!this.isTargetValid() || !this.isTargetInRange(this.parent.stats.sightDistance)) {
+        if (!this.isTargetValid() || !this.isTargetInRange(this.parent.totalModifierStats.sightDistance)) {
           this.parent.target = null;
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
         }
@@ -139,7 +139,7 @@ export class SkirmisherBehavior extends Behavior {
       case ActiveEntityAnimationState.State.MELEEATTACK:
       case ActiveEntityAnimationState.State.MELEEATTACK_2:
         if (this.isTargetValid() && this.isEntityInMeleeRange()) {
-          (this.parent.target! as PlayerEntity).damage(this.parent.stats.basePhysicalDamage, this.parent);
+          (this.parent.target! as PlayerEntity).damage(this.parent.totalModifierStats.basePhysicalDamage, this.parent);
         }
         break;
       case ActiveEntityAnimationState.State.RANGEDATTACK:

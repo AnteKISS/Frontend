@@ -41,7 +41,7 @@ export default class Spell {
         const currentTime = Date.now();
         const timeDiff = currentTime - this.timeSinceLastCast;
         const cooldownOver = timeDiff >= this.cooldown * 1000;
-        const enoughMana = this.spellOwner.stats.mana - this.manaCost >= 0;
+        const enoughMana = this.spellOwner.dynamicStats.mana - this.manaCost >= 0;
         if (this.spellOwner.type === 'MonsterEntity') {
             if (cooldownOver && enoughMana) {
                 if (this.spellOwner.target !== null && this.spellOwner.target !== undefined) {
