@@ -118,6 +118,11 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
     return this.currentAnimationState.state == ActiveEntityAnimationState.State.MELEEATTACK || this.currentAnimationState.state == ActiveEntityAnimationState.State.MELEEATTACK_2;
   }
 
+  public isCasting(): boolean {
+    // TODO: Add a boolean attribute that is set if the player is attacking instead of validating with an animation state
+    return this.currentAnimationState.state == ActiveEntityAnimationState.State.CASTSPELL;
+  }
+
   public isDead(): boolean {
     return this.dynamicStats.health <= 0;
   }

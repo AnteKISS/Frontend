@@ -97,7 +97,7 @@ export default class PlayerController {
     this.destination.x = pointer.x + this.player.positionX - this.player.scene.cameras.main.width / 2;
     this.destination.y = pointer.y + this.player.positionY - this.player.scene.cameras.main.height / 2;
 
-    if (this.pointerDown && !this.player.isAttacking()) {
+    if (this.pointerDown && !this.player.isAttacking() && !this.player.isCasting()) {
       this.player.setDestination(this.destination.x, this.destination.y);
       this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, this.destination.x, this.destination.y));
     }
@@ -113,7 +113,7 @@ export default class PlayerController {
       return;
 
     this.player.setOrientationRad(Phaser.Math.Angle.Between(this.player.x, this.player.y, this.player.target.positionX, this.player.target.positionY));
-    if (this.player.target.isTargetable) {
+    if (this.player.target.isTargetable && !this.player.isCasting()) {
       this.player.currentAnimationState.state = ActiveEntityAnimationState.State.MELEEATTACK;
       this.player.setDestination(this.player.positionX, this.player.positionY);
     }

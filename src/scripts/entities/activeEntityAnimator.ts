@@ -12,6 +12,7 @@ import { ActiveEntityEvents } from "../events/activeEntityEvents";
 import { ItemType } from "../inventory/itemType";
 import { GeneralEventManager } from "../managers/eventManager";
 import MainScene from "../scenes/mainScene";
+import { PlayerEntity } from "./playerEntity";
 
 export class ActiveEntityAnimator {
   public parent: ActiveEntity;
@@ -91,11 +92,29 @@ export class ActiveEntityAnimator {
         }
         this.parent.currentAnimationState.state = ActiveEntityAnimationState.State.DEAD;
         break;
+      case ActiveEntityAnimationState.State.CASTSPELL:
+        // hasOrientationUpdated = this.parent.updateOrientationWithTarget();
+        if (this.parent instanceof PlayerEntity) {
+          if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim &&this.spriteReference.anims.currentAnim.key.split('_')[0] == 'CHEER' && !hasOrientationUpdated) {
+            break;
+          }
+        } else {
+          if (this.spriteReference.anims.isPlaying && this.spriteReference.anims.currentAnim &&this.spriteReference.anims.currentAnim.key.split('_')[0] == 'CASTSPELL' && !hasOrientationUpdated) {
+            break;
+          }
+        }
+        for (const sprite of this.sprites) {
+          if (this.parent instanceof PlayerEntity) {
+            sprite.play(`CHEER_${getOrientationString(this.parent.orientation)}_${sprite.textureName.toUpperCase()}`);  
+          } else {
+            sprite.play(`${this.parent.currentAnimationState.state}_${getOrientationString(this.parent.orientation)}_${sprite.textureName.toUpperCase()}`);
+          }
+        }
+        break;
       case ActiveEntityAnimationState.State.DEAD:
         break;
       case ActiveEntityAnimationState.State.MELEEATTACK_2:
       case ActiveEntityAnimationState.State.RANGEDATTACK_2:
-      case ActiveEntityAnimationState.State.CASTSPELL:
       case ActiveEntityAnimationState.State.CRITICALDEATH:
       case ActiveEntityAnimationState.State.HIT:
       default:
