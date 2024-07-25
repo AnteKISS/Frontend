@@ -70,4 +70,10 @@ export default class StatModule {
     stats.baseMovementSpeed = 0;
     stats.movementSpeed = 0;
   }
+
+  public static getNullModifierStats(): ActiveEntityModifierStats {
+    const stats = new ActiveEntityModifierStats();
+    this.resetModifierStats(stats);
+    return stats;
+  }
 }
