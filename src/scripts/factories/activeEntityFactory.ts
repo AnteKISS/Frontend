@@ -126,7 +126,6 @@ export class ActiveEntityFactory {
     };
     if (monsterCode === 'goblin_0') {
       entity.spellBook.addSpell(new ThrowSpear(entity));
-      entity.spellBook.getSpellByName('Throw Spear')?.onCast();
       entity.behavior = new SkirmisherBehavior(entity);
     } else {
       entity.behavior = new RusherBehavior(entity);
