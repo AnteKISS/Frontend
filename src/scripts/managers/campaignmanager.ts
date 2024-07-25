@@ -20,6 +20,7 @@ export default class CampaignManager {
   private graphics: Phaser.GameObjects.Graphics;
   private tiledrawer: TileDrawer;
   private gameObjectSprites: Map<GameObject, GameObjectSprite>;
+  private showEditorSprites: boolean;
 
   private constructor() { }
 
@@ -37,11 +38,16 @@ export default class CampaignManager {
     instance.tiledrawer = new TileDrawer(instance.graphics);
     instance.campaign = new Campaign("Default Campaign");
     instance.gameObjectSprites = new Map();
+    instance.showEditorSprites = false;
     instance.scene.cameras.getCamera("uiCamera")!.ignore(instance.graphics);
   }
 
   public static getInstance(): CampaignManager {
     return CampaignManager.instance;
+  }
+
+  public setVisibleEditorSprites(show: boolean): void {
+    this.showEditorSprites = show;
   }
 
   public getCampaign(): Campaign {
@@ -67,7 +73,7 @@ export default class CampaignManager {
     this.gameObjectSprites.clear();
 
     for (const GAME_OBJECT of this.campaign.currentArea().getGameObjects()) {
-      const GAME_OBJECT_SPRITE = new GameObjectSprite(this.scene, GAME_OBJECT);
+      const GAME_OBJECT_SPRITE = new GameObjectSprite(this.scene, GAME_OBJECT, this.showEditorSprites);
       this.gameObjectSprites.set(GAME_OBJECT, GAME_OBJECT_SPRITE);
       this.scene.cameras.getCamera("uiCamera")!.ignore(GAME_OBJECT_SPRITE);
     }
@@ -185,7 +191,7 @@ export default class CampaignManager {
     }
 
     this.campaign.currentArea().addGameObject(gameObject);
-    const SPRITE = new GameObjectSprite(this.scene, gameObject);
+    const SPRITE = new GameObjectSprite(this.scene, gameObject, this.showEditorSprites);
     this.scene.cameras.getCamera("uiCamera")!.ignore(SPRITE);
     this.gameObjectSprites.set(gameObject, SPRITE);
   }
