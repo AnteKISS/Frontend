@@ -12,6 +12,11 @@ export default class Pregame extends Phaser.Scene {
     volume: number = 50;
     tempVolume:number = 0;
     private WP : Phaser.GameObjects.Image;
+    private exit: Phaser.GameObjects.Container;
+    
+    private OpenSaveButton: Phaser.GameObjects.Container;
+    private NewGameButton: Phaser.GameObjects.Container;
+   
 
     constructor() {
         super('Pregame');
@@ -23,36 +28,73 @@ export default class Pregame extends Phaser.Scene {
         this.WP.setScale(1.7); 
     
     // Créer les boutons
-    const soundupButton = this.createButtonPlayer(500, 350, 'female', () => this.FemaleNewGame());
-    const sounddownButton = this.createButtonPlayer(700, 350, 'male', () => this.MaleNewGame());
-    /*const Save1Button = this.createButton(60,60 , 'Save1', () => this.Save1());
-    const Save2Button = this.createButton(60,60 , 'Save2', () => this.Save2());
-    const Save3Button = this.createButton(60,60 , 'Save3', () => this.Save3());
-    const Save4Button = this.createButton(60,60 , 'Save4', () => this.Save4());*/
-    const returnButton = this.createButton(60,60 , 'return', () => this.return());
+    this.OpenSaveButton = this.createButton((width/2)-170, height/2 ,'button' ,'OS', () => this.openSave());
+    this.NewGameButton  = this.createButton((width/2)+170, height/2 ,'button' ,'NG', () => this.newGame());
+
+    this.exit = this.createButton(150, height - 50, 'button', 'back', () => this.return())
     //bouton retour
     }
     
-    createButton(x: number, y: number, key: string, callback: () => void) {
-        const button = this.add.image(x, y, key).setInteractive();
+    createButton(x: number, y: number, frameKey: string, textKey: string, callback: () => void) {
+        const buttonContainer = this.add.container(x, y);
     
-        button.setTint(this.TintColorUnclicked);
-    
-        button.on('pointerout', () => {
-        button.setTint(this.TintColorUnclicked);
+        const frame = this.add.sprite(0, 0, frameKey).setInteractive().on('pointerdown', (_, __, ___, event) => {
+          callback();
+          event.stopPropagation();
         });
     
-        button.on('pointerdown', () => {
-        button.setTint(this.TintColorClicked);
-        callback();
+        const text = this.add.sprite(0, 0, textKey).setInteractive().on('pointerdown', (_, __, ___, event) => {
+          callback();
+          event.stopPropagation();
         });
     
-        button.on('pointerup', () => {
-        button.setTint(this.TintColorUnclicked);
+        buttonContainer.add([frame, text]);
+    
+        frame.on('pointerover', () => {
+          frame.setTint(0x909090);
+          text.setTint(0x909090);
         });
     
-        return button;
-    }
+        frame.on('pointerout', () => {
+          frame.clearTint();
+          text.clearTint();
+        });
+    
+        frame.on('pointerdown', () => {
+          frame.setTint(0xff4444);
+          text.setTint(0xff4444);
+          callback();
+        });
+    
+        frame.on('pointerup', () => {
+          frame.clearTint();
+          text.clearTint();
+        });
+
+        text.on('pointerover', () => {
+          frame.setTint(0x909090);
+          text.setTint(0x909090);
+        });
+    
+        text.on('pointerout', () => {
+          frame.clearTint();
+          text.clearTint();
+        });
+    
+        text.on('pointerdown', () => {
+          frame.setTint(0xff4444);
+          text.setTint(0xff4444);
+          callback();
+        });
+    
+        text.on('pointerup', () => {
+          frame.clearTint();
+          text.clearTint();
+        });
+    
+        return buttonContainer;
+      }
+
     createButtonPlayer(x: number, y: number, key: string, callback: () => void) {
         const button = this.add.image(x, y, key).setInteractive();
     
@@ -74,54 +116,18 @@ export default class Pregame extends Phaser.Scene {
     }
 
    
-        
-    FemaleNewGame() {
-    console.log('FemaleNewGame button clicked');
-    // start new game with female player
-    }
-        
-    MaleNewGame() {
-    console.log('MaleNewGame button clicked');
-    this.scene.start('MainScene');
-    // start new game with male player
-    }
 
-    mute() {
-    console.log('mute button clicked');
-
-    }
     return() {
         console.log('return button clicked');
         this.scene.start('MainMenu');
         }
 
-    Save1() {
-        console.log('Save1 button clicked');
+    openSave() {
+        this.scene.start('PregameOpenSave');
     }
         
-    Save2() {
-        console.log('Save2 button clicked');
-        //this.scene.start('MainMenu');
-        }
-    Save3() {
-        console.log('Save3 button clicked');
-        //this.scene.start('MainMenu');
-        }
-    Save4() {
-        console.log('Save4 button clicked');
-        //this.scene.start('MainMenu');
-        }
-        
-    /*async readJSONFile(filePath: string): Promise<any> {
-    try {
-        const data = await readFile('assets/gui/mainMenu/test.json', 'utf-8');
-        return JSON.parse(data);
-        } 
-    catch (error) {
-        console.error('Error reading the JSON file:', error);
-        throw error;
-        }
-
-    }*/
+    newGame() {
+        this.scene.start('PregameNewGame');
+    }
     
 }

@@ -7,7 +7,7 @@ export default class Setting extends Phaser.Scene {
     private WP : Phaser.GameObjects.Image;
     public backgroundSound: number = 50;
     public effectSound: number = 50;
-    public musicSound: number = 50;
+    public menuSound: number = 50;
 
     
     muteClicked: boolean = false;
@@ -16,6 +16,7 @@ export default class Setting extends Phaser.Scene {
 
     private slider!: Phaser.GameObjects.Sprite;
     private sliderBar!: Phaser.GameObjects.Sprite;
+    exit: Phaser.GameObjects.Container;
 
     constructor() {
         super('Setting');
@@ -27,38 +28,34 @@ export default class Setting extends Phaser.Scene {
     this.WP = this.add.image(width/2, height/2.5, 'backGround');
     this.WP.setScale(1.7); 
 
-    this.createSlider(`background Sound :`,700, 200, (value: number) => {
+    this.createSlider('backgroundSound',700, 200, (value: number) => {
         this.backgroundSound = value;
         console.log(`background Sound : ${this.backgroundSound}`);
     });
-    this.createSlider(`Effect Sound:`,700, 300, (value: number) => {
+    this.createSlider('effectSound',700, 300, (value: number) => {
         this.effectSound = value;
         console.log(`Effect Sound: ${this.effectSound}`);
     });
-    this.createSlider(`Music Sound:`,700, 400, (value: number) => {
-        this.musicSound = value;
-        console.log(`Music Sound: ${this.musicSound}`);
+    this.createSlider('menuSound',700, 400, (value: number) => {
+        this.menuSound = value;
+        console.log(`Music Sound: ${this.menuSound}`);
     });
 
-    const returnButton = this.createButton(60,60 , 'return', () => this.return());
+    this.exit = this.createButton(width/2, 600, 'button', 'back', () => this.return())
 
     
     }
     
 
 
-    createSlider(textToAdd: string ,x: number, y: number, toChange: (value: number) => void): void {
+    createSlider(textKey: string ,x: number, y: number, toChange: (value: number) => void): void {
         
-        const text = this.add.text(x-200 , y, textToAdd, {
-            font: '30px Arial',
-            color: '#606060'
-          });
-          text.setOrigin(0.5, 0.5);
+        const imagetxt = this.add.sprite(x-200, y, textKey) ;
         
-        const sliderBar = this.add.sprite(x, y, 'sliderBar');
+        const sliderBar = this.add.sprite(x+100, y, 'sliderBar');
         sliderBar.setInteractive();
 
-        const slider = this.add.sprite(x, y, 'slider');
+        const slider = this.add.sprite(x+100, y, 'slider');
         slider.setInteractive();
         this.input.setDraggable(slider);
 
@@ -73,28 +70,65 @@ export default class Setting extends Phaser.Scene {
         });
     }
 
-    createButton(x: number, y: number, key: string, callback: () => void) {
-        const button = this.add.image(x, y, key).setInteractive();
+    createButton(x: number, y: number, frameKey: string, textKey: string, callback: () => void) {
+        const buttonContainer = this.add.container(x, y);
     
-        button.on('pointerover', () => {
-          button.setTint(0x909090);
+        const frame = this.add.sprite(0, 0, frameKey).setInteractive().on('pointerdown', (_, __, ___, event) => {
+          callback();
+          event.stopPropagation();
         });
     
-        button.on('pointerout', () => {
-          button.clearTint();
+        const text = this.add.sprite(0, 0, textKey).setInteractive().on('pointerdown', (_, __, ___, event) => {
+          callback();
+          event.stopPropagation();
         });
     
-        button.on('pointerdown', () => {
-          button.setTint(0xff4444);
+        buttonContainer.add([frame, text]);
+    
+        frame.on('pointerover', () => {
+          frame.setTint(0x909090);
+          text.setTint(0x909090);
+        });
+    
+        frame.on('pointerout', () => {
+          frame.clearTint();
+          text.clearTint();
+        });
+    
+        frame.on('pointerdown', () => {
+          frame.setTint(0xff4444);
+          text.setTint(0xff4444);
           callback();
         });
     
-        button.on('pointerup', () => {
-          button.clearTint();
+        frame.on('pointerup', () => {
+          frame.clearTint();
+          text.clearTint();
+        });
+
+        text.on('pointerover', () => {
+          frame.setTint(0x909090);
+          text.setTint(0x909090);
         });
     
-        return button;
-    }
+        text.on('pointerout', () => {
+          frame.clearTint();
+          text.clearTint();
+        });
+    
+        text.on('pointerdown', () => {
+          frame.setTint(0xff4444);
+          text.setTint(0xff4444);
+          callback();
+        });
+    
+        text.on('pointerup', () => {
+          frame.clearTint();
+          text.clearTint();
+        });
+    
+        return buttonContainer;
+      }
     
     
 
@@ -126,5 +160,5 @@ export default class Setting extends Phaser.Scene {
     return() {
         console.log('mute button clicked');
         this.scene.start('MainMenu');
-        }
+    }
 }

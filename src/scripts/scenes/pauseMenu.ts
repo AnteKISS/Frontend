@@ -61,19 +61,44 @@ export default class PauseMenu extends Phaser.GameObjects.Container {
 
     frame.on('pointerover', () => {
       frame.setTint(0x909090);
+      text.setTint(0x909090);
     });
 
     frame.on('pointerout', () => {
       frame.clearTint();
+      text.clearTint();
     });
 
     frame.on('pointerdown', () => {
       frame.setTint(0xff4444);
+      text.setTint(0xff4444);
       callback();
     });
 
     frame.on('pointerup', () => {
       frame.clearTint();
+      text.clearTint();
+    });
+
+    text.on('pointerover', () => {
+      frame.setTint(0x909090);
+      text.setTint(0x909090);
+    });
+
+    text.on('pointerout', () => {
+      frame.clearTint();
+      text.clearTint();
+    });
+
+    text.on('pointerdown', () => {
+      frame.setTint(0xff4444);
+      text.setTint(0xff4444);
+      callback();
+    });
+
+    text.on('pointerup', () => {
+      frame.clearTint();
+      text.clearTint();
     });
 
     return buttonContainer;

@@ -28,10 +28,29 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('button', 'assets/gui/progression/button.png');
     this.load.image('pause', 'assets/gui/progression/PAUSE1.png');
     this.load.image('exittxt', 'assets/gui/progression/EXIT1.png');
+    this.load.image('back', 'assets/gui/progression/Back.png');
     this.load.image('savetxt', 'assets/gui/progression/SAVE1.png');
     this.load.image('optionstxt', 'assets/gui/progression/OPTIONS1.png');
     this.load.image('largeOptionstxt', 'assets/gui/progression/OPTIONS.png');
     this.load.image('resumetxt', 'assets/gui/progression/RESUME1.png');
+    this.load.image('playtxt', 'assets/gui/progression/PLAY.png');
+    this.load.image('settingstxt', 'assets/gui/progression/SETTINGS.png');
+    this.load.image('mapEditortxt', 'assets/gui/progression/MAP_EDITOR.png');
+    this.load.image('DIEBLOU', 'assets/gui/progression/DIEBLOU.png');
+    this.load.image('backgroundSound', 'assets/gui/progression/Background-Sound.png');
+    this.load.image('effectSound', 'assets/gui/progression/Effect-Sound.png');
+    this.load.image('menuSound', 'assets/gui/progression/Menu-Sound.png');
+    this.load.image('save1', 'assets/gui/progression/SAVE-1.png');
+    this.load.image('save2', 'assets/gui/progression/SAVE2.png');
+    this.load.image('save3', 'assets/gui/progression/SAVE3.png');
+    this.load.image('save4', 'assets/gui/progression/SAVE4.png');
+    this.load.image('NG', 'assets/gui/progression/New-Game.png');
+    this.load.image('OS', 'assets/gui/progression/OpenSave.png');
+    this.load.image('Maletxt', 'assets/gui/progression/Maletxt.png');
+    this.load.image('Femaletxt', 'assets/gui/progression/Femaletxt.png');
+    this.load.image('qst', 'assets/gui/progression/Select-your-hero-25-07-2024.png');
+
+
     this.load.image('backGround', 'assets/gui/mainMenu/WP.png');
     
     this.load.image('play', 'assets/gui/progression/button2.png');
