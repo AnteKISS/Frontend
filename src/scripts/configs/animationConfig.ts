@@ -1986,6 +1986,9 @@ const redQuake_AnimationEndFrame = 11;
 const blueQuake_AnimationStartFrame = 12;
 const blueQuake_AnimationEndFrame = 17;
 
+const aura_AnimationStartFrame = 0;
+const aura_AnimationEndFrame = 3;
+
 // ------------------------------
 
 export const projectile_AnimationConfig = {
@@ -2041,6 +2044,14 @@ export const circleSpell_AnimationConfig = {
     repeat: -1
   }
 };
+
+export const aura_AnimationConfig = {
+  aura: {
+    frames:{ start: aura_AnimationStartFrame, end: aura_AnimationEndFrame, sheet: 'aura' },
+    frameRate: 4,
+    repeat: -1
+  }, 
+  }
 
 export const animationConfigKeys = {
   "player_AnimationConfig": player_AnimationConfig,

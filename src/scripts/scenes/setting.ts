@@ -4,83 +4,145 @@ import Phaser from 'phaser';
 
 export default class Setting extends Phaser.Scene {
 
-    TintColorClicked: number = 0x660000;
-    TintColorUnclicked: number = 0xff0000;
+    private WP : Phaser.GameObjects.Image;
+    public backgroundSound: number = 50;
+    public effectSound: number = 50;
+    public menuSound: number = 50;
+
+    
     muteClicked: boolean = false;
     volume: number = 50;
     tempVolume;number = 0;
+
+    private slider!: Phaser.GameObjects.Sprite;
+    private sliderBar!: Phaser.GameObjects.Sprite;
+    exit: Phaser.GameObjects.Container;
 
     constructor() {
         super('Setting');
     }
 
     create() {
-    this.add.image(600, 400, 'backGround');
+        
+    const { width, height } = this.scale;
+    this.WP = this.add.image(width/2, height/2.5, 'backGround');
+    this.WP.setScale(1.7); 
+
+    this.createSlider('backgroundSound',700, 200, (value: number) => {
+        this.backgroundSound = value;
+        console.log(`background Sound : ${this.backgroundSound}`);
+    });
+    this.createSlider('effectSound',700, 300, (value: number) => {
+        this.effectSound = value;
+        console.log(`Effect Sound: ${this.effectSound}`);
+    });
+    this.createSlider('menuSound',700, 400, (value: number) => {
+        this.menuSound = value;
+        console.log(`Music Sound: ${this.menuSound}`);
+    });
+
+    this.exit = this.createButton(width/2, 600, 'button', 'back', () => this.return())
+
     
-    // Créer les boutons
-    const soundupButton = this.createButton(500, 400, 'plus', () => this.increaseSound());
-    const sounddownButton = this.createButton(600, 400, 'moins', () => this.decreaseSound());
-    const muteButton = this.createButtonMute(700, 400, 'mute', () => this.mute());
-    const returnButton = this.createButton(60,60 , 'return', () => this.return());
-    //bouton retour
     }
     
-    createButton(x: number, y: number, key: string, callback: () => void) {
-        const button = this.add.image(x, y, key).setInteractive();
-    
-        button.setTint(this.TintColorUnclicked);
-    
-        button.on('pointerout', () => {
-        button.setTint(this.TintColorUnclicked);
+
+
+    createSlider(textKey: string ,x: number, y: number, toChange: (value: number) => void): void {
+        
+        const imagetxt = this.add.sprite(x-200, y, textKey) ;
+        
+        const sliderBar = this.add.sprite(x+100, y, 'sliderBar');
+        sliderBar.setInteractive();
+
+        const slider = this.add.sprite(x+100, y, 'slider');
+        slider.setInteractive();
+        this.input.setDraggable(slider);
+
+        this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+            if (gameObject === slider) {
+                if (dragX >= sliderBar.x - sliderBar.width / 2 && dragX <= sliderBar.x + sliderBar.width / 2) {
+                    gameObject.x = dragX;
+                    const value = this.updateSliderValue(slider, sliderBar);
+                    toChange(value);
+                }
+            }
         });
-    
-        button.on('pointerdown', () => {
-        button.setTint(this.TintColorClicked);
-        callback();
-        });
-    
-        button.on('pointerup', () => {
-        button.setTint(this.TintColorUnclicked);
-        });
-    
-        return button;
     }
 
-    createButtonMute(x: number, y: number, key: string, callback: () => void) {
-        const button = this.add.image(x, y, key).setInteractive();
+    createButton(x: number, y: number, frameKey: string, textKey: string, callback: () => void) {
+        const buttonContainer = this.add.container(x, y);
     
-        
-        if(!this.muteClicked){
-            button.setTint(this.TintColorUnclicked);
+        const frame = this.add.sprite(0, 0, frameKey).setInteractive().on('pointerdown', (_, __, ___, event) => {
+          callback();
+          event.stopPropagation();
+        });
+    
+        const text = this.add.sprite(0, 0, textKey).setInteractive().on('pointerdown', (_, __, ___, event) => {
+          callback();
+          event.stopPropagation();
+        });
+    
+        buttonContainer.add([frame, text]);
+    
+        frame.on('pointerover', () => {
+          frame.setTint(0x909090);
+          text.setTint(0x909090);
+        });
+    
+        frame.on('pointerout', () => {
+          frame.clearTint();
+          text.clearTint();
+        });
+    
+        frame.on('pointerdown', () => {
+          frame.setTint(0xff4444);
+          text.setTint(0xff4444);
+          callback();
+        });
+    
+        frame.on('pointerup', () => {
+          frame.clearTint();
+          text.clearTint();
+        });
 
-            button.on('pointerdown', () => {
-            button.setTint(this.TintColorClicked);
-            callback();
-            });
-        
-            button.on('pointerup', () => {
-            this.muteClicked = true;
-            button.setTint(this.TintColorUnclicked);
-            });
-        }
-        else if(this.muteClicked){
-            button.setTint(this.TintColorClicked);
+        text.on('pointerover', () => {
+          frame.setTint(0x909090);
+          text.setTint(0x909090);
+        });
     
-            button.on('pointerdown', () => {
-            button.setTint(this.TintColorUnclicked);
-            callback();
-            });
-        
-            button.on('pointerup', () => {
-            this.muteClicked = false;
-            button.setTint(this.TintColorClicked);
-            });
-        
-        }
+        text.on('pointerout', () => {
+          frame.clearTint();
+          text.clearTint();
+        });
     
-        return button;
+        text.on('pointerdown', () => {
+          frame.setTint(0xff4444);
+          text.setTint(0xff4444);
+          callback();
+        });
+    
+        text.on('pointerup', () => {
+          frame.clearTint();
+          text.clearTint();
+        });
+    
+        return buttonContainer;
+      }
+    
+    
+
+    private updateSliderValue(slider: Phaser.GameObjects.Sprite, sliderBar: Phaser.GameObjects.Sprite): number {
+        const sliderPosition = slider.x - (sliderBar.x - sliderBar.width / 2);
+        const value = (sliderPosition / sliderBar.width) * 100;
+        return value;
     }
-        
+
+    update(): void {
+        // Mettre à jour les éléments si nécessaire
+    }
+
+    
     increaseSound() {
     console.log('increaseSound button clicked');
     // increase sound by 5
@@ -98,5 +160,5 @@ export default class Setting extends Phaser.Scene {
     return() {
         console.log('mute button clicked');
         this.scene.start('MainMenu');
-        }
+    }
 }

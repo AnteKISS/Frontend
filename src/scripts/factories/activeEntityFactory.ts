@@ -148,6 +148,14 @@ export class ActiveEntityFactory {
       entity.dynamicStats.health = 500;
       entity.totalModifierStats.sightDistance = 1000;
       entity.totalModifierStats.basePhysicalDamage = 20;
+    } else if (monsterCode === 'minotaur_0') {
+      entity.behavior = new RusherBehavior(entity);
+      entity.totalModifierStats.movementSpeed = 200;
+      entity.totalModifierStats.maxHealth = 300;
+      entity.baseModifierStats.maxHealth = 300;
+      entity.dynamicStats.health = 300;
+      entity.totalModifierStats.sightDistance = 1000;
+      entity.totalModifierStats.basePhysicalDamage = 20;
     } else {
       entity.behavior = new RusherBehavior(entity);
     }

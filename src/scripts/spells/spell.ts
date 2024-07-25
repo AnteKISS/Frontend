@@ -124,7 +124,15 @@ export default class Spell {
             case CastType.SelfBuff:
                 setTimeout(() => {
                     this.onCastEffects.forEach(onCastEffect => {
-                        onCastEffect.onCast();
+                        onCastEffect.onCast(undefined, undefined, undefined);
+                    });
+                }, this.castTime * 1000);
+                break;
+
+            case CastType.SelfCast:
+                setTimeout(() => {
+                    this.onCastEffects.forEach(onCastEffect => {
+                        onCastEffect.onCast(undefined, this.spellOwner.positionX, this.spellOwner.positionY);
                     });
                 }, this.castTime * 1000);
                 break;

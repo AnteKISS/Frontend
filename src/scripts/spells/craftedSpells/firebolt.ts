@@ -12,7 +12,7 @@ export default class FireBolt extends Spell
     {
         super(4, 500, 20, 0, CastType.SkillShot, 'Fire Bolt', 'fireboltIcon', spellOwner)
         {
-            new ProjectileOnCast(this, 480, 1, 128, 128, 'firebolt');
+            new ProjectileOnCast(this, 480, 6, 128, 128, 'firebolt');
             new SpeedBuffOnCast(this, 200, 1);
             new DamageOnHit(this, 40);
         }

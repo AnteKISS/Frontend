@@ -14,7 +14,7 @@ export default class Item extends Phaser.GameObjects.Container {
   inventorySprite: string;
   entitySprite: string;
 
-  public constructor(scene: Phaser.Scene, name: string, type: ItemType, width: number, height: number, inventorySprite: string, entitySprite: string) {
+  public constructor(scene: Phaser.Scene, name: string, type: ItemType, width: number, height: number, inventorySprite: string, entitySprite: string, modifierStats: ActiveEntityModifierStats) {
     super(scene, 0, 0);
     this.name = name;
     this.itemType = type;
@@ -27,6 +27,8 @@ export default class Item extends Phaser.GameObjects.Container {
     this.sprite = new Phaser.GameObjects.Sprite(scene, 0, 0, inventorySprite);
     this.sprite.setOrigin(0, 0);
     this.changeToInventorySprite();
+
+    this.stats = modifierStats;
 
     this.add(this.sprite);
     scene.add.existing(this);
