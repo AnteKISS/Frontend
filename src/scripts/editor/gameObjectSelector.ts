@@ -7,9 +7,9 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
   private static readonly OBJECTS_PER_ROW = 6;
   private static readonly OBJECT_SPACING = 100;
 
-  private static readonly TILES_TAB_KEY = "Tile";
-  private static readonly WALLS_TAB_KEY = "Wall";
-  private static readonly SPAWNERS_TAB_KEY = "Spawner";
+  public static readonly TILES_TAB_KEY = "Tile";
+  public static readonly WALLS_TAB_KEY = "Wall";
+  public static readonly SPAWNERS_TAB_KEY = "Spawner";
 
   private gameObjectSpriteLists: Map<string, Array<any>>;
   private row: number;
@@ -97,9 +97,13 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
     this.tabs.push(SPAWNERS_TAB);
   }
 
-  private changeTab(tabKey: string) {
+  private changeTab(tabKey: string): void {
     this.selectedTab = tabKey;
     this.updateDisplayObjects();
+  }
+
+  public getCurrentTab(): string {
+    return this.selectedObjectTab;
   }
 
   public previousRow() {

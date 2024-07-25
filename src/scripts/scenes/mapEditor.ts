@@ -270,9 +270,12 @@ export default class MapEditor extends Phaser.Scene {
     );
 
     // Detect swipe + hold click (tilemode)
-    if (this.swipeMode === SwipeMode.On && this.pointer.leftButtonDown() && this.canPlaceObject === true) {
+    if (this.swipeMode === SwipeMode.On && this.pointer.leftButtonDown() && this.canPlaceObject === true)
       this.tileModeClick();
-    }
+
+    // Adjust brush size if placing spawners
+    if (this.gameObjectSelector.getCurrentTab() === GameObjectSelector.SPAWNERS_TAB_KEY)
+      this.brushSize = 0;
 
     this.drawTileSet();
   }
