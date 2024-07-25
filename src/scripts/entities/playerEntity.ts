@@ -242,50 +242,66 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     return this.currentAnimationState.state == ActiveEntityAnimationState.State.MELEEATTACK;
   }
 
+  public isCasting(): boolean {
+    // TODO: Add a boolean attribute that is set if the player is attacking instead of validating with an animation state
+    return this.currentAnimationState.state == ActiveEntityAnimationState.State.CASTSPELL;
+  }
+
   public isDead(): boolean {
     return this.dynamicStats.health <= 0;
   }
 
   // Event Handlers
   public onSpellKeyDown(key: string): void {
+    let hasCast: boolean = false;
+    if (this.isAttacking() || this.isCasting() || this.isDead()) {
+      return;
+    }
     switch (key) {
       case '1':
         if (this.equippedSpells[0])
-          this.equippedSpells[0].onCast();
+          hasCast = this.equippedSpells[0].onCast();
         break;
       case '2':
         if (this.equippedSpells[1])
-          this.equippedSpells[1].onCast();
+          hasCast = this.equippedSpells[1].onCast();
         break;
       case '3':
         if (this.equippedSpells[2])
-          this.equippedSpells[2].onCast();
+          hasCast = this.equippedSpells[2].onCast();
         break;
       case 'Q':
         if (this.equippedSpells[3])
-          this.equippedSpells[3].onCast();
+          hasCast = this.equippedSpells[3].onCast();
         break;
       case 'W':
         if (this.equippedSpells[4])
-          this.equippedSpells[4].onCast();
+          hasCast = this.equippedSpells[4].onCast();
         break;
       case 'E':
         if (this.equippedSpells[5])
-          this.equippedSpells[5].onCast();
+          hasCast = this.equippedSpells[5].onCast();
         break;
       case 'R':
         if (this.equippedSpells[6])
-          this.equippedSpells[6].onCast();
+          hasCast = this.equippedSpells[6].onCast();
         break;
       case 'T':
         if (this.equippedSpells[7])
-          this.equippedSpells[7].onCast();
+          hasCast = this.equippedSpells[7].onCast();
         break;
       case '4':
         this.potionPouch.usePotion()
         break;
       default:
         break;
+    }
+    if (hasCast) {
+      this.setDestination(this.positionX, this.positionY);
+      this.animator.setAnimatorState(ActiveEntityAnimationState.State.CASTSPELL);
+      const pointerX: number = (this.scene.input.activePointer.x + this.positionX - this.scene.cameras.main.width * 0.5);
+      const pointerY: number = (this.scene.input.activePointer.y + this.positionY - this.scene.cameras.main.height * 0.5);
+      this.updateOrientationWithPointerPosition(pointerX, pointerY);
     }
   }
 

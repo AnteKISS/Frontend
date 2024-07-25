@@ -16,7 +16,7 @@ export default class ThrowSpear extends Spell
     {
       new ProjectileOnCast(this, 200, 1, 128, 128, 'throwSpear');
       new SpeedBuffOnCast(this, 150, 1);
-      new DamageOnHit(this, 0);
+      new DamageOnHit(this, 10);
     }
   }
 }
