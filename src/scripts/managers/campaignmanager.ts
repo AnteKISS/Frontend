@@ -268,6 +268,11 @@ export default class CampaignManager {
       this.tiledrawer.drawDebugTilePos(POINT.x, POINT.y, 0x000000);
   }
 
+  public drawDebugSpawnerRange(): void {
+    for (const spawner of this.campaign.currentArea().spawners)
+      this.tiledrawer.drawDebugSpawnerRange(spawner);
+  }
+
   public clearDebugTiles(): void {
     this.graphics.clear();
   }

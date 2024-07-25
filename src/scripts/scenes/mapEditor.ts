@@ -459,6 +459,7 @@ export default class MapEditor extends Phaser.Scene {
       CampaignManager.getInstance().drawDebugPoint(this.playerPos.x, this.playerPos.y, TileColor.Player);
       CampaignManager.getInstance().drawDebugTile(this.playerPos.x, this.playerPos.y, TileColor.Player);
       CampaignManager.getInstance().drawDebugCurrentTileSet();
+      CampaignManager.getInstance().drawDebugSpawnerRange();
     }
 
     // Draw cursor tile

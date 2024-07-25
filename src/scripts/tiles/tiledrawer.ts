@@ -1,3 +1,4 @@
+import Spawner from './spawner';
 import Tile from './tile'
 import TileModule from './tilemodule'
 
@@ -7,7 +8,8 @@ export enum TileColor {
   Player = 0xFF00FF,
   Delete = 0xFF0000,
   Configure = 0x00FF00,
-  DefaultCursor = 0x00FF00
+  DefaultCursor = 0x00FF00,
+  SpawnerRange = 0x00FF99
 }
 
 export default class TileDrawer {
@@ -15,6 +17,7 @@ export default class TileDrawer {
 
   public constructor(graphics: Phaser.GameObjects.Graphics) {
     this.graphics = graphics;
+    this.graphics.setDepth(999999);
   }
 
   public drawDebugTileList(tiles: Iterable<Tile>): void {
@@ -42,6 +45,23 @@ export default class TileDrawer {
       this.graphics.lineTo(points[i].x, points[i].y);
 
     this.graphics.lineTo(points[0].x, points[0].y);
+    this.graphics.closePath();
+    this.graphics.strokePath();
+    this.graphics.fillPath();
+  }
+
+  public drawDebugSpawnerRange(spawner: Spawner): void {
+    this.graphics.lineStyle(2, 0x000000);
+    this.graphics.fillStyle(TileColor.SpawnerRange, 0.5);
+    this.graphics.beginPath();
+
+    const pos = TileModule.getUnitPosFromTilePos(spawner.tileX, spawner.tileY);
+    this.graphics.moveTo(pos.x, pos.y - Tile.HALF_HEIGHT - Tile.HEIGHT * spawner.range);
+    this.graphics.lineTo(pos.x + Tile.HALF_WIDTH + Tile.WIDTH * spawner.range, pos.y);
+    this.graphics.lineTo(pos.x, pos.y + Tile.HALF_HEIGHT + Tile.HEIGHT * spawner.range);
+    this.graphics.lineTo(pos.x - Tile.HALF_WIDTH - Tile.WIDTH * spawner.range, pos.y);
+    this.graphics.lineTo(pos.x, pos.y - Tile.HALF_HEIGHT - Tile.HEIGHT * spawner.range);
+
     this.graphics.closePath();
     this.graphics.strokePath();
     this.graphics.fillPath();
