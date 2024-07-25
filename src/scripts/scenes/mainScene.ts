@@ -241,7 +241,8 @@ export default class MainScene extends Phaser.Scene {
         this.entityHealthBar.lblEntityName,
         this.entityHealthBar.lblEntityDescription,
         this.playerTest.inventory,
-        this.attributeGUI
+        this.attributeGUI,
+        this.questUI
       ]
     );
     // TODO: Find a way to make the ignore list more dynamic
