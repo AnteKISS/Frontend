@@ -37,6 +37,9 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('male', 'assets/gui/mainMenu/male.png');
     this.load.image('female', 'assets/gui/mainMenu/female_warrior.png');
     this.load.image('customPointer', 'assets/gui/pointer05.png')
+    this.load.image('potionIcon', 'assets/gui/icons/potionIcon.png')
+    this.load.image('frostStomp', 'assets/gui/icons/frostStomp.png');
+    this.load.image('rage', 'assets/gui/icons/rage.png');
 
     // GAME OBJECTS
     this.load.image('basic_spawner', 'assets/sprites/spawner/basic_spawner.png');
@@ -160,8 +163,16 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.spritesheet('icicle', 'assets/sprites/spell/icicle.png', { frameWidth: 64, frameHeight: 64 });
     this.load.spritesheet('firebolt', 'assets/sprites/spell/firebolt.png', { frameWidth: 64, frameHeight: 64 });
     this.load.spritesheet('quake', 'assets/sprites/spell/quake.png', { frameWidth: 256, frameHeight: 128 });
+    this.load.spritesheet('throwSpear', 'assets/sprites/spell/throwSpear.png', { frameWidth: 64, frameHeight: 64 });
     this.load.spritesheet('rocky_floor_tiles', 'assets/sprites/tiles/rocky.png', { frameWidth: 256, frameHeight: 128 });
     this.load.spritesheet('flat_stone_walls', 'assets/sprites/tiles/flat_stone_walls.png', { frameWidth: 128, frameHeight: 192 });
+    this.load.spritesheet('goblin_0', 'assets/sprites/monster/goblin_0.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('goblin_lumberjack_black', 'assets/sprites/monster/goblin_lumberjack_black.png', { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('spider_0', 'assets/sprites/monster/spider_0.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('spider_large', 'assets/sprites/monster/spider_large.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('spider_giant', 'assets/sprites/monster/spider_giant.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('wyvern_composite', 'assets/sprites/monster/wyvern_composite.png', { frameWidth: 256, frameHeight: 256 });
+    this.load.spritesheet('aura', 'assets/sprites/spell/shield.png', { frameWidth: 128, frameHeight: 128 });
   }
 }
 

@@ -53,7 +53,6 @@ export default class EquipSlot extends Phaser.GameObjects.Container {
       this.remove(LAST_ITEM);
     this.item = item;
     this.item.setPosition(-this.item.width / 2, -this.item.height / 2);
-    console.log(this.item.x, this.item.y);
     this.add(this.item);
     this.slot.setTexture(this.filledSlotSpritePath);
     EntityManager.instance.getPlayers()[0].updateStats();

@@ -23,7 +23,7 @@ export class AnimationManager {
                 frameRate: frameRate,
                 repeat: 0,
               });
-            } else if (action == 'idle' || action == 'meleeAttack' || action == 'meleeAttack_2' || action == 'block') {
+            } else if (action == 'idle' || action == 'meleeAttack' || action == 'meleeAttack_2' || action == 'block' || action == 'throw') {
               container.scene.anims.create({
                 key: frameKey,
                 frames: container.scene.anims.generateFrameNumbers(sheet, { start, end }),
