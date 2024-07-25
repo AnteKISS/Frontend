@@ -1,5 +1,3 @@
-import 'phaser'
-
 export default class Label extends Phaser.GameObjects.Container {
   private static readonly PADDING = 5;
 
