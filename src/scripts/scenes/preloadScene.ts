@@ -51,6 +51,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('Maletxt', 'assets/gui/progression/Maletxt.png');
     this.load.image('Femaletxt', 'assets/gui/progression/Femaletxt.png');
     this.load.image('qst', 'assets/gui/progression/Select-your-hero-25-07-2024.png');
+    this.load.image('dialogueBackground', 'assets/gui/dialogue/dialogueBackground.png');
 
 
     this.load.image('backGround', 'assets/gui/mainMenu/WP.png');

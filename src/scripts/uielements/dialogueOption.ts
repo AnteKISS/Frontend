@@ -16,6 +16,8 @@ export class DialogueOption extends Phaser.GameObjects.Text {
     });
     this.scene = scene;
     this.parent = dialog;
+    this.width = this.parent.width;
+    this.height = this.parent.height;
   }
 
   public updatePosition(positionX?: number, positionY?: number): void {

@@ -29,6 +29,7 @@ import { KillQuest } from '../quest/killQuest'
 import { QuestUI } from '../quest/questUI'
 import { NpcEntity } from '../entities/npcEntity'
 import APIManager from '../managers/APIManager'
+import { Dialogue } from '../uielements/dialogue'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -56,6 +57,8 @@ export default class MainScene extends Phaser.Scene {
 
   private music: Phaser.Sound.WebAudioSound;
   private playerLight: Phaser.GameObjects.PointLight;
+
+  private testDiaglogue: Dialogue;
 
   public constructor() {
     super({ key: 'MainScene' });
@@ -115,6 +118,12 @@ export default class MainScene extends Phaser.Scene {
     new KillQuest(40, 'zombie_0', 5000);
     new KillQuest(10, 'minotaur_0', 5000);
     new KillQuest(15, 'goblin_0', 10000);
+
+    this.testDiaglogue = new Dialogue(this, this.playerTest.positionX, this.playerTest.positionY);
+    this.testDiaglogue.width = 300;
+    this.testDiaglogue.height = 200;
+    this.testDiaglogue.parentEntity = this.playerTest;
+    this.testDiaglogue.showDialogue();
 
     const playerDeathHandler: SignalHandler = {
       callback: this.onPlayerDeath.bind(this),
@@ -294,6 +303,7 @@ export default class MainScene extends Phaser.Scene {
     this.attributeGUI.update();
     SpellColliderManager.getInstance.update();
     this.questUI.drawUI(this);
+    this.testDiaglogue.update(time, deltaTime);
 
     if (this.gameInputs.showGroundItemsKey.isDown) {
       EntityManager.instance.toggleGroundItemsTooltip(true);
