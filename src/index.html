@@ -53,12 +53,6 @@
         if (authenticated) {
           console.log('Authenticated');
           console.log('Token:', keycloak.token); // Log the token
-          keycloak.loadUserProfile().then(function(profile) {
-            alert('Authenticated as ' + profile.username);
-            startGame(profile.username); // Pass the username to the game start function
-          }).catch(function() {
-            alert('Failed to load user profile');
-          });
         } else {
           console.log('Not authenticated');
           keycloak.login(); // Redirects to Keycloak login page
