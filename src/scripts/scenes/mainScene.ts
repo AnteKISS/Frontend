@@ -141,10 +141,13 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, chainmailHood));
     */
 
-    const woodenShield = APIManager.getNewItem(this, "Gold Ring");
-    if (woodenShield)
-      this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, woodenShield));
+    for (let i = 0; i < 40; i++) {
+      const woodenShield = APIManager.getNewItem(this, "Gold Ring");
+      if (woodenShield)
+        this.playerTest.inventory.getItemStorage().autoLoot(woodenShield);
+    }
 
+    /*
     const bruhMomento = APIManager.getNewItem(this, "Talisman of Baphomet");
     if (bruhMomento)
       this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, bruhMomento));
@@ -154,6 +157,10 @@ export default class MainScene extends Phaser.Scene {
       console.log(lelelelle);
       this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, lelelelle));
     }
+    */
+    const lelelelle = APIManager.getNewItem(this, "Lethal Dagger");
+    if (lelelelle)
+      EntityManager.instance.createItem(this, lelelelle);
 
     Tooltip.init(this);
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
@@ -302,10 +309,9 @@ export default class MainScene extends Phaser.Scene {
       return;
     }
     if (MathModule.scaledDistanceBetween(this.playerTest.positionX, this.playerTest.positionY, itemEntity.x, itemEntity.y) < 100) {
-      const itemAddedToInventory: boolean = this.playerTest.inventory.getItemStorage().autoLoot(new InventoryItem(this, itemEntity.item));
-      if (itemAddedToInventory) {
+      const itemAddedToInventory: boolean = this.playerTest.inventory.getItemStorage().autoLoot(itemEntity.item);
+      if (itemAddedToInventory)
         EntityManager.instance.destroyItem(itemEntity);
-      }
     }
   }
 
