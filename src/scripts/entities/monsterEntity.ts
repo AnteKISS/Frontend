@@ -36,6 +36,10 @@ export class MonsterEntity extends ActiveEntity implements IFightable {
     this.setDepth(0);
     this.truncatedSpriteWidth = 32 * this.baseSprite.scaleX;
     this.truncatedSpriteHeight = 64 * this.baseSprite.scaleY;
+    // if (this.code == 'wyvern_composite') {
+    //   this.truncatedSpriteWidth = 64 * this.baseSprite.scaleX;
+    //   this.truncatedSpriteHeight = 128 * this.baseSprite.scaleY;
+    // }
 
     this.positionX = this.scene.cameras.main.width / 2;
     this.positionY = this.scene.cameras.main.height / 2;
