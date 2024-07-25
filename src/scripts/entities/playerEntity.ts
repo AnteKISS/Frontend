@@ -29,6 +29,7 @@ import { ItemType } from '../inventory/itemType';
 import Inventory from '../inventory/inventory';
 import StatModule from './statModule';
 import { PotionPouch } from '../otherItems/potionPouch';
+import ThrowSpear from '../spells/craftedSpells/throwSpear';
 
 export class PlayerEntity extends ActiveEntity implements IFightable, IObserver {
   public headSprite: InventorySprite;
@@ -36,11 +37,10 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   public mainHandSprite: InventorySprite;
   public offHandSprite: InventorySprite;
   public onPlayerDeath: Signal = new Signal();
-  public maxMana: number = 150; //Pour test
-  public spellBook: SpellBook;
+  public maxMana: number = 150;
 
   public mySpellBook: SpellBook;
-  private equippedSpells: Spell[] = [];
+  public equippedSpells: Spell[] = [];
   public controller: PlayerController;
   public exp: Exp;
   public inventory: Inventory;
@@ -92,7 +92,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     this.attributeAllocation = new AttributeAllocation(this);
     this.potionPouch = new PotionPouch(this);
 
-    this.spellBook = new SpellBook(this);
     this.spellBook.addSpell(new Firebolt(this));
     this.spellBook.addSpell(new IceShard(this));
     this.spellBook.addSpell(new Quake(this));
@@ -125,13 +124,9 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   }
 
   // Getters/Setters
-  public equipSpell(index, spell: Spell): void {
-    this.equippedSpells[index] = spell;
-  }
 
   // Methods
   public update(time: number, deltaTime: number): void {
-
     this.controller.update(time, deltaTime);
     this.updatePosition();
     this.handleTileTransition();
@@ -170,8 +165,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
 
     StatModule.affectModifierStatChange(this.totalModifierStats, this.baseModifierStats);
     StatModule.affectModifierStatChange(this.totalModifierStats, this.tempModifierStats);
-
-    console.log(this.totalModifierStats);
   }
 
   private startManaRegen(scene: Phaser.Scene) {
@@ -371,7 +364,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
       return;
 
     // Make sure transition is valid in current act
-    const transition = CampaignManager.getInstance().transition(this.currentTile.transition);
+    const transition = CampaignManager.getInstance().transition(this, this.currentTile.transition);
     if (!transition)
       return;
 

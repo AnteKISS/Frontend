@@ -70,7 +70,6 @@ export namespace Physics {
     }
 
     public checkSpriteCollision(): Phaser.GameObjects.Sprite | null {
-      const entities: BaseEntity[] = EntityManager.instance.getAreaEntities();
       const positionX: number = this.parentEntity.positionX;
       const positionY: number = this.parentEntity.positionY;
       const truncatedSpriteWidth: number = this.parentEntity.truncatedSpriteWidth;
@@ -78,54 +77,53 @@ export namespace Physics {
       const originX: number = this.parentSprite.originX;
       const originY: number = this.parentSprite.originY;
 
-      for (let index = 0; index < entities.length; index++) {
-        if (entities[index] === this.parentEntity) {
+      for (const entity of EntityManager.instance.getCurrentAreaEntities()) {
+        if (entity === this.parentEntity) {
           continue;
         }
-        if (!(positionX + (truncatedSpriteWidth / 2) > entities[index].positionX - (entities[index].truncatedSpriteWidth / 2))) {
+        if (!(positionX + (truncatedSpriteWidth / 2) > entity.positionX - (entity.truncatedSpriteWidth / 2))) {
           continue;
         }
-        if (!(positionX - (truncatedSpriteWidth / 2) < entities[index].positionX + (entities[index].truncatedSpriteWidth / 2))) {
+        if (!(positionX - (truncatedSpriteWidth / 2) < entity.positionX + (entity.truncatedSpriteWidth / 2))) {
           continue;
         }
-        if (!(positionY - (truncatedSpriteHeight * originY) < entities[index].positionY + (entities[index].truncatedSpriteHeight - (entities[index].truncatedSpriteHeight * originY)))) {
+        if (!(positionY - (truncatedSpriteHeight * originY) < entity.positionY + (entity.truncatedSpriteHeight - (entity.truncatedSpriteHeight * originY)))) {
           continue;
         }
-        if (!(positionY + (truncatedSpriteHeight - (truncatedSpriteHeight * originY)) > entities[index].positionY - (entities[index].truncatedSpriteHeight * originY))) {
+        if (!(positionY + (truncatedSpriteHeight - (truncatedSpriteHeight * originY)) > entity.positionY - (entity.truncatedSpriteHeight * originY))) {
           continue;
         }
-        this._collidingSpriteCallback(entities[index]);
-        return entities[index].getAll()[0] as InventorySprite;
+        this._collidingSpriteCallback(entity);
+        return entity.getAll()[0] as InventorySprite;
       }
       return null;
     }
 
     public checkEntityCollision(): BaseEntity | null {
-      const entities: BaseEntity[] = EntityManager.instance.getAreaEntities();
       const positionX: number = this.parentEntity.positionX;
       const positionY: number = this.parentEntity.positionY;
       const truncatedSpriteWidth: number = this.parentEntity.truncatedSpriteWidth;
 
-      for (let index = 0; index < entities.length; index++) {
-        if (entities[index] === this.parentEntity) {
+      for (const entity of EntityManager.instance.getCurrentAreaEntities()) {
+        if (entity === this.parentEntity) {
           continue;
         }
-        let entity = (entities[index] as unknown as IFightable);
-        if (entities[index].type == "ItemEntity") {
+        if (entity.type == "ItemEntity") {
           continue;
         }
-        if (entity.isDead()) {
+        let fightable = (entity as unknown as IFightable);
+        if (fightable.isDead()) {
           continue;
         }
 
         const radiusX = truncatedSpriteWidth;
         const radiusY = truncatedSpriteWidth / 2;
 
-        const dx = positionX - entities[index].positionX;
-        const dy = positionY - entities[index].positionY;
+        const dx = positionX - entity.positionX;
+        const dy = positionY - entity.positionY;
         if ((dx * dx) / (radiusX * radiusX) + (dy * dy) / (radiusY * radiusY) <= 1) {
-          this._collidingEntityCallback(entities[index]);
-          return entities[index];
+          this._collidingEntityCallback(entity);
+          return entity;
         }
       }
       return null;

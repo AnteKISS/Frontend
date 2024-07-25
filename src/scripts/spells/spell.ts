@@ -1,6 +1,5 @@
 import { ActiveEntity } from "../entities/activeEntity";
 import { BaseEntity } from "../entities/baseEntity";
-import { PlayerEntity } from "../entities/playerEntity";
 import { CastType } from "../enums/castTypes"
 import { ActiveEntityEvents } from "../events/activeEntityEvents";
 import { GeneralEventManager } from "../managers/eventManager";
@@ -12,7 +11,7 @@ export default class Spell {
     castTime: number;
 
     spellName: string = 'undefined';
-    spellOwner: PlayerEntity;
+    spellOwner: ActiveEntity;
     spellIcon: string = 'undefined';
 
     onCastEffects: IOnCastEffect[] = [];
@@ -26,7 +25,8 @@ export default class Spell {
     pointerX: number = -1;
     pointerY: number = -1;
 
-    constructor(cooldown: number, range: number, manaCost: number, castTime: number, castType: CastType, spellName: string, spellIcon: string, spellOwner: PlayerEntity) {
+    constructor(cooldown: number, range: number, manaCost: number, castTime: number, castType: CastType, spellName: string, spellIcon: string, spellOwner: ActiveEntity)
+    {
         this.cooldown = cooldown;
         this.range = range;
         this.manaCost = manaCost;
@@ -40,7 +40,19 @@ export default class Spell {
     public canCast(): boolean {
         const currentTime = Date.now();
         const timeDiff = currentTime - this.timeSinceLastCast;
-        return timeDiff >= this.cooldown * 1000 && this.spellOwner.dynamicStats.mana - this.manaCost >= 0;
+        const cooldownOver = timeDiff >= this.cooldown * 1000;
+        const enoughMana = this.spellOwner.dynamicStats.mana - this.manaCost >= 0;
+        if (this.spellOwner.type === 'MonsterEntity') {
+            if (cooldownOver && enoughMana) {
+                if (this.spellOwner.target !== null && this.spellOwner.target !== undefined) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            // return cooldownOver && enoughMana && (this.spellOwner.target !== null || this.spellOwner.target !== undefined);
+        }
+        return cooldownOver && enoughMana;
     }
 
     public onCast(): boolean {
@@ -67,11 +79,20 @@ export default class Spell {
         return false;
     }
 
-    private castSpell(): boolean {
-        const x = this.getPointerX();
-        const y = this.getPointerY();
-        const centerX = this.spellOwner.scene.cameras.main.width / 2;
-        const centerY = this.spellOwner.scene.cameras.main.height / 2;
+    private castSpell(): boolean
+    {
+        let x, y, centerX, centerY: number;
+        if (this.spellOwner.type === 'PlayerEntity') {
+            x = this.getPointerX();
+            y = this.getPointerY();
+            centerX = this.spellOwner.scene.cameras.main.width / 2;
+            centerY = this.spellOwner.scene.cameras.main.height / 2;
+        } else {
+            x = this.spellOwner.target!.positionX;
+            y = this.spellOwner.target!.positionY;
+            centerX = this.spellOwner.positionX;
+            centerY = this.spellOwner.positionY;
+        }
 
         switch (this.castType) {
             case CastType.SkillShot:

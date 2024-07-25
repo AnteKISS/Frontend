@@ -1,6 +1,9 @@
+import { RusherBehavior } from '../behaviors/rusherBehavior';
+import { SkirmisherBehavior } from '../behaviors/skirmisherBehavior';
 import { MonsterEntity } from '../entities/monsterEntity';
 import { PlayerEntity } from '../entities/playerEntity';
 import { EntitySpecies } from '../enums/entitySpecies';
+import ThrowSpear from '../spells/craftedSpells/throwSpear';
 
 export class ActiveEntityFactory {
 
@@ -121,6 +124,12 @@ export class ActiveEntityFactory {
       isInvisible: false,
       isUntargetable: false
     };
+    if (monsterCode === 'goblin_0') {
+      entity.spellBook.addSpell(new ThrowSpear(entity));
+      entity.behavior = new SkirmisherBehavior(entity);
+    } else {
+      entity.behavior = new RusherBehavior(entity);
+    }
     return entity;
   }
 }

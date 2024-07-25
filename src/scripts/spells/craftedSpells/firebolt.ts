@@ -1,14 +1,14 @@
-import { PlayerEntity } from "../../entities/playerEntity";
 import Spell from "../spell";
 import ProjectileOnCast from "../onCastEffects/projectileOnCast";
 import SpeedBuffOnCast from "../onCastEffects/speedBuffOnCast";
 import { CastType } from "../../enums/castTypes";
 import DamageOnHit from "../onHitEffects.ts/damageOnHit";
+import { ActiveEntity } from "../../entities/activeEntity";
 
 
 export default class FireBolt extends Spell
 {
-    constructor(spellOwner: PlayerEntity)
+    constructor(spellOwner: ActiveEntity)
     {
         super(4, 500, 20, 0, CastType.SkillShot, 'Fire Bolt', 'fireboltIcon', spellOwner)
         {

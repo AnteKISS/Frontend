@@ -1,13 +1,14 @@
+import { ActiveEntity } from "../entities/activeEntity";
 import { PlayerEntity } from "../entities/playerEntity";
 import Spell from "./spell";
 
 
 export default class SpellBook
 {
-    private spellBookOwner: PlayerEntity
+    private spellBookOwner: ActiveEntity
     private spells: Spell[] = [];
 
-    constructor(owner: PlayerEntity)
+    constructor(owner: ActiveEntity)
     {
         this.spellBookOwner = owner;
     }
