@@ -1,8 +1,11 @@
 import { animationConfigKeys, minotaur_0_AnimationConfig } from '../configs/animationConfig';
+import { PlayerEntity } from '../entities/playerEntity';
 import { EntityOrientation, getOrientationString } from '../enums/entityOrientation';
 
 export class AnimationManager {
 
+  public static playerCastAnimations: any[] = [];
+  
   public static createAnimations(container: Phaser.GameObjects.Container, animationConfigKey: string): void {
     let animConfig = animationConfigKeys[animationConfigKey];
     for (const action in animConfig) {
@@ -16,6 +19,9 @@ export class AnimationManager {
           let animExists: Boolean = container.scene.anims.exists(frameKey);
 
           if (!animExists) {
+            if (action == 'cheer' && container instanceof PlayerEntity) {
+              AnimationManager.playerCastAnimations.push(frameKey);
+            }
             if (action == 'death' || action == 'death2') {
               container.scene.anims.create({
                 key: frameKey,

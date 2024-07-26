@@ -2,7 +2,7 @@ import { AnimationManager } from '../managers/animationManager';
 import { Physics } from '../physics/collider';
 import { KillQuest } from '../quest/killQuest';
 import { Dialogue } from '../uielements/dialogue';
-import { DialogueOption, QuestDialogueOption } from '../uielements/dialogueOption';
+import { DialogueOption, QuestDialogueOption, RandomMonsterDialogueOption } from '../uielements/dialogueOption';
 import { ActiveEntity } from './activeEntity';
 import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { BaseEntity } from './baseEntity';
@@ -64,17 +64,16 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
     const option3 = new QuestDialogueOption(this.scene, this.dialogue);
     option3.setText('How are you?');
     option3.quest = new KillQuest(666, "zombie_0", 10);
+    const option4 = new RandomMonsterDialogueOption(this.scene, this.dialogue, "goblin_0");
+    option4.setText('Hello this is Bill from Microsoft');
     this.dialogue.addDialogueOption(option1);
     this.dialogue.addDialogueOption(option2);
     this.dialogue.addDialogueOption(option3);
+    this.dialogue.addDialogueOption(option4);
     // this.dialogue.addDialogueOption('Hello', () => {
     //   console.log('Hello');
     // });
     this.dialogue.showDialogue();
-    // this.testDiaglogue.width = 300;
-    // this.testDiaglogue.height = 200;
-    // this.testDiaglogue.parentEntity = this.npcTest;
-    // this.testDiaglogue.showDialogue();
   }
 
   // Getters/Setters

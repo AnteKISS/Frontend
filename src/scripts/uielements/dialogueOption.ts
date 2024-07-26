@@ -1,5 +1,9 @@
 import Quest from "../quest/quest";
 import { Dialogue } from "./dialogue";
+import { EntityManager } from "../managers/entityManager";
+import CampaignManager from "../managers/campaignmanager";
+import TileModule from "../tiles/tilemodule";
+import { MathModule } from "../utilities/mathModule";
 
 export abstract class DialogueOption extends Phaser.GameObjects.Text {
   public scene: Phaser.Scene;
@@ -40,6 +44,32 @@ export class QuestDialogueOption extends DialogueOption {
     super(scene, dialog);
     if (quest) {
       this.quest = quest;
+    }
+  }
+}
+
+export class RandomMonsterDialogueOption extends DialogueOption {
+  public monsterCode: string;
+
+  constructor(scene, dialog: Dialogue, monsterCode: string) {
+    super(scene, dialog);
+    this.monsterCode = monsterCode;
+
+    this.on('pointerdown', (pointer, localX, localY, event) => {
+      this.spawnMonsters();
+    });
+  }
+
+  private spawnMonsters(): void {
+    for (let i = 0; i < (Math.random() * 15) + 1; i++) {
+      const entity = EntityManager.instance.createMonster(CampaignManager.getInstance().getScene(), this.monsterCode);
+      const xTileOffset = MathModule.getRandomInt(-1, 1 + 1);
+      const yTileOffset = MathModule.getRandomInt(-1, 1 + 1);
+      const pos = TileModule.getUnitPosFromTilePos(0 + xTileOffset, 0 + yTileOffset);
+
+      entity.positionX = pos.x;
+      entity.positionY = pos.y;
+      entity.area = CampaignManager.getInstance().getCampaign().currentArea();
     }
   }
 }

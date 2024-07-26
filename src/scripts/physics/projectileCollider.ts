@@ -3,6 +3,7 @@ import { BaseEntity } from "../entities/baseEntity";
 import { IFightable } from "../entities/IFightable";
 import ItemEntity from "../entities/itemEntity";
 import { MonsterEntity } from "../entities/monsterEntity";
+import { NpcEntity } from "../entities/npcEntity";
 import { EntityManager } from "../managers/entityManager";
 import { SpellCollider } from "./spellCollider";
 
@@ -49,6 +50,9 @@ export class ProjectileCollider extends SpellCollider {
                 continue;
             }
             if (entity instanceof ItemEntity) {
+                continue;
+            }
+            if (entity instanceof NpcEntity) {
                 continue;
             }
             if (this.owner instanceof MonsterEntity && entity instanceof MonsterEntity) {
