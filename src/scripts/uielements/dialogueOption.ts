@@ -19,6 +19,17 @@ export abstract class DialogueOption extends Phaser.GameObjects.Text {
     this.height = this.BASE_OPTION_HEIGHT;
     this.setOrigin(0.5, 0.5);
     this.depth = 9999;
+
+    this.setInteractive();
+    this.on('pointerover', () => {
+      this.setBackgroundColor('#888888');
+    });
+    this.on('pointerout', () => {
+      this.setBackgroundColor('');
+    });
+    this.on('pointerdown', (pointer, localX, localY, event) => {
+      event.stopPropagation();
+    });
   }
 }
 

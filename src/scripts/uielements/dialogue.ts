@@ -72,7 +72,7 @@ export class Dialogue {
     this.updatePosition();
     this.graphics.clear();
     this.graphics.fillStyle(this.DIALOGUE_OUTLINE_COLOR, 0.5);
-    this.graphics.fillRect(this.positionX, this.positionY, this._width, this._height);
+    this.graphics.fillRect(this.positionX - 1, this.positionY - 1, this._width + 2, this._height + 2);
     this.graphics.lineStyle(2, this.DIALOGUE_OUTLINE_COLOR, 1);
     this.graphics.strokeRect(this.positionX - 2, this.positionY - 2, this._width + 4, this._height + 4);
     // for (const dialogueOption of this.dialogueOptions) {
@@ -81,8 +81,6 @@ export class Dialogue {
   }
 
   public updatePosition(positionX?: number, positionY?: number): void {
-    this.parentEntity!.positionX += 0.1;
-    this.parentEntity!.positionY += 0.1;
     if (this.parentEntity && !positionX && !positionY) {
       this.positionX = ((this.parentEntity.positionX * 0.5) - this._width * 0.25);
       this.positionY = (((this.parentEntity.positionY * 0.5) - this._height * 0.5) - this.parentEntity.truncatedSpriteHeight * 0.5);
