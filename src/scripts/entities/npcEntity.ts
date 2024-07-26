@@ -1,5 +1,8 @@
 import { AnimationManager } from '../managers/animationManager';
 import { Physics } from '../physics/collider';
+import { KillQuest } from '../quest/killQuest';
+import { Dialogue } from '../uielements/dialogue';
+import { DialogueOption, QuestDialogueOption } from '../uielements/dialogueOption';
 import { ActiveEntity } from './activeEntity';
 import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { BaseEntity } from './baseEntity';
@@ -8,6 +11,8 @@ import { InventorySprite } from './inventorySprite';
 export class NpcEntity extends ActiveEntity implements ITalkable {
   public baseSprite: InventorySprite;
   public hitArea: Phaser.Geom.Rectangle;
+
+  private dialogue: Dialogue;
 
   constructor(scene, npcCode) {
     super(scene);
@@ -45,7 +50,31 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
     this.animator = new ActiveEntityAnimator(this);
     
     this.baseSprite.play(`IDLE_DOWN_LEFT_WANDERING_TRADER_128`); 
-    console.log(this.scene.anims);
+    
+    this.dialogue = new Dialogue(this.scene, this.positionX, this.positionY);
+    this.dialogue.width = 200;
+    this.dialogue.height = 0;
+    this.dialogue.parentEntity = this;
+    const option1 = new QuestDialogueOption(this.scene, this.dialogue);
+    option1.setText('Hello');
+    option1.quest = new KillQuest(666, "zombie_0", 10);
+    const option2 = new QuestDialogueOption(this.scene, this.dialogue);
+    option2.setText('Goodbye');
+    option2.quest = new KillQuest(666, "zombie_0", 10);
+    const option3 = new QuestDialogueOption(this.scene, this.dialogue);
+    option3.setText('How are you?');
+    option3.quest = new KillQuest(666, "zombie_0", 10);
+    this.dialogue.addDialogueOption(option1);
+    this.dialogue.addDialogueOption(option2);
+    this.dialogue.addDialogueOption(option3);
+    // this.dialogue.addDialogueOption('Hello', () => {
+    //   console.log('Hello');
+    // });
+    this.dialogue.showDialogue();
+    // this.testDiaglogue.width = 300;
+    // this.testDiaglogue.height = 200;
+    // this.testDiaglogue.parentEntity = this.npcTest;
+    // this.testDiaglogue.showDialogue();
   }
 
   // Getters/Setters
@@ -53,7 +82,7 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
 
   // Methods
   public update(time: number, deltaTime: number): void {
-
+    this.dialogue.update(time, deltaTime);
   }
 
   public reset(): void {

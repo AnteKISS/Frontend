@@ -58,7 +58,7 @@ export default class MainScene extends Phaser.Scene {
   private music: Phaser.Sound.WebAudioSound;
   private playerLight: Phaser.GameObjects.PointLight;
 
-  private testDiaglogue: Dialogue;
+  // private testDiaglogue: Dialogue;
 
   public constructor() {
     super({ key: 'MainScene' });
@@ -106,8 +106,8 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest.positionY = 0;
     this.playerTest.area = CampaignManager.getInstance().getCampaign().currentArea();
     this.npcTest = EntityManager.instance.createNpc(this, 'wandering_trader_128');
-    this.npcTest.positionX = 0;
-    this.npcTest.positionY = 0;
+    this.npcTest.positionX = 100;
+    this.npcTest.positionY = 100;
     this.npcTest.area = CampaignManager.getInstance().getCampaign().currentArea();
     new KillQuest(2, 'zombie_0', 400);
     new KillQuest(1, 'minotaur_0', 400);
@@ -119,11 +119,11 @@ export default class MainScene extends Phaser.Scene {
     new KillQuest(10, 'minotaur_0', 5000);
     new KillQuest(15, 'goblin_0', 10000);
 
-    this.testDiaglogue = new Dialogue(this, this.playerTest.positionX, this.playerTest.positionY);
-    this.testDiaglogue.width = 300;
-    this.testDiaglogue.height = 200;
-    this.testDiaglogue.parentEntity = this.playerTest;
-    this.testDiaglogue.showDialogue();
+    // this.testDiaglogue = new Dialogue(this, this.playerTest.positionX, this.playerTest.positionY);
+    // this.testDiaglogue.width = 300;
+    // this.testDiaglogue.height = 200;
+    // this.testDiaglogue.parentEntity = this.npcTest;
+    // this.testDiaglogue.showDialogue();
 
     const playerDeathHandler: SignalHandler = {
       callback: this.onPlayerDeath.bind(this),
@@ -303,7 +303,7 @@ export default class MainScene extends Phaser.Scene {
     this.attributeGUI.update();
     SpellColliderManager.getInstance.update();
     this.questUI.drawUI(this);
-    this.testDiaglogue.update(time, deltaTime);
+    // this.testDiaglogue.update(time, deltaTime);
 
     if (this.gameInputs.showGroundItemsKey.isDown) {
       EntityManager.instance.toggleGroundItemsTooltip(true);
