@@ -5,6 +5,7 @@ import { EntityOrientation, getOrientationString } from '../enums/entityOrientat
 export class AnimationManager {
 
   public static playerCastAnimations: any[] = [];
+  public static playerMeleeAttackAnimations: any[] = [];
   
   public static createAnimations(container: Phaser.GameObjects.Container, animationConfigKey: string): void {
     let animConfig = animationConfigKeys[animationConfigKey];
@@ -21,6 +22,9 @@ export class AnimationManager {
           if (!animExists) {
             if (action == 'cheer' && container instanceof PlayerEntity) {
               AnimationManager.playerCastAnimations.push(frameKey);
+            }
+            if (action == 'meleeAttack' && container instanceof PlayerEntity) {
+              AnimationManager.playerMeleeAttackAnimations.push(frameKey);
             }
             if (action == 'death' || action == 'death2') {
               container.scene.anims.create({

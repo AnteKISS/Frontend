@@ -248,8 +248,8 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   }
 
   public isDestinationReached(): boolean {
-    return MathModule.isValueInThreshold(this.positionX, this.destinationX, 1) &&
-      MathModule.isValueInThreshold(this.positionY, this.destinationY, 1);
+    return MathModule.isValueInThreshold(this.positionX, this.destinationX, 10) &&
+      MathModule.isValueInThreshold(this.positionY, this.destinationY, 10);
   }
 
   private checkValidTilePosition(x: number, y: number): boolean {
