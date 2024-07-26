@@ -1,28 +1,39 @@
 import Keycloak from 'keycloak-js';
 
-const keycloak = new Keycloak({
-  url: 'http://localhost:8180/auth',
-  realm: 'master',
-  clientId: 'my-phaser-game'
-});
+export default class KeycloakManager {
+  private static keycloak: Keycloak;
 
-export async function initKeycloak(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    keycloak.init({ onLoad: 'login-required' })
+  public static init() {
+    if (this.keycloak)
+      return;
+
+    this.keycloak = new Keycloak({
+      realm: "usager",
+      // @ts-ignore
+      "auth-server-url": "http://localhost:8180/auth/",
+      "ssl-required": "external",
+      clientId: "frontend",
+      "public-client": true,
+      "confidential-port": 0
+    });
+
+    this.keycloak.init({ onLoad: 'login-required' })
       .then((authenticated) => {
         if (authenticated) {
           console.log('Authenticated');
-          resolve();
+          console.log('Token:', this.keycloak.token); // Log the token
+          console.log(this.keycloak);
         } else {
           console.warn('Not authenticated');
-          keycloak.login();
+          this.keycloak.login();
         }
       })
       .catch((err) => {
         console.error('Failed to initialize Keycloak', err);
-        reject(err);
       });
-  });
-}
+  }
 
-export { keycloak };
+  public static getUsername(): string {
+    return this.keycloak.idTokenParsed?.preferred_username;
+  }
+}

@@ -34,7 +34,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "keycloak-js": "^25.0.1",
+    "keycloak-js": "^25.0.2",
     "mathjs": "^13.0.1",
     "node": "^20.13.1",
     "phaser": "^3.55.2",

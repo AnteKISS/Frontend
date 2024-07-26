@@ -8,7 +8,7 @@ import Pregame from './scenes/pregame';
 import GlowFilterPipelinePlugin from 'phaser3-rex-plugins/plugins/glowfilterpipeline-plugin.js';
 import HorrifiPipelinePlugin from 'phaser3-rex-plugins/plugins/horrifipipeline-plugin.js';
 import OutlinePipelinePlugin from 'phaser3-rex-plugins/plugins/outlinepipeline-plugin.js';
-import { keycloak, initKeycloak } from './keycloak';
+import KeycloakManager from './keycloak';
 import YoutubePlayerPlugin from 'phaser3-rex-plugins/plugins/youtubeplayer-plugin.js';
 
 const DEFAULT_WIDTH = 1280;
@@ -27,12 +27,12 @@ const config = {
   dom: {
     createContainer: true
   },
-  scene: [PreloadScene, MainMenu, MainScene, Setting, Pregame , MapEditor],
+  scene: [PreloadScene, MainMenu, MainScene, Setting, Pregame, MapEditor],
   physics: {
     default: 'arcade',
     arcade: {
       debug: false,
-      gravity: {x: 0, y: 0 }
+      gravity: { x: 0, y: 0 }
     }
   },
   plugins: {
@@ -61,26 +61,9 @@ const config = {
   }
 }
 
-//async function startApp(): Promise<void> {
-//  try {
-//    await initKeycloak();
-//
-//    if (keycloak.authenticated) {
-//      // Proceed with application initialization
-//    } else {
-//      // Redirect to Keycloak login page if not authenticated
-//      keycloak.login();
-//    }
-//  } catch (error) {
-//    console.error('Failed to initialize Keycloak', error);
-//    throw error;
-//  }
-//}
 
-//startApp().catch((error) => {
-//  console.error('Error starting the application:', error);
-//});
 
 window.addEventListener('load', () => {
+  KeycloakManager.init();
   const game = new Phaser.Game(config);
 });
