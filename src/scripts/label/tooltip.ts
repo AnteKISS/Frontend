@@ -18,11 +18,15 @@ export default class Tooltip {
     if (!Tooltip.keepAlive) Tooltip.object = null
     else Tooltip.keepAlive = false;
     Tooltip.label.setVisible(!!Tooltip.object);
-    Tooltip.label.setPosition(pointer.x, pointer.y);
+    Tooltip.label.setPosition(pointer.x - Tooltip.label.getWidth() / 2, pointer.y - Tooltip.label.getHeight() / 2);
   }
 
   public static updateText(text: string) {
     Tooltip.label.updateText(text);
+  }
+
+  public static updateMultiLineText(text: Array<[string, string]>) {
+    Tooltip.label.updateMultiLineText(text);
   }
 
   public static requestTooltip(object: Phaser.GameObjects.GameObject) {
