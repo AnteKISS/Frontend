@@ -105,7 +105,7 @@ export class AttributeAllocation {
     }
 
     public levelUp(): void {
-        this.totalAttributePoint += 50;
+        this.totalAttributePoint += 5;
         this.updateAvailableAttributePoint();
     }
 
