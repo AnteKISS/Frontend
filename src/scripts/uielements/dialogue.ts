@@ -84,9 +84,6 @@ export class Dialogue {
     this.graphics.fillRect(this.positionX - 1, this.positionY - 1, this._width + 2, this._height + 2);
     this.graphics.lineStyle(2, this.DIALOGUE_OUTLINE_COLOR, 1);
     this.graphics.strokeRect(this.positionX - 2, this.positionY - 2, this._width + 4, this._height + 4);
-    // for (const dialogueOption of this.dialogueOptions) {
-    //   dialogueOption.update(time, deltaTime);
-    // }
   }
 
   public updatePosition(positionX?: number, positionY?: number): void {
