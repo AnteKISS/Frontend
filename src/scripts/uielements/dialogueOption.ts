@@ -74,6 +74,19 @@ export class RandomMonsterDialogueOption extends DialogueOption {
   }
 }
 
+export class ExitMenuDialogueOption extends DialogueOption {
+  constructor(scene, dialog: Dialogue) {
+    super(scene, dialog);
+
+    this.on('pointerdown', (pointer, localX, localY, event) => {
+      this.parent.hideDialogue();
+      if (this.parent.parent) {
+        this.parent.parent.showDialogue();
+      }
+    });
+  }
+}
+
 // export class SubDialogueMenuDialogueOption extends DialogueOption {
 //   public subDialogue: Dialogue;
 

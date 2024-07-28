@@ -35,15 +35,23 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
 
     this.baseSprite.setInteractive({ hitArea: new Phaser.Geom.Rectangle(this.truncatedSpriteWidth, this.truncatedSpriteHeight * this.originY, 32, 64), hitAreaCallback: Phaser.Geom.Rectangle.Contains });
 
-    this.baseSprite.on('pointerover', (pointer: Phaser.Input.Pointer) => {
+    this.baseSprite.on('pointerover', (pointer, localX, localY, event) => {
       window['selectedMonster'] = this;
       scene.plugins.get('rexGlowFilterPipeline').add(this.baseSprite, {
         intensity: 0.02
       });
     });
-    this.baseSprite.on('pointerout', (pointer: Phaser.Input.Pointer) => {
+    this.baseSprite.on('pointerout', (pointer, localX, localY, event) => {
       window['selectedMonster'] = null;
       scene.plugins.get('rexGlowFilterPipeline').remove(this.baseSprite);
+    });
+    this.baseSprite.on('pointerdown', (pointer, localX, localY, event) => {
+      event.stopPropagation();
+      if (this.dialogue.isVisibile()) {
+        this.dialogue.hideDialogue();
+      } else {
+        this.dialogue.showDialogue();
+      }
     });
 
     this.collider = new Physics.Collider(this, this.baseSprite, this.onSpriteColliding, this.onEntityColliding);
@@ -70,10 +78,7 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
     this.dialogue.addDialogueOption(option2);
     this.dialogue.addDialogueOption(option3);
     this.dialogue.addDialogueOption(option4);
-    // this.dialogue.addDialogueOption('Hello', () => {
-    //   console.log('Hello');
-    // });
-    this.dialogue.showDialogue();
+    // this.dialogue.showDialogue();
   }
 
   // Getters/Setters

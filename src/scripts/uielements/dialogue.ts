@@ -1,6 +1,6 @@
 import { BaseEntity } from "../entities/baseEntity";
 import MainScene from "../scenes/mainScene";
-import { DialogueOption } from "./dialogueOption";
+import { DialogueOption, ExitMenuDialogueOption } from "./dialogueOption";
 
 export class Dialogue {
   public scene: Phaser.Scene;
@@ -14,6 +14,7 @@ export class Dialogue {
 
   private _width: number = 0;
   private _height: number = 0;
+  private exitOption: ExitMenuDialogueOption;
 
   private readonly DIALOGUE_OUTLINE_COLOR: number = 0x000000;
 
@@ -29,6 +30,9 @@ export class Dialogue {
       this.parent = parent;
     }
     this.hideDialogue();
+    this.exitOption = new ExitMenuDialogueOption(this.scene, this);
+    this.exitOption.setText('Exit');
+    this.addDialogueOption(this.exitOption);
   }
 
   public get width(): number {
@@ -48,7 +52,13 @@ export class Dialogue {
   }
 
   public addDialogueOption(dialogueOption: DialogueOption): void {
-    this.dialogueOptions.push(dialogueOption);
+    if (this.dialogueOptions.length == 0) {
+      this.dialogueOptions.push(dialogueOption);
+    } else {
+      const exitOption = this.dialogueOptions[this.dialogueOptions.length - 1];
+      this.dialogueOptions[this.dialogueOptions.length - 1] = dialogueOption;
+      this.dialogueOptions.push(exitOption);
+    }
     this.height += dialogueOption.height == 0 ? dialogueOption.BASE_OPTION_HEIGHT : dialogueOption.height;
     this.scene.add.existing(dialogueOption);
     (this.scene as MainScene).uiCamera.ignore(dialogueOption);
@@ -65,7 +75,6 @@ export class Dialogue {
         this.height -= dialogueOption.height == 0 ? dialogueOption.BASE_OPTION_HEIGHT : dialogueOption.height;
       }
     }
-    dialogueOption.destroy();
   }
 
   public update(time: number, deltaTime: number): void {
@@ -120,5 +129,9 @@ export class Dialogue {
     for (const dialogueOption of this.dialogueOptions) {
       dialogueOption.setVisible(false);
     }
+  }
+
+  public isVisibile(): boolean {
+    return this.graphics.visible;
   }
 }
