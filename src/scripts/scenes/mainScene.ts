@@ -33,6 +33,7 @@ import { Dialogue } from '../uielements/dialogue'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
+  public minimapCamera: Phaser.Cameras.Scene2D.Camera;
   public fpsText: FpsText;
   public versionText: Phaser.GameObjects.Text
   public campaignManager: CampaignManager;
@@ -71,6 +72,8 @@ export default class MainScene extends Phaser.Scene {
     this.gameInputs = new GameInput(this);
     this.fpsText = new FpsText(this);
     this.uiCamera = this.cameras.add(0, 0, 1280, 720, false, "uiCamera");
+    this.minimapCamera = this.cameras.add(0, 0, 1280, 720, false, "minimapCamera");
+    this.minimapCamera.setBackgroundColor('rgba(21, 7, 4, 0.75)');
 
     // new GameLogo(this, this.cameras.main.width / 2, this.cameras.main.height / 2);
     //this.campaign = new Campaign("Main");
@@ -260,6 +263,25 @@ export default class MainScene extends Phaser.Scene {
         this.playerLight
       ]
     );
+    this.minimapCamera.ignore(
+      [
+        this.fpsText,
+        this.versionText,
+        this.mapEditorButton,
+        this.gui,
+        this.entityHealthBar.graphics,
+        this.entityHealthBar.lblEntityName,
+        this.entityHealthBar.lblEntityDescription,
+        this.attributeGUI,
+        this.pauseMenu,
+        this.playerTest.inventory,
+        this.attributeGUI,
+        this.questUI,
+        this.playerTest,
+        this.playerTest.collider.debugGraphics,
+        this.playerLight
+      ]
+    );
     let soundManager = SoundManager.getInstance();
     soundManager.scene = this;
     soundManager.playerEntity = this.playerTest;
@@ -390,6 +412,7 @@ export default class MainScene extends Phaser.Scene {
     });
     this.deathScreenText.setOrigin(0.5, 0.5);
     this.cameras.main.ignore([this.deathScreenBackground, this.deathScreenText]);
+    this.cameras.getCamera("minimapCamera")!.ignore([this.deathScreenBackground, this.deathScreenText]);
   }
 
   public hideDeathScreen(): void {

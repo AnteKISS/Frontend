@@ -29,7 +29,7 @@ export class KillQuest extends Quest {
     public checkQuestCompletionStatus(): void {
         if(this.amountKilled >= this.amountToKill) {
             this.succeeded = true;
-            EntityManager.instance.getPlayers()[0].exp.addExp(this.expReward)
+            EntityManager.instance.getPlayers()[0].exp.addExp(this.expReward);
             GeneralEventManager.getInstance().removeObserver(this.observer);
             QuestManager.getInstance.removeQuest(this);
         }

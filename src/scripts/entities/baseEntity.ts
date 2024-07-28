@@ -24,6 +24,7 @@ export abstract class BaseEntity extends Phaser.GameObjects.Container {
     super(scene, 0, 0);
     scene.add.existing(this);
     scene.cameras.getCamera("uiCamera")?.ignore(this);
+    scene.cameras.getCamera("minimapCamera")?.ignore(this);
     this.type = 'BaseEntity';
     this.uuid = Phaser.Math.RND.uuid();
   }

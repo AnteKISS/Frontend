@@ -23,6 +23,7 @@ export class Dialogue {
     this.graphics = scene.add.graphics();
     this.graphics.depth = 1000;
     (this.scene as MainScene).uiCamera.ignore(this.graphics);
+    (this.scene as MainScene).minimapCamera.ignore(this.graphics);
     if (parentEntity) {
       this.parentEntity = parentEntity;
     }
@@ -62,6 +63,7 @@ export class Dialogue {
     this.height += dialogueOption.height == 0 ? dialogueOption.BASE_OPTION_HEIGHT : dialogueOption.height;
     this.scene.add.existing(dialogueOption);
     (this.scene as MainScene).uiCamera.ignore(dialogueOption);
+    (this.scene as MainScene).minimapCamera.ignore(dialogueOption);
     if (!this.graphics.visible) {
       dialogueOption.setVisible(false);
     }

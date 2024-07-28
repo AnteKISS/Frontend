@@ -11,7 +11,9 @@ export class GroundCircularSpellCollider extends SpellCollider {
         if (this?.parentObject?.scene?.cameras?.getCamera("uiCamera")) {
             this.parentObject.scene.cameras.getCamera("uiCamera")!.ignore(this.debugGraphics);
         }
-
+        if (this?.parentObject?.scene?.cameras?.getCamera("minimapCamera")) {
+            this.parentObject.scene.cameras.getCamera("minimapCamera")!.ignore(this.debugGraphics);
+        }
     }
 
     public displayDebugGraphics(): void {
