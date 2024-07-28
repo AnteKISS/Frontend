@@ -19,6 +19,9 @@ export class KillQuest extends Quest {
         this.amountKilled = 0;
         this.succeeded = false;
         this.observer = new KillQuestObserver(this);
+    }
+
+    public activateQuest(): void {
         GeneralEventManager.getInstance().addObserver(this.observer);
         QuestManager.getInstance.addQuest(this);
     }
@@ -27,6 +30,7 @@ export class KillQuest extends Quest {
         if(this.amountKilled >= this.amountToKill) {
             this.succeeded = true;
             EntityManager.instance.getPlayers()[0].exp.addExp(this.expReward)
+            GeneralEventManager.getInstance().removeObserver(this.observer);
             QuestManager.getInstance.removeQuest(this);
         }
     }

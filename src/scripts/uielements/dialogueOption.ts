@@ -45,10 +45,15 @@ export class QuestDialogueOption extends DialogueOption {
     if (quest) {
       this.quest = quest;
     }
+    this.on('pointerdown', (pointer, localX, localY, event) => {
+      if (this.quest) {
+        this.quest.activateQuest();
+      }
+    });
   }
 }
 
-export class RandomMonsterDialogueOption extends DialogueOption {
+export class SpawnMonsterDialogueOption extends DialogueOption {
   public monsterCode: string;
 
   constructor(scene, dialog: Dialogue, monsterCode: string) {
@@ -86,12 +91,3 @@ export class ExitMenuDialogueOption extends DialogueOption {
     });
   }
 }
-
-// export class SubDialogueMenuDialogueOption extends DialogueOption {
-//   public subDialogue: Dialogue;
-
-//   constructor(scene, dialog: Dialogue, subDialogue: Dialogue) {
-//     super(scene, dialog);
-//       this.subDialogue = subDialogue;
-//   }
-// }

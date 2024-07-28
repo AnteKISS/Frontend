@@ -7,5 +7,6 @@ export default abstract class Quest {
 
   constructor() { }
 
+  public abstract activateQuest(): void;
   public abstract checkQuestCompletionStatus(): void;
 }
