@@ -1869,7 +1869,7 @@ export const wyvern_composite_AnimationConfig = {
       { start: wyvern_composite_runAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_runAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.RUN,
-    frameRate: 8
+    frameRate: 14
   },
   meleeAttack: {
     frames: [
@@ -1883,7 +1883,7 @@ export const wyvern_composite_AnimationConfig = {
       { start: wyvern_composite_meleeAttackAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_meleeAttackAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.MELEEATTACK,
-    frameRate: 12
+    frameRate: 14
   },
   castSpell: {
     frames: [
@@ -1939,7 +1939,7 @@ export const wyvern_composite_AnimationConfig = {
       { start: wyvern_composite_deathAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_deathAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.DEATH,
-    frameRate: 8
+    frameRate: 12
   }
 };
 

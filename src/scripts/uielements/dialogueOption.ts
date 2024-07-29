@@ -87,13 +87,11 @@ export class SpawnMonsterDialogueOption extends DialogueOption {
       let entity: MonsterEntity;
       if (!this.isMonsterCodeSpecified) {
         entity = EntityManager.instance.createMonster(CampaignManager.getInstance().getScene(), this.getRandomMonsterCode());
-        // this.monsterCode = this.getRandomMonsterCode();
       } else {
         entity = EntityManager.instance.createMonster(CampaignManager.getInstance().getScene(), this.monsterCode!);
       }
-      // const entity = EntityManager.instance.createMonster(CampaignManager.getInstance().getScene(), this.monsterCode!);
-      const xTileOffset = MathModule.getRandomInt(-1, 1 + 1);
-      const yTileOffset = MathModule.getRandomInt(-1, 1 + 1);
+      const xTileOffset = MathModule.getRandomInt(-3, 3 + 1);
+      const yTileOffset = MathModule.getRandomInt(-3, 3 + 1);
       const pos = TileModule.getUnitPosFromTilePos(0 + xTileOffset, 0 + yTileOffset);
 
       entity.positionX = pos.x;
