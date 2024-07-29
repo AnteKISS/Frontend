@@ -1,8 +1,10 @@
 import { AnimationManager } from '../managers/animationManager';
+import { EntityManager } from '../managers/entityManager';
 import { Physics } from '../physics/collider';
 import { KillQuest } from '../quest/killQuest';
 import { Dialogue } from '../uielements/dialogue';
 import { DialogueOption, QuestDialogueOption, SpawnMonsterDialogueOption } from '../uielements/dialogueOption';
+import { MathModule } from '../utilities/mathModule';
 import { ActiveEntity } from './activeEntity';
 import { ActiveEntityAnimator } from './activeEntityAnimator';
 import { BaseEntity } from './baseEntity';
@@ -46,6 +48,9 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
       scene.plugins.get('rexGlowFilterPipeline').remove(this.baseSprite);
     });
     this.baseSprite.on('pointerdown', (pointer, localX, localY, event) => {
+      if (MathModule.scaledDistanceBetween(this.positionX, this.positionY, EntityManager.instance.getPlayers()[0].positionX, EntityManager.instance.getPlayers()[0].positionY) > 150) {
+        return;
+      }
       event.stopPropagation();
       if (this.dialogue.isVisibile()) {
         this.dialogue.hideDialogue();
@@ -60,7 +65,7 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
     this.baseSprite.play(`IDLE_DOWN_LEFT_WANDERING_TRADER_128`); 
     
     this.dialogue = new Dialogue(this.scene, this.positionX, this.positionY);
-    this.dialogue.width = 200;
+    this.dialogue.width = 320;
     this.dialogue.height = 0;
     this.dialogue.parentEntity = this;
     const option1 = new QuestDialogueOption(this.scene, this.dialogue);
@@ -78,7 +83,6 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
     this.dialogue.addDialogueOption(option2);
     this.dialogue.addDialogueOption(option3);
     this.dialogue.addDialogueOption(option4);
-    // this.dialogue.showDialogue();
   }
 
   // Getters/Setters
@@ -87,6 +91,10 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
   // Methods
   public update(time: number, deltaTime: number): void {
     this.dialogue.update(time, deltaTime);
+    if (MathModule.scaledDistanceBetween(this.positionX, this.positionY, EntityManager.instance.getPlayers()[0].positionX, EntityManager.instance.getPlayers()[0].positionY) > 150) {
+      this.dialogue.hideDialogue();
+      return;
+    }
   }
 
   public reset(): void {

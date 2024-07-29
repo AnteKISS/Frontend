@@ -32,7 +32,7 @@ export class Dialogue {
     }
     this.hideDialogue();
     this.exitOption = new ExitMenuDialogueOption(this.scene, this);
-    this.exitOption.setText('Exit');
+    this.exitOption.setText('Bebye');
     this.addDialogueOption(this.exitOption);
   }
 
