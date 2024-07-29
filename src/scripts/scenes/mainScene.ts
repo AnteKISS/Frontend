@@ -27,11 +27,14 @@ import { GeneralEventManager, PlayerEquipmentEventManager } from '../managers/ev
 import { UiEvents } from '../events/uiEvents'
 import { KillQuest } from '../quest/killQuest'
 import { QuestUI } from '../quest/questUI'
+import { NpcEntity } from '../entities/npcEntity'
 import APIManager from '../managers/APIManager'
+import { Dialogue } from '../uielements/dialogue'
 import KeycloakManager from '../keycloak'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
+  public minimapCamera: Phaser.Cameras.Scene2D.Camera;
   public fpsText: FpsText;
   public campaignManager: CampaignManager;
   public pointer: Phaser.Input.Pointer;
@@ -39,6 +42,7 @@ export default class MainScene extends Phaser.Scene {
   public spellSpriteColliders: SpellCollider[] = [];
 
   public playerTest: PlayerEntity;
+  public npcTest: NpcEntity;
   private entityHealthBar: EntityHealthBar;
   private gui: GUI;
 
@@ -54,6 +58,8 @@ export default class MainScene extends Phaser.Scene {
   private music: Phaser.Sound.WebAudioSound;
   private playerLight: Phaser.GameObjects.PointLight;
 
+  // private testDiaglogue: Dialogue;
+
   public constructor() {
     super({ key: 'MainScene' });
   }
@@ -67,6 +73,8 @@ export default class MainScene extends Phaser.Scene {
     this.gameInputs = new GameInput(this);
     this.fpsText = new FpsText(this);
     this.uiCamera = this.cameras.add(0, 0, 1280, 720, false, "uiCamera");
+    this.minimapCamera = this.cameras.add(0, 0, 1280, 720, false, "minimapCamera");
+    // this.minimapCamera.setBackgroundColor('rgba(21, 7, 4, 0.75)');
 
     // new GameLogo(this, this.cameras.main.width / 2, this.cameras.main.height / 2);
     //this.campaign = new Campaign("Main");
@@ -87,6 +95,10 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest.positionX = 0;
     this.playerTest.positionY = 0;
     this.playerTest.area = CampaignManager.getInstance().getCampaign().currentArea();
+    this.npcTest = EntityManager.instance.createNpc(this, 'wandering_trader_128');
+    this.npcTest.positionX = 100;
+    this.npcTest.positionY = 100;
+    this.npcTest.area = CampaignManager.getInstance().getCampaign().currentArea();
     new KillQuest(2, 'zombie_0', 400);
     new KillQuest(1, 'minotaur_0', 400);
     new KillQuest(2, 'goblin_0', 750);
@@ -198,9 +210,26 @@ export default class MainScene extends Phaser.Scene {
     );
     // TODO: Find a way to make the ignore list more dynamic
     this.playerLight = this.add.pointlight(this.playerTest.positionX, this.playerTest.positionY, 0xE0E0E0, 250, 3, 0.01);
-    this.playerLight.depth = 100;
+    this.playerLight.depth = -9999;
     this.uiCamera.ignore(
       [
+        this.playerTest,
+        this.playerTest.collider.debugGraphics,
+        this.playerLight
+      ]
+    );
+    this.minimapCamera.ignore(
+      [
+        this.fpsText,
+        this.gui,
+        this.entityHealthBar.graphics,
+        this.entityHealthBar.lblEntityName,
+        this.entityHealthBar.lblEntityDescription,
+        this.attributeGUI,
+        this.pauseMenu,
+        this.playerTest.inventory,
+        this.attributeGUI,
+        this.questUI,
         this.playerTest,
         this.playerTest.collider.debugGraphics,
         this.playerLight
@@ -249,6 +278,7 @@ export default class MainScene extends Phaser.Scene {
     this.attributeGUI.update();
     SpellColliderManager.getInstance.update();
     this.questUI.drawUI(this);
+    // this.testDiaglogue.update(time, deltaTime);
 
     if (this.gameInputs.showGroundItemsKey.isDown) {
       EntityManager.instance.toggleGroundItemsTooltip(true);
@@ -334,6 +364,7 @@ export default class MainScene extends Phaser.Scene {
     });
     this.deathScreenText.setOrigin(0.5, 0.5);
     this.cameras.main.ignore([this.deathScreenBackground, this.deathScreenText]);
+    this.cameras.getCamera("minimapCamera")!.ignore([this.deathScreenBackground, this.deathScreenText]);
   }
 
   public hideDeathScreen(): void {

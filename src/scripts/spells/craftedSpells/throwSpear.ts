@@ -14,7 +14,7 @@ export default class ThrowSpear extends Spell
   {
     super(4, 500, 0, 0, CastType.SkillShot, 'Throw Spear', '', spellOwner)
     {
-      new ProjectileOnCast(this, 200, 1, 128, 128, 'throwSpear');
+      new ProjectileOnCast(this, 300, 1, 128, 128, 'throwSpear');
       new SpeedBuffOnCast(this, 150, 1);
       new DamageOnHit(this, 10);
     }

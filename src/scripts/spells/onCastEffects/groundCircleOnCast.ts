@@ -29,6 +29,10 @@ export default class GroundCircleOnCast implements IOnCastEffect
         {
             this.spell.spellOwner.scene.cameras.getCamera("uiCamera")!.ignore(circleSprite);
         }
+        if(this?.spell?.spellOwner?.scene?.cameras?.getCamera("minimapCamera"))
+        {
+            this.spell.spellOwner.scene.cameras.getCamera("minimapCamera")!.ignore(circleSprite);
+        }
         circleSprite.anims.play(this.sprite);
 
         circleSprite.setScale(this.circleRadius * 2/circleSprite.displayWidth, this.circleRadius/circleSprite.displayHeight);

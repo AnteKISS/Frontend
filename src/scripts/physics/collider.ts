@@ -111,6 +111,9 @@ export namespace Physics {
         if (entity.type == "ItemEntity") {
           continue;
         }
+        if (entity.type === "NpcEntity") {
+          continue;
+        }
         let fightable = (entity as unknown as IFightable);
         if (fightable.isDead()) {
           continue;

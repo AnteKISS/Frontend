@@ -3,6 +3,7 @@ import { BaseEntity } from "../entities/baseEntity";
 import { EntityManager } from "../managers/entityManager";
 import { IFightable } from "../entities/IFightable";
 import ItemEntity from "../entities/itemEntity";
+import { NpcEntity } from "../entities/npcEntity";
 
 export class GroundCircularSpellCollider extends SpellCollider {
     constructor(owner: BaseEntity, parentObject: Phaser.Physics.Arcade.Sprite, collidingCallback: (hitEntity: BaseEntity) => void) {
@@ -10,7 +11,9 @@ export class GroundCircularSpellCollider extends SpellCollider {
         if (this?.parentObject?.scene?.cameras?.getCamera("uiCamera")) {
             this.parentObject.scene.cameras.getCamera("uiCamera")!.ignore(this.debugGraphics);
         }
-
+        if (this?.parentObject?.scene?.cameras?.getCamera("minimapCamera")) {
+            this.parentObject.scene.cameras.getCamera("minimapCamera")!.ignore(this.debugGraphics);
+        }
     }
 
     public displayDebugGraphics(): void {
@@ -29,6 +32,9 @@ export class GroundCircularSpellCollider extends SpellCollider {
                 continue;
             }
             if (entity instanceof ItemEntity) {
+                continue;
+            }
+            if (entity instanceof NpcEntity) {
                 continue;
             }
             if ((entity as unknown as IFightable).isDead() == true) {

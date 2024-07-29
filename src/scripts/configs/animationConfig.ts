@@ -179,6 +179,11 @@ const wyvern_composite_rightOrientationSpriteOffset = 224;
 const wyvern_composite_downRightOrientationSpriteOffset = 280;
 const wyvern_composite_downOrientationSpriteOffset = 336;
 const wyvern_composite_downLeftOrientationSpriteOffset = 392;
+// ------------------------------------------
+
+// ---------- wandering_trader_128 ----------
+const wandering_trader_128_idleAnimationStartFrame = 0;
+const wandering_trader_128_idleAnimationEndFrame = 5;
 // --------------------------------
 
 export const player_AnimationConfig = {
@@ -1850,7 +1855,7 @@ export const wyvern_composite_AnimationConfig = {
       { start: wyvern_composite_idleAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_idleAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.IDLE,
-    frameRate: 8
+    frameRate: 12
   },
   run: {
     frames: [
@@ -1864,7 +1869,7 @@ export const wyvern_composite_AnimationConfig = {
       { start: wyvern_composite_runAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_runAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.RUN,
-    frameRate: 8
+    frameRate: 14
   },
   meleeAttack: {
     frames: [
@@ -1878,7 +1883,7 @@ export const wyvern_composite_AnimationConfig = {
       { start: wyvern_composite_meleeAttackAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_meleeAttackAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.MELEEATTACK,
-    frameRate: 12
+    frameRate: 14
   },
   castSpell: {
     frames: [
@@ -1934,8 +1939,25 @@ export const wyvern_composite_AnimationConfig = {
       { start: wyvern_composite_deathAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_deathAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.DEATH,
-    frameRate: 8
+    frameRate: 12
   }
+};
+
+export const wandering_trader_128_AnimationConfig = {
+  idle: {
+    frames: [
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT },
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT },
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT },
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT },
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT },
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT },
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT },
+      { start: wandering_trader_128_idleAnimationStartFrame, end: wandering_trader_128_idleAnimationEndFrame, sheet: 'wandering_trader_128', orientation: EntityOrientation.DOWN_LEFT }
+    ],
+    state: ActiveEntityAnimationState.State.IDLE,
+    frameRate: 4
+  },
 };
 
 const icicle_AnimationStartFrame = 0;
@@ -1987,20 +2009,6 @@ export const projectile_AnimationConfig = {
     frameRate: 666,
     repeat: -1
   }
-  // throwSpear: {
-  //   frames: [
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_leftOrientationSpriteOffset,      end: throwSpear_AnimationsEndFrame + throwSpear_leftOrientationSpriteOffset,      sheet: 'throwSpear', orientation: EntityOrientation.LEFT },
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_upLeftOrientationSpriteOffset,    end: throwSpear_AnimationsEndFrame + throwSpear_upLeftOrientationSpriteOffset,    sheet: 'throwSpear', orientation: EntityOrientation.UP_LEFT },
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_upOrientationSpriteOffset,        end: throwSpear_AnimationsEndFrame + throwSpear_upOrientationSpriteOffset,        sheet: 'throwSpear', orientation: EntityOrientation.UP },
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_upRightOrientationSpriteOffset,   end: throwSpear_AnimationsEndFrame + throwSpear_upRightOrientationSpriteOffset,   sheet: 'throwSpear', orientation: EntityOrientation.UP_RIGHT },
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_rightOrientationSpriteOffset,     end: throwSpear_AnimationsEndFrame + throwSpear_rightOrientationSpriteOffset,     sheet: 'throwSpear', orientation: EntityOrientation.RIGHT },
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_downRightOrientationSpriteOffset, end: throwSpear_AnimationsEndFrame + throwSpear_downRightOrientationSpriteOffset, sheet: 'throwSpear', orientation: EntityOrientation.DOWN_RIGHT },
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_downOrientationSpriteOffset,      end: throwSpear_AnimationsEndFrame + throwSpear_downOrientationSpriteOffset,      sheet: 'throwSpear', orientation: EntityOrientation.DOWN },
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_downLeftOrientationSpriteOffset,  end: throwSpear_AnimationsEndFrame + throwSpear_downLeftOrientationSpriteOffset,  sheet: 'throwSpear', orientation: EntityOrientation.DOWN_LEFT }    
-  //   ],
-  //   frameRate: 666,
-  //   repeat: -1
-  // }
 };
 
 export const circleSpell_AnimationConfig = {
@@ -2039,4 +2047,5 @@ export const animationConfigKeys = {
   "goblin_0_AnimationConfig": goblin_0_AnimationConfig,
   "goblin_lumberjack_black_AnimationConfig": goblin_lumberjack_black_AnimationConfig,
   "wyvern_composite_AnimationConfig": wyvern_composite_AnimationConfig,
+  "wandering_trader_128_AnimationConfig": wandering_trader_128_AnimationConfig
 };

@@ -22,7 +22,10 @@ export default class HealthRegenBuffOnCast implements IOnCastEffect {
         {
             this.spell.spellOwner.scene.cameras.getCamera("uiCamera")!.ignore(this.sprite);
         }
-
+        if(this?.spell?.spellOwner?.scene?.cameras?.getCamera("minimapCamera"))
+        {
+            this.spell.spellOwner.scene.cameras.getCamera("minimapCamera")!.ignore(this.sprite);
+        }
         this.sprite.anims.play('aura');
 
         this.sprite.setTintFill(0xFC0707);

@@ -52,6 +52,7 @@ export default class ItemEntity extends InactiveEntity {
 
     this.add([this.item, this.label]);
     this.scene.cameras.getCamera("uiCamera")!.ignore(this); // TODO: Maybe add this line to base entity
+    this.scene.cameras.getCamera("minimapCamera")!.ignore(this); // TODO: Maybe add this line to base entity
   }
 
   public update(deltaTime: number): void { }

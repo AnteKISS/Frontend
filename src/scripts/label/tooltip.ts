@@ -12,6 +12,7 @@ export default class Tooltip {
     Tooltip.object = null;
     Tooltip.keepAlive = false;
     scene.cameras.main.ignore(this.label);
+    scene.cameras.getCamera("minimapCamera")!.ignore(this.label);
   }
 
   public static update(pointer: Phaser.Input.Pointer) {

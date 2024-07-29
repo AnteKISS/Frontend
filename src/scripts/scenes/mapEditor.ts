@@ -249,6 +249,40 @@ export default class MapEditor extends Phaser.Scene {
         this.configureSpawnerForm,
       ]
     );
+    this.cameras.getCamera("minimapCamera")!.ignore([
+      this.moveText,
+      this.moveFasterText,
+      this.tileModeText,
+      this.addText,
+      this.deleteText,
+      this.configureText,
+      this.swipeText,
+      this.brushSizeText,
+      this.zoomText,
+      this.changeAreaText,
+      this.renameAreaText,
+      this.newAreaText,
+      this.deleteAreaText,
+      this.changeActText,
+      this.renameActText,
+      this.newActText,
+      this.deleteActText,
+      this.createTransitionText,
+      this.deleteTransitionText,
+      this.toggleDebugTiles,
+      this.quitText,
+      this.unitPosText,
+      this.tilePosText,
+      this.currentActText,
+      this.currentAreaText,
+      this.renameActInput,
+      this.renameAreaInput,
+      this.transitionForm,
+      this.deleteTransitionForm,
+      this.configureTileForm,
+      this.gameObjectSelector,
+      this.configureSpawnerForm
+    ]);
   }
 
   update() {
