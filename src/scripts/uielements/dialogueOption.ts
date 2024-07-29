@@ -46,7 +46,15 @@ export class QuestDialogueOption extends DialogueOption {
       this.quest = quest;
     }
     this.on('pointerdown', (pointer, localX, localY, event) => {
-      if (this.quest) {
+      if (!this.quest) {
+        return;
+      }
+      if (this.quest.isStarted) {
+        this.quest.resetQuest();
+      } else if (this.quest.isFinished) {
+        this.quest.activateQuest();
+        this.quest.resetQuest();
+      } else {
         this.quest.activateQuest();
       }
     });

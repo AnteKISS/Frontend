@@ -73,7 +73,7 @@ export default class MainScene extends Phaser.Scene {
     this.fpsText = new FpsText(this);
     this.uiCamera = this.cameras.add(0, 0, 1280, 720, false, "uiCamera");
     this.minimapCamera = this.cameras.add(0, 0, 1280, 720, false, "minimapCamera");
-    this.minimapCamera.setBackgroundColor('rgba(21, 7, 4, 0.75)');
+    // this.minimapCamera.setBackgroundColor('rgba(21, 7, 4, 0.75)');
 
     // new GameLogo(this, this.cameras.main.width / 2, this.cameras.main.height / 2);
     //this.campaign = new Campaign("Main");
@@ -255,7 +255,7 @@ export default class MainScene extends Phaser.Scene {
     );
     // TODO: Find a way to make the ignore list more dynamic
     this.playerLight = this.add.pointlight(this.playerTest.positionX, this.playerTest.positionY, 0xE0E0E0, 250, 3, 0.01);
-    this.playerLight.depth = 100;
+    this.playerLight.depth = -9999;
     this.uiCamera.ignore(
       [
         this.playerTest,
