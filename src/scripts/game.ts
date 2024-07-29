@@ -9,6 +9,7 @@ import LoadingScreen from './scenes/loadingScreen';
 import GlowFilterPipelinePlugin from 'phaser3-rex-plugins/plugins/glowfilterpipeline-plugin.js';
 import HorrifiPipelinePlugin from 'phaser3-rex-plugins/plugins/horrifipipeline-plugin.js';
 import OutlinePipelinePlugin from 'phaser3-rex-plugins/plugins/outlinepipeline-plugin.js';
+import KeycloakManager from './keycloak';
 import YoutubePlayerPlugin from 'phaser3-rex-plugins/plugins/youtubeplayer-plugin.js';
 import PregameOpenSave from './scenes/pregameOpenSave';
 import PregameNewGame from './scenes/pregameNewGame';
@@ -26,16 +27,15 @@ const config = {
     width: DEFAULT_WIDTH,
     height: DEFAULT_HEIGHT
   },
-  scene: [PreloadScene, MainMenu, MainScene, Setting, LoadingScreen , Pregame , MapEditor, PregameOpenSave, PregameNewGame],
+  scene: [PreloadScene, MainMenu, MainScene, Setting, LoadingScreen, Pregame, MapEditor, PregameOpenSave, PregameNewGame],
   dom: {
     createContainer: true
   },
-  
   physics: {
     default: 'arcade',
     arcade: {
       debug: false,
-      gravity: {x: 0, y: 0 }
+      gravity: { x: 0, y: 0 }
     }
   },
   plugins: {
@@ -64,6 +64,9 @@ const config = {
   }
 }
 
+
+
 window.addEventListener('load', () => {
+  KeycloakManager.init();
   const game = new Phaser.Game(config);
-})
+});

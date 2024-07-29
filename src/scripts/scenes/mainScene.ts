@@ -28,6 +28,7 @@ import { UiEvents } from '../events/uiEvents'
 import { KillQuest } from '../quest/killQuest'
 import { QuestUI } from '../quest/questUI'
 import APIManager from '../managers/APIManager'
+import KeycloakManager from '../keycloak'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -61,6 +62,8 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public create() {
+    console.log(KeycloakManager.getUsername());
+
     this.gameInputs = new GameInput(this);
     this.fpsText = new FpsText(this);
     this.uiCamera = this.cameras.add(0, 0, 1280, 720, false, "uiCamera");
