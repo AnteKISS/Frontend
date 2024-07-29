@@ -64,8 +64,6 @@ const config = {
   }
 }
 
-
-
 window.addEventListener('load', () => {
   KeycloakManager.init();
   const game = new Phaser.Game(config);

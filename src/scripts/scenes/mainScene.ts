@@ -221,8 +221,6 @@ export default class MainScene extends Phaser.Scene {
     this.minimapCamera.ignore(
       [
         this.fpsText,
-        this.versionText,
-        this.mapEditorButton,
         this.gui,
         this.entityHealthBar.graphics,
         this.entityHealthBar.lblEntityName,
