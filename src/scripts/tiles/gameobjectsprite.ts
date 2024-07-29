@@ -1,11 +1,12 @@
 import GameObject from './gameobject';
+import Prop from './prop';
 import Spawner from './spawner';
 import Tile from './tile';
 import TileModule from './tilemodule';
 import Wall, { WallType } from './wall';
 
 export default class GameObjectSprite extends Phaser.GameObjects.Sprite {
-  public constructor(scene: Phaser.Scene, gameObject: GameObject) {
+  public constructor(scene: Phaser.Scene, gameObject: GameObject, showDebugSprites: boolean) {
     super(scene, 0, 0, gameObject.source, gameObject.frame);
 
     const TILE_UNIT_POS = TileModule.getUnitPosFromTilePos(gameObject.tileX, gameObject.tileY);
@@ -23,9 +24,11 @@ export default class GameObjectSprite extends Phaser.GameObjects.Sprite {
       else if (WALL.type === WallType.Right)
         this.setOrigin(0, 0.66666666);
     }
+    else if (gameObject instanceof Prop) {
+      this.setOrigin(0.5, 0.85);
+    }
 
-    // TODO: Only show on debug?
-    if (gameObject instanceof Spawner) {
+    if (gameObject instanceof Spawner && !showDebugSprites) {
       this.setVisible(false);
     }
 

@@ -2,14 +2,16 @@ import GameObjectSprite from '../tiles/gameobjectsprite';
 import Tab from './tab';
 import { WallType } from '../tiles/wall';
 import { GameObjectRegistry } from '../tiles/gameObjectRegistry';
+import Prop from '../tiles/prop';
 
 export default class GameObjectSelector extends Phaser.GameObjects.Container {
   private static readonly OBJECTS_PER_ROW = 6;
   private static readonly OBJECT_SPACING = 100;
 
-  private static readonly TILES_TAB_KEY = "Tile";
-  private static readonly WALLS_TAB_KEY = "Wall";
-  private static readonly SPAWNERS_TAB_KEY = "Spawner";
+  public static readonly TILES_TAB_KEY = "Tile";
+  public static readonly WALLS_TAB_KEY = "Wall";
+  public static readonly SPAWNERS_TAB_KEY = "Spawner";
+  public static readonly PROPS_TAB_KEY = "Prop";
 
   private gameObjectSpriteLists: Map<string, Array<any>>;
   private row: number;
@@ -33,9 +35,17 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
     this.selectedObjectIndex = 0;
     this.gameObjectSpriteLists = new Map();
 
-    this.setupTileSprites([['rocky_floor_tiles', 15]]);
-    this.setupWallSprites([['flat_stone_walls', 24]]);
+    this.setupTileSprites([
+      ['rocky_floor_tiles', 15],
+      ['dirt_tiles', 5],
+      ['wood_tiles', 9]
+    ]);
+    this.setupWallSprites([
+      ['flat_stone_walls', 24],
+      ['brick_walls', 24]
+    ]);
     this.setupSpawnerSprites();
+    this.setupPropSprites();
     this.setupTabs();
 
     this.scene = scene;
@@ -67,6 +77,7 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
 
   private setupWallSprites(sourceArray: Array<[string, number]>) {
     const SPRITE_ARRAY = new Array<any>;
+    console.log(sourceArray);
 
     for (const BITMAP of sourceArray)
       for (let i = 0; i < BITMAP[1]; i++)
@@ -78,6 +89,26 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
   private setupSpawnerSprites() {
     this.gameObjectSpriteLists.set(GameObjectSelector.SPAWNERS_TAB_KEY, [
       ["Spawner", "basic_spawner", "zombie_0", 5, 5]
+    ]);
+  }
+
+  private setupPropSprites() {
+    this.gameObjectSpriteLists.set(GameObjectSelector.PROPS_TAB_KEY, [
+      ["Prop", "pine_none01", false],
+      ["Prop", "pine_none05", false],
+      ["Prop", "pine_none06", false],
+      ["Prop", "pine_none08", false],
+      ["Prop", "pine_half03", false],
+      ["Prop", "pine_half05", false],
+      ["Prop", "pine_half06", false],
+      ["Prop", "grasses01", true],
+      ["Prop", "cactus01", true],
+      ["Prop", "cactus04", true],
+      ["Prop", "shrub2_03", true],
+      ["Prop", "shrub2_04", true],
+      ["Prop", "big_rock01", false],
+      ["Prop", "big_rock02", false],
+      ["Prop", "cart", false],
     ]);
   }
 
@@ -95,23 +126,32 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
     const SPAWNERS_TAB = new Tab(this.scene, -75, -34, 100, 25, "Spawners");
     SPAWNERS_TAB.setOnPointerDown(() => this.changeTab(GameObjectSelector.SPAWNERS_TAB_KEY));
     this.tabs.push(SPAWNERS_TAB);
+
+    const PROPS_TAB = new Tab(this.scene, -25, -34, 100, 24, "Props");
+    PROPS_TAB.setOnPointerDown(() => this.changeTab(GameObjectSelector.PROPS_TAB_KEY));
+    this.tabs.push(PROPS_TAB);
   }
 
-  private changeTab(tabKey: string) {
+  private changeTab(tabKey: string): void {
     this.selectedTab = tabKey;
+    this.row = 0;
     this.updateDisplayObjects();
+  }
+
+  public getCurrentTab(): string {
+    return this.selectedObjectTab;
   }
 
   public previousRow() {
     this.row--;
     if (this.row < 0)
-      this.row = Math.floor(this.gameObjectSpriteLists.get(this.selectedTab)!.length / GameObjectSelector.OBJECTS_PER_ROW);
+      this.row = Math.floor((this.gameObjectSpriteLists.get(this.selectedTab)!.length - 1) / GameObjectSelector.OBJECTS_PER_ROW);
     this.updateDisplayObjects();
   }
 
   public nextRow() {
     this.row++;
-    if (this.row * GameObjectSelector.OBJECTS_PER_ROW > this.gameObjectSpriteLists.get(this.selectedTab)!.length)
+    if (this.row * GameObjectSelector.OBJECTS_PER_ROW >= this.gameObjectSpriteLists.get(this.selectedTab)!.length)
       this.row = 0;
     this.updateDisplayObjects();
   }
@@ -142,6 +182,9 @@ export default class GameObjectSelector extends Phaser.GameObjects.Container {
         .setInteractive();
 
       OBJECT.setScale(GameObjectSprite.getSpriteScale(this.selectedTab, OBJECT) / 2);
+
+      if (this.selectedTab === GameObjectSelector.PROPS_TAB_KEY)
+        OBJECT.setOrigin(0.5, 0.7);
 
       OBJECT.on('pointerdown', () => {
         this.selectedObjectTab = this.selectedTab;

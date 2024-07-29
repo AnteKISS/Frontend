@@ -1,6 +1,8 @@
 import InventoryItem from './inventoryItem'
 import InventoryConfig from './inventoryConfig'
 import Point from '../types/point'
+import Item from './item';
+import MainScene from '../scenes/mainScene';
 
 export default class ItemStorage extends Phaser.GameObjects.Container {
   public readonly gridWidth: number;
@@ -45,17 +47,19 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
     }
   }
 
-  public autoLoot(item: InventoryItem): boolean {
+  public autoLoot(item: Item): boolean {
     for (let y = 0; y < this.gridHeight; y++)
       for (let x = 0; x < this.gridWidth; x++)
-        if (this.addItem(item, x, y))
-          return true;
+        if (this.isSpaceAvailable(item, x, y)) {
+          const inventoryItem = new InventoryItem(this.scene as MainScene, item);
+          return this.addItem(inventoryItem, x, y)
+        }
     return false;
   }
 
   public addItem(item: InventoryItem, startX: number, startY: number): boolean {
     //verif si la place est libre
-    if (!this.isSpaceAvailable(item, startX, startY))
+    if (!this.isSpaceAvailable(item.getItem(), startX, startY))
       return false;
 
     //occupe la place
@@ -89,14 +93,14 @@ export default class ItemStorage extends Phaser.GameObjects.Container {
     return true;
   }
 
-  public isSpaceAvailable(item: InventoryItem, startX: number, startY: number): boolean {
+  public isSpaceAvailable(item: Item, startX: number, startY: number): boolean {
     // verif si il y a assez d espace
-    if (startX + item.getItem().inventoryWidth > this.gridWidth || startY + item.getItem().inventoryHeight > this.gridHeight) {
+    if (startX + item.inventoryWidth > this.gridWidth || startY + item.inventoryHeight > this.gridHeight) {
       return false;
     }
     // verif de dispo
-    for (let y = startY; y < startY + item.getItem().inventoryHeight; y++)
-      for (let x = startX; x < startX + item.getItem().inventoryWidth; x++)
+    for (let y = startY; y < startY + item.inventoryHeight; y++)
+      for (let x = startX; x < startX + item.inventoryWidth; x++)
         if (this.occupied[y][x])
           return false;
 

@@ -26,6 +26,14 @@ export default class Spawner extends GameObject {
       const entity = EntityManager.instance.createMonster(CampaignManager.getInstance().getScene(), this.monsterCode);
       const xTileOffset = MathModule.getRandomInt(-this.range, this.range + 1);
       const yTileOffset = MathModule.getRandomInt(-this.range, this.range + 1);
+
+      // If trying to spawn on invalid tile, cancel spawn
+      const tile = CampaignManager.getInstance().getTile(this.tileX + xTileOffset, this.tileY + yTileOffset);
+      if (!tile) {
+        console.error(`Spawner::spawn - Tried to spawn monster code ${this.monsterCode} out of bounds!`);
+        continue;
+      }
+
       const pos = TileModule.getUnitPosFromTilePos(this.tileX + xTileOffset, this.tileY + yTileOffset);
 
       entity.positionX = pos.x;

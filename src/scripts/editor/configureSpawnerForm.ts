@@ -37,7 +37,7 @@ export default class ConfigureSpawnerForm extends Phaser.GameObjects.Container {
 
     this.rangeInput = new TextInput(scene, 385, 425, 500, "Range : ", { color: '#000000', fontSize: '24px' });
     this.rangeInput.setInputFilter(TextInput.NUMBER_TYPE);
-    this.rangeInput.setValueRange(1, 100);
+    this.rangeInput.setValueRange(0, 100);
     this.rangeInput.updateInputText("5");
 
     this.focused = false;
