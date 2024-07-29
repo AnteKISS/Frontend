@@ -1855,7 +1855,7 @@ export const wyvern_composite_AnimationConfig = {
       { start: wyvern_composite_idleAnimationStartFrame + wyvern_composite_downLeftOrientationSpriteOffset,  end: wyvern_composite_idleAnimationEndFrame + wyvern_composite_downLeftOrientationSpriteOffset,  sheet: 'wyvern_composite', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.IDLE,
-    frameRate: 8
+    frameRate: 12
   },
   run: {
     frames: [
@@ -2009,20 +2009,6 @@ export const projectile_AnimationConfig = {
     frameRate: 666,
     repeat: -1
   }
-  // throwSpear: {
-  //   frames: [
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_leftOrientationSpriteOffset,      end: throwSpear_AnimationsEndFrame + throwSpear_leftOrientationSpriteOffset,      sheet: 'throwSpear', orientation: EntityOrientation.LEFT },
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_upLeftOrientationSpriteOffset,    end: throwSpear_AnimationsEndFrame + throwSpear_upLeftOrientationSpriteOffset,    sheet: 'throwSpear', orientation: EntityOrientation.UP_LEFT },
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_upOrientationSpriteOffset,        end: throwSpear_AnimationsEndFrame + throwSpear_upOrientationSpriteOffset,        sheet: 'throwSpear', orientation: EntityOrientation.UP },
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_upRightOrientationSpriteOffset,   end: throwSpear_AnimationsEndFrame + throwSpear_upRightOrientationSpriteOffset,   sheet: 'throwSpear', orientation: EntityOrientation.UP_RIGHT },
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_rightOrientationSpriteOffset,     end: throwSpear_AnimationsEndFrame + throwSpear_rightOrientationSpriteOffset,     sheet: 'throwSpear', orientation: EntityOrientation.RIGHT },
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_downRightOrientationSpriteOffset, end: throwSpear_AnimationsEndFrame + throwSpear_downRightOrientationSpriteOffset, sheet: 'throwSpear', orientation: EntityOrientation.DOWN_RIGHT },
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_downOrientationSpriteOffset,      end: throwSpear_AnimationsEndFrame + throwSpear_downOrientationSpriteOffset,      sheet: 'throwSpear', orientation: EntityOrientation.DOWN },
-  //     { start: throwSpear_AnimationsStartFrame + throwSpear_downLeftOrientationSpriteOffset,  end: throwSpear_AnimationsEndFrame + throwSpear_downLeftOrientationSpriteOffset,  sheet: 'throwSpear', orientation: EntityOrientation.DOWN_LEFT }    
-  //   ],
-  //   frameRate: 666,
-  //   repeat: -1
-  // }
 };
 
 export const circleSpell_AnimationConfig = {

@@ -4,6 +4,9 @@ import { EntityManager } from "../managers/entityManager";
 import CampaignManager from "../managers/campaignmanager";
 import TileModule from "../tiles/tilemodule";
 import { MathModule } from "../utilities/mathModule";
+import path from "path";
+import { animationConfigKeys } from "../configs/animationConfig";
+import { MonsterEntity } from "../entities/monsterEntity";
 
 export abstract class DialogueOption extends Phaser.GameObjects.Text {
   public scene: Phaser.Scene;
@@ -62,12 +65,18 @@ export class QuestDialogueOption extends DialogueOption {
 }
 
 export class SpawnMonsterDialogueOption extends DialogueOption {
-  public monsterCode: string;
+  public monsterCode?: string;
 
-  constructor(scene, dialog: Dialogue, monsterCode: string) {
+  private isMonsterCodeSpecified: boolean;
+
+  constructor(scene, dialog: Dialogue, monsterCode?: string) {
     super(scene, dialog);
-    this.monsterCode = monsterCode;
-
+    if (monsterCode) {
+      this.monsterCode = monsterCode;
+      this.isMonsterCodeSpecified = true;
+    } else {
+      this.isMonsterCodeSpecified = false;
+    }
     this.on('pointerdown', (pointer, localX, localY, event) => {
       this.spawnMonsters();
     });
@@ -75,7 +84,14 @@ export class SpawnMonsterDialogueOption extends DialogueOption {
 
   private spawnMonsters(): void {
     for (let i = 0; i < (Math.random() * 15) + 1; i++) {
-      const entity = EntityManager.instance.createMonster(CampaignManager.getInstance().getScene(), this.monsterCode);
+      let entity: MonsterEntity;
+      if (!this.isMonsterCodeSpecified) {
+        entity = EntityManager.instance.createMonster(CampaignManager.getInstance().getScene(), this.getRandomMonsterCode());
+        // this.monsterCode = this.getRandomMonsterCode();
+      } else {
+        entity = EntityManager.instance.createMonster(CampaignManager.getInstance().getScene(), this.monsterCode!);
+      }
+      // const entity = EntityManager.instance.createMonster(CampaignManager.getInstance().getScene(), this.monsterCode!);
       const xTileOffset = MathModule.getRandomInt(-1, 1 + 1);
       const yTileOffset = MathModule.getRandomInt(-1, 1 + 1);
       const pos = TileModule.getUnitPosFromTilePos(0 + xTileOffset, 0 + yTileOffset);
@@ -84,6 +100,13 @@ export class SpawnMonsterDialogueOption extends DialogueOption {
       entity.positionY = pos.y;
       entity.area = CampaignManager.getInstance().getCampaign().currentArea();
     }
+  }
+
+  private getRandomMonsterCode(): string {
+    const keys = Object.keys(animationConfigKeys).filter(key => !key.includes('player') && !key.includes('trader'));
+    const randomIndex = Math.floor(Math.random() * keys.length);
+    const monsterCode = keys[randomIndex].substring(0, keys[randomIndex].lastIndexOf('_'));
+    return monsterCode;
   }
 }
 

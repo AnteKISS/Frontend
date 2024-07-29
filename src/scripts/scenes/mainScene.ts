@@ -122,12 +122,6 @@ export default class MainScene extends Phaser.Scene {
     new KillQuest(10, 'minotaur_0', 5000);
     new KillQuest(15, 'goblin_0', 10000);
 
-    // this.testDiaglogue = new Dialogue(this, this.playerTest.positionX, this.playerTest.positionY);
-    // this.testDiaglogue.width = 300;
-    // this.testDiaglogue.height = 200;
-    // this.testDiaglogue.parentEntity = this.npcTest;
-    // this.testDiaglogue.showDialogue();
-
     const playerDeathHandler: SignalHandler = {
       callback: this.onPlayerDeath.bind(this),
       parameters: []
