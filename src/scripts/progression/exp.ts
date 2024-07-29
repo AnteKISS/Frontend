@@ -43,6 +43,7 @@ export class Exp {
         return this.currentExpToMax;
     }
 
-
-
+    public getTotalExp(): number {
+        return this.totalExp;
+    }
 }

@@ -5,6 +5,7 @@ import ActiveEntityModifierStats from "../entities/activeEntityModifierStats";
 import StatModule from "../entities/statModule";
 
 class ItemInfo {
+  code: number;
   name: string;
   type: ItemType;
   width: number;
@@ -20,7 +21,7 @@ export default class APIManager {
   public static getNewItem(scene: Phaser.Scene, name: string): Item | undefined {
     const info = this.itemInfos.get(name);
     if (!info) return undefined;
-    return new Item(scene, info.name, info.type, info.width, info.height, info.inventorySprite, info.entitySprite, info.modifierStats);
+    return new Item(scene, info.code, info.name, info.type, info.width, info.height, info.inventorySprite, info.entitySprite, info.modifierStats);
   }
 
   public static async loadItems(): Promise<void> {
@@ -34,6 +35,7 @@ export default class APIManager {
       const [width, height] = this.itemSizeFromCode(json.itemSizeCode);
       const [inventorySprite, entitySprite] = this.itemSpriteFromName(json.itemName);
       const info = new ItemInfo;
+      info.code = json.itemId;
       info.name = json.itemName;
       info.type = this.itemTypeFromCode(json.itemSlotCode);
       info.width = width;
