@@ -67,11 +67,14 @@ export class EntityManager {
     return foundEntities;
   }
 
-  public getAreaEntityAtPosition(positionX: number, positionY: number): BaseEntity | null {
+  public getAreaEntityAtPosition(positionX: number, positionY: number, exlucdePlayer: boolean): BaseEntity | null {
     let topMostEntity: BaseEntity | null = null;
     let foundEntities: BaseEntity[] = [];
 
     for (let entity of this.getCurrentAreaEntities()) {
+      if (exlucdePlayer && entity instanceof PlayerEntity) {
+        continue;
+      }
       let entitySprite: Phaser.GameObjects.Sprite = entity.getSprite();
 
       if (positionX > entity.positionX - (entity.truncatedSpriteWidth / 2) &&

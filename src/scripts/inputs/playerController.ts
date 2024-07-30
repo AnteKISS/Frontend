@@ -121,7 +121,7 @@ export default class PlayerController {
   }
 
   private updateTarget() {
-    const entity = EntityManager.instance.getAreaEntityAtPosition(this.destination.x, this.destination.y);
+    const entity = EntityManager.instance.getAreaEntityAtPosition(this.destination.x, this.destination.y, true);
 
     if (entity?.type === "MonsterEntity")
       this.player.target = entity;
