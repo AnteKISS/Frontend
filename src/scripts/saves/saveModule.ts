@@ -1,3 +1,6 @@
+import EquipSlot from "../inventory/equipSlot";
+import InventoryItem from "../inventory/inventoryItem";
+import APIManager from "../managers/APIManager";
 import MainScene from "../scenes/mainScene";
 
 export default class SaveModule {
@@ -9,7 +12,7 @@ export default class SaveModule {
       playerX: player.positionX,
       playerY: player.positionY,
       playerAllocatedPoints: {
-        strenght: player.attributeAllocation.strength,
+        strength: player.attributeAllocation.strength,
         dexterity: player.attributeAllocation.dexterity,
         vitality: player.attributeAllocation.vitality,
         intelligence: player.attributeAllocation.intelligence,
@@ -41,5 +44,63 @@ export default class SaveModule {
     }
 
     return JSON.stringify(json);
+  }
+
+  public static loadJSON(scene: MainScene, jsonStr: string) {
+    const json = JSON.parse(jsonStr);
+    const player = scene.playerTest;
+
+    player.positionX = json.playerX;
+    player.x = json.playerX;
+    player.positionY = json.playerY;
+    player.y = json.playerY;
+
+    player.attributeAllocation.strength = json.playerAllocatedPoints.strength;
+    player.attributeAllocation.dexterity = json.playerAllocatedPoints.dexterity;
+    player.attributeAllocation.vitality = json.playerAllocatedPoints.vitality;
+    player.attributeAllocation.intelligence = json.playerAllocatedPoints.intelligence;
+    player.attributeAllocation.setTotalAllocatedPoint(json.playerAllocatedPoints.strength + json.playerAllocatedPoints.dexterity + json.playerAllocatedPoints.vitality + json.playerAllocatedPoints.intelligence);
+    player.attributeAllocation.setTotalAvailablePoint(json.playerUnallocatedPoints);
+
+    player.exp.addExp(json.playerXp);
+    player.exp.update();
+
+    // Add items in player inventory
+    for (const inventoryItemJson of json.playerInventoryItems) {
+      const item = APIManager.getNewItem(scene, inventoryItemJson.code);
+      if (item) {
+        const inventoryItem = new InventoryItem(scene, item);
+        player.inventory.getItemStorage().addItem(inventoryItem, inventoryItemJson.x, inventoryItemJson.y);
+      }
+      else
+        console.error("SaveModule::loadJSON - Inventory item not found in APIManager.");
+    }
+
+    // Add items in player equipment slots
+    const equippedJson = json.playerEquippedItems;
+    const equipment = player.inventory.getPlayerEquipment();
+    this.equipItem(scene, equippedJson.helmet, equipment.getHelmetSlot());
+    this.equipItem(scene, equippedJson.armor, equipment.getArmorSlot());
+    this.equipItem(scene, equippedJson.amulet, equipment.getAmuletSlot());
+    this.equipItem(scene, equippedJson.mainhand, equipment.getMainhandSlot());
+    this.equipItem(scene, equippedJson.offhand, equipment.getOffhandSlot());
+    this.equipItem(scene, equippedJson.ring1, equipment.getRing1Slot());
+    this.equipItem(scene, equippedJson.ring2, equipment.getRing2Slot());
+    this.equipItem(scene, equippedJson.belt, equipment.getBeltSlot());
+    this.equipItem(scene, equippedJson.gloves, equipment.getGlovesSlot());
+    this.equipItem(scene, equippedJson.boots, equipment.getBootsSlot());
+  }
+
+  private static equipItem(scene: MainScene, itemCode: number, equipSlot: EquipSlot): void {
+    if (itemCode === undefined)
+      return;
+
+    const item = APIManager.getNewItem(scene, itemCode);
+    if (item) {
+      const inventoryItem = new InventoryItem(scene, item);
+      equipSlot.equipItem(inventoryItem);
+    }
+    else
+      console.error("SaveModule::equipItem - Inventory item not found in APIManager.");
   }
 }

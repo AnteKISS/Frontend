@@ -31,6 +31,7 @@ import { NpcEntity } from '../entities/npcEntity'
 import APIManager from '../managers/APIManager'
 import { Dialogue } from '../uielements/dialogue'
 import KeycloakManager from '../keycloak'
+import SaveModule from '../saves/saveModule'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -145,14 +146,16 @@ export default class MainScene extends Phaser.Scene {
     // });
 
     // Add items to player inventory
-    const bruhMomento = APIManager.getNewItem(this, "Talisman of Baphomet");
-    if (bruhMomento)
-      this.playerTest.inventory.getItemStorage().autoLoot(bruhMomento);
+    /*
+    const talismanOfBaphomet = APIManager.getNewItem(this, 4);
+    if (talismanOfBaphomet)
+      this.playerTest.inventory.getItemStorage().autoLoot(talismanOfBaphomet);
 
-    const test = APIManager.getNewItem(this, "Lethal Dagger");
-    if (test) {
-      this.playerTest.inventory.getItemStorage().autoLoot(test);
+    const lethalDagger = APIManager.getNewItem(this, 22);
+    if (lethalDagger) {
+      this.playerTest.inventory.getItemStorage().autoLoot(lethalDagger);
     }
+    */
 
     Tooltip.init(this);
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
@@ -258,6 +261,7 @@ export default class MainScene extends Phaser.Scene {
     //this.add.existing(youtubePlayer);
     //youtubePlayer.play();
     this.sys.game.canvas.style.cursor = 'url(assets/gui/pointer05.png), auto';
+    SaveModule.loadJSON(this, '{"playerX":640.4260423292552,"playerY":-157.3878947463209,"playerAllocatedPoints":{"strength":1,"dexterity":1,"vitality":1,"intelligence":0},"playerUnallocatedPoints":2,"playerXp":504,"playerInventoryItems":[{"code":4,"x":2,"y":1}],"playerEquippedItems":{"mainhand":22}}');
   }
 
   public update(time: number, deltaTime: number) {

@@ -16,10 +16,10 @@ class ItemInfo {
 }
 
 export default class APIManager {
-  private static itemInfos: Map<string, ItemInfo>; // item name -> info
+  private static itemInfos: Map<number, ItemInfo>; // item id/code -> info
 
-  public static getNewItem(scene: Phaser.Scene, name: string): Item | undefined {
-    const info = this.itemInfos.get(name);
+  public static getNewItem(scene: Phaser.Scene, code: number): Item | undefined {
+    const info = this.itemInfos.get(code);
     if (!info) return undefined;
     return new Item(scene, info.code, info.name, info.type, info.width, info.height, info.inventorySprite, info.entitySprite, info.modifierStats);
   }
@@ -27,7 +27,7 @@ export default class APIManager {
   public static async loadItems(): Promise<void> {
     console.log("Starting to load items from 'localhost:8082/Item/GetAll'...");
 
-    this.itemInfos = new Map<string, ItemInfo>;
+    this.itemInfos = new Map<number, ItemInfo>;
     const response = await axios.get("http://localhost:8082/Item/GetAll");
     const items = response.data;
 
@@ -52,7 +52,7 @@ export default class APIManager {
         this.itemModifierStatFromCodeValue(info.modifierStats, modifier.itemModifierCode, modifier.modifierValue);
       }
 
-      this.itemInfos.set(info.name, info);
+      this.itemInfos.set(info.code, info);
     }
 
     console.log("Item load finished:", this.itemInfos);

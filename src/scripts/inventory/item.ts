@@ -40,6 +40,10 @@ export default class Item extends Phaser.GameObjects.Container {
     return this.sprite.displayWidth;
   }
 
+  public getHeight(): number {
+    return this.sprite.displayHeight;
+  }
+
   public changeToInventorySprite() {
     this.sprite.setTexture(this.inventorySprite);
     this.sprite.setScale(this.inventoryWidth * InventoryConfig.CELL_SIZE / this.sprite.width);

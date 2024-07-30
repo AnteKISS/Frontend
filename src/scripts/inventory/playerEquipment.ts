@@ -72,39 +72,79 @@ export default class PlayerEquipment extends Phaser.GameObjects.Container {
     return this.helmet.getInventoryItem()?.getItem();
   }
 
+  public getHelmetSlot(): EquipSlot {
+    return this.helmet;
+  }
+
   public getArmor(): Item | undefined {
-    return this.helmet.getInventoryItem()?.getItem();
+    return this.armor.getInventoryItem()?.getItem();
+  }
+
+  public getArmorSlot(): EquipSlot {
+    return this.armor;
   }
 
   public getAmulet(): Item | undefined {
     return this.amulet.getInventoryItem()?.getItem();
   }
 
+  public getAmuletSlot(): EquipSlot {
+    return this.amulet;
+  }
+
   public getMainhand(): Item | undefined {
     return this.mainhand.getInventoryItem()?.getItem();
+  }
+
+  public getMainhandSlot(): EquipSlot {
+    return this.mainhand;
   }
 
   public getOffhand(): Item | undefined {
     return this.offhand.getInventoryItem()?.getItem();
   }
 
+  public getOffhandSlot(): EquipSlot {
+    return this.offhand;
+  }
+
   public getRing1(): Item | undefined {
     return this.ring1.getInventoryItem()?.getItem();
+  }
+
+  public getRing1Slot(): EquipSlot {
+    return this.ring1;
   }
 
   public getRing2(): Item | undefined {
     return this.ring2.getInventoryItem()?.getItem();
   }
 
+  public getRing2Slot(): EquipSlot {
+    return this.ring2;
+  }
+
   public getBelt(): Item | undefined {
     return this.belt.getInventoryItem()?.getItem();
+  }
+
+  public getBeltSlot(): EquipSlot {
+    return this.belt;
   }
 
   public getGloves(): Item | undefined {
     return this.gloves.getInventoryItem()?.getItem();
   }
 
+  public getGlovesSlot(): EquipSlot {
+    return this.gloves;
+  }
+
   public getBoots(): Item | undefined {
     return this.boots.getInventoryItem()?.getItem();
+  }
+
+  public getBootsSlot(): EquipSlot {
+    return this.boots;
   }
 }
