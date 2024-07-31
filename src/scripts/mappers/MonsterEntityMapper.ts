@@ -32,8 +32,11 @@ export class MonsterEntityMapper {
           break;
         case 'MOV_SPEED':
           monsterData.baseModifierStats.baseMovementSpeed = stat.statValue || monsterData.baseModifierStats.baseMovementSpeed;
+          monsterData.baseModifierStats.movementSpeed = stat.statValue || monsterData.baseModifierStats.movementSpeed;
           monsterData.tempModifierStats.baseMovementSpeed = stat.statValue || monsterData.tempModifierStats.baseMovementSpeed;
+          monsterData.tempModifierStats.movementSpeed = stat.statValue || monsterData.tempModifierStats.movementSpeed;
           monsterData.totalModifierStats.baseMovementSpeed = stat.statValue || monsterData.totalModifierStats.baseMovementSpeed;
+          monsterData.totalModifierStats.movementSpeed = stat.statValue || monsterData.totalModifierStats.movementSpeed;
           break;
         case 'ATTACK_SPEED':
           monsterData.baseModifierStats.attackSpeed = stat.statValue || monsterData.baseModifierStats.attackSpeed;

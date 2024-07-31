@@ -151,11 +151,11 @@ export default class APIManager {
       } catch (error) {
         console.error("Error while trying to map monster data.", error);
       }
-      if (!APIManager.monsterDatas.has(monsterData.baseCode)) {
-        APIManager.monsterDatas.set(monsterData.baseCode, monsterData);
+      if (!APIManager.monsterDatas.has(monsterData.baseCode.toLowerCase())) {
+        APIManager.monsterDatas.set(monsterData.baseCode.toLowerCase(), monsterData);
       }
-      if (!ActiveEntityFactory.loadedMonsters.has(monsterData.baseCode)) {
-        ActiveEntityFactory.loadedMonsters.set(monsterData.baseCode, monsterData);
+      if (!ActiveEntityFactory.loadedMonsters.has(monsterData.baseCode.toLowerCase())) {
+        ActiveEntityFactory.loadedMonsters.set(monsterData.baseCode.toLowerCase(), monsterData);
       }
     }
     console.log("Monster load finished:", APIManager.monsterDatas);
