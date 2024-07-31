@@ -16,18 +16,32 @@ class ItemInfo {
 }
 
 export default class APIManager {
-  private static itemInfos: Map<number, ItemInfo>; // item id/code -> info
+  private static itemCodeRegistry: Map<number, ItemInfo>;
+  private static itemNameRegistry: Map<string, ItemInfo>;
 
-  public static getNewItem(scene: Phaser.Scene, code: number): Item | undefined {
-    const info = this.itemInfos.get(code);
-    if (!info) return undefined;
-    return new Item(scene, info.code, info.name, info.type, info.width, info.height, info.inventorySprite, info.entitySprite, info.modifierStats);
+  public static getNewItemByCode(scene: Phaser.Scene, code: number): Item | undefined {
+    const info = this.itemCodeRegistry.get(code);
+    if (!info) {
+      console.error("APIManager::getNewItemByCode - Failed to get new item by code.");
+      return undefined;
+    }
+    return this.fetchItem(scene, info);
+  }
+
+  public static getNewItemByName(scene: Phaser.Scene, name: string): Item | undefined {
+    const info = this.itemNameRegistry.get(name);
+    if (!info) {
+      console.error("APIManager::getNewItemByName - Failed to get new item by name.");
+      return undefined;
+    }
+    return this.fetchItem(scene, info);
   }
 
   public static async loadItems(): Promise<void> {
     console.log("Starting to load items from 'localhost:8082/Item/GetAll'...");
 
-    this.itemInfos = new Map<number, ItemInfo>;
+    this.itemCodeRegistry = new Map<number, ItemInfo>;
+    this.itemNameRegistry = new Map<string, ItemInfo>;
     const response = await axios.get("http://localhost:8082/Item/GetAll");
     const items = response.data;
 
@@ -52,10 +66,15 @@ export default class APIManager {
         this.itemModifierStatFromCodeValue(info.modifierStats, modifier.itemModifierCode, modifier.modifierValue);
       }
 
-      this.itemInfos.set(info.code, info);
+      this.itemCodeRegistry.set(info.code, info);
+      this.itemNameRegistry.set(info.name, info);
     }
 
-    console.log("Item load finished:", this.itemInfos);
+    console.log("Item load finished:", this.itemNameRegistry);
+  }
+
+  private static fetchItem(scene: Phaser.Scene, info: ItemInfo): Item | undefined {
+    return new Item(scene, info.code, info.name, info.type, info.width, info.height, info.inventorySprite, info.entitySprite, info.modifierStats);
   }
 
   private static itemTypeFromCode(code: string): ItemType {

@@ -15,6 +15,7 @@ import { ILootable } from './lootable';
 import Item from '../inventory/item';
 import { InactiveEntityFactory } from '../factories/inactiveEntityFactory';
 import ItemEntity from './itemEntity';
+import LootTable from './lootTable';
 
 export class MonsterEntity extends ActiveEntity implements IFightable, ILootable {
 
@@ -22,6 +23,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
   public hitArea: Phaser.Geom.Rectangle;
   public currentBehaviorState: ActiveEntityBehaviorState;
   public behavior: Behavior;
+  public lootTable: LootTable;
 
   constructor(scene, monsterCode) {
     super(scene);
@@ -60,6 +62,8 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
 
     this.collider = new Physics.Collider(this, this.baseSprite, this.onSpriteColliding, this.onEntityColliding);
     this.animator = new ActiveEntityAnimator(this);
+
+    this.lootTable = new LootTable([]);
   }
 
   // Getters/Setters
@@ -133,10 +137,13 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
     if (random > 0.5) {
       return;
     }
-    const item: Item = InactiveEntityFactory.createRandomItem(this.scene);
-    let itemEntity: ItemEntity = EntityManager.instance.createItem(this.scene, item);
-    itemEntity.positionX = this.positionX;
-    itemEntity.positionY = this.positionY;
+
+    const item: Item | undefined = InactiveEntityFactory.createRandomItem(this.scene, this.lootTable);
+    if (item) {
+      let itemEntity: ItemEntity = EntityManager.instance.createItem(this.scene, item);
+      itemEntity.positionX = this.positionX;
+      itemEntity.positionY = this.positionY;
+    }
   }
 
   onSpriteColliding = (hitEntity: BaseEntity): void => {

@@ -67,7 +67,7 @@ export default class SaveModule {
 
     // Add items in player inventory
     for (const inventoryItemJson of json.playerInventoryItems) {
-      const item = APIManager.getNewItem(scene, inventoryItemJson.code);
+      const item = APIManager.getNewItemByCode(scene, inventoryItemJson.code);
       if (item) {
         const inventoryItem = new InventoryItem(scene, item);
         player.inventory.getItemStorage().addItem(inventoryItem, inventoryItemJson.x, inventoryItemJson.y);
@@ -95,7 +95,7 @@ export default class SaveModule {
     if (slotData.code === undefined)
       return;
 
-    const item = APIManager.getNewItem(scene, slotData.code);
+    const item = APIManager.getNewItemByCode(scene, slotData.code);
     if (item) {
       const inventoryItem = new InventoryItem(scene, item);
       equipSlot.equipItem(inventoryItem);

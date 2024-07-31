@@ -97,7 +97,7 @@ export default class PregameOpenSave extends Phaser.Scene {
 
   Save1() {
     console.log('Save1 button clicked');
-    this.scene.start('MainScene', { save: '{"playerX":640.4260423292552,"playerY":-157.3878947463209,"playerAllocatedPoints":{"strength":1,"dexterity":1,"vitality":1,"intelligence":0},"playerUnallocatedPoints":2,"playerXp":504,"playerInventoryItems":[{"code":4,"x":2,"y":1}],"playerEquippedItems":{"mainhand":22}}' });
+    this.scene.start('MainScene', { save: '{"playerX":-289.8033437619209,"playerY":-431.31437688232006,"playerAllocatedPoints":{"strength":0,"dexterity":2,"vitality":0,"intelligence":0},"playerUnallocatedPoints":3,"playerXp":582,"playerInventoryItems":[{"code":15,"x":2,"y":0}],"playerEquippedItems":[{"slot":"helmet"},{"slot":"armor"},{"slot":"amulet"},{"slot":"mainhand"},{"slot":"offhand"},{"slot":"ring1"},{"slot":"ring2","code":6},{"slot":"belt"},{"slot":"gloves"},{"slot":"boots"}]}' });
   }
 
   Save2() {
