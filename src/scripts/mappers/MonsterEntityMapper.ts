@@ -10,8 +10,8 @@ export class MonsterEntityMapper {
     if (!data) {
       throw new MonsterDataInvalidError("Monster data is null or undefined.");
     }
-    if (!data.code) {
-      throw new MonsterDataInvalidError("Monster data is missing an id.");
+    if (!data.baseCode) {
+      throw new MonsterDataInvalidError("Monster data is missing a base code.");
     }
     let monsterData: MonsterData = new MonsterData();
     monsterData.dynamicStats = new ActiveEntityDynamicStats();

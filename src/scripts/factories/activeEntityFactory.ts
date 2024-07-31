@@ -57,7 +57,6 @@ export class ActiveEntityFactory {
   }
 
   public static createMonster(scene: Phaser.Scene, monsterCode: string): MonsterEntity {
-    // Check if monsterCode is valid then proceed
     let entity: MonsterEntity = new MonsterEntity(scene, monsterCode);
     entity.code = monsterCode;
     entity.species = EntitySpecies.UNDEAD;
