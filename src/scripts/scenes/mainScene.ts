@@ -25,10 +25,6 @@ import KeycloakManager from '../keycloak'
 import { MonsterEntity } from '../entities/monsterEntity'
 import { MinimapCamera } from '../cameras/minimapCamera'
 
-const COLOR_MAIN = 0x424242;
-const COLOR_LIGHT = 0x6d6d6d;
-const COLOR_DARK = 0x1b1b1b;
-
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
   public minimapCamera: MinimapCamera;
@@ -119,7 +115,6 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest.onPlayerDeath.addHandler(playerDeathHandler);
 
     this.entityHealthBar = new EntityHealthBar(this);
-    // this.entityHealthBar.entity = this.monsterTest;
     this.gui.spellBar.setSpellBook(this.playerTest.spellBook);
 
     this.input.setDefaultCursor('default');
@@ -138,12 +133,6 @@ export default class MainScene extends Phaser.Scene {
     // Setup inventory test
     this.input.keyboard!.on('keydown-I', () => this.playerTest.inventory.visible ? this.playerTest.inventory.hide() : this.playerTest.inventory.show());
     this.input.keyboard!.on('keydown-ESC', () => this.playerTest.inventory.hide());
-
-    // this.input.keyboard!.on('keydown-ESC', () => {
-    //   if (this.playerTest.isDead()) {
-    //     this.playerTest.resp
-    //   }
-    // });
 
     // Add items to player inventory
     const bruhMomento = APIManager.getNewItem(this, "Talisman of Baphomet");

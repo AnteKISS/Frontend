@@ -6,8 +6,6 @@ export default class PreloadScene extends Phaser.Scene {
   }
 
   preload() {
-    this.loadPlugins();
-
     this.load.image('game-logo', 'assets/img/rat_474x278.png');
     this.load.image('sphereTexture', 'assets/gui/infobars/itsmars_orb_fill.png');
     this.load.image('bigContour', 'assets/gui/infobars/itsmars_orb_back1.png');
@@ -230,16 +228,6 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.spritesheet('wood_tiles', 'assets/sprites/tiles/wood.png', { frameWidth: 256, frameHeight: 128 });
     this.load.spritesheet('flat_stone_walls', 'assets/sprites/tiles/flat_stone_walls.png', { frameWidth: 128, frameHeight: 192 });
     this.load.spritesheet('brick_walls', 'assets/sprites/tiles/brick_walls.png', { frameWidth: 128, frameHeight: 192 });
-  }
-
-  private loadPlugins(): void {
-    this.load.scenePlugin({
-      key: 'rexuiplugin',
-      url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
-      sceneKey: 'rexUI'
-    });
-    this.load.image('settings', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/assets/images/settings.png');
-    this.load.image('arrow-down', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/assets/images/arrow-down.png');
   }
 }
 

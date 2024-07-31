@@ -11,7 +11,6 @@ import HorrifiPipelinePlugin from 'phaser3-rex-plugins/plugins/horrifipipeline-p
 import OutlinePipelinePlugin from 'phaser3-rex-plugins/plugins/outlinepipeline-plugin.js';
 import KeycloakManager from './keycloak';
 import YoutubePlayerPlugin from 'phaser3-rex-plugins/plugins/youtubeplayer-plugin.js';
-import UIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import PregameOpenSave from './scenes/pregameOpenSave';
 import PregameNewGame from './scenes/pregameNewGame';
 
@@ -60,12 +59,7 @@ const config = {
         key: 'rexYoutubePlayer',
         plugin: YoutubePlayerPlugin,
         start: true
-      },
-      // {
-      //   key: 'rexUI',
-      //   plugin: UIPlugin,
-      //   mapping: 'rexUI'
-      // }
+      }
     ]
   }
 }
