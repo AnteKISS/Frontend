@@ -31,6 +31,7 @@ import { NpcEntity } from '../entities/npcEntity'
 import APIManager from '../managers/APIManager'
 import { Dialogue } from '../uielements/dialogue'
 import KeycloakManager from '../keycloak'
+import SaveModule from '../saves/saveModule'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -58,6 +59,8 @@ export default class MainScene extends Phaser.Scene {
   private music: Phaser.Sound.WebAudioSound;
   private playerLight: Phaser.GameObjects.PointLight;
 
+  public save: string;
+
   // private testDiaglogue: Dialogue;
 
   public constructor() {
@@ -65,6 +68,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public init(data: any): void {
+    if (data?.save) this.save = data.save;
   }
 
   public create() {
@@ -145,14 +149,16 @@ export default class MainScene extends Phaser.Scene {
     // });
 
     // Add items to player inventory
-    const bruhMomento = APIManager.getNewItem(this, "Talisman of Baphomet");
-    if (bruhMomento)
-      this.playerTest.inventory.getItemStorage().autoLoot(bruhMomento);
+    /*
+    const talismanOfBaphomet = APIManager.getNewItem(this, 4);
+    if (talismanOfBaphomet)
+      this.playerTest.inventory.getItemStorage().autoLoot(talismanOfBaphomet);
 
-    const test = APIManager.getNewItem(this, "Lethal Dagger");
-    if (test) {
-      this.playerTest.inventory.getItemStorage().autoLoot(test);
+    const lethalDagger = APIManager.getNewItem(this, 22);
+    if (lethalDagger) {
+      this.playerTest.inventory.getItemStorage().autoLoot(lethalDagger);
     }
+    */
 
     Tooltip.init(this);
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
@@ -258,6 +264,8 @@ export default class MainScene extends Phaser.Scene {
     //this.add.existing(youtubePlayer);
     //youtubePlayer.play();
     this.sys.game.canvas.style.cursor = 'url(assets/gui/pointer05.png), auto';
+    console.log(this.save);
+    if (this.save) SaveModule.loadJSON(this, this.save);
   }
 
   public update(time: number, deltaTime: number) {

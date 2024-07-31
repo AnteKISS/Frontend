@@ -5,6 +5,7 @@ import ActiveEntityModifierStats from "../entities/activeEntityModifierStats";
 import StatModule from "../entities/statModule";
 
 class ItemInfo {
+  code: number;
   name: string;
   type: ItemType;
   width: number;
@@ -15,18 +16,18 @@ class ItemInfo {
 }
 
 export default class APIManager {
-  private static itemInfos: Map<string, ItemInfo>; // item name -> info
+  private static itemInfos: Map<number, ItemInfo>; // item id/code -> info
 
-  public static getNewItem(scene: Phaser.Scene, name: string): Item | undefined {
-    const info = this.itemInfos.get(name);
+  public static getNewItem(scene: Phaser.Scene, code: number): Item | undefined {
+    const info = this.itemInfos.get(code);
     if (!info) return undefined;
-    return new Item(scene, info.name, info.type, info.width, info.height, info.inventorySprite, info.entitySprite, info.modifierStats);
+    return new Item(scene, info.code, info.name, info.type, info.width, info.height, info.inventorySprite, info.entitySprite, info.modifierStats);
   }
 
   public static async loadItems(): Promise<void> {
     console.log("Starting to load items from 'localhost:8082/Item/GetAll'...");
 
-    this.itemInfos = new Map<string, ItemInfo>;
+    this.itemInfos = new Map<number, ItemInfo>;
     const response = await axios.get("http://localhost:8082/Item/GetAll");
     const items = response.data;
 
@@ -34,6 +35,7 @@ export default class APIManager {
       const [width, height] = this.itemSizeFromCode(json.itemSizeCode);
       const [inventorySprite, entitySprite] = this.itemSpriteFromName(json.itemName);
       const info = new ItemInfo;
+      info.code = json.itemId;
       info.name = json.itemName;
       info.type = this.itemTypeFromCode(json.itemSlotCode);
       info.width = width;
@@ -50,7 +52,7 @@ export default class APIManager {
         this.itemModifierStatFromCodeValue(info.modifierStats, modifier.itemModifierCode, modifier.modifierValue);
       }
 
-      this.itemInfos.set(info.name, info);
+      this.itemInfos.set(info.code, info);
     }
 
     console.log("Item load finished:", this.itemInfos);

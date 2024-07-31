@@ -4,6 +4,7 @@ import InventoryConfig from './inventoryConfig'
 import { ItemType } from './itemType'
 
 export default class Item extends Phaser.GameObjects.Container {
+  code: number;
   name: string;
   sprite: Phaser.GameObjects.Sprite;
   inventoryWidth: number;
@@ -14,8 +15,9 @@ export default class Item extends Phaser.GameObjects.Container {
   inventorySprite: string;
   entitySprite: string;
 
-  public constructor(scene: Phaser.Scene, name: string, type: ItemType, width: number, height: number, inventorySprite: string, entitySprite: string, modifierStats: ActiveEntityModifierStats) {
+  public constructor(scene: Phaser.Scene, code: number, name: string, type: ItemType, width: number, height: number, inventorySprite: string, entitySprite: string, modifierStats: ActiveEntityModifierStats) {
     super(scene, 0, 0);
+    this.code = code;
     this.name = name;
     this.itemType = type;
     this.inventoryWidth = width;
@@ -36,6 +38,10 @@ export default class Item extends Phaser.GameObjects.Container {
 
   public getWidth(): number {
     return this.sprite.displayWidth;
+  }
+
+  public getHeight(): number {
+    return this.sprite.displayHeight;
   }
 
   public changeToInventorySprite() {
