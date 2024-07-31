@@ -1,13 +1,7 @@
 import FpsText from '../objects/fpsText'
-import Item from '../inventory/item'
-import InventoryItem from '../inventory/inventoryItem'
-
-import { ItemType } from '../inventory/itemType'
-
 import GUI from '../objects/gui'
 import { PlayerEntity } from '../entities/playerEntity';
 import { EntityManager } from '../managers/entityManager';
-import { OutlinePipeline } from '../pipelines/outlinePipeline';
 import { TileColor } from '../tiles/tiledrawer'
 import CampaignManager from '../managers/campaignmanager'
 import Point from '../types/point'
@@ -21,18 +15,19 @@ import ItemEntity from '../entities/itemEntity'
 import { MathModule } from '../utilities/mathModule'
 import { GameInput } from '../inputs/gameInputs'
 import PauseMenu from './pauseMenu'
-import InGameOptions from './inGameOptions'
 import SoundManager from '../managers/soundManager'
 import { GeneralEventManager, PlayerEquipmentEventManager } from '../managers/eventManager'
-import { UiEvents } from '../events/uiEvents'
 import { KillQuest } from '../quest/killQuest'
 import { QuestUI } from '../quest/questUI'
 import { NpcEntity } from '../entities/npcEntity'
 import APIManager from '../managers/APIManager'
-import { Dialogue } from '../uielements/dialogue'
 import KeycloakManager from '../keycloak'
 import { MonsterEntity } from '../entities/monsterEntity'
 import { MinimapCamera } from '../cameras/minimapCamera'
+
+const COLOR_MAIN = 0x424242;
+const COLOR_LIGHT = 0x6d6d6d;
+const COLOR_DARK = 0x1b1b1b;
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
