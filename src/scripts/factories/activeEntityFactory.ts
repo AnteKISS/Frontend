@@ -4,12 +4,12 @@ import { MonsterEntity } from '../entities/monsterEntity';
 import { NpcEntity } from '../entities/npcEntity';
 import { PlayerEntity } from '../entities/playerEntity';
 import { EntitySpecies } from '../enums/entitySpecies';
+import { MonsterData } from '../mappers/MonsterEntityMapper';
 import FireBolt from '../spells/craftedSpells/firebolt';
 import ThrowSpear from '../spells/craftedSpells/throwSpear';
 
 export class ActiveEntityFactory {
-
-  public static loadedEntities: Map<string, any> = new Map();
+  public static loadedMonsters: Map<string, MonsterData> = new Map();
 
   public static createPlayer(scene: Phaser.Scene): PlayerEntity {
     let entity: PlayerEntity = new PlayerEntity(scene);

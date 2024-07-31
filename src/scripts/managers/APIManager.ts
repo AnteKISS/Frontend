@@ -4,6 +4,9 @@ import Item from "../inventory/item";
 import ActiveEntityModifierStats from "../entities/activeEntityModifierStats";
 import StatModule from "../entities/statModule";
 import { MonsterData, MonsterEntityMapper } from "../mappers/MonsterEntityMapper";
+import MonsterDataInvalidError from "../errors/monsterDataInvalidError";
+import { getMethodName } from "../utilities/errorMethodName";
+import { ActiveEntityFactory } from "../factories/activeEntityFactory";
 
 class ItemInfo {
   name: string;
@@ -17,7 +20,7 @@ class ItemInfo {
 
 export default class APIManager {
   private static itemInfos: Map<string, ItemInfo>; // item name -> info
-  private static monsterDatas: Map<string, MonsterData>; // monster name -> data
+  private static monsterDatas: Map<string, MonsterData>;
 
   public static getNewItem(scene: Phaser.Scene, name: string): Item | undefined {
     const info = this.itemInfos.get(name);
@@ -135,40 +138,27 @@ export default class APIManager {
   }
 
   public static async loadMonsters(): Promise<void> {
-    console.log("Starting to load items from 'localhost:8082/Monster/GetAll'...");
+    console.log("Starting to load monsters from 'localhost:8082/Monster/GetAll'...");
 
-    // this.itemInfos = new Map<string, ItemInfo>;
     const response = await axios.get("http://localhost:8082/Monster/GetAll");
     const monsters = response.data;
 
+    APIManager.monsterDatas = new Map<string, MonsterData>();
+
     for (const monster of monsters) {
-      const monsterData = MonsterEntityMapper.mapMonsterData(monster);
-      APIManager.monsterDatas.set(monsterData.code, monsterData);
+      let monsterData: MonsterData = new MonsterData();
+      try {
+        monsterData = MonsterEntityMapper.mapMonsterData(monster);
+      } catch (error) {
+        console.error("Error while trying to map monster data.", error);
+      }
+      if (!APIManager.monsterDatas.has(monsterData.code)) {
+        APIManager.monsterDatas.set(monsterData.code, monsterData);
+      }
+      if (!ActiveEntityFactory.loadedMonsters.has(monsterData.code)) {
+        ActiveEntityFactory.loadedMonsters.set(monsterData.code, monsterData);
+      }
     }
-
-    // for (const json of items) {
-    //   const [width, height] = this.itemSizeFromCode(json.itemSizeCode);
-    //   const [inventorySprite, entitySprite] = this.itemSpriteFromName(json.itemName);
-    //   const info = new ItemInfo;
-    //   info.name = json.itemName;
-    //   info.type = this.itemTypeFromCode(json.itemSlotCode);
-    //   info.width = width;
-    //   info.height = height;
-    //   info.inventorySprite = inventorySprite;
-    //   info.entitySprite = entitySprite;
-
-    //   info.modifierStats = new ActiveEntityModifierStats();
-    //   StatModule.resetModifierStats(info.modifierStats);
-    //   for (const modifier of json.itemBaseStats)
-    //     this.itemModifierStatFromCodeValue(info.modifierStats, modifier.statCode, modifier.statValue);
-    //   for (const modifier of json.itemModifiers) {
-    //     console.log(modifier);
-    //     this.itemModifierStatFromCodeValue(info.modifierStats, modifier.itemModifierCode, modifier.modifierValue);
-    //   }
-
-    //   this.itemInfos.set(info.name, info);
-    // }
-
-    // console.log("Item load finished:", this.itemInfos);
+    console.log("Monster load finished:", APIManager.monsterDatas);
   }
 }
