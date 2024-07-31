@@ -59,6 +59,8 @@ export default class MainScene extends Phaser.Scene {
   private music: Phaser.Sound.WebAudioSound;
   private playerLight: Phaser.GameObjects.PointLight;
 
+  public save: string;
+
   // private testDiaglogue: Dialogue;
 
   public constructor() {
@@ -66,6 +68,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public init(data: any): void {
+    if (data?.save) this.save = data.save;
   }
 
   public create() {
@@ -261,7 +264,8 @@ export default class MainScene extends Phaser.Scene {
     //this.add.existing(youtubePlayer);
     //youtubePlayer.play();
     this.sys.game.canvas.style.cursor = 'url(assets/gui/pointer05.png), auto';
-    SaveModule.loadJSON(this, '{"playerX":640.4260423292552,"playerY":-157.3878947463209,"playerAllocatedPoints":{"strength":1,"dexterity":1,"vitality":1,"intelligence":0},"playerUnallocatedPoints":2,"playerXp":504,"playerInventoryItems":[{"code":4,"x":2,"y":1}],"playerEquippedItems":{"mainhand":22}}');
+    console.log(this.save);
+    if (this.save) SaveModule.loadJSON(this, this.save);
   }
 
   public update(time: number, deltaTime: number) {
