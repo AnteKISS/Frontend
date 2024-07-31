@@ -15,6 +15,7 @@ import { ILootable } from './lootable';
 import Item from '../inventory/item';
 import { InactiveEntityFactory } from '../factories/inactiveEntityFactory';
 import ItemEntity from './itemEntity';
+import { MonsterRarity } from '../enums/monsterRarity';
 
 export class MonsterEntity extends ActiveEntity implements IFightable, ILootable {
 
@@ -22,10 +23,12 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
   public hitArea: Phaser.Geom.Rectangle;
   public currentBehaviorState: ActiveEntityBehaviorState;
   public behavior: Behavior;
+  public quality: MonsterRarity;
 
   constructor(scene, monsterCode) {
     super(scene);
     this.code = monsterCode;
+    this.quality = MonsterRarity.NORMAL;
     scene.add.existing(this);
     this.type = 'MonsterEntity';
     this.baseSprite = scene.add.sprite(0, 0, 'baseTexture');
@@ -97,6 +100,10 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
       return;
     }
     this.dynamicStats.health -= amount;
+    if (this.target == null && !this.isDead) {
+      this.destinationX = damageSource.positionX;
+      this.destinationY = damageSource.positionY;
+    }
     if (this.dynamicStats.health <= 0) {
       this.dynamicStats.health = 0;
       this.destinationX = this.positionX;
