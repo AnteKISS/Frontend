@@ -1,4 +1,4 @@
-import { animationConfigKeys, minotaur_0_AnimationConfig } from '../configs/animationConfig';
+import { animationConfigKeys, minotaur_AnimationConfig } from '../configs/animationConfig';
 import { PlayerEntity } from '../entities/playerEntity';
 import { EntityOrientation, getOrientationString } from '../enums/entityOrientation';
 

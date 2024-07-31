@@ -131,4 +131,37 @@ export default class APIManager {
       case "MOV_SPEED_MOD": stats.movementSpeed += value; break;
     }
   }
+
+  public static async loadMonsters(): Promise<void> {
+    console.log("Starting to load items from 'localhost:8082/Monster/GetAll'...");
+
+    // this.itemInfos = new Map<string, ItemInfo>;
+    const response = await axios.get("http://localhost:8082/Monster/GetAll");
+    const monsters = response.data;
+
+    // for (const json of items) {
+    //   const [width, height] = this.itemSizeFromCode(json.itemSizeCode);
+    //   const [inventorySprite, entitySprite] = this.itemSpriteFromName(json.itemName);
+    //   const info = new ItemInfo;
+    //   info.name = json.itemName;
+    //   info.type = this.itemTypeFromCode(json.itemSlotCode);
+    //   info.width = width;
+    //   info.height = height;
+    //   info.inventorySprite = inventorySprite;
+    //   info.entitySprite = entitySprite;
+
+    //   info.modifierStats = new ActiveEntityModifierStats();
+    //   StatModule.resetModifierStats(info.modifierStats);
+    //   for (const modifier of json.itemBaseStats)
+    //     this.itemModifierStatFromCodeValue(info.modifierStats, modifier.statCode, modifier.statValue);
+    //   for (const modifier of json.itemModifiers) {
+    //     console.log(modifier);
+    //     this.itemModifierStatFromCodeValue(info.modifierStats, modifier.itemModifierCode, modifier.modifierValue);
+    //   }
+
+    //   this.itemInfos.set(info.name, info);
+    // }
+
+    // console.log("Item load finished:", this.itemInfos);
+  }
 }

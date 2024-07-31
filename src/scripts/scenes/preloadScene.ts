@@ -175,6 +175,7 @@ export default class PreloadScene extends Phaser.Scene {
 
     this.initializeSpritesheets();
     APIManager.loadItems();
+    APIManager.loadMonsters();
   }
 
   create() {
@@ -204,16 +205,16 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.spritesheet('slingshot', 'assets/sprites/player/slingshot.png', { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet('staff', 'assets/sprites/player/staff.png', { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet('wand', 'assets/sprites/player/wand.png', { frameWidth: 128, frameHeight: 128 });
-    this.load.spritesheet('zombie_0', 'assets/sprites/monster/zombie_0.png', { frameWidth: 128, frameHeight: 128 });
-    this.load.spritesheet('minotaur_0', 'assets/sprites/monster/minotaur_0.png', { frameWidth: 128, frameHeight: 128 });
-    this.load.spritesheet('skeleton_0', 'assets/sprites/monster/skeleton_0.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('zombie', 'assets/sprites/monster/zombie.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('minotaur', 'assets/sprites/monster/minotaur.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('skeleton', 'assets/sprites/monster/skeleton.png', { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet('icicle', 'assets/sprites/spell/icicle.png', { frameWidth: 64, frameHeight: 64 });
     this.load.spritesheet('firebolt', 'assets/sprites/spell/firebolt.png', { frameWidth: 64, frameHeight: 64 });
     this.load.spritesheet('quake', 'assets/sprites/spell/quake.png', { frameWidth: 256, frameHeight: 128 });
     this.load.spritesheet('throwSpear', 'assets/sprites/spell/throwSpear.png', { frameWidth: 64, frameHeight: 64 });
-    this.load.spritesheet('goblin_0', 'assets/sprites/monster/goblin_0.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('goblin', 'assets/sprites/monster/goblin.png', { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet('goblin_lumberjack_black', 'assets/sprites/monster/goblin_lumberjack_black.png', { frameWidth: 128, frameHeight: 128 });
-    this.load.spritesheet('spider_0', 'assets/sprites/monster/spider_0.png', { frameWidth: 128, frameHeight: 128 });
+    this.load.spritesheet('spider', 'assets/sprites/monster/spider.png', { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet('spider_large', 'assets/sprites/monster/spider_large.png', { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet('spider_giant', 'assets/sprites/monster/spider_giant.png', { frameWidth: 128, frameHeight: 128 });
     this.load.spritesheet('wyvern_composite', 'assets/sprites/monster/wyvern_composite.png', { frameWidth: 128, frameHeight: 128 });

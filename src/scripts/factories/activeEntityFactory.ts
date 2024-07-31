@@ -9,6 +9,8 @@ import ThrowSpear from '../spells/craftedSpells/throwSpear';
 
 export class ActiveEntityFactory {
 
+  public static loadedEntities: Map<string, any> = new Map();
+
   public static createPlayer(scene: Phaser.Scene): PlayerEntity {
     let entity: PlayerEntity = new PlayerEntity(scene);
     entity.code = 'player';
