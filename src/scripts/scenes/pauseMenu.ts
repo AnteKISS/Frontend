@@ -122,7 +122,7 @@ export default class PauseMenu extends Phaser.GameObjects.Container {
 
   exitGame() {
     console.log('Exit button clicked');
-    //this.scene.start('MainMenu'); 
+    this.scene.scene.start('MainMenu'); 
   }
 
   public show(): void {
