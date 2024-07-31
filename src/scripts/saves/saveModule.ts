@@ -20,18 +20,18 @@ export default class SaveModule {
       playerUnallocatedPoints: player.attributeAllocation.getTotalAvailablePoint(),
       playerXp: player.exp.getTotalExp(),
       playerInventoryItems: new Array<any>(),
-      playerEquippedItems: {
-        helmet: player.inventory.getPlayerEquipment().getHelmet()?.code,
-        armor: player.inventory.getPlayerEquipment().getArmor()?.code,
-        amulet: player.inventory.getPlayerEquipment().getAmulet()?.code,
-        mainhand: player.inventory.getPlayerEquipment().getMainhand()?.code,
-        offhand: player.inventory.getPlayerEquipment().getOffhand()?.code,
-        ring1: player.inventory.getPlayerEquipment().getRing1()?.code,
-        ring2: player.inventory.getPlayerEquipment().getRing2()?.code,
-        belt: player.inventory.getPlayerEquipment().getBelt()?.code,
-        gloves: player.inventory.getPlayerEquipment().getGloves()?.code,
-        boots: player.inventory.getPlayerEquipment().getBoots()?.code,
-      },
+      playerEquippedItems: [
+        { slot: "helmet", code: player.inventory.getPlayerEquipment().getHelmet()?.code },
+        { slot: "armor", code: player.inventory.getPlayerEquipment().getArmor()?.code },
+        { slot: "amulet", code: player.inventory.getPlayerEquipment().getAmulet()?.code },
+        { slot: "mainhand", code: player.inventory.getPlayerEquipment().getMainhand()?.code },
+        { slot: "offhand", code: player.inventory.getPlayerEquipment().getOffhand()?.code },
+        { slot: "ring1", code: player.inventory.getPlayerEquipment().getRing1()?.code },
+        { slot: "ring2", code: player.inventory.getPlayerEquipment().getRing2()?.code },
+        { slot: "belt", code: player.inventory.getPlayerEquipment().getBelt()?.code },
+        { slot: "gloves", code: player.inventory.getPlayerEquipment().getGloves()?.code },
+        { slot: "boots", code: player.inventory.getPlayerEquipment().getBoots()?.code },
+      ],
     };
 
     // Get player inventory items into JSON
@@ -79,23 +79,23 @@ export default class SaveModule {
     // Add items in player equipment slots
     const equippedJson = json.playerEquippedItems;
     const equipment = player.inventory.getPlayerEquipment();
-    this.equipItem(scene, equippedJson.helmet, equipment.getHelmetSlot());
-    this.equipItem(scene, equippedJson.armor, equipment.getArmorSlot());
-    this.equipItem(scene, equippedJson.amulet, equipment.getAmuletSlot());
-    this.equipItem(scene, equippedJson.mainhand, equipment.getMainhandSlot());
-    this.equipItem(scene, equippedJson.offhand, equipment.getOffhandSlot());
-    this.equipItem(scene, equippedJson.ring1, equipment.getRing1Slot());
-    this.equipItem(scene, equippedJson.ring2, equipment.getRing2Slot());
-    this.equipItem(scene, equippedJson.belt, equipment.getBeltSlot());
-    this.equipItem(scene, equippedJson.gloves, equipment.getGlovesSlot());
-    this.equipItem(scene, equippedJson.boots, equipment.getBootsSlot());
+    this.equipItem(scene, equippedJson[0], equipment.getHelmetSlot());
+    this.equipItem(scene, equippedJson[1], equipment.getArmorSlot());
+    this.equipItem(scene, equippedJson[2], equipment.getAmuletSlot());
+    this.equipItem(scene, equippedJson[3], equipment.getMainhandSlot());
+    this.equipItem(scene, equippedJson[4], equipment.getOffhandSlot());
+    this.equipItem(scene, equippedJson[5], equipment.getRing1Slot());
+    this.equipItem(scene, equippedJson[6], equipment.getRing2Slot());
+    this.equipItem(scene, equippedJson[7], equipment.getBeltSlot());
+    this.equipItem(scene, equippedJson[8], equipment.getGlovesSlot());
+    this.equipItem(scene, equippedJson[9], equipment.getBootsSlot());
   }
 
-  private static equipItem(scene: MainScene, itemCode: number, equipSlot: EquipSlot): void {
-    if (itemCode === undefined)
+  private static equipItem(scene: MainScene, slotData: any, equipSlot: EquipSlot): void {
+    if (slotData.code === undefined)
       return;
 
-    const item = APIManager.getNewItem(scene, itemCode);
+    const item = APIManager.getNewItem(scene, slotData.code);
     if (item) {
       const inventoryItem = new InventoryItem(scene, item);
       equipSlot.equipItem(inventoryItem);
