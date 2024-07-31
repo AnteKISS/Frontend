@@ -31,6 +31,7 @@ import { NpcEntity } from '../entities/npcEntity'
 import APIManager from '../managers/APIManager'
 import { Dialogue } from '../uielements/dialogue'
 import KeycloakManager from '../keycloak'
+import { CharacterStatsUI } from '../uielements/characterStatsUI'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -45,6 +46,7 @@ export default class MainScene extends Phaser.Scene {
   public npcTest: NpcEntity;
   private entityHealthBar: EntityHealthBar;
   private gui: GUI;
+  private characterStats: CharacterStatsUI;
 
   private pauseMenu: PauseMenu;
   private questUI: QuestUI;
@@ -127,12 +129,16 @@ export default class MainScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown-A', () => this.attributeGUI.aKeyPressed());
     this.input.keyboard?.on('keydown-ESC', () => this.attributeGUI.hide());
 
+    //Setup CharacterStats Panel
+    this.characterStats = new CharacterStatsUI(this, this.playerTest);
+
+    this.input.keyboard?.on('keydown-C', () => this.characterStats.cKeyPressed());
+    this.input.keyboard?.on('keydown-ESC', () => this.characterStats.hide());
+
     //Setup pause menu
     this.pauseMenu = new PauseMenu(this);
     this.input.keyboard!.on('keydown-P', () => this.pauseMenu.visible ? this.pauseMenu.hide() : this.pauseMenu.show());
     this.input.keyboard!.on('keydown-ESC', () => this.pauseMenu.hide());
-
-
 
     // Setup inventory test
     this.input.keyboard!.on('keydown-I', () => this.playerTest.inventory.visible ? this.playerTest.inventory.hide() : this.playerTest.inventory.show());
@@ -205,7 +211,8 @@ export default class MainScene extends Phaser.Scene {
         this.pauseMenu,
         this.playerTest.inventory,
         this.attributeGUI,
-        this.questUI
+        this.questUI,
+        this.characterStats
       ]
     );
     // TODO: Find a way to make the ignore list more dynamic
@@ -278,6 +285,7 @@ export default class MainScene extends Phaser.Scene {
     this.attributeGUI.update();
     SpellColliderManager.getInstance.update();
     this.questUI.drawUI(this);
+    this.characterStats.update();
     // this.testDiaglogue.update(time, deltaTime);
 
     if (this.gameInputs.showGroundItemsKey.isDown) {
