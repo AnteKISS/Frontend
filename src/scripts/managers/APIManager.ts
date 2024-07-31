@@ -3,6 +3,7 @@ import axios from "axios";
 import Item from "../inventory/item";
 import ActiveEntityModifierStats from "../entities/activeEntityModifierStats";
 import StatModule from "../entities/statModule";
+import { MonsterData, MonsterEntityMapper } from "../mappers/MonsterEntityMapper";
 
 class ItemInfo {
   name: string;
@@ -16,6 +17,7 @@ class ItemInfo {
 
 export default class APIManager {
   private static itemInfos: Map<string, ItemInfo>; // item name -> info
+  private static monsterDatas: Map<string, MonsterData>; // monster name -> data
 
   public static getNewItem(scene: Phaser.Scene, name: string): Item | undefined {
     const info = this.itemInfos.get(name);
@@ -138,6 +140,11 @@ export default class APIManager {
     // this.itemInfos = new Map<string, ItemInfo>;
     const response = await axios.get("http://localhost:8082/Monster/GetAll");
     const monsters = response.data;
+
+    for (const monster of monsters) {
+      const monsterData = MonsterEntityMapper.mapMonsterData(monster);
+      APIManager.monsterDatas.set(monsterData.code, monsterData);
+    }
 
     // for (const json of items) {
     //   const [width, height] = this.itemSizeFromCode(json.itemSizeCode);

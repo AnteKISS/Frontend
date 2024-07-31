@@ -22,7 +22,7 @@ export default class SoundManager implements IObserver {
   private static instance: SoundManager | null = null;
 
   private constructor() {
-
+    
   }
 
   public static getInstance(): SoundManager {
