@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import Setting from './setting'
+import SoundManager from '../managers/soundManager';
 
 export default class InGameOptions extends Phaser.GameObjects.Container {
   private closeButton: Phaser.GameObjects.Sprite;
@@ -14,9 +14,9 @@ export default class InGameOptions extends Phaser.GameObjects.Container {
   private sliderEffectSound: Phaser.GameObjects.Container;
   private sliderMenuSound: Phaser.GameObjects.Container;
 
-  public musicSound: number;
-  public effectSound: number;
-  public backgroundSound: number;
+  public backgroundSound: number = 50;
+  public effectSound: number = 50;
+  public menuSound: number = 50;
 
   constructor(scene: Phaser.Scene) {
     super(scene, 0, 0);
@@ -36,8 +36,8 @@ export default class InGameOptions extends Phaser.GameObjects.Container {
       console.log(`Effect Sound: ${this.effectSound}`);
     });
     this.sliderMenuSound = this.createSlider(`Menu Sound:`, 55, 260, (value: number) => {
-      this.musicSound = value;
-      console.log(`Menu Sound: ${this.musicSound}`);
+      this.menuSound = value;
+      console.log(`Menu Sound: ${this.menuSound}`);
     });
 
 
@@ -134,8 +134,15 @@ export default class InGameOptions extends Phaser.GameObjects.Container {
   private updateSliderValue(slider: Phaser.GameObjects.Sprite, sliderBar: Phaser.GameObjects.Sprite): number {
     const sliderPosition = slider.x - (sliderBar.x - sliderBar.width / 2);
     const value = (sliderPosition / sliderBar.width) * 100;
+    this.update();
     return value;
   }
+
+  update(): void {
+    SoundManager.getInstance().backgroundSoundManager.setVolume(this.backgroundSound/100) ;
+    SoundManager.getInstance().uiSoundManager.setVolume(this.menuSound/100);
+    SoundManager.getInstance().effectsSoundManager.setVolume(this.effectSound/100);
+}
 }
 
 

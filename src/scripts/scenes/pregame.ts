@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
-import { join } from 'path';
-//import { readFile } from 'fs/promises';
+import Username from './username';
+
+
 
 
 
@@ -16,10 +17,14 @@ export default class Pregame extends Phaser.Scene {
     
     private OpenSaveButton: Phaser.GameObjects.Container;
     private NewGameButton: Phaser.GameObjects.Container;
+
+    private username: Username;
+
    
 
     constructor() {
         super('Pregame');
+        this.username = new Username(this, 500 , 500 );
     }
 
     create() {
@@ -127,7 +132,7 @@ export default class Pregame extends Phaser.Scene {
     }
         
     newGame() {
-        this.scene.start('PregameNewGame');
+        this.username.show();
     }
     
 }

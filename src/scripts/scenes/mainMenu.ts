@@ -100,7 +100,7 @@ export default class MainMenu extends Phaser.Scene {
           }
         
           openSettings() {
-            this.scene.start('Setting');
+           // this.scene.start('Setting');
           }
         
           exitGame() {
