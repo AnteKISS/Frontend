@@ -13,7 +13,6 @@ import { BehaviorFactors } from "./behaviorFactors";
 export abstract class Behavior {
   public parent: ActiveEntity;
   public factors: BehaviorFactors;
-  // public monsterPack: MonsterPack;
 
   protected delayBetweenRoam: number = 10000;
   protected delayBetweenAttack: number = 1000;

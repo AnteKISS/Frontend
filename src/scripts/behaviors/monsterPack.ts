@@ -10,12 +10,12 @@ export class MonsterPack {
   private _delayBetweenReorganize: number;
 
   private readonly MINION_MAX_DISTANCE_FROM_LEADER = 150;
-  private readonly REORGANIZE_BASE_DELAY = 2500;
+  private readonly REORGANIZE_BASE_DELAY = 500;
   
-  public constructor(minionCountTarget: number) {
+  public constructor(minionCountTarget?: number) {
     this._minions = [];
     this._leader = null;
-    this._minionCountTarget = minionCountTarget;
+    this._minionCountTarget = minionCountTarget || 5;
     this._delayBetweenReorganize = this.REORGANIZE_BASE_DELAY;
   }
 
@@ -47,8 +47,16 @@ export class MonsterPack {
     return this._leader;
   }
 
+  public isInPack(entity: MonsterEntity): boolean {
+    return this._minions.includes(entity) || this._leader === entity;
+  }
+
   public isLeaderAlive(): boolean {
     return this._leader !== null && !this._leader.isDead();
+  }
+
+  public isLeader(entity: MonsterEntity): boolean {
+    return this._leader === entity;
   }
 
   public hasLeaderValidTarget(): boolean {
@@ -72,6 +80,11 @@ export class MonsterPack {
         const regroupPosition: Point = MathModule.getClosestPointOnCircle(minion, this._leader, this.MINION_MAX_DISTANCE_FROM_LEADER);
         minion.destinationX = regroupPosition.x;
         minion.destinationY = regroupPosition.y;
+        const movementSpeedBeforeBuff = minion.totalModifierStats.movementSpeed;
+        setTimeout(() => {
+          minion.totalModifierStats.movementSpeed = movementSpeedBeforeBuff;
+        }, this.REORGANIZE_BASE_DELAY);
+        minion.totalModifierStats.movementSpeed = 1.5 * movementSpeedBeforeBuff;
       }
     }
   }

@@ -17,6 +17,7 @@ import { InactiveEntityFactory } from '../factories/inactiveEntityFactory';
 import ItemEntity from './itemEntity';
 import { MonsterRarity } from '../enums/monsterRarity';
 import LootTable from './lootTable';
+import { MonsterPack } from '../behaviors/monsterPack';
 
 export class MonsterEntity extends ActiveEntity implements IFightable, ILootable {
 
@@ -27,6 +28,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
   public quality: MonsterRarity;
   public appliedModifiers: string[];
   public lootTable: LootTable;
+  public monsterPack: MonsterPack;
 
   constructor(scene, monsterCode) {
     super(scene);
@@ -72,6 +74,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
     this.animator = new ActiveEntityAnimator(this);
 
     this.lootTable = new LootTable([]);
+    this.monsterPack = new MonsterPack();
   }
 
   // Getters/Setters
@@ -83,6 +86,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
     this.updatePosition();
     this.animator.update(time, deltaTime);
     this.behavior.update(time, deltaTime);
+    this.monsterPack.update(time, deltaTime);
 
     if (this._debugMode) {
       this.collider.displayDebugGraphics();

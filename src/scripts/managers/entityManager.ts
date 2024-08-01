@@ -6,6 +6,7 @@ import Item from "../inventory/item";
 import ItemEntity from "../entities/itemEntity";
 import CampaignManager from "./campaignmanager";
 import { NpcEntity } from "../entities/npcEntity";
+import { MonsterRarity } from "../enums/monsterRarity";
 
 export class EntityManager {
   private static _instance: EntityManager;
@@ -158,6 +159,14 @@ export class EntityManager {
     let monster: MonsterEntity = ActiveEntityFactory.createMonster(scene, monsterCode);
     this.addAreaEntity(monster);
     return monster;
+  }
+
+  public createMonsterWithMinions(scene: Phaser.Scene, monsterCode: string, quality?: MonsterRarity, numberOfMinions?: number): MonsterEntity[] {
+    let monsters: MonsterEntity[] = ActiveEntityFactory.createMonsterWithMinions(scene, monsterCode, quality, numberOfMinions);
+    monsters.forEach(monster => {
+      this.addAreaEntity(monster);
+    });
+    return monsters;
   }
 
   public createNpc(scene: Phaser.Scene, npcCode: string): NpcEntity {
