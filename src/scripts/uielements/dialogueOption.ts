@@ -69,7 +69,7 @@ export class SpawnMonsterDialogueOption extends DialogueOption {
 
   private isMonsterCodeSpecified: boolean;
 
-  constructor(scene, dialog: Dialogue, monsterCode?: string) {
+  constructor(scene, dialog: Dialogue, isMonsterPack?: boolean, monsterCode?: string) {
     super(scene, dialog);
     if (monsterCode) {
       this.monsterCode = monsterCode;
@@ -78,11 +78,14 @@ export class SpawnMonsterDialogueOption extends DialogueOption {
       this.isMonsterCodeSpecified = false;
     }
     this.on('pointerdown', (pointer, localX, localY, event) => {
-      // const possibleCommands = ['spawnMonters', 'spawnMonterPack'];
-      // const randomIndex = Math.floor(Math.random() * possibleCommands.length);
-      // possibleCommands[randomIndex];
-      // this.spawnMonsters();
-      this.spawnMonterPack();
+      // const possibleMethods = ['spawnMonsters', 'spawnMonterPack'];
+      // const randomIndex = Math.floor((Math.random() * possibleMethods.length) + 1);
+      // this[possibleMethods[randomIndex]]();
+      if (isMonsterPack) {
+        this.spawnMonterPack();
+      } else {
+        this.spawnMonsters();
+      }
     });
   }
 

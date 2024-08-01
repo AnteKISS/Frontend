@@ -9,8 +9,8 @@ export class MonsterPack {
   private _minionCountTarget: number;
   private _delayBetweenReorganize: number;
 
-  private readonly MINION_MAX_DISTANCE_FROM_LEADER = 150;
-  private readonly REORGANIZE_BASE_DELAY = 500;
+  private readonly MINION_MAX_DISTANCE_FROM_LEADER = 200;
+  private readonly REORGANIZE_BASE_DELAY = 0;
   
   public constructor(minionCountTarget?: number) {
     this._minions = [];
@@ -75,16 +75,35 @@ export class MonsterPack {
       if (minion.isDead()) {
         continue;
       }
-      const distanceToLeader = MathModule.scaledDistanceBetweenEntities(minion, this._leader);
-      if (distanceToLeader > this.MINION_MAX_DISTANCE_FROM_LEADER) {
-        const regroupPosition: Point = MathModule.getClosestPointOnCircle(minion, this._leader, this.MINION_MAX_DISTANCE_FROM_LEADER);
-        minion.destinationX = regroupPosition.x;
-        minion.destinationY = regroupPosition.y;
-        const movementSpeedBeforeBuff = minion.totalModifierStats.movementSpeed;
-        setTimeout(() => {
-          minion.totalModifierStats.movementSpeed = movementSpeedBeforeBuff;
-        }, this.REORGANIZE_BASE_DELAY);
-        minion.totalModifierStats.movementSpeed = 1.5 * movementSpeedBeforeBuff;
+      if (minion.isAttacking()) {
+        continue;
+      }
+      if (this._leader.target !== null && this._leader.target !== undefined && !(this._leader.target as MonsterEntity).isDead()) {
+        const distanceToLeader = MathModule.scaledDistanceBetweenEntities(minion, this._leader);
+        const distanceToLeaderTarget = MathModule.scaledDistanceBetweenEntities(minion, this._leader.target as MonsterEntity);
+        if (distanceToLeader > distanceToLeaderTarget) {
+          minion.destinationX = this._leader.target.positionX;
+          minion.destinationY = this._leader.target.positionY;
+          // const regroupPosition: Point = MathModule.getClosestPointOnCircle(minion, this._leader, this.MINION_MAX_DISTANCE_FROM_LEADER);
+          // minion.destinationX = regroupPosition.x;
+          // minion.destinationY = regroupPosition.y;
+          // // const movementSpeedBeforeBuff = minion.totalModifierStats.movementSpeed;
+          // // setTimeout(() => {
+          // //   minion.totalModifierStats.movementSpeed = movementSpeedBeforeBuff;
+          // // }, this._delayBetweenReorganize);
+          // // minion.totalModifierStats.movementSpeed = 1.5 * movementSpeedBeforeBuff;
+        } else {
+          const regroupPosition: Point = MathModule.getClosestPointOnCircle(minion, this._leader, this.MINION_MAX_DISTANCE_FROM_LEADER);
+          minion.destinationX = regroupPosition.x;
+          minion.destinationY = regroupPosition.y;
+        }
+      } else {
+        const distanceToLeader = MathModule.scaledDistanceBetweenEntities(minion, this._leader);
+        if (distanceToLeader > this.MINION_MAX_DISTANCE_FROM_LEADER) {
+          const regroupPosition: Point = MathModule.getClosestPointOnCircle(minion, this._leader, this.MINION_MAX_DISTANCE_FROM_LEADER);
+          minion.destinationX = regroupPosition.x;
+          minion.destinationY = regroupPosition.y;
+        }
       }
     }
   }

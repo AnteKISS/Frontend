@@ -419,8 +419,10 @@ export class ActiveEntityFactory {
     entities.push(monster);
     for (let i = 0; i < (numberOfMinions || 5); i++) {
       let minion = this.createMonster(scene, monsterCode);
+      minion.appliedModifiers.push("Minion of " + monster.name + '\n');
       minion.positionX = monster.positionX + (Math.random() * 100 - 50);
       minion.positionY = monster.positionY + (Math.random() * 100 - 50);
+      this.copyPackLeaderStatsToMinions(monster, minion);
       entities.push(minion);
       monster.monsterPack.addMinion(minion);
       // monsterPack.addMinion(minion);
@@ -471,5 +473,14 @@ export class ActiveEntityFactory {
       isUntargetable: false
     };
     return entity;
+  }
+
+  private static copyPackLeaderStatsToMinions(packLeader: MonsterEntity, minion: MonsterEntity): void {
+    minion.baseModifierStats.attackSpeed = packLeader.baseModifierStats.attackSpeed;
+    minion.baseModifierStats.movementSpeed = packLeader.baseModifierStats.movementSpeed;
+    minion.baseModifierStats.baseMovementSpeed = packLeader.baseModifierStats.baseMovementSpeed;
+    minion.totalModifierStats.attackSpeed = packLeader.totalModifierStats.attackSpeed;
+    minion.totalModifierStats.movementSpeed = packLeader.totalModifierStats.movementSpeed;
+    minion.totalModifierStats.baseMovementSpeed = packLeader.totalModifierStats.baseMovementSpeed;
   }
 }
