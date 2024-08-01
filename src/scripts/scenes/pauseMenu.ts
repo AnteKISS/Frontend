@@ -1,7 +1,12 @@
 import Phaser from 'phaser';
-import InGameOptions from './inGameOptions'
+import InGameOptions from './inGameOptions';
+import SaveModule from '../saves/saveModule';
+import MainScene from './mainScene';
+import axios from 'axios';
+import KeycloakManager from '../keycloak';
 
 export default class PauseMenu extends Phaser.GameObjects.Container {
+  private mainScene: MainScene;
   private closeButton: Phaser.GameObjects.Sprite;
   private background: Phaser.GameObjects.Sprite;
   private resume: Phaser.GameObjects.Container;
@@ -12,8 +17,9 @@ export default class PauseMenu extends Phaser.GameObjects.Container {
   private pauseMenuElements: Phaser.GameObjects.Container;
   private inGameOptions: InGameOptions;
 
-  constructor(scene: Phaser.Scene) {
+  constructor(scene: MainScene) {
     super(scene, 640, 0);
+    this.mainScene = scene;
     this.background = new Phaser.GameObjects.Sprite(scene, 0, 360, 'black_rock_background')
       .setInteractive().on('pointerdown', (_, __, ___, event) => event.stopPropagation());
 
@@ -118,11 +124,16 @@ export default class PauseMenu extends Phaser.GameObjects.Container {
 
   saveGame() {
     console.log('Save button clicked');
+    const save = SaveModule.getJson(this.mainScene);
+    console.log(save);
+    axios.post("http://localhost:8082/Save/" + KeycloakManager.getUsername(), { username: KeycloakManager.getUsername(), save: save }, { headers: { 'Content-Type': 'application/json' } });
+    console.log(save);
   }
 
   exitGame() {
     console.log('Exit button clicked');
-    //this.scene.start('MainMenu'); 
+    this.scene.scene.sleep();
+    this.scene.scene.start('MainMenu');
   }
 
   public show(): void {

@@ -368,7 +368,6 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   }
 
   public onNotify(event: any): void {
-    console.log(event.item.getItem().itemType);
     if (event instanceof PlayerEvents.PlayerEquipItemEvent) {
       switch (event.item.getItem().itemType) {
         case ItemType.HELMET:

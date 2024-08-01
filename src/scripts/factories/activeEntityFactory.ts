@@ -111,8 +111,16 @@ export class ActiveEntityFactory {
     if (monsterCode === 'goblin') {
       entity.spellBook.addSpell(new ThrowSpear(entity));
       entity.behavior = new SkirmisherBehavior(entity);
-      // entity.baseModifierStats.maxHealth = 50;
-      // entity.dynamicStats.health = 50;
+      entity.baseModifierStats.maxHealth = 50;
+      entity.dynamicStats.health = 50;
+      entity.lootTable.setTable([
+        "Chainmail Armor",
+        "Chainmail Gloves",
+        "Chainmail Boots",
+        "Chainmail Belt",
+        "Chainmail Hood",
+        "Silver Ring",
+      ]);
     } else if (monsterCode === 'wyvern_composite') {
       entity.spellBook.addSpell(new FireBolt(entity));
       entity.behavior = new SkirmisherBehavior(entity);
@@ -122,6 +130,16 @@ export class ActiveEntityFactory {
       // entity.baseModifierStats.maxHealth = 250;
       // entity.dynamicStats.health = 250;
       entity.totalModifierStats.sightDistance = 1000;
+      entity.lootTable.setTable([
+        "Golden Kopis",
+        "Golden Kopis",
+        "Gold Ring",
+        "Talisman of Baphomet",
+        "Chainmail Belt",
+        "Chainmail Boots",
+        "Bone Sword",
+        "Bone Sword",
+      ]);
     } else if (monsterCode === 'goblin_lumberjack_black') {
       entity.behavior = new RusherBehavior(entity);
       entity.appliedModifiers.push('Extra Fast');
@@ -134,7 +152,16 @@ export class ActiveEntityFactory {
       // entity.baseModifierStats.maxHealth = 500
       // entity.dynamicStats.health = 500;
       entity.totalModifierStats.sightDistance = 1000;
-      // entity.totalModifierStats.basePhysicalDamage = 20;
+      entity.totalModifierStats.basePhysicalDamage = 20;
+      entity.lootTable.setTable([
+        "Chainmail Armor",
+        "Chainmail Gloves",
+        "Chainmail Boots",
+        "Chainmail Belt",
+        "Chainmail Hood",
+        "Silver Ring",
+        "Dagger",
+      ]);
     } else if (monsterCode === 'minotaur') {
       entity.behavior = new RusherBehavior(entity);
       // entity.totalModifierStats.movementSpeed = 200;
@@ -142,7 +169,49 @@ export class ActiveEntityFactory {
       // entity.baseModifierStats.maxHealth = 300;
       // entity.dynamicStats.health = 300;
       entity.totalModifierStats.sightDistance = 1000;
-      // entity.totalModifierStats.basePhysicalDamage = 20;
+      entity.totalModifierStats.basePhysicalDamage = 20;
+      entity.lootTable.setTable([
+        "Golden Kopis",
+        "Golden Kopis",
+        "Knight Helmet",
+        "Wooden Shield",
+        "Temple Amulet",
+        "Chainmail Armor",
+        "Chainmail Gloves",
+        "Chainmail Hood",
+      ]);
+    } else if (monsterCode === 'zombie') {
+      entity.behavior = new RusherBehavior(entity);
+      entity.lootTable.setTable([
+        "Leather Armor",
+        "Leather Gloves",
+        "Leather Boots",
+        "Leather Belt",
+        "Leather Hood",
+        "Bronze Ring",
+        "Dagger",
+        "Dagger",
+        "Lethal Dagger",
+        "Lethal Dagger",
+        "Wooden Shield",
+      ]);
+    } else if (monsterCode === 'skeleton') {
+      entity.behavior = new RusherBehavior(entity);
+      entity.lootTable.setTable([
+        "Silver Ring",
+        "Temple Amulet",
+        "Dagger",
+        "Dagger",
+        "Lethal Dagger",
+        "Lethal Dagger",
+        "Bone Sword",
+        "Wooden Shield",
+        "Leather Hood",
+        "Leather Armor",
+        "Leather Gloves",
+        "Leather Boots",
+        "Leather Belt",
+      ]);
     } else {
       entity.behavior = new RusherBehavior(entity);
     }

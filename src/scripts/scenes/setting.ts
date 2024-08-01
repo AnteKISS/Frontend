@@ -1,13 +1,18 @@
 
 import Phaser from 'phaser';
+import SoundManager from '../managers/soundManager';
 
 
 export default class Setting extends Phaser.Scene {
 
     private WP : Phaser.GameObjects.Image;
-    public backgroundSound: number = 50;
-    public effectSound: number = 50;
-    public menuSound: number = 50;
+    public backgroundSound: number;
+    public effectSound: number ;
+    public menuSound: number ;
+
+    public backgroundSoundInitial: number// = SoundManager.getInstance().backgroundSoundManager.volume *100;
+    public effectSoundInitial: number// = SoundManager.getInstance().effectsSoundManager.volume *100;
+    public menuSoundInitial: number// = SoundManager.getInstance().uiSoundManager.volume *100;
 
     
     muteClicked: boolean = false;
@@ -28,15 +33,20 @@ export default class Setting extends Phaser.Scene {
     this.WP = this.add.image(width/2, height/2.5, 'backGround');
     this.WP.setScale(1.7); 
 
-    this.createSlider('backgroundSound',700, 200, (value: number) => {
+    this.backgroundSoundInitial = SoundManager.getInstance().backgroundSoundManager.volume *100;
+    this.effectSoundInitial= SoundManager.getInstance().effectsSoundManager.volume *100;
+    this.menuSoundInitial= SoundManager.getInstance().uiSoundManager.volume *100;
+
+
+    this.createSlider('backgroundSound',700, 200, this.backgroundSoundInitial, (value: number) => {
         this.backgroundSound = value;
         console.log(`background Sound : ${this.backgroundSound}`);
     });
-    this.createSlider('effectSound',700, 300, (value: number) => {
+    this.createSlider('effectSound',700, 300, this.effectSoundInitial , (value: number) => {
         this.effectSound = value;
         console.log(`Effect Sound: ${this.effectSound}`);
     });
-    this.createSlider('menuSound',700, 400, (value: number) => {
+    this.createSlider('menuSound',700, 400, this.menuSoundInitial , (value: number) => {
         this.menuSound = value;
         console.log(`Music Sound: ${this.menuSound}`);
     });
@@ -48,7 +58,7 @@ export default class Setting extends Phaser.Scene {
     
 
 
-    createSlider(textKey: string ,x: number, y: number, toChange: (value: number) => void): void {
+    /*createSlider(textKey: string ,x: number, y: number, toChange: (value: number) => void): void {
         
         const imagetxt = this.add.sprite(x-200, y, textKey) ;
         
@@ -68,7 +78,7 @@ export default class Setting extends Phaser.Scene {
                 }
             }
         });
-    }
+    }*/
 
     createButton(x: number, y: number, frameKey: string, textKey: string, callback: () => void) {
         const buttonContainer = this.add.container(x, y);
@@ -128,19 +138,58 @@ export default class Setting extends Phaser.Scene {
         });
     
         return buttonContainer;
-      }
+    }
     
     
 
-    private updateSliderValue(slider: Phaser.GameObjects.Sprite, sliderBar: Phaser.GameObjects.Sprite): number {
+    /*private updateSliderValue(slider: Phaser.GameObjects.Sprite, sliderBar: Phaser.GameObjects.Sprite): number {
         const sliderPosition = slider.x - (sliderBar.x - sliderBar.width / 2);
         const value = (sliderPosition / sliderBar.width) * 100;
         return value;
     }
 
     update(): void {
-        // Mettre à jour les éléments si nécessaire
-    }
+        SoundManager.getInstance().backgroundSoundManager.volume *= (this.backgroundSound/100) ;
+        SoundManager.getInstance().uiSoundManager.volume *= (this.menuSound/100);
+        SoundManager.getInstance().effectsSoundManager.volume *= (this.effectSound/100);
+    }*/
+        private createSlider(textKey: string ,x: number, y: number, initialValue: number, onChange: (value: number) => void): void {
+            const imagetxt = this.add.sprite(x-200, y, textKey) ;
+            
+            const sliderBar = this.add.sprite(x+100, y, 'sliderBar');
+            sliderBar.setInteractive();
+    
+            const slider = this.add.sprite(x, y, 'slider');
+            slider.setInteractive();
+            this.input.setDraggable(slider);
+    
+            // Positionner le slider en fonction de la valeur initiale
+            const initialPosition = sliderBar.x - sliderBar.width / 2 + (initialValue / 100) * sliderBar.width;
+            slider.x = initialPosition;
+    
+            this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+                if (gameObject === slider) {
+                    if (dragX >= sliderBar.x - sliderBar.width / 2 && dragX <= sliderBar.x + sliderBar.width / 2) {
+                        gameObject.x = dragX;
+                        const value = this.updateSliderValue(slider, sliderBar);
+                        onChange(value);
+                    }
+                }
+            });
+        }
+    
+        private updateSliderValue(slider: Phaser.GameObjects.Sprite, sliderBar: Phaser.GameObjects.Sprite): number {
+            const sliderPosition = slider.x - (sliderBar.x - sliderBar.width / 2);
+            const value = (sliderPosition / sliderBar.width) * 100;
+            return value;
+        }
+    
+        /*update(): void {
+            SoundManager.getInstance().backgroundSoundManager.volume *= (this.backgroundSound/100) ;
+            SoundManager.getInstance().uiSoundManager.volume *= (this.menuSound/100);
+            SoundManager.getInstance().effectsSoundManager.volume *= (this.effectSound/100);
+        } */
+
 
     
     increaseSound() {

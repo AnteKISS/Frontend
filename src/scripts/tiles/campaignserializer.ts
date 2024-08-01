@@ -3,8 +3,6 @@ import Act from './act';
 import Area from './area';
 import Transition from './transition';
 import { GameObjectRegistry } from './gameObjectRegistry';
-import Spawner from './spawner';
-import Tile from './tile';
 
 interface TransitionJson {
   name: string,

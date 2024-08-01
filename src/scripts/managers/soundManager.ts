@@ -212,6 +212,7 @@ export default class SoundManager implements IObserver {
     });
     sound.play();
   }
+
   // this.music = this.sound.add('spinning_rat_power', {
   //   mute: false,
   //   volume: 0.9,

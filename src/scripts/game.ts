@@ -27,7 +27,7 @@ const config = {
     width: DEFAULT_WIDTH,
     height: DEFAULT_HEIGHT
   },
-  scene: [PreloadScene, MainMenu, MainScene, Setting, LoadingScreen, Pregame, MapEditor, PregameOpenSave, PregameNewGame],
+  scene: [PreloadScene, MainMenu, MainScene, LoadingScreen, Pregame, MapEditor, PregameOpenSave, PregameNewGame],
   dom: {
     createContainer: true
   },
