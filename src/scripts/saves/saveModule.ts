@@ -23,16 +23,16 @@ export default class SaveModule {
       playerXp: player.exp.getTotalExp(),
       playerInventoryItems: new Array<any>(),
       playerEquippedItems: [
-        { slot: "helmet", code: player.inventory.getPlayerEquipment().getHelmet()?.code },
-        { slot: "armor", code: player.inventory.getPlayerEquipment().getArmor()?.code },
-        { slot: "amulet", code: player.inventory.getPlayerEquipment().getAmulet()?.code },
-        { slot: "mainhand", code: player.inventory.getPlayerEquipment().getMainhand()?.code },
-        { slot: "offhand", code: player.inventory.getPlayerEquipment().getOffhand()?.code },
-        { slot: "ring1", code: player.inventory.getPlayerEquipment().getRing1()?.code },
-        { slot: "ring2", code: player.inventory.getPlayerEquipment().getRing2()?.code },
-        { slot: "belt", code: player.inventory.getPlayerEquipment().getBelt()?.code },
-        { slot: "gloves", code: player.inventory.getPlayerEquipment().getGloves()?.code },
-        { slot: "boots", code: player.inventory.getPlayerEquipment().getBoots()?.code },
+        { slot: "helmet", itemId: player.inventory.getPlayerEquipment().getHelmet()?.code },
+        { slot: "armor", itemId: player.inventory.getPlayerEquipment().getArmor()?.code },
+        { slot: "amulet", itemId: player.inventory.getPlayerEquipment().getAmulet()?.code },
+        { slot: "mainhand", itemId: player.inventory.getPlayerEquipment().getMainhand()?.code },
+        { slot: "offhand", itemId: player.inventory.getPlayerEquipment().getOffhand()?.code },
+        { slot: "ring1", itemId: player.inventory.getPlayerEquipment().getRing1()?.code },
+        { slot: "ring2", itemId: player.inventory.getPlayerEquipment().getRing2()?.code },
+        { slot: "belt", itemId: player.inventory.getPlayerEquipment().getBelt()?.code },
+        { slot: "gloves", itemId: player.inventory.getPlayerEquipment().getGloves()?.code },
+        { slot: "boots", itemId: player.inventory.getPlayerEquipment().getBoots()?.code },
       ],
     };
 
@@ -71,6 +71,7 @@ export default class SaveModule {
     player.exp.update();
 
     // Add items in player inventory
+    console.log("JSON:", json.playerInventoryItems);
     for (const inventoryItemJson of json.playerInventoryItems) {
       const item = APIManager.getNewItemByCode(scene, inventoryItemJson.code);
       if (item) {
@@ -101,7 +102,8 @@ export default class SaveModule {
   }
 
   private static equipItem(scene: MainScene, slotItem: any, equipSlot: EquipSlot): void {
-    if (!slotItem)
+    console.log(slotItem);
+    if (!slotItem || slotItem.itemId === 0)
       return;
 
     const item = APIManager.getNewItemByCode(scene, slotItem.itemId);

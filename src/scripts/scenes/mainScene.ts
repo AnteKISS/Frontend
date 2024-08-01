@@ -70,6 +70,7 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public init(data: any): void {
+    console.log("DATA:", data);
     if (data) {
       this.playerName = data.playerName;
       this.saveSlot = data.saveSlot;
@@ -267,7 +268,7 @@ export default class MainScene extends Phaser.Scene {
     //this.add.existing(youtubePlayer);
     //youtubePlayer.play();
     this.sys.game.canvas.style.cursor = 'url(assets/gui/pointer05.png), auto';
-    console.log(this.save);
+    console.log("THIS.SAVE:", this.save);
     if (this.save) SaveModule.loadJSON(this, this.save);
   }
 

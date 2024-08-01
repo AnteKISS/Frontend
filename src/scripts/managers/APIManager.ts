@@ -22,7 +22,7 @@ export default class APIManager {
   public static getNewItemByCode(scene: Phaser.Scene, code: number): Item | undefined {
     const info = this.itemCodeRegistry.get(code);
     if (!info) {
-      console.error("APIManager::getNewItemByCode - Failed to get new item by code.");
+      console.error("APIManager::getNewItemByCode - Failed to get new item by code:", code);
       return undefined;
     }
     return this.fetchItem(scene, info);
@@ -31,7 +31,7 @@ export default class APIManager {
   public static getNewItemByName(scene: Phaser.Scene, name: string): Item | undefined {
     const info = this.itemNameRegistry.get(name);
     if (!info) {
-      console.error("APIManager::getNewItemByName - Failed to get new item by name.");
+      console.error("APIManager::getNewItemByName - Failed to get new item by name:", name);
       return undefined;
     }
     return this.fetchItem(scene, info);
