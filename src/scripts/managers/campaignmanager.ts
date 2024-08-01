@@ -40,7 +40,7 @@ export default class CampaignManager {
     instance.gameObjectSprites = new Map();
     instance.showEditorSprites = false;
     instance.scene.cameras.getCamera("uiCamera")!.ignore(instance.graphics);
-    instance.scene.cameras.getCamera("minimapCamera")!.ignore(instance.graphics);
+    instance.scene.cameras.getCamera("minimapCamera")?.ignore(instance.graphics);
   }
 
   public static getInstance(): CampaignManager {
@@ -77,7 +77,7 @@ export default class CampaignManager {
       const GAME_OBJECT_SPRITE = new GameObjectSprite(this.scene, GAME_OBJECT, this.showEditorSprites);
       this.gameObjectSprites.set(GAME_OBJECT, GAME_OBJECT_SPRITE);
       this.scene.cameras.getCamera("uiCamera")!.ignore(GAME_OBJECT_SPRITE);
-      this.scene.cameras.getCamera("minimapCamera")!.ignore(GAME_OBJECT_SPRITE);
+      this.scene.cameras.getCamera("minimapCamera")?.ignore(GAME_OBJECT_SPRITE);
     }
 
     this.campaign.currentArea().activateSpawners();
@@ -195,7 +195,7 @@ export default class CampaignManager {
     this.campaign.currentArea().addGameObject(gameObject);
     const SPRITE = new GameObjectSprite(this.scene, gameObject, this.showEditorSprites);
     this.scene.cameras.getCamera("uiCamera")!.ignore(SPRITE);
-    this.scene.cameras.getCamera("minimapCamera")!.ignore(SPRITE);
+    this.scene.cameras.getCamera("minimapCamera")?.ignore(SPRITE);
     this.gameObjectSprites.set(gameObject, SPRITE);
   }
 
