@@ -70,7 +70,7 @@ export class MonsterEntityMapper {
       }
     });
     data.monsterModifiers.forEach((modifier: any) => {
-      monsterData.modifiers.set(modifier.modifierCode, modifier.modifierValue);
+      monsterData.modifiers.set(modifier.modifierCode, modifier.modifierName);
     });
     return monsterData;
   }
