@@ -4,6 +4,7 @@ import { MonsterEntity } from '../entities/monsterEntity';
 import { NpcEntity } from '../entities/npcEntity';
 import { PlayerEntity } from '../entities/playerEntity';
 import { EntitySpecies } from '../enums/entitySpecies';
+import { MonsterRarity } from '../enums/monsterRarity';
 import InvalidMonsterCodeError from '../errors/invalidMonsterCodeError';
 import { MonsterData } from '../mappers/MonsterEntityMapper';
 import FireBolt from '../spells/craftedSpells/firebolt';
@@ -64,7 +65,12 @@ export class ActiveEntityFactory {
     const monsterData: MonsterData = this.loadedMonsters.get(monsterCode)!;
     let entity: MonsterEntity = new MonsterEntity(scene, monsterCode);
     entity.code = monsterCode;
+    entity.name = monsterData.name;
     entity.species = EntitySpecies.UNDEAD;
+    entity.quality = monsterData.qualityCode as MonsterRarity;// Object.values(MonsterRarity).includes(monsterData.qualityCode as MonsterRarity);
+    monsterData.modifiers.forEach((key, value) => {
+      entity.appliedModifiers.push(value)
+    });
     entity.dynamicStats = {
       mana: 0,
       health: monsterData.dynamicStats.health,
@@ -118,6 +124,11 @@ export class ActiveEntityFactory {
       entity.totalModifierStats.sightDistance = 1000;
     } else if (monsterCode === 'goblin_lumberjack_black') {
       entity.behavior = new RusherBehavior(entity);
+      entity.appliedModifiers.push('Extra Fast');
+      entity.appliedModifiers.push('Extra :)');
+      entity.appliedModifiers.push('STRONG AF');
+      entity.appliedModifiers.push('MOMMY');
+      entity.appliedModifiers.push('POOPY');
       // entity.totalModifierStats.movementSpeed = 100;
       // entity.totalModifierStats.maxHealth = 500;
       // entity.baseModifierStats.maxHealth = 500

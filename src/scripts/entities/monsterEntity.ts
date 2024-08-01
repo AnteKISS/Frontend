@@ -24,11 +24,13 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
   public currentBehaviorState: ActiveEntityBehaviorState;
   public behavior: Behavior;
   public quality: MonsterRarity;
+  public appliedModifiers: string[];
 
   constructor(scene, monsterCode) {
     super(scene);
     this.code = monsterCode;
     this.quality = MonsterRarity.NORMAL;
+    this.appliedModifiers = [];
     scene.add.existing(this);
     this.type = 'MonsterEntity';
     this.baseSprite = scene.add.sprite(0, 0, 'baseTexture');
@@ -47,16 +49,19 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
 
     this.baseSprite.setInteractive({ hitArea: new Phaser.Geom.Rectangle(this.truncatedSpriteWidth, this.truncatedSpriteHeight * this.originY, 32, 64), hitAreaCallback: Phaser.Geom.Rectangle.Contains });
 
-    this.baseSprite.on('pointerover', (pointer: Phaser.Input.Pointer) => {
-      window['selectedMonster'] = this;
-      scene.plugins.get('rexGlowFilterPipeline').add(this.baseSprite, {
-        intensity: 0.02
-      });
-    });
-    this.baseSprite.on('pointerout', (pointer: Phaser.Input.Pointer) => {
-      window['selectedMonster'] = null;
-      scene.plugins.get('rexGlowFilterPipeline').remove(this.baseSprite);
-    });
+    // this.baseSprite.on('pointerover', (pointer: Phaser.Input.Pointer) => {
+    //   window['selectedMonster'] = this;
+    //   scene.plugins.get('rexGlowFilterPipeline').add(this.baseSprite, {
+    //     intensity: 0.02
+    //   });
+    // });
+    // this.baseSprite.on('pointerout', (pointer: Phaser.Input.Pointer) => {
+    //   window['selectedMonster'] = null;
+    //   scene.plugins.get('rexGlowFilterPipeline').remove(this.baseSprite);
+    // });
+
+    this.baseSprite.on('pointerover', this.onPointerOver);
+    this.baseSprite.on('pointerout', this.onPointerOut);
 
     this.currentBehaviorState = new ActiveEntityBehaviorState();
     this.currentBehaviorState.state = ActiveEntityBehaviorState.State.IDLE;
@@ -131,10 +136,6 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
     return this.dynamicStats.health <= 0;
   }
 
-  public onPointerOver(): void {
-    // console.log('pointerover');
-  }
-
   public generateLoot(): void {
     const random = Math.random();
     if (random > 0.5) {
@@ -163,6 +164,18 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
 
   onEntityColliding = (hitEntity: BaseEntity): void => {
 
+  }
+
+  public onPointerOver = async (pointer: Phaser.Input.Pointer): Promise<void> => {
+    window['selectedMonster'] = this;
+    await (this.scene.plugins.get('rexGlowFilterPipeline') as any).add(this.baseSprite, {
+        intensity: 0.02
+    });
+  }
+
+  public onPointerOut = async (pointer: Phaser.Input.Pointer): Promise<void> => {
+    window['selectedMonster'] = null;
+    await (this.scene.plugins.get('rexGlowFilterPipeline') as any).remove(this.baseSprite);
   }
 
   public getSprite(): Phaser.GameObjects.Sprite {

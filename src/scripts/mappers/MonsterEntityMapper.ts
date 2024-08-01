@@ -18,6 +18,7 @@ export class MonsterEntityMapper {
     monsterData.baseModifierStats = new ActiveEntityModifierStats();
     monsterData.tempModifierStats = new ActiveEntityModifierStats();
     monsterData.totalModifierStats = new ActiveEntityModifierStats();
+    monsterData.modifiers = new Map<string, string>();
     monsterData.name = data.name || monsterData.name;
     monsterData.code = data.code;
     monsterData.baseCode = data.baseCode || monsterData.baseCode;
@@ -50,6 +51,9 @@ export class MonsterEntityMapper {
           break;
       }
     });
+    data.monsterModifiers.forEach((modifier: any) => {
+      monsterData.modifiers.set(modifier.modifierCode, modifier.modifierValue);
+    });
     return monsterData;
   }
 }
@@ -63,4 +67,5 @@ export class MonsterData {
   public baseModifierStats: ActiveEntityModifierStats;
   public tempModifierStats: ActiveEntityModifierStats;
   public totalModifierStats: ActiveEntityModifierStats;
+  public modifiers: Map<string, string>;
 }
