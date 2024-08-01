@@ -77,8 +77,6 @@ export default class CampaignManager {
       const GAME_OBJECT_SPRITE = new GameObjectSprite(this.scene, GAME_OBJECT, this.showEditorSprites);
       this.gameObjectSprites.set(GAME_OBJECT, GAME_OBJECT_SPRITE);
       this.scene.cameras.getCamera("uiCamera")!.ignore(GAME_OBJECT_SPRITE);
-      this.scene.cameras.getCamera("minimapCamera")?.ignore(GAME_OBJECT_SPRITE);
-      // this.scene.cameras.getCamera("minimapCamera")!.ignore(GAME_OBJECT_SPRITE);
     }
 
     this.campaign.currentArea().activateSpawners();
