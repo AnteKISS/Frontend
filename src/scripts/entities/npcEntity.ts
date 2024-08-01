@@ -48,7 +48,7 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
       scene.plugins.get('rexGlowFilterPipeline').remove(this.baseSprite);
     });
     this.baseSprite.on('pointerdown', (pointer, localX, localY, event) => {
-      if (MathModule.scaledDistanceBetween(this.positionX, this.positionY, EntityManager.instance.getPlayers()[0].positionX, EntityManager.instance.getPlayers()[0].positionY) > 150) {
+      if (MathModule.scaledDistanceBetweenPositions(this.positionX, this.positionY, EntityManager.instance.getPlayers()[0].positionX, EntityManager.instance.getPlayers()[0].positionY) > 150) {
         return;
       }
       event.stopPropagation();
@@ -91,7 +91,7 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
   // Methods
   public update(time: number, deltaTime: number): void {
     this.dialogue.update(time, deltaTime);
-    if (MathModule.scaledDistanceBetween(this.positionX, this.positionY, EntityManager.instance.getPlayers()[0].positionX, EntityManager.instance.getPlayers()[0].positionY) > 150) {
+    if (MathModule.scaledDistanceBetweenPositions(this.positionX, this.positionY, EntityManager.instance.getPlayers()[0].positionX, EntityManager.instance.getPlayers()[0].positionY) > 150) {
       this.dialogue.hideDialogue();
       return;
     }

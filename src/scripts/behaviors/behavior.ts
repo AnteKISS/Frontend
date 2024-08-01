@@ -38,7 +38,7 @@ export abstract class Behavior {
     if (!this.isTargetValid()) {
       return false;
     }
-    return MathModule.scaledDistanceBetween(
+    return MathModule.scaledDistanceBetweenPositions(
       this.parent.positionX,
       this.parent.positionY,
       this.parent.target!.positionX,
@@ -50,7 +50,7 @@ export abstract class Behavior {
     if (!this.isTargetValid()) {
       return false;
     }
-    return MathModule.scaledDistanceBetween(
+    return MathModule.scaledDistanceBetweenPositions(
       this.parent.positionX,
       this.parent.positionY,
       this.parent.target!.positionX,
@@ -62,7 +62,7 @@ export abstract class Behavior {
     if (!this.isTargetValid()) {
       return false;
     }
-    return MathModule.scaledDistanceBetween(
+    return MathModule.scaledDistanceBetweenPositions(
       this.parent.positionX,
       this.parent.positionY,
       this.parent.target!.positionX,

@@ -108,7 +108,7 @@ export default class PlayerController {
     if (
       !this.player.target
       || (this.player.target as unknown as IFightable).isDead()
-      || MathModule.scaledDistanceBetween(this.player.positionX, this.player.positionY, this.player.target.positionX, this.player.target.positionY) > 100
+      || MathModule.scaledDistanceBetweenPositions(this.player.positionX, this.player.positionY, this.player.target.positionX, this.player.target.positionY) > 100
       || !(this.player.target instanceof MonsterEntity || this.player.target instanceof PlayerEntity && !this.player.isAttacking())
     )
       return;
@@ -133,7 +133,7 @@ export default class PlayerController {
     if (!this.selectedItem) {
       return;
     }
-    if (MathModule.scaledDistanceBetween(this.player.positionX, this.player.positionY, this.selectedItem.positionX, this.selectedItem.positionY) > 100) {
+    if (MathModule.scaledDistanceBetweenPositions(this.player.positionX, this.player.positionY, this.selectedItem.positionX, this.selectedItem.positionY) > 100) {
       this.destination.x = this.selectedItem.positionX;
       this.destination.y = this.selectedItem.positionY;
       return;

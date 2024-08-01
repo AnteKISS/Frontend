@@ -329,7 +329,7 @@ export default class MainScene extends Phaser.Scene {
     if (!itemEntity) {
       return;
     }
-    if (MathModule.scaledDistanceBetween(this.playerTest.positionX, this.playerTest.positionY, itemEntity.x, itemEntity.y) < 100) {
+    if (MathModule.scaledDistanceBetweenPositions(this.playerTest.positionX, this.playerTest.positionY, itemEntity.x, itemEntity.y) < 100) {
       const itemAddedToInventory: boolean = this.playerTest.inventory.getItemStorage().autoLoot(itemEntity.item);
       if (itemAddedToInventory)
         EntityManager.instance.destroyItem(itemEntity);

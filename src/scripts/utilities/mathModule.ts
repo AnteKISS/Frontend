@@ -1,3 +1,5 @@
+import { BaseEntity } from "../entities/baseEntity";
+import { MonsterEntity } from "../entities/monsterEntity";
 import Point from "../types/point";
 import Vector from "../types/vector";
 import * as math from "mathjs";
@@ -20,9 +22,14 @@ export class MathModule {
     return (360 - Phaser.Math.RadToDeg(normalizedAngle)) % 360;
   }
 
-  public static scaledDistanceBetween(x1: number, y1: number, x2: number, y2: number): number {
+  public static scaledDistanceBetweenPositions(x1: number, y1: number, x2: number, y2: number): number {
     // We need to multiply the y distance by 2 because the y axis is scaled by 0.5
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow((y2 - y1) * 2, 2));
+  }
+
+  public static scaledDistanceBetweenEntities(entity1: BaseEntity, entity2: BaseEntity): number {
+    // We need to multiply the y distance by 2 because the y axis is scaled by 0.5
+    return Math.sqrt(Math.pow(entity2.positionX - entity1.positionX, 2) + Math.pow((entity2.positionY - entity1.positionY) * 2, 2));
   }
 
   public static distanceBetween(x1: number, y1: number, x2: number, y2: number) {
@@ -54,5 +61,13 @@ export class MathModule {
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
     return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+  }
+
+  static getClosestPointOnCircle(minion: MonsterEntity, _leader: MonsterEntity, MINION_MAX_DISTANCE_FROM_LEADER: number): Point {
+    let point: Point = { x: minion.positionX, y: minion.positionY };
+    const angle = Math.atan2(_leader.positionY - minion.positionY, _leader.positionX - minion.positionX);
+    point.x += Math.cos(angle) * MINION_MAX_DISTANCE_FROM_LEADER;
+    point.y += Math.sin(angle) * MINION_MAX_DISTANCE_FROM_LEADER;
+    return point;
   }
 }

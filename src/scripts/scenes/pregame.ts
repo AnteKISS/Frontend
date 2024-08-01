@@ -17,7 +17,6 @@ export default class Pregame extends Phaser.Scene {
     private OpenSaveButton: Phaser.GameObjects.Container;
     private NewGameButton: Phaser.GameObjects.Container;
    
-
     constructor() {
         super('Pregame');
     }

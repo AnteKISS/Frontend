@@ -67,7 +67,7 @@ export class ActiveEntityFactory {
     entity.code = monsterCode;
     entity.name = monsterData.name;
     entity.species = EntitySpecies.UNDEAD;
-    entity.quality = monsterData.qualityCode as MonsterRarity;// Object.values(MonsterRarity).includes(monsterData.qualityCode as MonsterRarity);
+    entity.quality = monsterData.qualityCode as MonsterRarity;
     monsterData.modifiers.forEach((key, value) => {
       entity.appliedModifiers.push(value)
     });
