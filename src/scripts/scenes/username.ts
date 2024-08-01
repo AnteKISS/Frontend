@@ -1,71 +1,46 @@
 import Phaser from 'phaser';
-import Pregame from './pregame';
-
 
 export default class Username extends Phaser.GameObjects.Container {
-  private inputElement!: HTMLInputElement;
-  private submitButton!: Phaser.GameObjects.Text;
-  private background: Phaser.GameObjects.Rectangle;
-  private promptText: Phaser.GameObjects.Text;
+  public background: Phaser.GameObjects.Rectangle;
+  public label: Phaser.GameObjects.Text;
+  public username: Phaser.GameObjects.Text;
+  public submit: Phaser.GameObjects.Sprite;
 
-  constructor(scene: Phaser.Scene , x: number, y: number) {
-    
-    console.log(scene);
+  constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y);
-    console.log('Username constructor called');
-    console.log('Scene Systems:', scene.sys);
 
+    this.background = scene.add.rectangle(0, 0, 500, 100, 0xFFFFFF);
+    this.label = scene.add.text(-200, 0, "Username: ", { color: '#000000', fontSize: '24px', align: 'right' });
+    this.username = scene.add.text(0, 0, "test", { color: '#000000', fontSize: '24px', align: 'right' });
+    this.submit = scene.add.sprite(250, 0, "submit")
+      .setInteractive();
 
-    // Ajouter une zone grise semi-transparente pour le fond
-    this.background = scene.add.rectangle(0, 0, 400, 300, 0x000000, 0.5);
-    this.background.setOrigin(0.5);
-    
+    scene.input.keyboard!.on("keydown", (event: KeyboardEvent) => this.handleKeyPress(event));
+    this.submit.on("pointerdown", () => this.handleSubmit())
 
-    // Ajouter du texte pour l'invite
-    this.promptText = scene.add.text(0, -100, 'Enter your name:', { fontSize: '32px', color: '#ffffff' }).setOrigin(0.5);
-    
-
-    // Créer un champ de texte HTML pour entrer le nom d'utilisateur
-    this.createInputField();
-
-    // Ajouter un bouton de soumission
-    this.submitButton = scene.add.text(0, 50, 'Submit', { fontSize: '32px', color: '#ffffff' })
-        .setOrigin(0.5)
-        .setInteractive()
-        .on('pointerdown', this.handleSubmit, this);
-
-    this.add([this.submitButton,this.background,this.promptText]);
-
-
-    this.hide();
+    this.add([this.background, this.label, this.username, this.submit]);
     scene.add.existing(this);
   }
 
-  private createInputField(): void {
-    this.inputElement = document.createElement('input');
-    this.inputElement.type = 'text';
-    this.inputElement.style.position = 'absolute';
-    this.inputElement.style.left = '50%';
-    this.inputElement.style.top = '50%';
-    this.inputElement.style.transform = 'translate(-50%, -50%)';
-    this.inputElement.style.fontSize = '24px';
-    document.body.appendChild(this.inputElement);
+  public handleKeyPress(event: KeyboardEvent): void {
+    if (!this.visible)
+      return;
+
+    if (event.key === "Backspace") {
+      this.username.setText(this.username.text.slice(0, -1));
+    }
+    else if (event.key.length === 1) {
+      this.username.setText(this.username.text + event.key);
+    }
   }
 
-  private handleSubmit(): void {
-      const userName = this.inputElement.value.trim();
-      if (userName) {
-          console.log(`User Name: ${userName}`);
-          this.inputElement.remove();
-          this.emit('submit', userName);
-      }
+  public handleSubmit(): void {
+    if (this.username.text.length === 0)
+      return;
+
+    this.scene.scene.start("MainScene", { playerName: this.username.text, saveSlot: 1 });
   }
 
-  destroy(fromScene?: boolean): void {
-      this.inputElement.remove();
-      super.destroy(fromScene);
-  }
-  
   public show(): void {
     this.setVisible(true);
   }
@@ -74,5 +49,3 @@ export default class Username extends Phaser.GameObjects.Container {
     this.setVisible(false);
   }
 }
-
-
