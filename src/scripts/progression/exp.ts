@@ -28,7 +28,7 @@ export class Exp {
     }
 
     public update(): void {
-        if (this.currentExpToMax >= this.levelExpToMax) {
+        while (this.currentExpToMax >= this.levelExpToMax) {
             this.player.levelUp();
             this.currentExpToMax = this.currentExpToMax - this.levelExpToMax;
             this.updateLevelExpToMax();
@@ -43,6 +43,7 @@ export class Exp {
         return this.currentExpToMax;
     }
 
-
-
+    public getTotalExp(): number {
+        return this.totalExp;
+    }
 }

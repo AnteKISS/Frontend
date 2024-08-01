@@ -24,6 +24,7 @@ import APIManager from '../managers/APIManager'
 import KeycloakManager from '../keycloak'
 import { MonsterEntity } from '../entities/monsterEntity'
 import { MinimapCamera } from '../cameras/minimapCamera'
+import SaveModule from '../saves/saveModule'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -55,12 +56,16 @@ export default class MainScene extends Phaser.Scene {
 
   private readonly MINIMAP_WIDTH: number = 400;
   private readonly MINIMAP_HEIGHT: number = 250;
+  public save: string;
+
+  // private testDiaglogue: Dialogue;
 
   public constructor() {
     super({ key: 'MainScene' });
   }
 
   public init(data: any): void {
+    if (data?.save) this.save = data.save;
   }
 
   public create() {
@@ -135,14 +140,16 @@ export default class MainScene extends Phaser.Scene {
     this.input.keyboard!.on('keydown-ESC', () => this.playerTest.inventory.hide());
 
     // Add items to player inventory
-    const bruhMomento = APIManager.getNewItem(this, "Talisman of Baphomet");
-    if (bruhMomento)
-      this.playerTest.inventory.getItemStorage().autoLoot(bruhMomento);
+    /*
+    const talismanOfBaphomet = APIManager.getNewItem(this, 4);
+    if (talismanOfBaphomet)
+      this.playerTest.inventory.getItemStorage().autoLoot(talismanOfBaphomet);
 
-    const test = APIManager.getNewItem(this, "Lethal Dagger");
-    if (test) {
-      this.playerTest.inventory.getItemStorage().autoLoot(test);
+    const lethalDagger = APIManager.getNewItem(this, 22);
+    if (lethalDagger) {
+      this.playerTest.inventory.getItemStorage().autoLoot(lethalDagger);
     }
+    */
 
     Tooltip.init(this);
     this.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
@@ -254,6 +261,8 @@ export default class MainScene extends Phaser.Scene {
     this.minimapCamera.on('m-KEY', () => {
       this.minimapCamera.setVisible(this.minimapCamera.visible);
     });
+    console.log(this.save);
+    if (this.save) SaveModule.loadJSON(this, this.save);
   }
 
   public update(time: number, deltaTime: number) {
