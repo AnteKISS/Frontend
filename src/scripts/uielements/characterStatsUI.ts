@@ -28,6 +28,7 @@ export class CharacterStatsUI extends Phaser.GameObjects.Container
     {
         super(scene);
         this.player = player;
+        this.depth = 100000;
 
         this.background = new Phaser.GameObjects.Sprite(scene, 1112, 350, 'black_rock_background').setInteractive();
         this.background.setScale(0.5);
