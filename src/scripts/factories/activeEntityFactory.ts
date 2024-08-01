@@ -199,6 +199,18 @@ export class ActiveEntityFactory {
     } else {
       entity.behavior = new RusherBehavior(entity);
     }
+    switch (entity.quality) {
+      case MonsterRarity.Elite:
+      case MonsterRarity.RARE:
+      case MonsterRarity.UNIQUE:
+        const randomTintColor = Math.floor(Math.random() * 0xFFFFFF);
+        entity.getSprite().setTint(randomTintColor);
+        break;
+      case MonsterRarity.SUPERUNIQUE:
+      case MonsterRarity.BOSS:
+        entity.getSprite().setTint(0xFF0000);
+        break;
+    }
     return entity;
   }
 
