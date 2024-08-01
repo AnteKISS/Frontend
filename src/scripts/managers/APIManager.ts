@@ -21,19 +21,23 @@ export default class APIManager {
 
   public static getNewItemByCode(scene: Phaser.Scene, code: number): Item | undefined {
     const info = this.itemCodeRegistry.get(code);
+
     if (!info) {
       console.error("APIManager::getNewItemByCode - Failed to get new item by code:", code);
       return undefined;
     }
+
     return this.fetchItem(scene, info);
   }
 
   public static getNewItemByName(scene: Phaser.Scene, name: string): Item | undefined {
     const info = this.itemNameRegistry.get(name);
+
     if (!info) {
       console.error("APIManager::getNewItemByName - Failed to get new item by name:", name);
       return undefined;
     }
+
     return this.fetchItem(scene, info);
   }
 
@@ -42,6 +46,8 @@ export default class APIManager {
 
     this.itemCodeRegistry = new Map<number, ItemInfo>;
     this.itemNameRegistry = new Map<string, ItemInfo>;
+
+    // Fetch items from DB
     const response = await axios.get("http://localhost:8082/Item/GetAll");
     const items = response.data;
 
@@ -49,6 +55,8 @@ export default class APIManager {
       const [width, height] = this.itemSizeFromCode(json.itemSizeCode);
       const [inventorySprite, entitySprite] = this.itemSpriteFromName(json.itemName);
       const info = new ItemInfo;
+
+      // Extract data from json into ItemInfo struct
       info.code = json.itemId;
       info.name = json.itemName;
       info.type = this.itemTypeFromCode(json.itemSlotCode);
@@ -56,16 +64,21 @@ export default class APIManager {
       info.height = height;
       info.inventorySprite = inventorySprite;
       info.entitySprite = entitySprite;
-
       info.modifierStats = new ActiveEntityModifierStats();
       StatModule.resetModifierStats(info.modifierStats);
-      for (const modifier of json.itemBaseStats)
+
+      // Apply base stats to item info
+      for (const modifier of json.itemBaseStats) {
         this.itemModifierStatFromCodeValue(info.modifierStats, modifier.statCode, modifier.statValue);
+      }
+
+      // Apply modifier stats to item info
       for (const modifier of json.itemModifiers) {
         console.log(modifier);
         this.itemModifierStatFromCodeValue(info.modifierStats, modifier.itemModifierCode, modifier.modifierValue);
       }
 
+      // Add item info to registry to fetch later from game
       this.itemCodeRegistry.set(info.code, info);
       this.itemNameRegistry.set(info.name, info);
     }
@@ -108,37 +121,44 @@ export default class APIManager {
 
   private static itemSpriteFromName(name: string): [string, string] {
     switch (name) {
+      // Weapons
       case "Bone Sword": return ["bone_sword_inv", "dropped_sword"];
       case "Golden Kopis": return ["golden_kopis_inv", "dropped_sword"];
       case "Lethal Dagger": return ["stone_dagger_inv", "dropped_sword"];
       case "Dagger": return ["stone_dagger_inv", "dropped_sword"];
 
+      // Amulets
       case "Talisman of Baphomet": return ["baphomets_talisman_inv", "dropped_amulet"];
       case "Temple Amulet": return ["temple_amulet_inv", "dropped_amulet"];
 
+      // Rings
       case "Bronze Ring": return ["bronze_ring_inv", "dropped_ring"];
       case "Silver Ring": return ["silver_ring_inv", "dropped_ring"];
       case "Gold Ring": return ["gold_ring_inv", "dropped_ring"];
 
+      // Armor
       case "Leather Armor": return ["leather_armor_inv", "dropped_armor"];
       case "Chainmail Armor": return ["chainmail_armor_inv", "dropped_armor"];
 
+      // Belt
       case "Leather Belt": return ["leather_belt_inv", "dropped_belt"];
       case "Chainmail Belt": return ["chainmail_belt_inv", "dropped_belt"];
 
+      // Boots
       case "Leather Boots": return ["leather_boots_inv", "dropped_boots"];
       case "Chainmail Boots": return ["chainmail_boots_inv", "dropped_boots"];
 
+      // Gloves
       case "Leather Gloves": return ["leather_gloves_inv", "dropped_gloves"];
       case "Chainmail Gloves": return ["chainmail_gloves_inv", "dropped_gloves"];
 
+      // Helmets & Hoods
       case "Leather Hood": return ["leather_hood_inv", "dropped_hood"];
       case "Chainmail Hood": return ["chainmail_hood_inv", "dropped_hood"];
       case "Knight Helmet": return ["knight_helmet_inv", "dropped_helmet"];
 
+      // Shield
       case "Wooden Shield": return ["wooden_shield_inv", "dropped_shield"];
-
-      // case "Long Bow": return ["", ""];
     }
     return ["", ""];
   }
