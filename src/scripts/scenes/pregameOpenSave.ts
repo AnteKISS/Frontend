@@ -97,22 +97,22 @@ export default class PregameOpenSave extends Phaser.Scene {
 
   Save1() {
     console.log('Save1 button clicked');
-    this.scene.start('MainScene', { save: '{"playerX":-289.8033437619209,"playerY":-431.31437688232006,"playerAllocatedPoints":{"strength":0,"dexterity":2,"vitality":0,"intelligence":0},"playerUnallocatedPoints":3,"playerXp":582,"playerInventoryItems":[{"code":15,"x":2,"y":0}],"playerEquippedItems":[{"slot":"helmet"},{"slot":"armor"},{"slot":"amulet"},{"slot":"mainhand"},{"slot":"offhand"},{"slot":"ring1"},{"slot":"ring2","code":6},{"slot":"belt"},{"slot":"gloves"},{"slot":"boots"}]}' });
+    this.scene.start('MainScene', { saveSlot: 1, save: '{"playerX":-289.8033437619209,"playerY":-431.31437688232006,"playerAllocatedPoints":{"strength":0,"dexterity":2,"vitality":0,"intelligence":0},"playerUnallocatedPoints":3,"playerXp":582,"playerInventoryItems":[{"code":15,"x":2,"y":0}],"playerEquippedItems":[{"slot":"helmet"},{"slot":"armor"},{"slot":"amulet"},{"slot":"mainhand"},{"slot":"offhand"},{"slot":"ring1"},{"slot":"ring2","code":6},{"slot":"belt"},{"slot":"gloves"},{"slot":"boots"}]}' });
   }
 
   Save2() {
     console.log('Save2 button clicked');
-    this.scene.start('MainScene');
+    this.scene.start('MainScene', { saveSlot: 2 });
   }
 
   Save3() {
     console.log('Save3 button clicked');
-    this.scene.start('MainScene');
+    this.scene.start('MainScene', { saveSlot: 3 });
   }
 
   Save4() {
     console.log('Save4 button clicked');
-    this.scene.start('MainScene');
+    this.scene.start('MainScene', { saveSlot: 4 });
   }
 
   readSave() {

@@ -59,6 +59,8 @@ export default class MainScene extends Phaser.Scene {
   private music: Phaser.Sound.WebAudioSound;
   private playerLight: Phaser.GameObjects.PointLight;
 
+  public playerName: string;
+  public saveSlot: number;
   public save: string;
 
   // private testDiaglogue: Dialogue;
@@ -68,12 +70,15 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public init(data: any): void {
-    if (data?.save) this.save = data.save;
+    this.playerName = KeycloakManager.getUsername();
+    this.saveSlot = 1;
+
+    if (data) {
+      this.save = data.save;
+    }
   }
 
   public create() {
-    console.log(KeycloakManager.getUsername());
-
     this.gameInputs = new GameInput(this);
     this.fpsText = new FpsText(this);
     this.uiCamera = this.cameras.add(0, 0, 1280, 720, false, "uiCamera");

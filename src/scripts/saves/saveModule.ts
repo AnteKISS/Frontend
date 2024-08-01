@@ -9,6 +9,8 @@ export default class SaveModule {
     player.attributeAllocation.cancelSelection();
 
     const json = {
+      playerName: scene.playerName,
+      saveSlot: scene.saveSlot,
       playerX: player.positionX,
       playerY: player.positionY,
       playerAllocatedPoints: {
@@ -34,6 +36,8 @@ export default class SaveModule {
       ],
     };
 
+    console.log("SAVE SLOT", json.saveSlot);
+
     // Get player inventory items into JSON
     for (const itemInfo of player.inventory.getItemStorage().getItemsInfo()) {
       json.playerInventoryItems.push({
@@ -49,6 +53,9 @@ export default class SaveModule {
   public static loadJSON(scene: MainScene, jsonStr: string) {
     const json = JSON.parse(jsonStr);
     const player = scene.playerTest;
+
+    scene.playerName = json.playerName;
+    scene.saveSlot = json.saveSlot;
 
     player.positionX = json.playerX;
     player.x = json.playerX;
