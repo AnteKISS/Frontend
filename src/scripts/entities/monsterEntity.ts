@@ -109,7 +109,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
       this.currentBehaviorState.state = ActiveEntityBehaviorState.State.DEATH;
       const deathEvent = new ActiveEntityEvents.KilledEvent(damageSource, this);
       GeneralEventManager.getInstance().notifyObservers(deathEvent);
-      EntityManager.instance.getPlayers()[0].exp.addExp(Math.floor(Math.random() * 250) + 50);
+      EntityManager.instance.getPlayers()[0].exp.addExp(Math.floor(Math.random() * 250) + 150);
       this.generateLoot();
     }
   }

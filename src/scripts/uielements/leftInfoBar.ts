@@ -6,6 +6,7 @@ export default class LeftInfoBar extends Phaser.GameObjects.Container
     private leftInfoBar: Phaser.GameObjects.Sprite;
     private potionPouch: Phaser.GameObjects.Sprite;
     private potionAmount: Phaser.GameObjects.Text;
+    private tip: Phaser.GameObjects.Text;
 
     constructor(scene: Phaser.Scene, x: number, y: number)
     {
@@ -20,7 +21,12 @@ export default class LeftInfoBar extends Phaser.GameObjects.Container
             color: '#ffffff'
         });
 
-        this.add([this.leftInfoBar, this.potionPouch, this.potionAmount]);
+        this.tip = scene.add.text(x - 10, y - 35, 'Inventory (I)\nAttributes (A)\nStats (C)\nPotion (4)', {
+            fontSize: '12px',
+            color: '#ffffff'
+        });
+
+        this.add([this.leftInfoBar, this.potionPouch, this.potionAmount, this.tip]);
     }
 
     public updateText(player: PlayerEntity): void 

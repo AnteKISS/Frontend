@@ -68,7 +68,7 @@ export default class ExpBar extends Phaser.GameObjects.Container
         {
             const percentage = this.currentExp / this.maxExp * 100;
             const toNextLevel = this.maxExp - this.currentExp;
-            Tooltip.updateText('Exp to next level: ' + toNextLevel + ' : ' + percentage + '%');
+            Tooltip.updateText('Exp to next level: ' + toNextLevel + ' (' + percentage.toFixed(2) + '%)');
             Tooltip.requestTooltip(this);
         }
     }

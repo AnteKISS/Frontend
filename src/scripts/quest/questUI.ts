@@ -17,9 +17,9 @@ export class QuestUI extends Phaser.GameObjects.Container
         QuestManager.getInstance.getQuests().forEach((quest, index) => {
             const background = new Phaser.GameObjects.Graphics(scene);
             background.fillStyle(0x000000, 0.5);
-            background.fillRect(1080, 100 + (30 * index), 200, 30);
             
-            const text = new Phaser.GameObjects.Text(scene, 1090, 107 + (30 * index), 'Kill ' + quest.getMonsterId() + ': ' + quest.getAmountKilled() + '/' + quest.getAmountToKill(), { fontSize: '14px', color: '#ffffff'})
+            const text = new Phaser.GameObjects.Text(scene, 10, 107 + (30 * index), 'Kill ' + quest.getMonsterId() + ': ' + quest.getAmountKilled() + '/' + quest.getAmountToKill(), { fontSize: '14px', color: '#ffffff'});
+            background.fillRect(0, 100 + (30 * index), text.displayWidth + 20, 30);
             
             this.add([background, text]);
         });

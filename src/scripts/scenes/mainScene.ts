@@ -1,13 +1,7 @@
 import FpsText from '../objects/fpsText'
-import Item from '../inventory/item'
-import InventoryItem from '../inventory/inventoryItem'
-
-import { ItemType } from '../inventory/itemType'
-
 import GUI from '../objects/gui'
 import { PlayerEntity } from '../entities/playerEntity';
 import { EntityManager } from '../managers/entityManager';
-import { OutlinePipeline } from '../pipelines/outlinePipeline';
 import { TileColor } from '../tiles/tiledrawer'
 import CampaignManager from '../managers/campaignmanager'
 import Point from '../types/point'
@@ -21,21 +15,21 @@ import ItemEntity from '../entities/itemEntity'
 import { MathModule } from '../utilities/mathModule'
 import { GameInput } from '../inputs/gameInputs'
 import PauseMenu from './pauseMenu'
-import InGameOptions from './inGameOptions'
 import SoundManager from '../managers/soundManager'
 import { GeneralEventManager, PlayerEquipmentEventManager } from '../managers/eventManager'
-import { UiEvents } from '../events/uiEvents'
 import { KillQuest } from '../quest/killQuest'
 import { QuestUI } from '../quest/questUI'
 import { NpcEntity } from '../entities/npcEntity'
 import APIManager from '../managers/APIManager'
-import { Dialogue } from '../uielements/dialogue'
 import KeycloakManager from '../keycloak'
+import { CharacterStatsUI } from '../uielements/characterStatsUI'
+import { MonsterEntity } from '../entities/monsterEntity'
+import { MinimapCamera } from '../cameras/minimapCamera'
 import SaveModule from '../saves/saveModule'
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
-  public minimapCamera: Phaser.Cameras.Scene2D.Camera;
+  public minimapCamera: MinimapCamera;
   public fpsText: FpsText;
   public campaignManager: CampaignManager;
   public pointer: Phaser.Input.Pointer;
@@ -46,6 +40,7 @@ export default class MainScene extends Phaser.Scene {
   public npcTest: NpcEntity;
   private entityHealthBar: EntityHealthBar;
   private gui: GUI;
+  private characterStats: CharacterStatsUI;
 
   private pauseMenu: PauseMenu;
   private questUI: QuestUI;
@@ -62,8 +57,10 @@ export default class MainScene extends Phaser.Scene {
   public playerName: string;
   public saveSlot: number;
   public save: string;
+  private minimapGraphics: Phaser.GameObjects.Graphics;
 
-  // private testDiaglogue: Dialogue;
+  private readonly MINIMAP_WIDTH: number = 400;
+  private readonly MINIMAP_HEIGHT: number = 250;
 
   public constructor() {
     super({ key: 'MainScene' });
@@ -82,8 +79,11 @@ export default class MainScene extends Phaser.Scene {
     this.gameInputs = new GameInput(this);
     this.fpsText = new FpsText(this);
     this.uiCamera = this.cameras.add(0, 0, 1280, 720, false, "uiCamera");
-    this.minimapCamera = this.cameras.add(0, 0, 1280, 720, false, "minimapCamera");
-    // this.minimapCamera.setBackgroundColor('rgba(21, 7, 4, 0.75)');
+    this.minimapCamera = new MinimapCamera(this, this.cameras.main.width - this.MINIMAP_WIDTH, 0, this.MINIMAP_WIDTH, this.MINIMAP_HEIGHT, "minimapCamera");
+    this.cameras.addExisting(this.minimapCamera);
+    this.minimapCamera.alpha = 0.5;
+    this.minimapCamera.setZoom(0.1);
+    // this.minimapCamera.setBackgroundColor('rgba(0, 0, 0, 0.25)');
 
     // new GameLogo(this, this.cameras.main.width / 2, this.cameras.main.height / 2);
     //this.campaign = new Campaign("Main");
@@ -125,7 +125,6 @@ export default class MainScene extends Phaser.Scene {
     this.playerTest.onPlayerDeath.addHandler(playerDeathHandler);
 
     this.entityHealthBar = new EntityHealthBar(this);
-    // this.entityHealthBar.entity = this.monsterTest;
     this.gui.spellBar.setSpellBook(this.playerTest.spellBook);
 
     this.input.setDefaultCursor('default');
@@ -136,23 +135,22 @@ export default class MainScene extends Phaser.Scene {
     this.input.keyboard?.on('keydown-A', () => this.attributeGUI.aKeyPressed());
     this.input.keyboard?.on('keydown-ESC', () => this.attributeGUI.hide());
 
+    //Setup CharacterStats Panel
+    this.characterStats = new CharacterStatsUI(this, this.playerTest);
+
+    this.input.keyboard?.on('keydown-C', () => this.characterStats.cKeyPressed());
+    this.input.keyboard?.on('keydown-ESC', () => this.characterStats.hide());
+
     //Setup pause menu
     this.pauseMenu = new PauseMenu(this);
     this.input.keyboard!.on('keydown-P', () => this.pauseMenu.visible ? this.pauseMenu.hide() : this.pauseMenu.show());
     this.input.keyboard!.on('keydown-ESC', () => this.pauseMenu.hide());
 
-
-
     // Setup inventory test
     this.input.keyboard!.on('keydown-I', () => this.playerTest.inventory.visible ? this.playerTest.inventory.hide() : this.playerTest.inventory.show());
     this.input.keyboard!.on('keydown-ESC', () => this.playerTest.inventory.hide());
 
-    // this.input.keyboard!.on('keydown-ESC', () => {
-    //   if (this.playerTest.isDead()) {
-    //     this.playerTest.resp
-    //   }
-    // });
-
+    // Add items to player inventory
     /*
     const talismanOfBaphomet = APIManager.getNewItemByCode(this, 4);
     if (talismanOfBaphomet)
@@ -215,7 +213,8 @@ export default class MainScene extends Phaser.Scene {
         this.pauseMenu,
         this.playerTest.inventory,
         this.attributeGUI,
-        this.questUI
+        this.questUI,
+        this.characterStats
       ]
     );
     // TODO: Find a way to make the ignore list more dynamic
@@ -242,7 +241,8 @@ export default class MainScene extends Phaser.Scene {
         this.questUI,
         this.playerTest,
         this.playerTest.collider.debugGraphics,
-        this.playerLight
+        this.playerLight,
+        this.characterStats
       ]
     );
     let soundManager = SoundManager.getInstance();
@@ -269,6 +269,13 @@ export default class MainScene extends Phaser.Scene {
     //youtubePlayer.play();
     this.sys.game.canvas.style.cursor = 'url(assets/gui/pointer05.png), auto';
     console.log("THIS.SAVE:", this.save);
+    this.minimapGraphics = this.add.graphics();
+    this.cameras.main.ignore(this.minimapGraphics);
+    this.uiCamera.ignore(this.minimapGraphics);
+    this.minimapCamera.on('m-KEY', () => {
+      this.minimapCamera.setVisible(this.minimapCamera.visible);
+    });
+    console.log(this.save);
     if (this.save) SaveModule.loadJSON(this, this.save);
   }
 
@@ -277,6 +284,22 @@ export default class MainScene extends Phaser.Scene {
       this.playerTest.positionX - this.cameras.main.width / 2,
       this.playerTest.positionY - this.cameras.main.height / 2
     );
+    this.minimapCamera.setScroll(
+      this.playerTest.positionX - this.minimapCamera.width / 2,
+      this.playerTest.positionY - this.minimapCamera.height / 2
+    );
+    this.minimapGraphics.clear();
+    this.minimapGraphics.fillStyle(0x0000FF, 1);
+    this.minimapGraphics.fillCircle(this.playerTest.positionX, this.playerTest.positionY, 25);
+    for (const entity of EntityManager.instance.getCurrentAreaEntities()) {
+      if (entity instanceof MonsterEntity && !entity.isDead()) {
+        this.minimapGraphics.fillStyle(0xFF0000, 1);
+        this.minimapGraphics.fillCircle(entity.positionX, entity.positionY, 25);
+      } else if (entity instanceof NpcEntity) {
+        this.minimapGraphics.fillStyle(0x00FF00, 1);
+        this.minimapGraphics.fillCircle(entity.positionX, entity.positionY, 25);
+      }
+    }
     this.playerLight.x = this.playerTest.positionX;
     this.playerLight.y = this.playerTest.positionY;
     this.sound.setListenerPosition(this.playerTest.positionX, this.playerTest.positionY);
@@ -290,6 +313,7 @@ export default class MainScene extends Phaser.Scene {
     this.attributeGUI.update();
     SpellColliderManager.getInstance.update();
     this.questUI.drawUI(this);
+    this.characterStats.update();
     // this.testDiaglogue.update(time, deltaTime);
 
     if (this.gameInputs.showGroundItemsKey.isDown) {
