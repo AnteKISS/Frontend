@@ -4,13 +4,13 @@ import APIManager from "../managers/APIManager";
 import MainScene from "../scenes/mainScene";
 
 export default class SaveModule {
-  public static getJson(scene: MainScene): string {
+  public static getJson(scene: MainScene): any {
     const player = scene.playerTest;
     player.attributeAllocation.cancelSelection();
 
     const json = {
-      playerName: scene.playerName,
       saveSlot: scene.saveSlot,
+      playerName: scene.playerName,
       playerX: player.positionX,
       playerY: player.positionY,
       playerAllocatedPoints: {
@@ -36,8 +36,6 @@ export default class SaveModule {
       ],
     };
 
-    console.log("SAVE SLOT", json.saveSlot);
-
     // Get player inventory items into JSON
     for (const itemInfo of player.inventory.getItemStorage().getItemsInfo()) {
       json.playerInventoryItems.push({
@@ -47,7 +45,7 @@ export default class SaveModule {
       });
     }
 
-    return JSON.stringify(json);
+    return json;
   }
 
   public static loadJSON(scene: MainScene, jsonStr: string) {
@@ -86,26 +84,33 @@ export default class SaveModule {
     // Add items in player equipment slots
     const equippedJson = json.playerEquippedItems;
     const equipment = player.inventory.getPlayerEquipment();
-    this.equipItem(scene, equippedJson[0], equipment.getHelmetSlot());
-    this.equipItem(scene, equippedJson[1], equipment.getArmorSlot());
-    this.equipItem(scene, equippedJson[2], equipment.getAmuletSlot());
-    this.equipItem(scene, equippedJson[3], equipment.getMainhandSlot());
-    this.equipItem(scene, equippedJson[4], equipment.getOffhandSlot());
-    this.equipItem(scene, equippedJson[5], equipment.getRing1Slot());
-    this.equipItem(scene, equippedJson[6], equipment.getRing2Slot());
-    this.equipItem(scene, equippedJson[7], equipment.getBeltSlot());
-    this.equipItem(scene, equippedJson[8], equipment.getGlovesSlot());
-    this.equipItem(scene, equippedJson[9], equipment.getBootsSlot());
+    this.equipItem(scene, this.getJsonEquippedItem("helmet", equippedJson), equipment.getHelmetSlot());
+    this.equipItem(scene, this.getJsonEquippedItem("armor", equippedJson), equipment.getArmorSlot());
+    this.equipItem(scene, this.getJsonEquippedItem("amulet", equippedJson), equipment.getAmuletSlot());
+    this.equipItem(scene, this.getJsonEquippedItem("mainhand", equippedJson), equipment.getMainhandSlot());
+    this.equipItem(scene, this.getJsonEquippedItem("offhand", equippedJson), equipment.getOffhandSlot());
+    this.equipItem(scene, this.getJsonEquippedItem("ring1", equippedJson), equipment.getRing1Slot());
+    this.equipItem(scene, this.getJsonEquippedItem("ring2", equippedJson), equipment.getRing2Slot());
+    this.equipItem(scene, this.getJsonEquippedItem("belt", equippedJson), equipment.getBeltSlot());
+    this.equipItem(scene, this.getJsonEquippedItem("gloves", equippedJson), equipment.getGlovesSlot());
+    this.equipItem(scene, this.getJsonEquippedItem("boots", equippedJson), equipment.getBootsSlot());
   }
 
-  private static equipItem(scene: MainScene, slotData: any, equipSlot: EquipSlot): void {
-    if (slotData.code === undefined)
+  private static getJsonEquippedItem(slotType: string, json: Array<any>): any {
+    return json.find(s => s.slot === slotType);
+  }
+
+  private static equipItem(scene: MainScene, slotItem: any, equipSlot: EquipSlot): void {
+    if (!slotItem)
       return;
 
-    const item = APIManager.getNewItemByCode(scene, slotData.code);
+    const item = APIManager.getNewItemByCode(scene, slotItem.itemId);
     if (item) {
       const inventoryItem = new InventoryItem(scene, item);
-      equipSlot.equipItem(inventoryItem);
+      const unequipped = equipSlot.equipItem(inventoryItem);
+
+      if (inventoryItem === unequipped)
+        item.destroy();
     }
     else
       console.error("SaveModule::equipItem - Inventory item not found in APIManager.");

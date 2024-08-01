@@ -70,10 +70,9 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public init(data: any): void {
-    this.playerName = KeycloakManager.getUsername();
-    this.saveSlot = 1;
-
     if (data) {
+      this.playerName = data.playerName;
+      this.saveSlot = data.saveSlot;
       this.save = data.save;
     }
   }
