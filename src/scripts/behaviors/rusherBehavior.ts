@@ -51,14 +51,6 @@ export class RusherBehavior extends Behavior {
         if (!this.isTargetValid()) {
           this.selectTarget();
         }
-        // const packLeader = monster.monsterPack.getLeader();
-        // if (packLeader && packLeader !== monster) {
-        //   if (packLeader.target) {
-        //     monster.target = packLeader.target;
-        //   } else {
-        //     monster.target = null;
-        //   }
-        // }
         break;
       case ActiveEntityBehaviorState.State.CHARGING:
         this.parent.animator.setFutureAnimatorState(ActiveEntityAnimationState.State.RUN);

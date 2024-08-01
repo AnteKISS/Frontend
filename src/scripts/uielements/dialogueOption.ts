@@ -78,9 +78,6 @@ export class SpawnMonsterDialogueOption extends DialogueOption {
       this.isMonsterCodeSpecified = false;
     }
     this.on('pointerdown', (pointer, localX, localY, event) => {
-      // const possibleMethods = ['spawnMonsters', 'spawnMonterPack'];
-      // const randomIndex = Math.floor((Math.random() * possibleMethods.length) + 1);
-      // this[possibleMethods[randomIndex]]();
       if (isMonsterPack) {
         this.spawnMonterPack();
       } else {
