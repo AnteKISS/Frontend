@@ -76,7 +76,7 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
     option2.quest = new KillQuest(10, "goblin_lumberjack_black", 15000);
     const option3 = new QuestDialogueOption(this.scene, this.dialogue);
     option3.setText('Zombie quest');
-    option3.quest = new KillQuest(5, "zombie_0", 250);
+    option3.quest = new KillQuest(5, "zombie", 250);
     const option4 = new SpawnMonsterDialogueOption(this.scene, this.dialogue);
     option4.setText('Hello this is Bill from Microsoft');
     this.dialogue.addDialogueOption(option1);
