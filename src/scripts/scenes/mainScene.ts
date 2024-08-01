@@ -58,8 +58,6 @@ export default class MainScene extends Phaser.Scene {
   private readonly MINIMAP_HEIGHT: number = 250;
   public save: string;
 
-  // private testDiaglogue: Dialogue;
-
   public constructor() {
     super({ key: 'MainScene' });
   }
