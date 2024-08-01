@@ -151,12 +151,18 @@ export default class APIManager {
       } catch (error) {
         console.error("Error while trying to map monster data.", error);
       }
-      if (!APIManager.monsterDatas.has(monsterData.baseCode.toLowerCase())) {
-        APIManager.monsterDatas.set(monsterData.baseCode.toLowerCase(), monsterData);
+      if (!APIManager.monsterDatas.has(monsterData.uuid)) {
+        APIManager.monsterDatas.set(monsterData.uuid, monsterData);
       }
-      if (!ActiveEntityFactory.loadedMonsters.has(monsterData.baseCode.toLowerCase())) {
-        ActiveEntityFactory.loadedMonsters.set(monsterData.baseCode.toLowerCase(), monsterData);
+      if (!ActiveEntityFactory.loadedMonsters.has(monsterData.uuid)) {
+        ActiveEntityFactory.loadedMonsters.set(monsterData.uuid, monsterData);
       }
+      // if (!APIManager.monsterDatas.has(monsterData.baseCode.toLowerCase())) {
+      //   APIManager.monsterDatas.set(monsterData.baseCode.toLowerCase(), monsterData);
+      // }
+      // if (!ActiveEntityFactory.loadedMonsters.has(monsterData.baseCode.toLowerCase())) {
+      //   ActiveEntityFactory.loadedMonsters.set(monsterData.baseCode.toLowerCase(), monsterData);
+      // }
     }
     console.log("Monster load finished:", APIManager.monsterDatas);
   }

@@ -1,9 +1,6 @@
-import { ActiveEntity } from "../entities/activeEntity";
 import ActiveEntityDynamicStats from "../entities/activeEntityDynamicStats";
 import ActiveEntityModifierStats from "../entities/activeEntityModifierStats";
-import { MonsterEntity } from "../entities/monsterEntity";
 import MonsterDataInvalidError from "../errors/monsterDataInvalidError";
-import { EntityManager } from "../managers/entityManager";
 
 export class MonsterEntityMapper {
   public static mapMonsterData(data: any): MonsterData {
@@ -80,6 +77,7 @@ export class MonsterEntityMapper {
 }
 
 export class MonsterData {
+  public uuid: string;
   public code: string;
   public baseCode: string;
   public name: string;
@@ -89,4 +87,17 @@ export class MonsterData {
   public tempModifierStats: ActiveEntityModifierStats;
   public totalModifierStats: ActiveEntityModifierStats;
   public modifiers: Map<string, string>;
+
+  public constructor() {
+    this.uuid = Phaser.Math.RND.uuid();
+    this.code = '';
+    this.baseCode = '';
+    this.name = '';
+    this.qualityCode = '';
+    this.dynamicStats = new ActiveEntityDynamicStats();
+    this.baseModifierStats = new ActiveEntityModifierStats();
+    this.tempModifierStats = new ActiveEntityModifierStats();
+    this.totalModifierStats = new ActiveEntityModifierStats();
+    this.modifiers = new Map<string, string>();
+  }
 }

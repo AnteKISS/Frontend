@@ -162,6 +162,5 @@ export class EntityHealthBar extends Phaser.GameObjects.GameObject {
     if (this.lblEntityDescription.text === this.entity.code) {
       return;
     }
-    this.lblEntityDescription.setText(this.entity.code);
   }
 }
