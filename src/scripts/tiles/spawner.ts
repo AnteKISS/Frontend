@@ -24,7 +24,7 @@ export default class Spawner extends GameObject {
 
     for (let i = 0; i < this.spawnAmount - spawnedEntitiesAmount; i++) {
       const randomNonNormalMonsterChance: number = Math.random();
-      if (randomNonNormalMonsterChance >= 0.80) {
+      if (randomNonNormalMonsterChance >= 0.85) {
         let entities: MonsterEntity[] = EntityManager.instance.createMonsterWithMinions(CampaignManager.getInstance().getScene(), this.monsterCode);
 
         for (let entity of entities) {
