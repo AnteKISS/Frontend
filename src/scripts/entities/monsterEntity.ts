@@ -156,11 +156,14 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
       return;
     }
 
-    const item: Item | undefined = InactiveEntityFactory.createRandomItem(this.scene, this.lootTable);
-    if (item) {
-      let itemEntity: ItemEntity = EntityManager.instance.createItem(this.scene, item);
-      itemEntity.positionX = this.positionX;
-      itemEntity.positionY = this.positionY;
+    const randomItemCount = Math.floor(Math.random() * 1) + 1;
+    for (let i = 0; i < randomItemCount; i++) {
+      const item: Item | undefined = InactiveEntityFactory.createRandomItem(this.scene, this.lootTable);
+      if (item) {
+        let itemEntity: ItemEntity = EntityManager.instance.createItem(this.scene, item);
+        itemEntity.positionX = this.positionX;
+        itemEntity.positionY = this.positionY;
+      }
     }
   }
 

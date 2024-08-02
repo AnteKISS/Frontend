@@ -139,6 +139,7 @@ export default class APIManager {
       case "Bronze Ring": return ["bronze_ring_inv", "dropped_ring"];
       case "Silver Ring": return ["silver_ring_inv", "dropped_ring"];
       case "Gold Ring": return ["gold_ring_inv", "dropped_ring"];
+      case "Bb": return ["gold_ring_inv", "dropped_ring"];
 
       // Armor
       case "Leather Armor": return ["leather_armor_inv", "dropped_armor"];

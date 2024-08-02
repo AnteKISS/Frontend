@@ -179,6 +179,7 @@ export class ActiveEntityFactory {
         "Chainmail Hood",
         "Silver Ring",
         "Dagger",
+        "Bb"
       ]);
     } else if (monsterCode === 'minotaur') {
       entity.behavior = new RusherBehavior(entity);
