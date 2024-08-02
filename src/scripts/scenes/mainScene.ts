@@ -280,6 +280,9 @@ export default class MainScene extends Phaser.Scene {
   }
 
   public update(time: number, deltaTime: number) {
+    if (this.pauseMenu.visible){
+      return;
+    }
     this.cameras.main.setScroll(
       this.playerTest.positionX - this.cameras.main.width / 2,
       this.playerTest.positionY - this.cameras.main.height / 2

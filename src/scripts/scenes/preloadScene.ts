@@ -1,12 +1,61 @@
+import Phaser from 'phaser';
 import APIManager from "../managers/APIManager";
 
+
 export default class PreloadScene extends Phaser.Scene {
+
+  private WP : Phaser.GameObjects.Image;
+  private rat : Phaser.GameObjects.Image;
+
+  public preloadDone:boolean = false ;
+
   constructor() {
     super({ key: 'PreloadScene' });
   }
 
   preload() {
+
+      this.load.on('filecomplete-image-backGround', () => {
+        console.log('function 1 started');
+        const { width, height } = this.scale;
+        this.WP = this.add.image(width/2, height/2.5, 'backGround');
+        this.WP.setDepth(-1);
+        this.WP.setScale(1.7);
+        });
+
+
+    this.load.on('filecomplete-image-game-logo', () => {
+      console.log('function 1 started');
+      const graphics = this.add.graphics();
+      const { width, height } = this.scale;
+        graphics.fillStyle(0x000000, 0.5); 
+        graphics.fillRect(0, 0, width, height);
+        this.rat = this.add.image(width-40, height -40, 'game-logo');
+        this.rat.setScale(0.15); 
+        this.tweens.add({
+          targets: this.rat,
+          angle: { from: 0, to: 360 },
+          duration: 1000, 
+          repeat: -1, 
+          ease: 'Linear' 
+        });
+
+        const text = this.add.text(width / 2, height/2, 'LOADING...', {
+            font: '40px Arial',
+            color: '#000000'
+          });
+          text.setOrigin(0.5, 0.5); 
+        
+      });
+
+    
+
+
     this.load.image('game-logo', 'assets/img/rat_474x278.png');
+    this.load.image('backGround', 'assets/gui/mainMenu/WP.png');
+
+
+
     this.load.image('sphereTexture', 'assets/gui/infobars/itsmars_orb_fill.png');
     this.load.image('bigContour', 'assets/gui/infobars/itsmars_orb_back1.png');
     this.load.image('fillTexture', 'assets/gui/infobars/itsmars_scroll_fill.png');
@@ -37,6 +86,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('resumetxt', 'assets/gui/progression/RESUME1.png');
     this.load.image('playtxt', 'assets/gui/progression/PLAY.png');
     this.load.image('settingstxt', 'assets/gui/progression/SETTINGS.png');
+    this.load.image('choose_your_username', 'assets/gui/progression/Choose-your-username.png');
     this.load.image('mapEditortxt', 'assets/gui/progression/MAP_EDITOR.png');
     this.load.image('DIEBLOU', 'assets/gui/progression/DIEBLOU.png');
     this.load.image('backgroundSound', 'assets/gui/progression/Background-Sound.png');
@@ -50,11 +100,13 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('OS', 'assets/gui/progression/OpenSave.png');
     this.load.image('Maletxt', 'assets/gui/progression/Maletxt.png');
     this.load.image('Femaletxt', 'assets/gui/progression/Femaletxt.png');
+    this.load.image('start', 'assets/gui/progression/startButton1.png');
     this.load.image('qst', 'assets/gui/progression/Select-your-hero-25-07-2024.png');
     this.load.image('dialogueBackground', 'assets/gui/dialogue/dialogueBackground.png');
+    
+    
 
-
-    this.load.image('backGround', 'assets/gui/mainMenu/WP.png');
+    
 
     this.load.image('play', 'assets/gui/progression/button2.png');
     this.load.image('exit', 'assets/gui/progression/button4.png');
@@ -62,7 +114,8 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('mute', 'assets/gui/mainMenu/mute.png');
     this.load.image('plus', 'assets/gui/mainMenu/plus.png');
     this.load.image('moins', 'assets/gui/mainMenu/moins.png');
-    this.load.image('return', 'assets/gui/mainMenu/return.png');
+    this.load.image('dialog', 'assets/gui/progression/dialog_box.png');
+    
     this.load.image('male', 'assets/gui/mainMenu/male.png');
     this.load.image('female', 'assets/gui/mainMenu/female_warrior.png');
     this.load.image('customPointer', 'assets/gui/pointer05.png')
@@ -175,6 +228,7 @@ export default class PreloadScene extends Phaser.Scene {
 
     this.initializeSpritesheets();
     APIManager.loadItems();
+
     APIManager.loadMonsters();
   }
 
@@ -230,8 +284,32 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.spritesheet('flat_stone_walls', 'assets/sprites/tiles/flat_stone_walls.png', { frameWidth: 128, frameHeight: 192 });
     this.load.spritesheet('brick_walls', 'assets/sprites/tiles/brick_walls.png', { frameWidth: 128, frameHeight: 192 });
   }
+  private loading():void{
+
+    this.load.image('game-logo', 'assets/img/rat_474x278.png');
+    this.load.image('backGround', 'assets/gui/mainMenu/WP.png');
+  
+    const { width, height } = this.scale;
+        this.WP = this.add.image(width/2, height/2.5, 'backGround');
+        this.WP.setScale(1.7);
+
+        const graphics = this.add.graphics();
+        
+        graphics.fillStyle(0x000000, 0.5); 
+        graphics.fillRect(0, 0, width, height);
+        this.rat = this.add.image(width-40, height -40, 'game-logo');
+        this.rat.setScale(0.15); 
+
+        const text = this.add.text(width / 2, height - 30, 'loading...', {
+            font: '40px Arial',
+            color: '#000000'
+          });
+          text.setOrigin(0.5, 0.5); 
+
+  }
 }
 
 if ((module as any).hot) {
   (module as any).hot.accept();
 }
+
