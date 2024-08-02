@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import KeycloakManager from '../keycloak';
+import axios from 'axios';
 
 export default class Username extends Phaser.GameObjects.Container {
   public background: Phaser.GameObjects.Image;
@@ -48,8 +50,14 @@ export default class Username extends Phaser.GameObjects.Container {
   public handleSubmit(): void {
     if (this.username.text.length === 0)
       return;
-
-    this.scene.scene.start("MainScene", { playerName: this.username.text, saveSlot: 1 });
+    
+    this.getSaves()
+      .then(saveAmt => this.scene.scene.start("MainScene", { playerName: this.username.text, saveSlot: saveAmt}))
+      .catch(error => {
+        console.error("Error loading save amt : ", error);
+      });
+      
+    //this.scene.scene.start("MainScene", { playerName: this.username.text, saveSlot: 1 });
   }
 
   public show(): void {
@@ -58,5 +66,12 @@ export default class Username extends Phaser.GameObjects.Container {
 
   public hide(): void {
     this.setVisible(false);
+  }
+
+  private async getSaves(): Promise<number> {
+    const response = await axios.get("http://localhost:8082/Save/" + KeycloakManager.getUsername());
+    const data: Array<any> = response.data;
+
+    return data.length;
   }
 }

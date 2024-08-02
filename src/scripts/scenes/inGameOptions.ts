@@ -40,16 +40,6 @@ export default class InGameOptions extends Phaser.GameObjects.Container {
       console.log(`Menu Sound: ${this.menuSound}`);
     });
 
-
-
-    //this.back = this.createButton(0, 600, 'button','exittxt', () => this.previousScreen());
-
-    /*this.closeButton = new Phaser.GameObjects.Sprite(scene, 243, 37, 'close_button').setInteractive();
-    this.closeButton.on('pointerdown', (event: { stopPropagation: () => void; }) => {
-      this.hide();
-      event.stopPropagation();
-    });*/
-
     this.add([this.sliderEffectSound, this.sliderGameSound, this.sliderMenuSound, this.optionstxt]);
     scene.add.existing(this);
   }

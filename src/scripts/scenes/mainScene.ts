@@ -26,6 +26,7 @@ import { CharacterStatsUI } from '../uielements/characterStatsUI'
 import { MonsterEntity } from '../entities/monsterEntity'
 import { MinimapCamera } from '../cameras/minimapCamera'
 import SaveModule from '../saves/saveModule'
+import YoutubePlayer from 'phaser3-rex-plugins/plugins/gameobjects/dom/youtubeplayer/YoutubePlayer';
 
 export default class MainScene extends Phaser.Scene {
   public uiCamera: Phaser.Cameras.Scene2D.Camera;
@@ -259,14 +260,19 @@ export default class MainScene extends Phaser.Scene {
       vignetteIntensity: 1.5,
     });
 
-    //var youtubePlayer = new YoutubePlayer(this, this.cameras.main.width * 0.5, 100, 300, 150, {
-    //  videoId: 'dQw4w9WgXcQ',
-    //  autoPlay: true,
-    //  controls: true,
-    //  loop: true
-    //});
-    //this.add.existing(youtubePlayer);
-    //youtubePlayer.play();
+    // DO NOT FORGET, IS GOOD YES-YES
+    //for (let i : number = 1;i < 10; i++) {
+    //  setTimeout(() => {
+    //    var youtubePlayer = new YoutubePlayer(this, this.cameras.main.width * 0.5, 100, 300, 150, {
+    //      videoId: 'dQw4w9WgXcQ',
+    //      autoPlay: true,
+    //      controls: true,
+    //      loop: true
+    //    });
+    //    this.add.existing(youtubePlayer);youtubePlayer.play();
+    //  }, i*1000);
+    //}
+
     this.sys.game.canvas.style.cursor = 'url(assets/gui/pointer05.png), auto';
     console.log("THIS.SAVE:", this.save);
     this.minimapGraphics = this.add.graphics();
