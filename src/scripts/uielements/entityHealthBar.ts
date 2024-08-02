@@ -140,7 +140,7 @@ export class EntityHealthBar extends Phaser.GameObjects.GameObject {
           break;
       }
     }
-    this.lblEntityName.setText(this.entity.name);
+    this.lblEntityName.setText('Lvl ' + this.entity.dynamicStats.level + ' ' + this.entity.name + ' (' + this.entity.dynamicStats.health + '/' + this.entity.totalModifierStats.maxHealth + ')');
   }
 
   private drawEntityDescription(): void {

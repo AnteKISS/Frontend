@@ -17,6 +17,7 @@ import Spell from '../spells/spell';
 import SpellBook from '../spells/spellBook';
 import StatModule from './statModule';
 import Prop from '../tiles/prop';
+import ActiveEntityPerLevelStats from './activeEntityPerLevelStats';
 
 export abstract class ActiveEntity extends BaseEntity implements IMovable {
 
@@ -25,6 +26,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
   public baseModifierStats: ActiveEntityModifierStats;
   public tempModifierStats: ActiveEntityModifierStats;
   public totalModifierStats: ActiveEntityModifierStats;
+  public perLevelModifierStats: ActiveEntityPerLevelStats;
   public states: ActiveEntityStates;
   public species: EntitySpecies;
   public destinationX: number;
@@ -50,6 +52,7 @@ export abstract class ActiveEntity extends BaseEntity implements IMovable {
     this.tempModifierStats = new ActiveEntityModifierStats();
     StatModule.resetModifierStats(this.tempModifierStats);
     this.totalModifierStats = new ActiveEntityModifierStats();
+    this.perLevelModifierStats = new ActiveEntityPerLevelStats();
     this.states = new ActiveEntityStates();
     this.destinationX = this.positionX;
     this.destinationY = this.positionY;

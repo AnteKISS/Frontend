@@ -158,7 +158,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     this.baseModifierStats.maxHealth = 100 + this.realVitality * 10;
     this.baseModifierStats.healthRegeneration = 2 + this.realVitality * 0.2;
     this.baseModifierStats.manaRegeneration = 2 + this.realIntelligence * 0.2;
-    this.baseModifierStats.movementSpeed = this.baseModifierStats.baseMovementSpeed + this.realDexterity * 0.5;
+    this.baseModifierStats.movementSpeed = this.baseModifierStats.baseMovementSpeed + this.realDexterity * 1;
     this.baseModifierStats.basePhysicalDamage = 10 + this.realStrenght * 2 + this.realDexterity;
     this.baseModifierStats.baseMagicalDamage = 10 + this.realIntelligence * 2;
 

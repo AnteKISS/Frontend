@@ -7,6 +7,7 @@ import { PlayerEntity } from '../entities/playerEntity';
 import { EntitySpecies } from '../enums/entitySpecies';
 import { MonsterRarity } from '../enums/monsterRarity';
 import InvalidMonsterCodeError from '../errors/invalidMonsterCodeError';
+import { EntityManager } from '../managers/entityManager';
 import { MonsterData } from '../mappers/MonsterEntityMapper';
 import FireBolt from '../spells/craftedSpells/firebolt';
 import ThrowSpear from '../spells/craftedSpells/throwSpear';
@@ -77,33 +78,62 @@ export class ActiveEntityFactory {
     monsterData.modifiers.forEach((key, value) => {
       entity.appliedModifiers.push(value)
     });
+    let monsterLevel: number;
+    if (EntityManager.instance.getPlayers().length > 0) {
+      if (quality !== MonsterRarity.NORMAL) {
+        monsterLevel = Math.floor(EntityManager.instance.getPlayers()[0].dynamicStats.level + Math.random() * 3);
+      } else {
+        monsterLevel = Math.floor((Math.random() * EntityManager.instance.getPlayers()[0].dynamicStats.level) + 1);
+      }
+    } else {
+      monsterLevel = Math.floor(Math.random() * 10 + 1);
+    }
     entity.dynamicStats = {
-      mana: 0,
-      health: monsterData.dynamicStats.health,
-      level: 1,
+      mana: monsterData.dynamicStats.mana + (monsterData.perLevelModifierStats.maxMana * monsterLevel),
+      health: monsterData.dynamicStats.health + (monsterData.perLevelModifierStats.maxHealth * monsterLevel),
+      level: monsterLevel,
       experience: 0,
+    };
+    entity.baseModifierStats = {
+      strength: 0,
+      dexterity: 0,
+      vitality: 0,
+      intelligence: 0,
+      maxMana: monsterData.baseModifierStats.maxMana + (monsterData.perLevelModifierStats.maxMana * entity.dynamicStats.level),
+      maxHealth: monsterData.baseModifierStats.maxHealth + (monsterData.perLevelModifierStats.maxHealth * entity.dynamicStats.level),
+      healthRegeneration: 0,
+      manaRegeneration: 0,
+      basePhysicalDamage: monsterData.baseModifierStats.basePhysicalDamage + (monsterData.perLevelModifierStats.basePhysicalDamage * entity.dynamicStats.level),
+      baseMagicalDamage: 0,
+      attackSpeed: monsterData.baseModifierStats.attackSpeed + (monsterData.perLevelModifierStats.attackSpeed * entity.dynamicStats.level),
+      sightDistance: monsterData.baseModifierStats.sightDistance + (monsterData.perLevelModifierStats.sightDistance * entity.dynamicStats.level),
+      meleeRange: monsterData.baseModifierStats.meleeRange + (monsterData.perLevelModifierStats.meleeRange * entity.dynamicStats.level),
+      projectileRange: 500,
+      defense: monsterData.baseModifierStats.defense + (monsterData.perLevelModifierStats.defense * entity.dynamicStats.level),
+      baseMovementSpeed: monsterData.baseModifierStats.baseMovementSpeed + (monsterData.perLevelModifierStats.movementSpeed * entity.dynamicStats.level),
+      movementSpeed: monsterData.baseModifierStats.movementSpeed + (monsterData.perLevelModifierStats.movementSpeed * entity.dynamicStats.level),
     };
     entity.totalModifierStats = {
       strength: 0,
       dexterity: 0,
       vitality: 0,
       intelligence: 0,
-      maxMana: monsterData.totalModifierStats.maxMana,
-      maxHealth: monsterData.totalModifierStats.maxHealth,
+      maxMana: monsterData.totalModifierStats.maxMana + (monsterData.perLevelModifierStats.maxMana * entity.dynamicStats.level),
+      maxHealth: monsterData.totalModifierStats.maxHealth + (monsterData.perLevelModifierStats.maxHealth * entity.dynamicStats.level),
       healthRegeneration: 0,
       manaRegeneration: 0,
-      basePhysicalDamage: monsterData.totalModifierStats.basePhysicalDamage,
+      basePhysicalDamage: monsterData.totalModifierStats.basePhysicalDamage + (monsterData.perLevelModifierStats.basePhysicalDamage * entity.dynamicStats.level),
       baseMagicalDamage: 0,
-      attackSpeed: monsterData.totalModifierStats.attackSpeed,
-      sightDistance: monsterData.totalModifierStats.sightDistance,
-      meleeRange: monsterData.totalModifierStats.meleeRange,
+      attackSpeed: monsterData.totalModifierStats.attackSpeed + (monsterData.perLevelModifierStats.attackSpeed * entity.dynamicStats.level),
+      sightDistance: monsterData.totalModifierStats.sightDistance + (monsterData.perLevelModifierStats.sightDistance * entity.dynamicStats.level),
+      meleeRange: monsterData.totalModifierStats.meleeRange + (monsterData.perLevelModifierStats.meleeRange * entity.dynamicStats.level),
       projectileRange: 500,
-      defense: monsterData.totalModifierStats.defense,
-      baseMovementSpeed: monsterData.totalModifierStats.baseMovementSpeed,
-      movementSpeed: monsterData.totalModifierStats.movementSpeed,
+      defense: monsterData.totalModifierStats.defense + (monsterData.perLevelModifierStats.defense * entity.dynamicStats.level),
+      baseMovementSpeed: monsterData.totalModifierStats.baseMovementSpeed + (monsterData.perLevelModifierStats.movementSpeed * entity.dynamicStats.level),
+      movementSpeed: monsterData.totalModifierStats.movementSpeed + (monsterData.perLevelModifierStats.movementSpeed * entity.dynamicStats.level),
     };
-    entity.dynamicStats.health = entity.totalModifierStats.maxHealth;
-    entity.dynamicStats.mana = entity.totalModifierStats.maxMana;
+    // entity.dynamicStats.health = entity.totalModifierStats.maxHealth + (monsterData.perLevelModifierStats.maxHealth * entity.dynamicStats.level);
+    // entity.dynamicStats.mana = entity.totalModifierStats.maxMana + (monsterData.perLevelModifierStats.maxMana * entity.dynamicStats.level);
     entity.states = {
       isInvincible: false,
       isStunned: false,

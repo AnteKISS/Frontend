@@ -29,6 +29,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
   public appliedModifiers: string[];
   public lootTable: LootTable;
   public monsterPack: MonsterPack;
+  public level: number;
 
   constructor(scene, monsterCode) {
     super(scene);
@@ -75,6 +76,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
 
     this.lootTable = new LootTable([]);
     this.monsterPack = new MonsterPack();
+    this.dynamicStats.level = 1;
   }
 
   // Getters/Setters
