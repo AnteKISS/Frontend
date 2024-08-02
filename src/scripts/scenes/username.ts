@@ -1,18 +1,23 @@
 import Phaser from 'phaser';
 
 export default class Username extends Phaser.GameObjects.Container {
-  public background: Phaser.GameObjects.Rectangle;
-  public label: Phaser.GameObjects.Text;
+  public background: Phaser.GameObjects.Image;
+  public label: Phaser.GameObjects.Image;
+  //public label: Phaser.GameObjects.Text;
   public username: Phaser.GameObjects.Text;
   public submit: Phaser.GameObjects.Sprite;
 
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y);
 
-    this.background = scene.add.rectangle(0, 0, 500, 100, 0xFFFFFF);
-    this.label = scene.add.text(-200, 0, "Username: ", { color: '#000000', fontSize: '24px', align: 'right' });
-    this.username = scene.add.text(0, 0, "test", { color: '#000000', fontSize: '24px', align: 'right' });
-    this.submit = scene.add.sprite(250, 0, "submit")
+    this.background = scene.add.image(0, 25, 'dialog');
+    this.label = scene.add.image(0, -50, 'choose_your_username');
+    this.label.setScale(0.5); 
+
+    this.username = scene.add.text(-280, 5, "username", { color: '#ffffff', fontSize: '30px', align: 'right' });
+  
+
+    this.submit = scene.add.sprite(0, 105, 'start')
       .setInteractive();
 
     scene.input.keyboard!.on("keydown", (event: KeyboardEvent) => this.handleKeyPress(event));
@@ -23,11 +28,17 @@ export default class Username extends Phaser.GameObjects.Container {
   }
 
   public handleKeyPress(event: KeyboardEvent): void {
+    
     if (!this.visible)
       return;
 
     if (event.key === "Backspace") {
       this.username.setText(this.username.text.slice(0, -1));
+    }
+    if(this.username.text.length >= 20)
+    {
+      return;
+
     }
     else if (event.key.length === 1) {
       this.username.setText(this.username.text + event.key);

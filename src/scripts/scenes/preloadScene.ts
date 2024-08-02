@@ -40,7 +40,7 @@ export default class PreloadScene extends Phaser.Scene {
           ease: 'Linear' 
         });
 
-        const text = this.add.text(width / 2, height - 30, 'LOADING...', {
+        const text = this.add.text(width / 2, height/2, 'LOADING...', {
             font: '40px Arial',
             color: '#000000'
           });
@@ -53,6 +53,7 @@ export default class PreloadScene extends Phaser.Scene {
 
     this.load.image('game-logo', 'assets/img/rat_474x278.png');
     this.load.image('backGround', 'assets/gui/mainMenu/WP.png');
+
 
 
     this.load.image('sphereTexture', 'assets/gui/infobars/itsmars_orb_fill.png');
@@ -85,6 +86,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('resumetxt', 'assets/gui/progression/RESUME1.png');
     this.load.image('playtxt', 'assets/gui/progression/PLAY.png');
     this.load.image('settingstxt', 'assets/gui/progression/SETTINGS.png');
+    this.load.image('choose_your_username', 'assets/gui/progression/Choose-your-username.png');
     this.load.image('mapEditortxt', 'assets/gui/progression/MAP_EDITOR.png');
     this.load.image('DIEBLOU', 'assets/gui/progression/DIEBLOU.png');
     this.load.image('backgroundSound', 'assets/gui/progression/Background-Sound.png');
@@ -98,9 +100,11 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('OS', 'assets/gui/progression/OpenSave.png');
     this.load.image('Maletxt', 'assets/gui/progression/Maletxt.png');
     this.load.image('Femaletxt', 'assets/gui/progression/Femaletxt.png');
+    this.load.image('start', 'assets/gui/progression/startButton1.png');
     this.load.image('qst', 'assets/gui/progression/Select-your-hero-25-07-2024.png');
     this.load.image('dialogueBackground', 'assets/gui/dialogue/dialogueBackground.png');
-
+    
+    
 
     
 
@@ -110,6 +114,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image('mute', 'assets/gui/mainMenu/mute.png');
     this.load.image('plus', 'assets/gui/mainMenu/plus.png');
     this.load.image('moins', 'assets/gui/mainMenu/moins.png');
+    this.load.image('dialog', 'assets/gui/progression/dialog_box.png');
     
     this.load.image('male', 'assets/gui/mainMenu/male.png');
     this.load.image('female', 'assets/gui/mainMenu/female_warrior.png');
