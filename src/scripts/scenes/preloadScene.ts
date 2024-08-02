@@ -228,6 +228,7 @@ export default class PreloadScene extends Phaser.Scene {
 
     this.initializeSpritesheets();
     APIManager.loadItems();
+
     APIManager.loadMonsters();
   }
 
