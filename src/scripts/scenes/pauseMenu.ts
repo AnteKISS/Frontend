@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import InGameOptions from './inGameOptions';
 import SaveModule from '../saves/saveModule';
 import MainScene from './mainScene';
+import axios from 'axios';
+import KeycloakManager from '../keycloak';
 
 export default class PauseMenu extends Phaser.GameObjects.Container {
   private mainScene: MainScene;
@@ -124,12 +126,14 @@ export default class PauseMenu extends Phaser.GameObjects.Container {
     console.log('Save button clicked');
     const save = SaveModule.getJson(this.mainScene);
     console.log(save);
+    axios.post("http://localhost:8082/Save/" + KeycloakManager.getUsername(), { username: KeycloakManager.getUsername(), save: save }, { headers: { 'Content-Type': 'application/json' } });
+    console.log(save);
   }
 
   exitGame() {
     console.log('Exit button clicked');
     this.scene.scene.sleep();
-    this.scene.scene.start('MainMenu'); 
+    this.scene.scene.start('MainMenu');
   }
 
   public show(): void {

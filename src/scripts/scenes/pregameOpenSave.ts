@@ -1,4 +1,7 @@
+import axios from 'axios';
+import { KeyObject } from 'crypto';
 import Phaser from 'phaser';
+import KeycloakManager from '../keycloak';
 
 
 export default class PregameOpenSave extends Phaser.Scene {
@@ -14,6 +17,8 @@ export default class PregameOpenSave extends Phaser.Scene {
   private Save2Button: Phaser.GameObjects.Container;
   private Save3Button: Phaser.GameObjects.Container;
   private Save4Button: Phaser.GameObjects.Container;
+
+  private saveAxiosResult: string;
 
 
   constructor() {
@@ -97,22 +102,45 @@ export default class PregameOpenSave extends Phaser.Scene {
 
   Save1() {
     console.log('Save1 button clicked');
-    this.scene.start('MainScene', { save: '{"playerX":640.4260423292552,"playerY":-157.3878947463209,"playerAllocatedPoints":{"strength":1,"dexterity":1,"vitality":1,"intelligence":0},"playerUnallocatedPoints":2,"playerXp":504,"playerInventoryItems":[{"code":4,"x":2,"y":1}],"playerEquippedItems":{"mainhand":22}}' });
+    // this.scene.start('MainScene', { saveSlot: 1, save: '{"playerX":-289.8033437619209,"playerY":-431.31437688232006,"playerAllocatedPoints":{"strength":0,"dexterity":2,"vitality":0,"intelligence":0},"playerUnallocatedPoints":3,"playerXp":582,"playerInventoryItems":[{"code":15,"x":2,"y":0}],"playerEquippedItems":[{"slot":"helmet"},{"slot":"armor"},{"slot":"amulet"},{"slot":"mainhand"},{"slot":"offhand"},{"slot":"ring1"},{"slot":"ring2","code":6},{"slot":"belt"},{"slot":"gloves"},{"slot":"boots"}]}' });
+    this.getSave(1)
+      .then(save => this.startGame(1, save))
+      .catch(error => {
+        console.error("ERRERUR AXIOS:", error);
+      });
   }
 
   Save2() {
     console.log('Save2 button clicked');
-    this.scene.start('MainScene');
+    this.scene.start('MainScene', { saveSlot: 2 });
   }
 
   Save3() {
     console.log('Save3 button clicked');
-    this.scene.start('MainScene');
+    this.scene.start('MainScene', { saveSlot: 3 });
   }
 
   Save4() {
     console.log('Save4 button clicked');
-    this.scene.start('MainScene');
+    this.scene.start('MainScene', { saveSlot: 4 });
+  }
+
+  private async getSave(saveSlotNum: number): Promise<string> {
+    const response = await axios.get("http://localhost:8082/Save/" + KeycloakManager.getUsername());
+    const data: Array<any> = response.data;
+
+    const saveData = data.find((save: any) => save.saveSlot === saveSlotNum);
+
+    if (!saveData) {
+      this.saveAxiosResult = "bruh";
+      return "";
+    }
+
+    return JSON.stringify(saveData);
+  }
+
+  private startGame(saveSlot: number, save: string): void {
+    this.scene.start("MainScene", { playerName: KeycloakManager.getUsername(), saveSlot: saveSlot, save: save });
   }
 
   readSave() {

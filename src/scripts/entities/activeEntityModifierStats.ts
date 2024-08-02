@@ -13,7 +13,7 @@ export default class ActiveEntityModifierStats {
   public basePhysicalDamage: number = 0;
   public baseMagicalDamage: number = 0;
   public attackSpeed: number = 1;
-  public sightDistance: number = 500
+  public sightDistance: number = 500;
   public meleeRange: number = 100;
   public projectileRange: number = 500;
 
