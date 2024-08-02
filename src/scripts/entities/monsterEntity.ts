@@ -114,7 +114,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
     if (this.dynamicStats.health == 0) {
       return;
     }
-    this.dynamicStats.health -= amount;
+    this.dynamicStats.health -= Math.abs(amount * (1 - (this.totalModifierStats.defense / (this.totalModifierStats.defense + 100))));
     if (this.target == null && !this.isDead) {
       this.destinationX = damageSource.positionX;
       this.destinationY = damageSource.positionY;
@@ -152,7 +152,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
 
   public generateLoot(): void {
     const random = Math.random();
-    if (random > 0.5) {
+    if (random > 0.7) {
       return;
     }
 

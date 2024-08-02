@@ -127,6 +127,7 @@ export default class APIManager {
       // Weapons
       case "Bone Sword": return ["bone_sword_inv", "dropped_sword"];
       case "Golden Kopis": return ["golden_kopis_inv", "dropped_sword"];
+      case "Knoppix": return ["golden_kopis_inv", "dropped_sword"];
       case "Lethal Dagger": return ["stone_dagger_inv", "dropped_sword"];
       case "Dagger": return ["stone_dagger_inv", "dropped_sword"];
 
@@ -170,7 +171,9 @@ export default class APIManager {
     switch (stat) {
       case "ATK_SPEED_MOD": stats.attackSpeed += value; break;
       case "DAMAGE": stats.basePhysicalDamage += value; break;
+      case "DAMAGE_MAGIC": stats.baseMagicalDamage += value; break;
       case "INC_DAMAGE": stats.basePhysicalDamage += value; break;
+      case "INC_DAMAGE_MAGIC": stats.baseMagicalDamage += value; break;
       case "DEFENSE": stats.defense += value; break;
       case "MOV_SPEED_MOD": stats.movementSpeed += value; break;
     }

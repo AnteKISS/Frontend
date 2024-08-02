@@ -237,7 +237,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     if (this.dynamicStats.health == 0) {
       return;
     }
-    this.dynamicStats.health -= amount;
+    this.dynamicStats.health -= Math.abs(amount * (1 - (this.totalModifierStats.defense / (this.totalModifierStats.defense + 100))));
     if (this.dynamicStats.health <= 0) {
       this.dynamicStats.health = 0;
       this.destinationX = this.positionX;

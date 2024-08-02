@@ -169,6 +169,7 @@ export class ActiveEntityFactory {
         "Chainmail Boots",
         "Bone Sword",
         "Bone Sword",
+        "Knoppix"
       ]);
     } else if (monsterCode === 'goblin_lumberjack_black') {
       entity.behavior = new RusherBehavior(entity);
@@ -192,6 +193,7 @@ export class ActiveEntityFactory {
         "Chainmail Armor",
         "Chainmail Gloves",
         "Chainmail Hood",
+        "Knoppix"
       ]);
     } else if (monsterCode === 'zombie') {
       entity.behavior = new RusherBehavior(entity);
@@ -236,8 +238,10 @@ export class ActiveEntityFactory {
         entity.getSprite().setTint(randomTintColor);
         break;
       case MonsterRarity.SUPERUNIQUE:
-      case MonsterRarity.BOSS:
         entity.getSprite().setTint(0xFF0000);
+        break;
+      case MonsterRarity.BOSS:
+        entity.getSprite().setTint(0xFF00FF);
         break;
     }
     return entity;
