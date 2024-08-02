@@ -2,6 +2,8 @@ import { ActiveEntity } from "../entities/activeEntity";
 import { ActiveEntityAnimationState, ActiveEntityBehaviorState } from "../entities/entityState";
 import { MonsterEntity } from "../entities/monsterEntity";
 import { PlayerEntity } from "../entities/playerEntity";
+import Point from "../types/point";
+import Vector from "../types/vector";
 import { MathModule } from "../utilities/mathModule";
 import { Behavior } from "./behavior";
 import { BehaviorFactors } from "./behaviorFactors";
@@ -69,9 +71,14 @@ export class SkirmisherBehavior extends Behavior {
               this.setBehaviorState(ActiveEntityBehaviorState.State.RANGED_ATTACKING);
             }
           } else {
-            this.parent.setDestination(this.parent.target!.positionX, this.parent.target!.positionY);
+            const parentPos: Point = { x: this.parent.positionX, y: this.parent.positionY };
+            const targetPos: Point = { x: this.parent.target!.positionX, y: this.parent.target!.positionY };
+            let vector: Vector = MathModule.normalizeVector(MathModule.getInverseVectorFromTarget(parentPos, targetPos));
+            vector.x *= this.parent.totalModifierStats.sightDistance;
+            vector.y *= this.parent.totalModifierStats.sightDistance;
+            this.parent.setDestination(parentPos.x + vector.x, parentPos.y + vector.y);
           }
-        } else {
+        } else if (this.isEntityInMeleeRange()) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.MELEE_ATTACKING);
         }
         break;        

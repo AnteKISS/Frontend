@@ -63,11 +63,21 @@ export class MathModule {
     return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
   }
 
-  static getClosestPointOnCircle(minion: MonsterEntity, _leader: MonsterEntity, MINION_MAX_DISTANCE_FROM_LEADER: number): Point {
+  public static getClosestPointOnCircle(minion: MonsterEntity, _leader: MonsterEntity, MINION_MAX_DISTANCE_FROM_LEADER: number): Point {
     let point: Point = { x: minion.positionX, y: minion.positionY };
     const angle = Math.atan2(_leader.positionY - minion.positionY, _leader.positionX - minion.positionX);
     point.x += Math.cos(angle) * MINION_MAX_DISTANCE_FROM_LEADER;
     point.y += Math.sin(angle) * MINION_MAX_DISTANCE_FROM_LEADER;
     return point;
+  }
+
+  public static getInverseVectorFromTarget(origin: Point, target: Point): Vector {
+    return new Vector(origin.x - target.x, origin.y - target.y);
+    // return new Vector(target.x - origin.x, target.y - origin.y);
+  }
+
+  public static normalizeVector(vector: Vector): Vector {
+    const magnitude = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+    return new Vector(vector.x / magnitude, vector.y / magnitude);
   }
 }
