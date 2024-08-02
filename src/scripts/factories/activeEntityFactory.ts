@@ -75,6 +75,8 @@ export class ActiveEntityFactory {
     entity.name = monsterData.name;
     entity.species = EntitySpecies.UNDEAD;
     entity.quality = monsterData.qualityCode as MonsterRarity;
+    entity.exp = monsterData.baseExp;
+    entity.expByLevel = monsterData.expByLevel;
     monsterData.modifiers.forEach((key, value) => {
       entity.appliedModifiers.push(value)
     });
@@ -179,6 +181,7 @@ export class ActiveEntityFactory {
         "Chainmail Hood",
         "Silver Ring",
         "Dagger",
+        "Bb"
       ]);
     } else if (monsterCode === 'minotaur') {
       entity.behavior = new RusherBehavior(entity);

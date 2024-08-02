@@ -30,6 +30,8 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
   public lootTable: LootTable;
   public monsterPack: MonsterPack;
   public level: number;
+  public exp: number;
+  public expByLevel: number;
 
   constructor(scene, monsterCode) {
     super(scene);
@@ -127,7 +129,7 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
       this.currentBehaviorState.state = ActiveEntityBehaviorState.State.DEATH;
       const deathEvent = new ActiveEntityEvents.KilledEvent(damageSource, this);
       GeneralEventManager.getInstance().notifyObservers(deathEvent);
-      EntityManager.instance.getPlayers()[0].exp.addExp(Math.floor(Math.random() * 250) + 150);
+      EntityManager.instance.getPlayers()[0].exp.addExp(this.exp + (this.expByLevel * this.dynamicStats.level));
       this.generateLoot();
       setTimeout(() => {
         EntityManager.instance.removeAreaEntity(this);
@@ -156,11 +158,14 @@ export class MonsterEntity extends ActiveEntity implements IFightable, ILootable
       return;
     }
 
-    const item: Item | undefined = InactiveEntityFactory.createRandomItem(this.scene, this.lootTable);
-    if (item) {
-      let itemEntity: ItemEntity = EntityManager.instance.createItem(this.scene, item);
-      itemEntity.positionX = this.positionX;
-      itemEntity.positionY = this.positionY;
+    const randomItemCount = Math.floor(Math.random() * 1) + 1;
+    for (let i = 0; i < randomItemCount; i++) {
+      const item: Item | undefined = InactiveEntityFactory.createRandomItem(this.scene, this.lootTable);
+      if (item) {
+        let itemEntity: ItemEntity = EntityManager.instance.createItem(this.scene, item);
+        itemEntity.positionX = this.positionX;
+        itemEntity.positionY = this.positionY;
+      }
     }
   }
 
