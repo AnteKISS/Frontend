@@ -81,7 +81,7 @@ export class ActiveEntityFactory {
     let monsterLevel: number;
     if (EntityManager.instance.getPlayers().length > 0) {
       if (quality !== MonsterRarity.NORMAL) {
-        monsterLevel = Math.floor(EntityManager.instance.getPlayers()[0].dynamicStats.level + Math.random() * 3);
+        monsterLevel = Math.floor(EntityManager.instance.getPlayers()[0].dynamicStats.level + (Math.random() * 3) + 1);
       } else {
         monsterLevel = Math.floor((Math.random() * EntityManager.instance.getPlayers()[0].dynamicStats.level) + 1);
       }
@@ -132,8 +132,6 @@ export class ActiveEntityFactory {
       baseMovementSpeed: monsterData.totalModifierStats.baseMovementSpeed + (monsterData.perLevelModifierStats.movementSpeed * entity.dynamicStats.level),
       movementSpeed: monsterData.totalModifierStats.movementSpeed + (monsterData.perLevelModifierStats.movementSpeed * entity.dynamicStats.level),
     };
-    // entity.dynamicStats.health = entity.totalModifierStats.maxHealth + (monsterData.perLevelModifierStats.maxHealth * entity.dynamicStats.level);
-    // entity.dynamicStats.mana = entity.totalModifierStats.maxMana + (monsterData.perLevelModifierStats.maxMana * entity.dynamicStats.level);
     entity.states = {
       isInvincible: false,
       isStunned: false,
