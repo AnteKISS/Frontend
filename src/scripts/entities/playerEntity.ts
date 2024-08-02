@@ -176,7 +176,7 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
       this.scene.anims.get(anim).frameRate = castSpeed;
     }
 
-    const attackSpeed = 12 + Math.floor(this.realDexterity * 0.15);
+    const attackSpeed = (12 + Math.floor(this.realDexterity * 0.15)) * (1 + (this.tempModifierStats.attackSpeed / 100));
     for (const anim of AnimationManager.playerMeleeAttackAnimations) {
       this.scene.anims.get(anim).frameRate = attackSpeed;
     }
