@@ -393,6 +393,9 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
             this.mainHandSprite.textureName = "LONGSWORD";
           } else if (event.item.getItem().inventorySprite.includes("kopis")) {
             this.mainHandSprite.textureName = "SHORTSWORD";
+          } else if (event.item.getItem().inventorySprite.includes("shield")) {
+            this.offHandSprite.textureName = "SHIELD";
+            this.offHandSprite.visible = true;
           }
           break;
       }
@@ -407,6 +410,10 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
           break;
         case ItemType.WEAPON:
           this.mainHandSprite.textureName = "SHORTSWORD";
+          if (event.item.getItem().inventorySprite.includes("shield")) {
+            this.offHandSprite.textureName = "SHIELD";
+            this.offHandSprite.visible = false;
+          }
           break;
       }
       event.player.animator.forceUpdateOnce = true;
@@ -450,6 +457,9 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
             this.mainHandSprite.textureName = "LONGSWORD";
           } else if (inventoryItem.getItem().inventorySprite.includes("kopis")) {
             this.mainHandSprite.textureName = "SHORTSWORD";
+          } else if (inventoryItem.getItem().inventorySprite.includes("shield")) {
+            this.offHandSprite.textureName = "SHIELD";
+            this.offHandSprite.visible = true;
           }
           break
       }
