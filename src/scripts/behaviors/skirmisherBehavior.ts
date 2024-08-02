@@ -18,6 +18,8 @@ class SkirmisherBehaviorFactors implements BehaviorFactors {
 }
 
 export class SkirmisherBehavior extends Behavior {
+
+  private lastTargetKnownPosition: Point = { x: 0, y: 0 };
   
   public constructor(parent: ActiveEntity) {
     super(parent);
@@ -62,6 +64,13 @@ export class SkirmisherBehavior extends Behavior {
         if (!this.isTargetValid() || !this.isTargetInRange(this.parent.totalModifierStats.sightDistance)) {
           this.parent.target = null;
           this.setBehaviorState(ActiveEntityBehaviorState.State.IDLE);
+          if (this.lastTargetKnownPosition.x !== 0 && this.lastTargetKnownPosition.y !== 0) {
+            setTimeout(() => {
+              this.parent.setDestination(this.lastTargetKnownPosition.x, this.lastTargetKnownPosition.y);
+              this.lastTargetKnownPosition = { x: 0, y: 0 };
+              this.setBehaviorState(ActiveEntityBehaviorState.State.CHARGING);
+            }, 1000);
+          }
         }
         else if (this.isTargetValid() && !this.isEntityInMeleeRange()) {
           if (this.parent.spellBook.getAllSpells()[0].canCast()) {
@@ -77,6 +86,7 @@ export class SkirmisherBehavior extends Behavior {
             vector.x *= this.parent.totalModifierStats.sightDistance;
             vector.y *= this.parent.totalModifierStats.sightDistance;
             this.parent.setDestination(parentPos.x + vector.x, parentPos.y + vector.y);
+            this.lastTargetKnownPosition = { x: this.parent.target!.positionX, y: this.parent.target!.positionY };
           }
         } else if (this.isEntityInMeleeRange()) {
           this.setBehaviorState(ActiveEntityBehaviorState.State.MELEE_ATTACKING);
