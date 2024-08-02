@@ -21,6 +21,8 @@ export class MonsterEntityMapper {
     monsterData.code = data.code;
     monsterData.baseCode = data.baseCode || monsterData.baseCode;
     monsterData.qualityCode = data.qualityCode || monsterData.qualityCode;
+    monsterData.baseExp = data.baseExp || monsterData.baseExp;
+    monsterData.expByLevel = data.perLvlExp || monsterData.expByLevel;
     data.monsterStats.forEach((stat: any) => {
       switch (stat.statCode) {
         case 'HEALTH':
@@ -91,6 +93,8 @@ export class MonsterData {
   public baseCode: string;
   public name: string;
   public qualityCode: string;
+  public baseExp: number;
+  public expByLevel: number;
   public dynamicStats: ActiveEntityDynamicStats;
   public baseModifierStats: ActiveEntityModifierStats;
   public tempModifierStats: ActiveEntityModifierStats;
@@ -104,6 +108,8 @@ export class MonsterData {
     this.baseCode = '';
     this.name = '';
     this.qualityCode = '';
+    this.baseExp = 0;
+    this.expByLevel = 0;
     this.dynamicStats = new ActiveEntityDynamicStats();
     this.baseModifierStats = new ActiveEntityModifierStats();
     this.tempModifierStats = new ActiveEntityModifierStats();
