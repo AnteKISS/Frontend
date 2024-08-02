@@ -96,6 +96,7 @@ export default class SaveModule {
     this.equipItem(scene, this.getJsonEquippedItem("gloves", equippedJson), equipment.getGlovesSlot());
     this.equipItem(scene, this.getJsonEquippedItem("boots", equippedJson), equipment.getBootsSlot());
     player.attributeConversion();
+    player.updatePlayerVisuals();
   }
 
   private static getJsonEquippedItem(slotType: string, json: Array<any>): any {

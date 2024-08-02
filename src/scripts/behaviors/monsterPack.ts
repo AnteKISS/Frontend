@@ -84,14 +84,6 @@ export class MonsterPack {
         if (distanceToLeader > distanceToLeaderTarget) {
           minion.destinationX = this._leader.target.positionX;
           minion.destinationY = this._leader.target.positionY;
-          // const regroupPosition: Point = MathModule.getClosestPointOnCircle(minion, this._leader, this.MINION_MAX_DISTANCE_FROM_LEADER);
-          // minion.destinationX = regroupPosition.x;
-          // minion.destinationY = regroupPosition.y;
-          // // const movementSpeedBeforeBuff = minion.totalModifierStats.movementSpeed;
-          // // setTimeout(() => {
-          // //   minion.totalModifierStats.movementSpeed = movementSpeedBeforeBuff;
-          // // }, this._delayBetweenReorganize);
-          // // minion.totalModifierStats.movementSpeed = 1.5 * movementSpeedBeforeBuff;
         } else {
           const regroupPosition: Point = MathModule.getClosestPointOnCircle(minion, this._leader, this.MINION_MAX_DISTANCE_FROM_LEADER);
           minion.destinationX = regroupPosition.x;

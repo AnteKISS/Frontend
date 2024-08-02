@@ -32,6 +32,7 @@ import { PotionPouch } from '../otherItems/potionPouch';
 import FrostStomp from '../spells/craftedSpells/frostStomp';
 import Rage from '../spells/craftedSpells/rage';
 import { UnlockOrder } from '../spells/unlockOrder';
+import Item from '../inventory/item';
 
 export class PlayerEntity extends ActiveEntity implements IFightable, IObserver {
   public headSprite: InventorySprite;
@@ -73,13 +74,14 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     this.bodySprite.slot = InventorySlots.CHESTPLATE;
     this.bodySprite.scale = 1.5;
     this.mainHandSprite = scene.add.sprite(0, 0, 'mainHandTexture');
-    this.mainHandSprite.textureName = 'LONGSWORD';
+    this.mainHandSprite.textureName = 'SHORTSWORD';
     this.mainHandSprite.slot = InventorySlots.MAINHAND;
     this.mainHandSprite.scale = 1.5;
     this.offHandSprite = scene.add.sprite(0, 0, 'offHandTexture');
     this.offHandSprite.textureName = 'LONGBOW';
     this.offHandSprite.slot = InventorySlots.OFFHAND;
     this.offHandSprite.scale = 1.5;
+    this.offHandSprite.visible = false;
     this.add(this.headSprite);
     this.add(this.bodySprite);
     this.add(this.mainHandSprite);
@@ -371,20 +373,88 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
     if (event instanceof PlayerEvents.PlayerEquipItemEvent) {
       switch (event.item.getItem().itemType) {
         case ItemType.HELMET:
-          this.headSprite.textureName = "MALE_HEAD1";
+          if (event.item.getItem().inventorySprite.includes("leather")) {
+            this.headSprite.textureName = "MALE_HEAD3";
+          } else {
+            this.headSprite.textureName = "MALE_HEAD1";
+          }
+          break;
         case ItemType.ARMOR:
-          this.bodySprite.textureName = "STEEL_ARMOR";
+          if (event.item.getItem().inventorySprite.includes("leather")) {
+            this.bodySprite.textureName = "LEATHER_ARMOR";
+          } else {
+            this.bodySprite.textureName = "STEEL_ARMOR";
+          }
+          break;
+        case ItemType.WEAPON:
+          if (event.item.getItem().inventorySprite.includes("dagger")) {
+            this.mainHandSprite.textureName = "DAGGER";
+          } else if (event.item.getItem().inventorySprite.includes("sword")) {
+            this.mainHandSprite.textureName = "LONGSWORD";
+          } else if (event.item.getItem().inventorySprite.includes("kopis")) {
+            this.mainHandSprite.textureName = "SHORTSWORD";
+          }
+          break;
       }
       event.player.animator.forceUpdateOnce = true;
     } else if (event instanceof PlayerEvents.PlayerUnequipItemEvent) {
       switch (event.item.getItem().itemType) {
         case ItemType.HELMET:
           this.headSprite.textureName = "MALE_HEAD2";
+          break;
         case ItemType.ARMOR:
           this.bodySprite.textureName = "CLOTHES";
+          break;
+        case ItemType.WEAPON:
+          this.mainHandSprite.textureName = "SHORTSWORD";
+          break;
       }
       event.player.animator.forceUpdateOnce = true;
     }
+  }
+
+  public updatePlayerVisuals(): void {
+    for (const equipSlot of this.inventory.getPlayerEquipment().equipSlots) {
+      const inventoryItem = equipSlot.getInventoryItem();
+      switch (equipSlot.itemType) {
+        case ItemType.HELMET:
+          if (!inventoryItem) {
+            this.headSprite.textureName = "MALE_HEAD2";
+            break;
+          }
+          if (inventoryItem.getItem().inventorySprite.includes("leather")) {
+            this.headSprite.textureName = "MALE_HEAD3";
+          } else {
+            this.headSprite.textureName = "MALE_HEAD1";
+          }
+          break;
+        case ItemType.ARMOR:
+          if (!inventoryItem) {
+            this.bodySprite.textureName = "CLOTHES";
+            break;
+          }
+          if (inventoryItem.getItem().inventorySprite.includes("leather")) {
+            this.bodySprite.textureName = "LEATHER_ARMOR";
+          } else {
+            this.bodySprite.textureName = "STEEL_ARMOR";
+          }
+          break;
+        case ItemType.WEAPON:
+          if (!inventoryItem) {
+            this.mainHandSprite.textureName = "SHORTSWORD";
+            break;
+          }
+          if (inventoryItem.getItem().inventorySprite.includes("dagger")) {
+            this.mainHandSprite.textureName = "DAGGER";
+          } else if (inventoryItem.getItem().inventorySprite.includes("sword")) {
+            this.mainHandSprite.textureName = "LONGSWORD";
+          } else if (inventoryItem.getItem().inventorySprite.includes("kopis")) {
+            this.mainHandSprite.textureName = "SHORTSWORD";
+          }
+          break
+      }
+    }
+    this.animator.forceUpdateOnce = true;
   }
 
   private handleTileTransition() {

@@ -4,7 +4,6 @@ import Item from "../inventory/item";
 import ActiveEntityModifierStats from "../entities/activeEntityModifierStats";
 import StatModule from "../entities/statModule";
 import { MonsterData, MonsterEntityMapper } from "../mappers/MonsterEntityMapper";
-import MonsterDataInvalidError from "../errors/monsterDataInvalidError";
 import { ActiveEntityFactory } from "../factories/activeEntityFactory";
 
 class ItemInfo {
