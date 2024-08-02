@@ -13,7 +13,6 @@ import { BehaviorFactors } from "./behaviorFactors";
 export abstract class Behavior {
   public parent: ActiveEntity;
   public factors: BehaviorFactors;
-  // public monsterPack: MonsterPack;
 
   protected delayBetweenRoam: number = 10000;
   protected delayBetweenAttack: number = 1000;
@@ -38,7 +37,7 @@ export abstract class Behavior {
     if (!this.isTargetValid()) {
       return false;
     }
-    return MathModule.scaledDistanceBetween(
+    return MathModule.scaledDistanceBetweenPositions(
       this.parent.positionX,
       this.parent.positionY,
       this.parent.target!.positionX,
@@ -50,7 +49,7 @@ export abstract class Behavior {
     if (!this.isTargetValid()) {
       return false;
     }
-    return MathModule.scaledDistanceBetween(
+    return MathModule.scaledDistanceBetweenPositions(
       this.parent.positionX,
       this.parent.positionY,
       this.parent.target!.positionX,
@@ -62,7 +61,7 @@ export abstract class Behavior {
     if (!this.isTargetValid()) {
       return false;
     }
-    return MathModule.scaledDistanceBetween(
+    return MathModule.scaledDistanceBetweenPositions(
       this.parent.positionX,
       this.parent.positionY,
       this.parent.target!.positionX,

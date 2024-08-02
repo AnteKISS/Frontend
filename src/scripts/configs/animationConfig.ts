@@ -27,106 +27,106 @@ const player_downOrientationSpriteOffset = 192;
 const player_downLeftOrientationSpriteOffset = 224;
 // ------------------------------
 
-// ---------- zombie_0 ----------
-const zombie_0_idleAnimationStartFrame = 0;
-const zombie_0_idleAnimationEndFrame = 3;
-const zombie_0_runAnimationStartFrame = 4;
-const zombie_0_runAnimationEndFrame = 11;
-const zombie_0_meleeAttackSlamAnimationStartFrame = 12;
-const zombie_0_meleeAttackSlamAnimationEndFrame = 15;
-const zombie_0_meleeAttackBiteAnimationStartFrame = 16;
-const zombie_0_meleeAttackBiteAnimationEndFrame = 19;
-const zombie_0_blockAnimationStartFrame = 20;
-const zombie_0_blockAnimationEndFrame = 21;
-const zombie_0_hitAndDeathAnimationStartFrame = 22;
-const zombie_0_hitAndDeathAnimationEndFrame = 27;
-const zombie_0_criticalDeathAnimationStartFrame = 28;
-const zombie_0_criticalDeathAnimationEndFrame = 35;
+// ---------- zombie ----------
+const zombie_idleAnimationStartFrame = 0;
+const zombie_idleAnimationEndFrame = 3;
+const zombie_runAnimationStartFrame = 4;
+const zombie_runAnimationEndFrame = 11;
+const zombie_meleeAttackSlamAnimationStartFrame = 12;
+const zombie_meleeAttackSlamAnimationEndFrame = 15;
+const zombie_meleeAttackBiteAnimationStartFrame = 16;
+const zombie_meleeAttackBiteAnimationEndFrame = 19;
+const zombie_blockAnimationStartFrame = 20;
+const zombie_blockAnimationEndFrame = 21;
+const zombie_hitAndDeathAnimationStartFrame = 22;
+const zombie_hitAndDeathAnimationEndFrame = 27;
+const zombie_criticalDeathAnimationStartFrame = 28;
+const zombie_criticalDeathAnimationEndFrame = 35;
 
-const zombie_0_leftOrientationSpriteOffset = 0;
-const zombie_0_upLeftOrientationSpriteOffset = 36;
-const zombie_0_upOrientationSpriteOffset = 72;
-const zombie_0_upRightOrientationSpriteOffset = 108;
-const zombie_0_rightOrientationSpriteOffset = 144;
-const zombie_0_downRightOrientationSpriteOffset = 180;
-const zombie_0_downOrientationSpriteOffset = 216;
-const zombie_0_downLeftOrientationSpriteOffset = 252;
+const zombie_leftOrientationSpriteOffset = 0;
+const zombie_upLeftOrientationSpriteOffset = 36;
+const zombie_upOrientationSpriteOffset = 72;
+const zombie_upRightOrientationSpriteOffset = 108;
+const zombie_rightOrientationSpriteOffset = 144;
+const zombie_downRightOrientationSpriteOffset = 180;
+const zombie_downOrientationSpriteOffset = 216;
+const zombie_downLeftOrientationSpriteOffset = 252;
 // --------------------------------
 
-// ---------- minotaur_0 ----------
-const minotaur_0_idleAnimationStartFrame = 0;
-const minotaur_0_idleAnimationEndFrame = 3;
-const minotaur_0_runAnimationStartFrame = 4;
-const minotaur_0_runAnimationEndFrame = 11;
-const minotaur_0_meleeAttackAnimationStartFrame = 12;
-const minotaur_0_meleeAttackAnimationEndFrame = 15;
-const minotaur_0_blockAnimationStartFrame = 16;
-const minotaur_0_blockAnimationEndFrame = 17;
-const minotaur_0_hitAndDeathAnimationStartFrame = 18;
-const minotaur_0_hitAndDeathAnimationEndFrame = 23;
+// ---------- minotaur ----------
+const minotaur_idleAnimationStartFrame = 0;
+const minotaur_idleAnimationEndFrame = 3;
+const minotaur_runAnimationStartFrame = 4;
+const minotaur_runAnimationEndFrame = 11;
+const minotaur_meleeAttackAnimationStartFrame = 12;
+const minotaur_meleeAttackAnimationEndFrame = 15;
+const minotaur_blockAnimationStartFrame = 16;
+const minotaur_blockAnimationEndFrame = 17;
+const minotaur_hitAndDeathAnimationStartFrame = 18;
+const minotaur_hitAndDeathAnimationEndFrame = 23;
 
-const minotaur_0_leftOrientationSpriteOffset = 0;
-const minotaur_0_upLeftOrientationSpriteOffset = 24;
-const minotaur_0_upOrientationSpriteOffset = 48;
-const minotaur_0_upRightOrientationSpriteOffset = 72;
-const minotaur_0_rightOrientationSpriteOffset = 96;
-const minotaur_0_downRightOrientationSpriteOffset = 120;
-const minotaur_0_downOrientationSpriteOffset = 144;
-const minotaur_0_downLeftOrientationSpriteOffset = 168;
+const minotaur_leftOrientationSpriteOffset = 0;
+const minotaur_upLeftOrientationSpriteOffset = 24;
+const minotaur_upOrientationSpriteOffset = 48;
+const minotaur_upRightOrientationSpriteOffset = 72;
+const minotaur_rightOrientationSpriteOffset = 96;
+const minotaur_downRightOrientationSpriteOffset = 120;
+const minotaur_downOrientationSpriteOffset = 144;
+const minotaur_downLeftOrientationSpriteOffset = 168;
 // --------------------------------
 
-// ---------- skeleton_0 ----------
-const skeleton_0_idleAnimationStartFrame = 0;
-const skeleton_0_idleAnimationEndFrame = 3;
-const skeleton_0_runAnimationStartFrame = 4;
-const skeleton_0_runAnimationEndFrame = 11;
-const skeleton_0_meleeAttackAnimationStartFrame = 12;
-const skeleton_0_meleeAttackAnimationEndFrame = 15;
-const skeleton_0_castAnimationStartFrame = 16;
-const skeleton_0_castAnimationEndFrame = 19;
-const skeleton_0_blockAnimationStartFrame = 20;
-const skeleton_0_blockAnimationEndFrame = 21;
-const skeleton_0_hitAndDeathAnimationStartFrame = 22;
-const skeleton_0_hitAndDeathAnimationEndFrame = 27;
+// ---------- skeleton ----------
+const skeleton_idleAnimationStartFrame = 0;
+const skeleton_idleAnimationEndFrame = 3;
+const skeleton_runAnimationStartFrame = 4;
+const skeleton_runAnimationEndFrame = 11;
+const skeleton_meleeAttackAnimationStartFrame = 12;
+const skeleton_meleeAttackAnimationEndFrame = 15;
+const skeleton_castAnimationStartFrame = 16;
+const skeleton_castAnimationEndFrame = 19;
+const skeleton_blockAnimationStartFrame = 20;
+const skeleton_blockAnimationEndFrame = 21;
+const skeleton_hitAndDeathAnimationStartFrame = 22;
+const skeleton_hitAndDeathAnimationEndFrame = 27;
 
-const skeleton_0_leftOrientationSpriteOffset = 0;
-const skeleton_0_upLeftOrientationSpriteOffset = 28;
-const skeleton_0_upOrientationSpriteOffset = 56;
-const skeleton_0_upRightOrientationSpriteOffset = 84;
-const skeleton_0_rightOrientationSpriteOffset = 112;
-const skeleton_0_downRightOrientationSpriteOffset = 140;
-const skeleton_0_downOrientationSpriteOffset = 168;
-const skeleton_0_downLeftOrientationSpriteOffset = 196;
+const skeleton_leftOrientationSpriteOffset = 0;
+const skeleton_upLeftOrientationSpriteOffset = 28;
+const skeleton_upOrientationSpriteOffset = 56;
+const skeleton_upRightOrientationSpriteOffset = 84;
+const skeleton_rightOrientationSpriteOffset = 112;
+const skeleton_downRightOrientationSpriteOffset = 140;
+const skeleton_downOrientationSpriteOffset = 168;
+const skeleton_downLeftOrientationSpriteOffset = 196;
 // ------------------------------
 
-// ---------- goblin_0 ----------
-const goblin_0_idleAnimationStartFrame = 0;
-const goblin_0_idleAnimationEndFrame = 3;
-const goblin_0_jumpAnimationStartFrame = 4;
-const goblin_0_jumpAnimationEndFrame = 11;
-const goblin_0_runAnimationStartFrame = 12;
-const goblin_0_runAnimationEndFrame = 19;
-const goblin_0_meleeAttackAnimationStartFrame = 20;
-const goblin_0_meleeAttackAnimationEndFrame = 23;
-const goblin_0_throwAnimationStartFrame = 24;
-const goblin_0_throwAnimationEndFrame = 27;
-const goblin_0_blockAnimationStartFrame = 28;
-const goblin_0_blockAnimationEndFrame = 31;
-const goblin_0_hitAnimationStartFrame = 32;
-const goblin_0_hitAnimationEndFrame = 33;
-const goblin_0_deathAnimationStartFrame = 34;
-const goblin_0_deathAnimationEndFrame = 39;
-const goblin_0_criticalDeathAnimationStartFrame = 40;
-const goblin_0_criticalDeathAnimationEndFrame = 47;
+// ---------- goblin ----------
+const goblin_idleAnimationStartFrame = 0;
+const goblin_idleAnimationEndFrame = 3;
+const goblin_jumpAnimationStartFrame = 4;
+const goblin_jumpAnimationEndFrame = 11;
+const goblin_runAnimationStartFrame = 12;
+const goblin_runAnimationEndFrame = 19;
+const goblin_meleeAttackAnimationStartFrame = 20;
+const goblin_meleeAttackAnimationEndFrame = 23;
+const goblin_throwAnimationStartFrame = 24;
+const goblin_throwAnimationEndFrame = 27;
+const goblin_blockAnimationStartFrame = 28;
+const goblin_blockAnimationEndFrame = 31;
+const goblin_hitAnimationStartFrame = 32;
+const goblin_hitAnimationEndFrame = 33;
+const goblin_deathAnimationStartFrame = 34;
+const goblin_deathAnimationEndFrame = 39;
+const goblin_criticalDeathAnimationStartFrame = 40;
+const goblin_criticalDeathAnimationEndFrame = 47;
 
-const goblin_0_leftOrientationSpriteOffset = 0;
-const goblin_0_upLeftOrientationSpriteOffset = 48;
-const goblin_0_upOrientationSpriteOffset = 96;
-const goblin_0_upRightOrientationSpriteOffset = 144;
-const goblin_0_rightOrientationSpriteOffset = 192;
-const goblin_0_downRightOrientationSpriteOffset = 240;
-const goblin_0_downOrientationSpriteOffset = 288;
-const goblin_0_downLeftOrientationSpriteOffset = 336;
+const goblin_leftOrientationSpriteOffset = 0;
+const goblin_upLeftOrientationSpriteOffset = 48;
+const goblin_upOrientationSpriteOffset = 96;
+const goblin_upRightOrientationSpriteOffset = 144;
+const goblin_rightOrientationSpriteOffset = 192;
+const goblin_downRightOrientationSpriteOffset = 240;
+const goblin_downOrientationSpriteOffset = 288;
+const goblin_downLeftOrientationSpriteOffset = 336;
 // --------------------------------------
 
 // ---------- goblin_lumberjack_black ----------
@@ -1351,390 +1351,390 @@ export const player_AnimationConfig = {
   }
 };
 
-export const zombie_0_AnimationConfig = {
+export const zombie_AnimationConfig = {
   idle: {
     frames: [
-      { start: zombie_0_idleAnimationStartFrame + zombie_0_leftOrientationSpriteOffset,      end: zombie_0_idleAnimationEndFrame + zombie_0_leftOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.LEFT },
-      { start: zombie_0_idleAnimationStartFrame + zombie_0_upLeftOrientationSpriteOffset,    end: zombie_0_idleAnimationEndFrame + zombie_0_upLeftOrientationSpriteOffset,    sheet: 'zombie_0', orientation: EntityOrientation.UP_LEFT },
-      { start: zombie_0_idleAnimationStartFrame + zombie_0_upOrientationSpriteOffset,        end: zombie_0_idleAnimationEndFrame + zombie_0_upOrientationSpriteOffset,        sheet: 'zombie_0', orientation: EntityOrientation.UP },
-      { start: zombie_0_idleAnimationStartFrame + zombie_0_upRightOrientationSpriteOffset,   end: zombie_0_idleAnimationEndFrame + zombie_0_upRightOrientationSpriteOffset,   sheet: 'zombie_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: zombie_0_idleAnimationStartFrame + zombie_0_rightOrientationSpriteOffset,     end: zombie_0_idleAnimationEndFrame + zombie_0_rightOrientationSpriteOffset,     sheet: 'zombie_0', orientation: EntityOrientation.RIGHT },
-      { start: zombie_0_idleAnimationStartFrame + zombie_0_downRightOrientationSpriteOffset, end: zombie_0_idleAnimationEndFrame + zombie_0_downRightOrientationSpriteOffset, sheet: 'zombie_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: zombie_0_idleAnimationStartFrame + zombie_0_downOrientationSpriteOffset,      end: zombie_0_idleAnimationEndFrame + zombie_0_downOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.DOWN },
-      { start: zombie_0_idleAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_idleAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: zombie_idleAnimationStartFrame + zombie_leftOrientationSpriteOffset,      end: zombie_idleAnimationEndFrame + zombie_leftOrientationSpriteOffset,      sheet: 'zombie', orientation: EntityOrientation.LEFT },
+      { start: zombie_idleAnimationStartFrame + zombie_upLeftOrientationSpriteOffset,    end: zombie_idleAnimationEndFrame + zombie_upLeftOrientationSpriteOffset,    sheet: 'zombie', orientation: EntityOrientation.UP_LEFT },
+      { start: zombie_idleAnimationStartFrame + zombie_upOrientationSpriteOffset,        end: zombie_idleAnimationEndFrame + zombie_upOrientationSpriteOffset,        sheet: 'zombie', orientation: EntityOrientation.UP },
+      { start: zombie_idleAnimationStartFrame + zombie_upRightOrientationSpriteOffset,   end: zombie_idleAnimationEndFrame + zombie_upRightOrientationSpriteOffset,   sheet: 'zombie', orientation: EntityOrientation.UP_RIGHT },
+      { start: zombie_idleAnimationStartFrame + zombie_rightOrientationSpriteOffset,     end: zombie_idleAnimationEndFrame + zombie_rightOrientationSpriteOffset,     sheet: 'zombie', orientation: EntityOrientation.RIGHT },
+      { start: zombie_idleAnimationStartFrame + zombie_downRightOrientationSpriteOffset, end: zombie_idleAnimationEndFrame + zombie_downRightOrientationSpriteOffset, sheet: 'zombie', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: zombie_idleAnimationStartFrame + zombie_downOrientationSpriteOffset,      end: zombie_idleAnimationEndFrame + zombie_downOrientationSpriteOffset,      sheet: 'zombie', orientation: EntityOrientation.DOWN },
+      { start: zombie_idleAnimationStartFrame + zombie_downLeftOrientationSpriteOffset,  end: zombie_idleAnimationEndFrame + zombie_downLeftOrientationSpriteOffset,  sheet: 'zombie', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.IDLE,
     frameRate: 4
   },
   run: {
     frames: [
-      { start: zombie_0_runAnimationStartFrame + zombie_0_leftOrientationSpriteOffset,      end: zombie_0_runAnimationEndFrame + zombie_0_leftOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.LEFT },
-      { start: zombie_0_runAnimationStartFrame + zombie_0_upLeftOrientationSpriteOffset,    end: zombie_0_runAnimationEndFrame + zombie_0_upLeftOrientationSpriteOffset,    sheet: 'zombie_0', orientation: EntityOrientation.UP_LEFT },
-      { start: zombie_0_runAnimationStartFrame + zombie_0_upOrientationSpriteOffset,        end: zombie_0_runAnimationEndFrame + zombie_0_upOrientationSpriteOffset,        sheet: 'zombie_0', orientation: EntityOrientation.UP },
-      { start: zombie_0_runAnimationStartFrame + zombie_0_upRightOrientationSpriteOffset,   end: zombie_0_runAnimationEndFrame + zombie_0_upRightOrientationSpriteOffset,   sheet: 'zombie_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: zombie_0_runAnimationStartFrame + zombie_0_rightOrientationSpriteOffset,     end: zombie_0_runAnimationEndFrame + zombie_0_rightOrientationSpriteOffset,     sheet: 'zombie_0', orientation: EntityOrientation.RIGHT },
-      { start: zombie_0_runAnimationStartFrame + zombie_0_downRightOrientationSpriteOffset, end: zombie_0_runAnimationEndFrame + zombie_0_downRightOrientationSpriteOffset, sheet: 'zombie_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: zombie_0_runAnimationStartFrame + zombie_0_downOrientationSpriteOffset,      end: zombie_0_runAnimationEndFrame + zombie_0_downOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.DOWN },
-      { start: zombie_0_runAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_runAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: zombie_runAnimationStartFrame + zombie_leftOrientationSpriteOffset,      end: zombie_runAnimationEndFrame + zombie_leftOrientationSpriteOffset,      sheet: 'zombie', orientation: EntityOrientation.LEFT },
+      { start: zombie_runAnimationStartFrame + zombie_upLeftOrientationSpriteOffset,    end: zombie_runAnimationEndFrame + zombie_upLeftOrientationSpriteOffset,    sheet: 'zombie', orientation: EntityOrientation.UP_LEFT },
+      { start: zombie_runAnimationStartFrame + zombie_upOrientationSpriteOffset,        end: zombie_runAnimationEndFrame + zombie_upOrientationSpriteOffset,        sheet: 'zombie', orientation: EntityOrientation.UP },
+      { start: zombie_runAnimationStartFrame + zombie_upRightOrientationSpriteOffset,   end: zombie_runAnimationEndFrame + zombie_upRightOrientationSpriteOffset,   sheet: 'zombie', orientation: EntityOrientation.UP_RIGHT },
+      { start: zombie_runAnimationStartFrame + zombie_rightOrientationSpriteOffset,     end: zombie_runAnimationEndFrame + zombie_rightOrientationSpriteOffset,     sheet: 'zombie', orientation: EntityOrientation.RIGHT },
+      { start: zombie_runAnimationStartFrame + zombie_downRightOrientationSpriteOffset, end: zombie_runAnimationEndFrame + zombie_downRightOrientationSpriteOffset, sheet: 'zombie', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: zombie_runAnimationStartFrame + zombie_downOrientationSpriteOffset,      end: zombie_runAnimationEndFrame + zombie_downOrientationSpriteOffset,      sheet: 'zombie', orientation: EntityOrientation.DOWN },
+      { start: zombie_runAnimationStartFrame + zombie_downLeftOrientationSpriteOffset,  end: zombie_runAnimationEndFrame + zombie_downLeftOrientationSpriteOffset,  sheet: 'zombie', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.RUN,
     frameRate: 8
   },
   meleeAttack: {
     frames: [
-      { start: zombie_0_meleeAttackSlamAnimationStartFrame + zombie_0_leftOrientationSpriteOffset,      end: zombie_0_meleeAttackSlamAnimationEndFrame + zombie_0_leftOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.LEFT },
-      { start: zombie_0_meleeAttackSlamAnimationStartFrame + zombie_0_upLeftOrientationSpriteOffset,    end: zombie_0_meleeAttackSlamAnimationEndFrame + zombie_0_upLeftOrientationSpriteOffset,    sheet: 'zombie_0', orientation: EntityOrientation.UP_LEFT },
-      { start: zombie_0_meleeAttackSlamAnimationStartFrame + zombie_0_upOrientationSpriteOffset,        end: zombie_0_meleeAttackSlamAnimationEndFrame + zombie_0_upOrientationSpriteOffset,        sheet: 'zombie_0', orientation: EntityOrientation.UP },
-      { start: zombie_0_meleeAttackSlamAnimationStartFrame + zombie_0_upRightOrientationSpriteOffset,   end: zombie_0_meleeAttackSlamAnimationEndFrame + zombie_0_upRightOrientationSpriteOffset,   sheet: 'zombie_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: zombie_0_meleeAttackSlamAnimationStartFrame + zombie_0_rightOrientationSpriteOffset,     end: zombie_0_meleeAttackSlamAnimationEndFrame + zombie_0_rightOrientationSpriteOffset,     sheet: 'zombie_0', orientation: EntityOrientation.RIGHT },
-      { start: zombie_0_meleeAttackSlamAnimationStartFrame + zombie_0_downRightOrientationSpriteOffset, end: zombie_0_meleeAttackSlamAnimationEndFrame + zombie_0_downRightOrientationSpriteOffset, sheet: 'zombie_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: zombie_0_meleeAttackSlamAnimationStartFrame + zombie_0_downOrientationSpriteOffset,      end: zombie_0_meleeAttackSlamAnimationEndFrame + zombie_0_downOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.DOWN },
-      { start: zombie_0_meleeAttackSlamAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_meleeAttackSlamAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: zombie_meleeAttackSlamAnimationStartFrame + zombie_leftOrientationSpriteOffset,      end: zombie_meleeAttackSlamAnimationEndFrame + zombie_leftOrientationSpriteOffset,      sheet: 'zombie', orientation: EntityOrientation.LEFT },
+      { start: zombie_meleeAttackSlamAnimationStartFrame + zombie_upLeftOrientationSpriteOffset,    end: zombie_meleeAttackSlamAnimationEndFrame + zombie_upLeftOrientationSpriteOffset,    sheet: 'zombie', orientation: EntityOrientation.UP_LEFT },
+      { start: zombie_meleeAttackSlamAnimationStartFrame + zombie_upOrientationSpriteOffset,        end: zombie_meleeAttackSlamAnimationEndFrame + zombie_upOrientationSpriteOffset,        sheet: 'zombie', orientation: EntityOrientation.UP },
+      { start: zombie_meleeAttackSlamAnimationStartFrame + zombie_upRightOrientationSpriteOffset,   end: zombie_meleeAttackSlamAnimationEndFrame + zombie_upRightOrientationSpriteOffset,   sheet: 'zombie', orientation: EntityOrientation.UP_RIGHT },
+      { start: zombie_meleeAttackSlamAnimationStartFrame + zombie_rightOrientationSpriteOffset,     end: zombie_meleeAttackSlamAnimationEndFrame + zombie_rightOrientationSpriteOffset,     sheet: 'zombie', orientation: EntityOrientation.RIGHT },
+      { start: zombie_meleeAttackSlamAnimationStartFrame + zombie_downRightOrientationSpriteOffset, end: zombie_meleeAttackSlamAnimationEndFrame + zombie_downRightOrientationSpriteOffset, sheet: 'zombie', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: zombie_meleeAttackSlamAnimationStartFrame + zombie_downOrientationSpriteOffset,      end: zombie_meleeAttackSlamAnimationEndFrame + zombie_downOrientationSpriteOffset,      sheet: 'zombie', orientation: EntityOrientation.DOWN },
+      { start: zombie_meleeAttackSlamAnimationStartFrame + zombie_downLeftOrientationSpriteOffset,  end: zombie_meleeAttackSlamAnimationEndFrame + zombie_downLeftOrientationSpriteOffset,  sheet: 'zombie', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.MELEEATTACK,
     frameRate: 8
   },
   meleeAttack_2: {
     frames: [
-      { start: zombie_0_meleeAttackBiteAnimationStartFrame + zombie_0_leftOrientationSpriteOffset,      end: zombie_0_meleeAttackBiteAnimationEndFrame + zombie_0_leftOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.LEFT },
-      { start: zombie_0_meleeAttackBiteAnimationStartFrame + zombie_0_upLeftOrientationSpriteOffset,    end: zombie_0_meleeAttackBiteAnimationEndFrame + zombie_0_upLeftOrientationSpriteOffset,    sheet: 'zombie_0', orientation: EntityOrientation.UP_LEFT },
-      { start: zombie_0_meleeAttackBiteAnimationStartFrame + zombie_0_upOrientationSpriteOffset,        end: zombie_0_meleeAttackBiteAnimationEndFrame + zombie_0_upOrientationSpriteOffset,        sheet: 'zombie_0', orientation: EntityOrientation.UP },
-      { start: zombie_0_meleeAttackBiteAnimationStartFrame + zombie_0_upRightOrientationSpriteOffset,   end: zombie_0_meleeAttackBiteAnimationEndFrame + zombie_0_upRightOrientationSpriteOffset,   sheet: 'zombie_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: zombie_0_meleeAttackBiteAnimationStartFrame + zombie_0_rightOrientationSpriteOffset,     end: zombie_0_meleeAttackBiteAnimationEndFrame + zombie_0_rightOrientationSpriteOffset,     sheet: 'zombie_0', orientation: EntityOrientation.RIGHT },
-      { start: zombie_0_meleeAttackBiteAnimationStartFrame + zombie_0_downRightOrientationSpriteOffset, end: zombie_0_meleeAttackBiteAnimationEndFrame + zombie_0_downRightOrientationSpriteOffset, sheet: 'zombie_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: zombie_0_meleeAttackBiteAnimationStartFrame + zombie_0_downOrientationSpriteOffset,      end: zombie_0_meleeAttackBiteAnimationEndFrame + zombie_0_downOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.DOWN },
-      { start: zombie_0_meleeAttackBiteAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_meleeAttackBiteAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: zombie_meleeAttackBiteAnimationStartFrame + zombie_leftOrientationSpriteOffset,      end: zombie_meleeAttackBiteAnimationEndFrame + zombie_leftOrientationSpriteOffset,      sheet: 'zombie', orientation: EntityOrientation.LEFT },
+      { start: zombie_meleeAttackBiteAnimationStartFrame + zombie_upLeftOrientationSpriteOffset,    end: zombie_meleeAttackBiteAnimationEndFrame + zombie_upLeftOrientationSpriteOffset,    sheet: 'zombie', orientation: EntityOrientation.UP_LEFT },
+      { start: zombie_meleeAttackBiteAnimationStartFrame + zombie_upOrientationSpriteOffset,        end: zombie_meleeAttackBiteAnimationEndFrame + zombie_upOrientationSpriteOffset,        sheet: 'zombie', orientation: EntityOrientation.UP },
+      { start: zombie_meleeAttackBiteAnimationStartFrame + zombie_upRightOrientationSpriteOffset,   end: zombie_meleeAttackBiteAnimationEndFrame + zombie_upRightOrientationSpriteOffset,   sheet: 'zombie', orientation: EntityOrientation.UP_RIGHT },
+      { start: zombie_meleeAttackBiteAnimationStartFrame + zombie_rightOrientationSpriteOffset,     end: zombie_meleeAttackBiteAnimationEndFrame + zombie_rightOrientationSpriteOffset,     sheet: 'zombie', orientation: EntityOrientation.RIGHT },
+      { start: zombie_meleeAttackBiteAnimationStartFrame + zombie_downRightOrientationSpriteOffset, end: zombie_meleeAttackBiteAnimationEndFrame + zombie_downRightOrientationSpriteOffset, sheet: 'zombie', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: zombie_meleeAttackBiteAnimationStartFrame + zombie_downOrientationSpriteOffset,      end: zombie_meleeAttackBiteAnimationEndFrame + zombie_downOrientationSpriteOffset,      sheet: 'zombie', orientation: EntityOrientation.DOWN },
+      { start: zombie_meleeAttackBiteAnimationStartFrame + zombie_downLeftOrientationSpriteOffset,  end: zombie_meleeAttackBiteAnimationEndFrame + zombie_downLeftOrientationSpriteOffset,  sheet: 'zombie', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.MELEEATTACK_2,
     frameRate: 8
   },
   block: {
     frames: [
-      { start: zombie_0_blockAnimationStartFrame + zombie_0_leftOrientationSpriteOffset,      end: zombie_0_blockAnimationEndFrame + zombie_0_leftOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.LEFT },
-      { start: zombie_0_blockAnimationStartFrame + zombie_0_upLeftOrientationSpriteOffset,    end: zombie_0_blockAnimationEndFrame + zombie_0_upLeftOrientationSpriteOffset,    sheet: 'zombie_0', orientation: EntityOrientation.UP_LEFT },
-      { start: zombie_0_blockAnimationStartFrame + zombie_0_upOrientationSpriteOffset,        end: zombie_0_blockAnimationEndFrame + zombie_0_upOrientationSpriteOffset,        sheet: 'zombie_0', orientation: EntityOrientation.UP },
-      { start: zombie_0_blockAnimationStartFrame + zombie_0_upRightOrientationSpriteOffset,   end: zombie_0_blockAnimationEndFrame + zombie_0_upRightOrientationSpriteOffset,   sheet: 'zombie_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: zombie_0_blockAnimationStartFrame + zombie_0_rightOrientationSpriteOffset,     end: zombie_0_blockAnimationEndFrame + zombie_0_rightOrientationSpriteOffset,     sheet: 'zombie_0', orientation: EntityOrientation.RIGHT },
-      { start: zombie_0_blockAnimationStartFrame + zombie_0_downRightOrientationSpriteOffset, end: zombie_0_blockAnimationEndFrame + zombie_0_downRightOrientationSpriteOffset, sheet: 'zombie_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: zombie_0_blockAnimationStartFrame + zombie_0_downOrientationSpriteOffset,      end: zombie_0_blockAnimationEndFrame + zombie_0_downOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.DOWN },
-      { start: zombie_0_blockAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_blockAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: zombie_blockAnimationStartFrame + zombie_leftOrientationSpriteOffset,      end: zombie_blockAnimationEndFrame + zombie_leftOrientationSpriteOffset,      sheet: 'zombie', orientation: EntityOrientation.LEFT },
+      { start: zombie_blockAnimationStartFrame + zombie_upLeftOrientationSpriteOffset,    end: zombie_blockAnimationEndFrame + zombie_upLeftOrientationSpriteOffset,    sheet: 'zombie', orientation: EntityOrientation.UP_LEFT },
+      { start: zombie_blockAnimationStartFrame + zombie_upOrientationSpriteOffset,        end: zombie_blockAnimationEndFrame + zombie_upOrientationSpriteOffset,        sheet: 'zombie', orientation: EntityOrientation.UP },
+      { start: zombie_blockAnimationStartFrame + zombie_upRightOrientationSpriteOffset,   end: zombie_blockAnimationEndFrame + zombie_upRightOrientationSpriteOffset,   sheet: 'zombie', orientation: EntityOrientation.UP_RIGHT },
+      { start: zombie_blockAnimationStartFrame + zombie_rightOrientationSpriteOffset,     end: zombie_blockAnimationEndFrame + zombie_rightOrientationSpriteOffset,     sheet: 'zombie', orientation: EntityOrientation.RIGHT },
+      { start: zombie_blockAnimationStartFrame + zombie_downRightOrientationSpriteOffset, end: zombie_blockAnimationEndFrame + zombie_downRightOrientationSpriteOffset, sheet: 'zombie', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: zombie_blockAnimationStartFrame + zombie_downOrientationSpriteOffset,      end: zombie_blockAnimationEndFrame + zombie_downOrientationSpriteOffset,      sheet: 'zombie', orientation: EntityOrientation.DOWN },
+      { start: zombie_blockAnimationStartFrame + zombie_downLeftOrientationSpriteOffset,  end: zombie_blockAnimationEndFrame + zombie_downLeftOrientationSpriteOffset,  sheet: 'zombie', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.BLOCK,
     frameRate: 4
   },
   death: {
     frames: [
-      { start: zombie_0_hitAndDeathAnimationStartFrame + zombie_0_leftOrientationSpriteOffset,      end: zombie_0_hitAndDeathAnimationEndFrame + zombie_0_leftOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.LEFT },
-      { start: zombie_0_hitAndDeathAnimationStartFrame + zombie_0_upLeftOrientationSpriteOffset,    end: zombie_0_hitAndDeathAnimationEndFrame + zombie_0_upLeftOrientationSpriteOffset,    sheet: 'zombie_0', orientation: EntityOrientation.UP_LEFT },
-      { start: zombie_0_hitAndDeathAnimationStartFrame + zombie_0_upOrientationSpriteOffset,        end: zombie_0_hitAndDeathAnimationEndFrame + zombie_0_upOrientationSpriteOffset,        sheet: 'zombie_0', orientation: EntityOrientation.UP },
-      { start: zombie_0_hitAndDeathAnimationStartFrame + zombie_0_upRightOrientationSpriteOffset,   end: zombie_0_hitAndDeathAnimationEndFrame + zombie_0_upRightOrientationSpriteOffset,   sheet: 'zombie_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: zombie_0_hitAndDeathAnimationStartFrame + zombie_0_rightOrientationSpriteOffset,     end: zombie_0_hitAndDeathAnimationEndFrame + zombie_0_rightOrientationSpriteOffset,     sheet: 'zombie_0', orientation: EntityOrientation.RIGHT },
-      { start: zombie_0_hitAndDeathAnimationStartFrame + zombie_0_downRightOrientationSpriteOffset, end: zombie_0_hitAndDeathAnimationEndFrame + zombie_0_downRightOrientationSpriteOffset, sheet: 'zombie_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: zombie_0_hitAndDeathAnimationStartFrame + zombie_0_downOrientationSpriteOffset,      end: zombie_0_hitAndDeathAnimationEndFrame + zombie_0_downOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.DOWN },
-      { start: zombie_0_hitAndDeathAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_hitAndDeathAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: zombie_hitAndDeathAnimationStartFrame + zombie_leftOrientationSpriteOffset,      end: zombie_hitAndDeathAnimationEndFrame + zombie_leftOrientationSpriteOffset,      sheet: 'zombie', orientation: EntityOrientation.LEFT },
+      { start: zombie_hitAndDeathAnimationStartFrame + zombie_upLeftOrientationSpriteOffset,    end: zombie_hitAndDeathAnimationEndFrame + zombie_upLeftOrientationSpriteOffset,    sheet: 'zombie', orientation: EntityOrientation.UP_LEFT },
+      { start: zombie_hitAndDeathAnimationStartFrame + zombie_upOrientationSpriteOffset,        end: zombie_hitAndDeathAnimationEndFrame + zombie_upOrientationSpriteOffset,        sheet: 'zombie', orientation: EntityOrientation.UP },
+      { start: zombie_hitAndDeathAnimationStartFrame + zombie_upRightOrientationSpriteOffset,   end: zombie_hitAndDeathAnimationEndFrame + zombie_upRightOrientationSpriteOffset,   sheet: 'zombie', orientation: EntityOrientation.UP_RIGHT },
+      { start: zombie_hitAndDeathAnimationStartFrame + zombie_rightOrientationSpriteOffset,     end: zombie_hitAndDeathAnimationEndFrame + zombie_rightOrientationSpriteOffset,     sheet: 'zombie', orientation: EntityOrientation.RIGHT },
+      { start: zombie_hitAndDeathAnimationStartFrame + zombie_downRightOrientationSpriteOffset, end: zombie_hitAndDeathAnimationEndFrame + zombie_downRightOrientationSpriteOffset, sheet: 'zombie', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: zombie_hitAndDeathAnimationStartFrame + zombie_downOrientationSpriteOffset,      end: zombie_hitAndDeathAnimationEndFrame + zombie_downOrientationSpriteOffset,      sheet: 'zombie', orientation: EntityOrientation.DOWN },
+      { start: zombie_hitAndDeathAnimationStartFrame + zombie_downLeftOrientationSpriteOffset,  end: zombie_hitAndDeathAnimationEndFrame + zombie_downLeftOrientationSpriteOffset,  sheet: 'zombie', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.DEATH,
     frameRate: 8
   },
   death_2: {
     frames: [
-      { start: zombie_0_criticalDeathAnimationStartFrame + zombie_0_leftOrientationSpriteOffset,      end: zombie_0_criticalDeathAnimationEndFrame + zombie_0_leftOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.LEFT },
-      { start: zombie_0_criticalDeathAnimationStartFrame + zombie_0_upLeftOrientationSpriteOffset,    end: zombie_0_criticalDeathAnimationEndFrame + zombie_0_upLeftOrientationSpriteOffset,    sheet: 'zombie_0', orientation: EntityOrientation.UP_LEFT },
-      { start: zombie_0_criticalDeathAnimationStartFrame + zombie_0_upOrientationSpriteOffset,        end: zombie_0_criticalDeathAnimationEndFrame + zombie_0_upOrientationSpriteOffset,        sheet: 'zombie_0', orientation: EntityOrientation.UP },
-      { start: zombie_0_criticalDeathAnimationStartFrame + zombie_0_upRightOrientationSpriteOffset,   end: zombie_0_criticalDeathAnimationEndFrame + zombie_0_upRightOrientationSpriteOffset,   sheet: 'zombie_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: zombie_0_criticalDeathAnimationStartFrame + zombie_0_rightOrientationSpriteOffset,     end: zombie_0_criticalDeathAnimationEndFrame + zombie_0_rightOrientationSpriteOffset,     sheet: 'zombie_0', orientation: EntityOrientation.RIGHT },
-      { start: zombie_0_criticalDeathAnimationStartFrame + zombie_0_downRightOrientationSpriteOffset, end: zombie_0_criticalDeathAnimationEndFrame + zombie_0_downRightOrientationSpriteOffset, sheet: 'zombie_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: zombie_0_criticalDeathAnimationStartFrame + zombie_0_downOrientationSpriteOffset,      end: zombie_0_criticalDeathAnimationEndFrame + zombie_0_downOrientationSpriteOffset,      sheet: 'zombie_0', orientation: EntityOrientation.DOWN },
-      { start: zombie_0_criticalDeathAnimationStartFrame + zombie_0_downLeftOrientationSpriteOffset,  end: zombie_0_criticalDeathAnimationEndFrame + zombie_0_downLeftOrientationSpriteOffset,  sheet: 'zombie_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: zombie_criticalDeathAnimationStartFrame + zombie_leftOrientationSpriteOffset,      end: zombie_criticalDeathAnimationEndFrame + zombie_leftOrientationSpriteOffset,      sheet: 'zombie', orientation: EntityOrientation.LEFT },
+      { start: zombie_criticalDeathAnimationStartFrame + zombie_upLeftOrientationSpriteOffset,    end: zombie_criticalDeathAnimationEndFrame + zombie_upLeftOrientationSpriteOffset,    sheet: 'zombie', orientation: EntityOrientation.UP_LEFT },
+      { start: zombie_criticalDeathAnimationStartFrame + zombie_upOrientationSpriteOffset,        end: zombie_criticalDeathAnimationEndFrame + zombie_upOrientationSpriteOffset,        sheet: 'zombie', orientation: EntityOrientation.UP },
+      { start: zombie_criticalDeathAnimationStartFrame + zombie_upRightOrientationSpriteOffset,   end: zombie_criticalDeathAnimationEndFrame + zombie_upRightOrientationSpriteOffset,   sheet: 'zombie', orientation: EntityOrientation.UP_RIGHT },
+      { start: zombie_criticalDeathAnimationStartFrame + zombie_rightOrientationSpriteOffset,     end: zombie_criticalDeathAnimationEndFrame + zombie_rightOrientationSpriteOffset,     sheet: 'zombie', orientation: EntityOrientation.RIGHT },
+      { start: zombie_criticalDeathAnimationStartFrame + zombie_downRightOrientationSpriteOffset, end: zombie_criticalDeathAnimationEndFrame + zombie_downRightOrientationSpriteOffset, sheet: 'zombie', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: zombie_criticalDeathAnimationStartFrame + zombie_downOrientationSpriteOffset,      end: zombie_criticalDeathAnimationEndFrame + zombie_downOrientationSpriteOffset,      sheet: 'zombie', orientation: EntityOrientation.DOWN },
+      { start: zombie_criticalDeathAnimationStartFrame + zombie_downLeftOrientationSpriteOffset,  end: zombie_criticalDeathAnimationEndFrame + zombie_downLeftOrientationSpriteOffset,  sheet: 'zombie', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.CRITICALDEATH,
     frameRate: 8
   }
 };
 
-export const minotaur_0_AnimationConfig = {
+export const minotaur_AnimationConfig = {
   idle: {
     frames: [
-      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_leftOrientationSpriteOffset,      end: minotaur_0_idleAnimationEndFrame + minotaur_0_leftOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.LEFT },
-      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_upLeftOrientationSpriteOffset,    end: minotaur_0_idleAnimationEndFrame + minotaur_0_upLeftOrientationSpriteOffset,    sheet: 'minotaur_0', orientation: EntityOrientation.UP_LEFT },
-      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_upOrientationSpriteOffset,        end: minotaur_0_idleAnimationEndFrame + minotaur_0_upOrientationSpriteOffset,        sheet: 'minotaur_0', orientation: EntityOrientation.UP },
-      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_upRightOrientationSpriteOffset,   end: minotaur_0_idleAnimationEndFrame + minotaur_0_upRightOrientationSpriteOffset,   sheet: 'minotaur_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_rightOrientationSpriteOffset,     end: minotaur_0_idleAnimationEndFrame + minotaur_0_rightOrientationSpriteOffset,     sheet: 'minotaur_0', orientation: EntityOrientation.RIGHT },
-      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_downRightOrientationSpriteOffset, end: minotaur_0_idleAnimationEndFrame + minotaur_0_downRightOrientationSpriteOffset, sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_downOrientationSpriteOffset,      end: minotaur_0_idleAnimationEndFrame + minotaur_0_downOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.DOWN },
-      { start: minotaur_0_idleAnimationStartFrame + minotaur_0_downLeftOrientationSpriteOffset,  end: minotaur_0_idleAnimationEndFrame + minotaur_0_downLeftOrientationSpriteOffset,  sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: minotaur_idleAnimationStartFrame + minotaur_leftOrientationSpriteOffset,      end: minotaur_idleAnimationEndFrame + minotaur_leftOrientationSpriteOffset,      sheet: 'minotaur', orientation: EntityOrientation.LEFT },
+      { start: minotaur_idleAnimationStartFrame + minotaur_upLeftOrientationSpriteOffset,    end: minotaur_idleAnimationEndFrame + minotaur_upLeftOrientationSpriteOffset,    sheet: 'minotaur', orientation: EntityOrientation.UP_LEFT },
+      { start: minotaur_idleAnimationStartFrame + minotaur_upOrientationSpriteOffset,        end: minotaur_idleAnimationEndFrame + minotaur_upOrientationSpriteOffset,        sheet: 'minotaur', orientation: EntityOrientation.UP },
+      { start: minotaur_idleAnimationStartFrame + minotaur_upRightOrientationSpriteOffset,   end: minotaur_idleAnimationEndFrame + minotaur_upRightOrientationSpriteOffset,   sheet: 'minotaur', orientation: EntityOrientation.UP_RIGHT },
+      { start: minotaur_idleAnimationStartFrame + minotaur_rightOrientationSpriteOffset,     end: minotaur_idleAnimationEndFrame + minotaur_rightOrientationSpriteOffset,     sheet: 'minotaur', orientation: EntityOrientation.RIGHT },
+      { start: minotaur_idleAnimationStartFrame + minotaur_downRightOrientationSpriteOffset, end: minotaur_idleAnimationEndFrame + minotaur_downRightOrientationSpriteOffset, sheet: 'minotaur', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: minotaur_idleAnimationStartFrame + minotaur_downOrientationSpriteOffset,      end: minotaur_idleAnimationEndFrame + minotaur_downOrientationSpriteOffset,      sheet: 'minotaur', orientation: EntityOrientation.DOWN },
+      { start: minotaur_idleAnimationStartFrame + minotaur_downLeftOrientationSpriteOffset,  end: minotaur_idleAnimationEndFrame + minotaur_downLeftOrientationSpriteOffset,  sheet: 'minotaur', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.IDLE,
     frameRate: 6
   },
   run: {
     frames: [
-      { start: minotaur_0_runAnimationStartFrame + minotaur_0_leftOrientationSpriteOffset,      end: minotaur_0_runAnimationEndFrame + minotaur_0_leftOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.LEFT },
-      { start: minotaur_0_runAnimationStartFrame + minotaur_0_upLeftOrientationSpriteOffset,    end: minotaur_0_runAnimationEndFrame + minotaur_0_upLeftOrientationSpriteOffset,    sheet: 'minotaur_0', orientation: EntityOrientation.UP_LEFT },
-      { start: minotaur_0_runAnimationStartFrame + minotaur_0_upOrientationSpriteOffset,        end: minotaur_0_runAnimationEndFrame + minotaur_0_upOrientationSpriteOffset,        sheet: 'minotaur_0', orientation: EntityOrientation.UP },
-      { start: minotaur_0_runAnimationStartFrame + minotaur_0_upRightOrientationSpriteOffset,   end: minotaur_0_runAnimationEndFrame + minotaur_0_upRightOrientationSpriteOffset,   sheet: 'minotaur_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: minotaur_0_runAnimationStartFrame + minotaur_0_rightOrientationSpriteOffset,     end: minotaur_0_runAnimationEndFrame + minotaur_0_rightOrientationSpriteOffset,     sheet: 'minotaur_0', orientation: EntityOrientation.RIGHT },
-      { start: minotaur_0_runAnimationStartFrame + minotaur_0_downRightOrientationSpriteOffset, end: minotaur_0_runAnimationEndFrame + minotaur_0_downRightOrientationSpriteOffset, sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: minotaur_0_runAnimationStartFrame + minotaur_0_downOrientationSpriteOffset,      end: minotaur_0_runAnimationEndFrame + minotaur_0_downOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.DOWN },
-      { start: minotaur_0_runAnimationStartFrame + minotaur_0_downLeftOrientationSpriteOffset,  end: minotaur_0_runAnimationEndFrame + minotaur_0_downLeftOrientationSpriteOffset,  sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: minotaur_runAnimationStartFrame + minotaur_leftOrientationSpriteOffset,      end: minotaur_runAnimationEndFrame + minotaur_leftOrientationSpriteOffset,      sheet: 'minotaur', orientation: EntityOrientation.LEFT },
+      { start: minotaur_runAnimationStartFrame + minotaur_upLeftOrientationSpriteOffset,    end: minotaur_runAnimationEndFrame + minotaur_upLeftOrientationSpriteOffset,    sheet: 'minotaur', orientation: EntityOrientation.UP_LEFT },
+      { start: minotaur_runAnimationStartFrame + minotaur_upOrientationSpriteOffset,        end: minotaur_runAnimationEndFrame + minotaur_upOrientationSpriteOffset,        sheet: 'minotaur', orientation: EntityOrientation.UP },
+      { start: minotaur_runAnimationStartFrame + minotaur_upRightOrientationSpriteOffset,   end: minotaur_runAnimationEndFrame + minotaur_upRightOrientationSpriteOffset,   sheet: 'minotaur', orientation: EntityOrientation.UP_RIGHT },
+      { start: minotaur_runAnimationStartFrame + minotaur_rightOrientationSpriteOffset,     end: minotaur_runAnimationEndFrame + minotaur_rightOrientationSpriteOffset,     sheet: 'minotaur', orientation: EntityOrientation.RIGHT },
+      { start: minotaur_runAnimationStartFrame + minotaur_downRightOrientationSpriteOffset, end: minotaur_runAnimationEndFrame + minotaur_downRightOrientationSpriteOffset, sheet: 'minotaur', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: minotaur_runAnimationStartFrame + minotaur_downOrientationSpriteOffset,      end: minotaur_runAnimationEndFrame + minotaur_downOrientationSpriteOffset,      sheet: 'minotaur', orientation: EntityOrientation.DOWN },
+      { start: minotaur_runAnimationStartFrame + minotaur_downLeftOrientationSpriteOffset,  end: minotaur_runAnimationEndFrame + minotaur_downLeftOrientationSpriteOffset,  sheet: 'minotaur', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.RUN,
     frameRate: 10
   },
   meleeAttack: {
     frames: [
-      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_leftOrientationSpriteOffset,      end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_leftOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.LEFT },
-      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_upLeftOrientationSpriteOffset,    end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_upLeftOrientationSpriteOffset,    sheet: 'minotaur_0', orientation: EntityOrientation.UP_LEFT },
-      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_upOrientationSpriteOffset,        end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_upOrientationSpriteOffset,        sheet: 'minotaur_0', orientation: EntityOrientation.UP },
-      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_upRightOrientationSpriteOffset,   end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_upRightOrientationSpriteOffset,   sheet: 'minotaur_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_rightOrientationSpriteOffset,     end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_rightOrientationSpriteOffset,     sheet: 'minotaur_0', orientation: EntityOrientation.RIGHT },
-      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_downRightOrientationSpriteOffset, end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_downRightOrientationSpriteOffset, sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_downOrientationSpriteOffset,      end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_downOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.DOWN },
-      { start: minotaur_0_meleeAttackAnimationStartFrame + minotaur_0_downLeftOrientationSpriteOffset,  end: minotaur_0_meleeAttackAnimationEndFrame + minotaur_0_downLeftOrientationSpriteOffset,  sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: minotaur_meleeAttackAnimationStartFrame + minotaur_leftOrientationSpriteOffset,      end: minotaur_meleeAttackAnimationEndFrame + minotaur_leftOrientationSpriteOffset,      sheet: 'minotaur', orientation: EntityOrientation.LEFT },
+      { start: minotaur_meleeAttackAnimationStartFrame + minotaur_upLeftOrientationSpriteOffset,    end: minotaur_meleeAttackAnimationEndFrame + minotaur_upLeftOrientationSpriteOffset,    sheet: 'minotaur', orientation: EntityOrientation.UP_LEFT },
+      { start: minotaur_meleeAttackAnimationStartFrame + minotaur_upOrientationSpriteOffset,        end: minotaur_meleeAttackAnimationEndFrame + minotaur_upOrientationSpriteOffset,        sheet: 'minotaur', orientation: EntityOrientation.UP },
+      { start: minotaur_meleeAttackAnimationStartFrame + minotaur_upRightOrientationSpriteOffset,   end: minotaur_meleeAttackAnimationEndFrame + minotaur_upRightOrientationSpriteOffset,   sheet: 'minotaur', orientation: EntityOrientation.UP_RIGHT },
+      { start: minotaur_meleeAttackAnimationStartFrame + minotaur_rightOrientationSpriteOffset,     end: minotaur_meleeAttackAnimationEndFrame + minotaur_rightOrientationSpriteOffset,     sheet: 'minotaur', orientation: EntityOrientation.RIGHT },
+      { start: minotaur_meleeAttackAnimationStartFrame + minotaur_downRightOrientationSpriteOffset, end: minotaur_meleeAttackAnimationEndFrame + minotaur_downRightOrientationSpriteOffset, sheet: 'minotaur', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: minotaur_meleeAttackAnimationStartFrame + minotaur_downOrientationSpriteOffset,      end: minotaur_meleeAttackAnimationEndFrame + minotaur_downOrientationSpriteOffset,      sheet: 'minotaur', orientation: EntityOrientation.DOWN },
+      { start: minotaur_meleeAttackAnimationStartFrame + minotaur_downLeftOrientationSpriteOffset,  end: minotaur_meleeAttackAnimationEndFrame + minotaur_downLeftOrientationSpriteOffset,  sheet: 'minotaur', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.MELEEATTACK,
     frameRate: 10
   },
   block: {
     frames: [
-      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_leftOrientationSpriteOffset,      end: minotaur_0_blockAnimationEndFrame + minotaur_0_leftOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.LEFT },
-      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_upLeftOrientationSpriteOffset,    end: minotaur_0_blockAnimationEndFrame + minotaur_0_upLeftOrientationSpriteOffset,    sheet: 'minotaur_0', orientation: EntityOrientation.UP_LEFT },
-      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_upOrientationSpriteOffset,        end: minotaur_0_blockAnimationEndFrame + minotaur_0_upOrientationSpriteOffset,        sheet: 'minotaur_0', orientation: EntityOrientation.UP },
-      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_upRightOrientationSpriteOffset,   end: minotaur_0_blockAnimationEndFrame + minotaur_0_upRightOrientationSpriteOffset,   sheet: 'minotaur_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_rightOrientationSpriteOffset,     end: minotaur_0_blockAnimationEndFrame + minotaur_0_rightOrientationSpriteOffset,     sheet: 'minotaur_0', orientation: EntityOrientation.RIGHT },
-      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_downRightOrientationSpriteOffset, end: minotaur_0_blockAnimationEndFrame + minotaur_0_downRightOrientationSpriteOffset, sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_downOrientationSpriteOffset,      end: minotaur_0_blockAnimationEndFrame + minotaur_0_downOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.DOWN },
-      { start: minotaur_0_blockAnimationStartFrame + minotaur_0_downLeftOrientationSpriteOffset,  end: minotaur_0_blockAnimationEndFrame + minotaur_0_downLeftOrientationSpriteOffset,  sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: minotaur_blockAnimationStartFrame + minotaur_leftOrientationSpriteOffset,      end: minotaur_blockAnimationEndFrame + minotaur_leftOrientationSpriteOffset,      sheet: 'minotaur', orientation: EntityOrientation.LEFT },
+      { start: minotaur_blockAnimationStartFrame + minotaur_upLeftOrientationSpriteOffset,    end: minotaur_blockAnimationEndFrame + minotaur_upLeftOrientationSpriteOffset,    sheet: 'minotaur', orientation: EntityOrientation.UP_LEFT },
+      { start: minotaur_blockAnimationStartFrame + minotaur_upOrientationSpriteOffset,        end: minotaur_blockAnimationEndFrame + minotaur_upOrientationSpriteOffset,        sheet: 'minotaur', orientation: EntityOrientation.UP },
+      { start: minotaur_blockAnimationStartFrame + minotaur_upRightOrientationSpriteOffset,   end: minotaur_blockAnimationEndFrame + minotaur_upRightOrientationSpriteOffset,   sheet: 'minotaur', orientation: EntityOrientation.UP_RIGHT },
+      { start: minotaur_blockAnimationStartFrame + minotaur_rightOrientationSpriteOffset,     end: minotaur_blockAnimationEndFrame + minotaur_rightOrientationSpriteOffset,     sheet: 'minotaur', orientation: EntityOrientation.RIGHT },
+      { start: minotaur_blockAnimationStartFrame + minotaur_downRightOrientationSpriteOffset, end: minotaur_blockAnimationEndFrame + minotaur_downRightOrientationSpriteOffset, sheet: 'minotaur', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: minotaur_blockAnimationStartFrame + minotaur_downOrientationSpriteOffset,      end: minotaur_blockAnimationEndFrame + minotaur_downOrientationSpriteOffset,      sheet: 'minotaur', orientation: EntityOrientation.DOWN },
+      { start: minotaur_blockAnimationStartFrame + minotaur_downLeftOrientationSpriteOffset,  end: minotaur_blockAnimationEndFrame + minotaur_downLeftOrientationSpriteOffset,  sheet: 'minotaur', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.BLOCK,
     frameRate: 8
   },
   death: {
     frames: [
-      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_leftOrientationSpriteOffset,      end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_leftOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.LEFT },
-      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_upLeftOrientationSpriteOffset,    end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_upLeftOrientationSpriteOffset,    sheet: 'minotaur_0', orientation: EntityOrientation.UP_LEFT },
-      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_upOrientationSpriteOffset,        end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_upOrientationSpriteOffset,        sheet: 'minotaur_0', orientation: EntityOrientation.UP },
-      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_upRightOrientationSpriteOffset,   end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_upRightOrientationSpriteOffset,   sheet: 'minotaur_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_rightOrientationSpriteOffset,     end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_rightOrientationSpriteOffset,     sheet: 'minotaur_0', orientation: EntityOrientation.RIGHT },
-      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_downRightOrientationSpriteOffset, end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_downRightOrientationSpriteOffset, sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_downOrientationSpriteOffset,      end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_downOrientationSpriteOffset,      sheet: 'minotaur_0', orientation: EntityOrientation.DOWN },
-      { start: minotaur_0_hitAndDeathAnimationStartFrame + minotaur_0_downLeftOrientationSpriteOffset,  end: minotaur_0_hitAndDeathAnimationEndFrame + minotaur_0_downLeftOrientationSpriteOffset,  sheet: 'minotaur_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: minotaur_hitAndDeathAnimationStartFrame + minotaur_leftOrientationSpriteOffset,      end: minotaur_hitAndDeathAnimationEndFrame + minotaur_leftOrientationSpriteOffset,      sheet: 'minotaur', orientation: EntityOrientation.LEFT },
+      { start: minotaur_hitAndDeathAnimationStartFrame + minotaur_upLeftOrientationSpriteOffset,    end: minotaur_hitAndDeathAnimationEndFrame + minotaur_upLeftOrientationSpriteOffset,    sheet: 'minotaur', orientation: EntityOrientation.UP_LEFT },
+      { start: minotaur_hitAndDeathAnimationStartFrame + minotaur_upOrientationSpriteOffset,        end: minotaur_hitAndDeathAnimationEndFrame + minotaur_upOrientationSpriteOffset,        sheet: 'minotaur', orientation: EntityOrientation.UP },
+      { start: minotaur_hitAndDeathAnimationStartFrame + minotaur_upRightOrientationSpriteOffset,   end: minotaur_hitAndDeathAnimationEndFrame + minotaur_upRightOrientationSpriteOffset,   sheet: 'minotaur', orientation: EntityOrientation.UP_RIGHT },
+      { start: minotaur_hitAndDeathAnimationStartFrame + minotaur_rightOrientationSpriteOffset,     end: minotaur_hitAndDeathAnimationEndFrame + minotaur_rightOrientationSpriteOffset,     sheet: 'minotaur', orientation: EntityOrientation.RIGHT },
+      { start: minotaur_hitAndDeathAnimationStartFrame + minotaur_downRightOrientationSpriteOffset, end: minotaur_hitAndDeathAnimationEndFrame + minotaur_downRightOrientationSpriteOffset, sheet: 'minotaur', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: minotaur_hitAndDeathAnimationStartFrame + minotaur_downOrientationSpriteOffset,      end: minotaur_hitAndDeathAnimationEndFrame + minotaur_downOrientationSpriteOffset,      sheet: 'minotaur', orientation: EntityOrientation.DOWN },
+      { start: minotaur_hitAndDeathAnimationStartFrame + minotaur_downLeftOrientationSpriteOffset,  end: minotaur_hitAndDeathAnimationEndFrame + minotaur_downLeftOrientationSpriteOffset,  sheet: 'minotaur', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.DEATH,
     frameRate: 8
   }
 };
 
-export const skeleton_0_AnimationConfig = {
+export const skeleton_AnimationConfig = {
   idle: {
     frames: [
-      { start: skeleton_0_idleAnimationStartFrame + skeleton_0_leftOrientationSpriteOffset,      end: skeleton_0_idleAnimationEndFrame + skeleton_0_leftOrientationSpriteOffset,      sheet: 'skeleton_0', orientation: EntityOrientation.LEFT },
-      { start: skeleton_0_idleAnimationStartFrame + skeleton_0_upLeftOrientationSpriteOffset,    end: skeleton_0_idleAnimationEndFrame + skeleton_0_upLeftOrientationSpriteOffset,    sheet: 'skeleton_0', orientation: EntityOrientation.UP_LEFT },
-      { start: skeleton_0_idleAnimationStartFrame + skeleton_0_upOrientationSpriteOffset,        end: skeleton_0_idleAnimationEndFrame + skeleton_0_upOrientationSpriteOffset,        sheet: 'skeleton_0', orientation: EntityOrientation.UP },
-      { start: skeleton_0_idleAnimationStartFrame + skeleton_0_upRightOrientationSpriteOffset,   end: skeleton_0_idleAnimationEndFrame + skeleton_0_upRightOrientationSpriteOffset,   sheet: 'skeleton_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: skeleton_0_idleAnimationStartFrame + skeleton_0_rightOrientationSpriteOffset,     end: skeleton_0_idleAnimationEndFrame + skeleton_0_rightOrientationSpriteOffset,     sheet: 'skeleton_0', orientation: EntityOrientation.RIGHT },
-      { start: skeleton_0_idleAnimationStartFrame + skeleton_0_downRightOrientationSpriteOffset, end: skeleton_0_idleAnimationEndFrame + skeleton_0_downRightOrientationSpriteOffset, sheet: 'skeleton_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: skeleton_0_idleAnimationStartFrame + skeleton_0_downOrientationSpriteOffset,      end: skeleton_0_idleAnimationEndFrame + skeleton_0_downOrientationSpriteOffset,      sheet: 'skeleton_0', orientation: EntityOrientation.DOWN },
-      { start: skeleton_0_idleAnimationStartFrame + skeleton_0_downLeftOrientationSpriteOffset,  end: skeleton_0_idleAnimationEndFrame + skeleton_0_downLeftOrientationSpriteOffset,  sheet: 'skeleton_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: skeleton_idleAnimationStartFrame + skeleton_leftOrientationSpriteOffset,      end: skeleton_idleAnimationEndFrame + skeleton_leftOrientationSpriteOffset,      sheet: 'skeleton', orientation: EntityOrientation.LEFT },
+      { start: skeleton_idleAnimationStartFrame + skeleton_upLeftOrientationSpriteOffset,    end: skeleton_idleAnimationEndFrame + skeleton_upLeftOrientationSpriteOffset,    sheet: 'skeleton', orientation: EntityOrientation.UP_LEFT },
+      { start: skeleton_idleAnimationStartFrame + skeleton_upOrientationSpriteOffset,        end: skeleton_idleAnimationEndFrame + skeleton_upOrientationSpriteOffset,        sheet: 'skeleton', orientation: EntityOrientation.UP },
+      { start: skeleton_idleAnimationStartFrame + skeleton_upRightOrientationSpriteOffset,   end: skeleton_idleAnimationEndFrame + skeleton_upRightOrientationSpriteOffset,   sheet: 'skeleton', orientation: EntityOrientation.UP_RIGHT },
+      { start: skeleton_idleAnimationStartFrame + skeleton_rightOrientationSpriteOffset,     end: skeleton_idleAnimationEndFrame + skeleton_rightOrientationSpriteOffset,     sheet: 'skeleton', orientation: EntityOrientation.RIGHT },
+      { start: skeleton_idleAnimationStartFrame + skeleton_downRightOrientationSpriteOffset, end: skeleton_idleAnimationEndFrame + skeleton_downRightOrientationSpriteOffset, sheet: 'skeleton', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: skeleton_idleAnimationStartFrame + skeleton_downOrientationSpriteOffset,      end: skeleton_idleAnimationEndFrame + skeleton_downOrientationSpriteOffset,      sheet: 'skeleton', orientation: EntityOrientation.DOWN },
+      { start: skeleton_idleAnimationStartFrame + skeleton_downLeftOrientationSpriteOffset,  end: skeleton_idleAnimationEndFrame + skeleton_downLeftOrientationSpriteOffset,  sheet: 'skeleton', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.IDLE,
     frameRate: 6
   },
   run: {
     frames: [
-      { start: skeleton_0_runAnimationStartFrame + skeleton_0_leftOrientationSpriteOffset,      end: skeleton_0_runAnimationEndFrame + skeleton_0_leftOrientationSpriteOffset,      sheet: 'skeleton_0', orientation: EntityOrientation.LEFT },
-      { start: skeleton_0_runAnimationStartFrame + skeleton_0_upLeftOrientationSpriteOffset,    end: skeleton_0_runAnimationEndFrame + skeleton_0_upLeftOrientationSpriteOffset,    sheet: 'skeleton_0', orientation: EntityOrientation.UP_LEFT },
-      { start: skeleton_0_runAnimationStartFrame + skeleton_0_upOrientationSpriteOffset,        end: skeleton_0_runAnimationEndFrame + skeleton_0_upOrientationSpriteOffset,        sheet: 'skeleton_0', orientation: EntityOrientation.UP },
-      { start: skeleton_0_runAnimationStartFrame + skeleton_0_upRightOrientationSpriteOffset,   end: skeleton_0_runAnimationEndFrame + skeleton_0_upRightOrientationSpriteOffset,   sheet: 'skeleton_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: skeleton_0_runAnimationStartFrame + skeleton_0_rightOrientationSpriteOffset,     end: skeleton_0_runAnimationEndFrame + skeleton_0_rightOrientationSpriteOffset,     sheet: 'skeleton_0', orientation: EntityOrientation.RIGHT },
-      { start: skeleton_0_runAnimationStartFrame + skeleton_0_downRightOrientationSpriteOffset, end: skeleton_0_runAnimationEndFrame + skeleton_0_downRightOrientationSpriteOffset, sheet: 'skeleton_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: skeleton_0_runAnimationStartFrame + skeleton_0_downOrientationSpriteOffset,      end: skeleton_0_runAnimationEndFrame + skeleton_0_downOrientationSpriteOffset,      sheet: 'skeleton_0', orientation: EntityOrientation.DOWN },
-      { start: skeleton_0_runAnimationStartFrame + skeleton_0_downLeftOrientationSpriteOffset,  end: skeleton_0_runAnimationEndFrame + skeleton_0_downLeftOrientationSpriteOffset,  sheet: 'skeleton_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: skeleton_runAnimationStartFrame + skeleton_leftOrientationSpriteOffset,      end: skeleton_runAnimationEndFrame + skeleton_leftOrientationSpriteOffset,      sheet: 'skeleton', orientation: EntityOrientation.LEFT },
+      { start: skeleton_runAnimationStartFrame + skeleton_upLeftOrientationSpriteOffset,    end: skeleton_runAnimationEndFrame + skeleton_upLeftOrientationSpriteOffset,    sheet: 'skeleton', orientation: EntityOrientation.UP_LEFT },
+      { start: skeleton_runAnimationStartFrame + skeleton_upOrientationSpriteOffset,        end: skeleton_runAnimationEndFrame + skeleton_upOrientationSpriteOffset,        sheet: 'skeleton', orientation: EntityOrientation.UP },
+      { start: skeleton_runAnimationStartFrame + skeleton_upRightOrientationSpriteOffset,   end: skeleton_runAnimationEndFrame + skeleton_upRightOrientationSpriteOffset,   sheet: 'skeleton', orientation: EntityOrientation.UP_RIGHT },
+      { start: skeleton_runAnimationStartFrame + skeleton_rightOrientationSpriteOffset,     end: skeleton_runAnimationEndFrame + skeleton_rightOrientationSpriteOffset,     sheet: 'skeleton', orientation: EntityOrientation.RIGHT },
+      { start: skeleton_runAnimationStartFrame + skeleton_downRightOrientationSpriteOffset, end: skeleton_runAnimationEndFrame + skeleton_downRightOrientationSpriteOffset, sheet: 'skeleton', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: skeleton_runAnimationStartFrame + skeleton_downOrientationSpriteOffset,      end: skeleton_runAnimationEndFrame + skeleton_downOrientationSpriteOffset,      sheet: 'skeleton', orientation: EntityOrientation.DOWN },
+      { start: skeleton_runAnimationStartFrame + skeleton_downLeftOrientationSpriteOffset,  end: skeleton_runAnimationEndFrame + skeleton_downLeftOrientationSpriteOffset,  sheet: 'skeleton', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.RUN,
     frameRate: 8
   },
   meleeAttack: {
     frames: [
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_leftOrientationSpriteOffset,      end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_leftOrientationSpriteOffset,      sheet: 'skeleton_0', orientation: EntityOrientation.LEFT },
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_upLeftOrientationSpriteOffset,    end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_upLeftOrientationSpriteOffset,    sheet: 'skeleton_0', orientation: EntityOrientation.UP_LEFT },
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_upOrientationSpriteOffset,        end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_upOrientationSpriteOffset,        sheet: 'skeleton_0', orientation: EntityOrientation.UP },
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_upRightOrientationSpriteOffset,   end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_upRightOrientationSpriteOffset,   sheet: 'skeleton_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_rightOrientationSpriteOffset,     end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_rightOrientationSpriteOffset,     sheet: 'skeleton_0', orientation: EntityOrientation.RIGHT },
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_downRightOrientationSpriteOffset, end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_downRightOrientationSpriteOffset, sheet: 'skeleton_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_downOrientationSpriteOffset,      end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_downOrientationSpriteOffset,      sheet: 'skeleton_0', orientation: EntityOrientation.DOWN },
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_downLeftOrientationSpriteOffset,  end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_downLeftOrientationSpriteOffset,  sheet: 'skeleton_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_leftOrientationSpriteOffset,      end: skeleton_meleeAttackAnimationEndFrame + skeleton_leftOrientationSpriteOffset,      sheet: 'skeleton', orientation: EntityOrientation.LEFT },
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_upLeftOrientationSpriteOffset,    end: skeleton_meleeAttackAnimationEndFrame + skeleton_upLeftOrientationSpriteOffset,    sheet: 'skeleton', orientation: EntityOrientation.UP_LEFT },
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_upOrientationSpriteOffset,        end: skeleton_meleeAttackAnimationEndFrame + skeleton_upOrientationSpriteOffset,        sheet: 'skeleton', orientation: EntityOrientation.UP },
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_upRightOrientationSpriteOffset,   end: skeleton_meleeAttackAnimationEndFrame + skeleton_upRightOrientationSpriteOffset,   sheet: 'skeleton', orientation: EntityOrientation.UP_RIGHT },
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_rightOrientationSpriteOffset,     end: skeleton_meleeAttackAnimationEndFrame + skeleton_rightOrientationSpriteOffset,     sheet: 'skeleton', orientation: EntityOrientation.RIGHT },
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_downRightOrientationSpriteOffset, end: skeleton_meleeAttackAnimationEndFrame + skeleton_downRightOrientationSpriteOffset, sheet: 'skeleton', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_downOrientationSpriteOffset,      end: skeleton_meleeAttackAnimationEndFrame + skeleton_downOrientationSpriteOffset,      sheet: 'skeleton', orientation: EntityOrientation.DOWN },
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_downLeftOrientationSpriteOffset,  end: skeleton_meleeAttackAnimationEndFrame + skeleton_downLeftOrientationSpriteOffset,  sheet: 'skeleton', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.MELEEATTACK,
     frameRate: 8
   },
   cast: {
     frames: [
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_leftOrientationSpriteOffset,      end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_leftOrientationSpriteOffset,      sheet: 'skeleton_0', orientation: EntityOrientation.LEFT },
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_upLeftOrientationSpriteOffset,    end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_upLeftOrientationSpriteOffset,    sheet: 'skeleton_0', orientation: EntityOrientation.UP_LEFT },
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_upOrientationSpriteOffset,        end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_upOrientationSpriteOffset,        sheet: 'skeleton_0', orientation: EntityOrientation.UP },
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_upRightOrientationSpriteOffset,   end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_upRightOrientationSpriteOffset,   sheet: 'skeleton_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_rightOrientationSpriteOffset,     end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_rightOrientationSpriteOffset,     sheet: 'skeleton_0', orientation: EntityOrientation.RIGHT },
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_downRightOrientationSpriteOffset, end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_downRightOrientationSpriteOffset, sheet: 'skeleton_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_downOrientationSpriteOffset,      end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_downOrientationSpriteOffset,      sheet: 'skeleton_0', orientation: EntityOrientation.DOWN },
-      { start: skeleton_0_meleeAttackAnimationStartFrame + skeleton_0_downLeftOrientationSpriteOffset,  end: skeleton_0_meleeAttackAnimationEndFrame + skeleton_0_downLeftOrientationSpriteOffset,  sheet: 'skeleton_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_leftOrientationSpriteOffset,      end: skeleton_meleeAttackAnimationEndFrame + skeleton_leftOrientationSpriteOffset,      sheet: 'skeleton', orientation: EntityOrientation.LEFT },
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_upLeftOrientationSpriteOffset,    end: skeleton_meleeAttackAnimationEndFrame + skeleton_upLeftOrientationSpriteOffset,    sheet: 'skeleton', orientation: EntityOrientation.UP_LEFT },
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_upOrientationSpriteOffset,        end: skeleton_meleeAttackAnimationEndFrame + skeleton_upOrientationSpriteOffset,        sheet: 'skeleton', orientation: EntityOrientation.UP },
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_upRightOrientationSpriteOffset,   end: skeleton_meleeAttackAnimationEndFrame + skeleton_upRightOrientationSpriteOffset,   sheet: 'skeleton', orientation: EntityOrientation.UP_RIGHT },
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_rightOrientationSpriteOffset,     end: skeleton_meleeAttackAnimationEndFrame + skeleton_rightOrientationSpriteOffset,     sheet: 'skeleton', orientation: EntityOrientation.RIGHT },
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_downRightOrientationSpriteOffset, end: skeleton_meleeAttackAnimationEndFrame + skeleton_downRightOrientationSpriteOffset, sheet: 'skeleton', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_downOrientationSpriteOffset,      end: skeleton_meleeAttackAnimationEndFrame + skeleton_downOrientationSpriteOffset,      sheet: 'skeleton', orientation: EntityOrientation.DOWN },
+      { start: skeleton_meleeAttackAnimationStartFrame + skeleton_downLeftOrientationSpriteOffset,  end: skeleton_meleeAttackAnimationEndFrame + skeleton_downLeftOrientationSpriteOffset,  sheet: 'skeleton', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.MELEEATTACK,
     frameRate: 8
   },
   block: {
     frames: [
-      { start: skeleton_0_blockAnimationStartFrame + skeleton_0_leftOrientationSpriteOffset,      end: skeleton_0_blockAnimationEndFrame + skeleton_0_leftOrientationSpriteOffset,      sheet: 'skeleton_0', orientation: EntityOrientation.LEFT },
-      { start: skeleton_0_blockAnimationStartFrame + skeleton_0_upLeftOrientationSpriteOffset,    end: skeleton_0_blockAnimationEndFrame + skeleton_0_upLeftOrientationSpriteOffset,    sheet: 'skeleton_0', orientation: EntityOrientation.UP_LEFT },
-      { start: skeleton_0_blockAnimationStartFrame + skeleton_0_upOrientationSpriteOffset,        end: skeleton_0_blockAnimationEndFrame + skeleton_0_upOrientationSpriteOffset,        sheet: 'skeleton_0', orientation: EntityOrientation.UP },
-      { start: skeleton_0_blockAnimationStartFrame + skeleton_0_upRightOrientationSpriteOffset,   end: skeleton_0_blockAnimationEndFrame + skeleton_0_upRightOrientationSpriteOffset,   sheet: 'skeleton_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: skeleton_0_blockAnimationStartFrame + skeleton_0_rightOrientationSpriteOffset,     end: skeleton_0_blockAnimationEndFrame + skeleton_0_rightOrientationSpriteOffset,     sheet: 'skeleton_0', orientation: EntityOrientation.RIGHT },
-      { start: skeleton_0_blockAnimationStartFrame + skeleton_0_downRightOrientationSpriteOffset, end: skeleton_0_blockAnimationEndFrame + skeleton_0_downRightOrientationSpriteOffset, sheet: 'skeleton_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: skeleton_0_blockAnimationStartFrame + skeleton_0_downOrientationSpriteOffset,      end: skeleton_0_blockAnimationEndFrame + skeleton_0_downOrientationSpriteOffset,      sheet: 'skeleton_0', orientation: EntityOrientation.DOWN },
-      { start: skeleton_0_blockAnimationStartFrame + skeleton_0_downLeftOrientationSpriteOffset,  end: skeleton_0_blockAnimationEndFrame + skeleton_0_downLeftOrientationSpriteOffset,  sheet: 'skeleton_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: skeleton_blockAnimationStartFrame + skeleton_leftOrientationSpriteOffset,      end: skeleton_blockAnimationEndFrame + skeleton_leftOrientationSpriteOffset,      sheet: 'skeleton', orientation: EntityOrientation.LEFT },
+      { start: skeleton_blockAnimationStartFrame + skeleton_upLeftOrientationSpriteOffset,    end: skeleton_blockAnimationEndFrame + skeleton_upLeftOrientationSpriteOffset,    sheet: 'skeleton', orientation: EntityOrientation.UP_LEFT },
+      { start: skeleton_blockAnimationStartFrame + skeleton_upOrientationSpriteOffset,        end: skeleton_blockAnimationEndFrame + skeleton_upOrientationSpriteOffset,        sheet: 'skeleton', orientation: EntityOrientation.UP },
+      { start: skeleton_blockAnimationStartFrame + skeleton_upRightOrientationSpriteOffset,   end: skeleton_blockAnimationEndFrame + skeleton_upRightOrientationSpriteOffset,   sheet: 'skeleton', orientation: EntityOrientation.UP_RIGHT },
+      { start: skeleton_blockAnimationStartFrame + skeleton_rightOrientationSpriteOffset,     end: skeleton_blockAnimationEndFrame + skeleton_rightOrientationSpriteOffset,     sheet: 'skeleton', orientation: EntityOrientation.RIGHT },
+      { start: skeleton_blockAnimationStartFrame + skeleton_downRightOrientationSpriteOffset, end: skeleton_blockAnimationEndFrame + skeleton_downRightOrientationSpriteOffset, sheet: 'skeleton', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: skeleton_blockAnimationStartFrame + skeleton_downOrientationSpriteOffset,      end: skeleton_blockAnimationEndFrame + skeleton_downOrientationSpriteOffset,      sheet: 'skeleton', orientation: EntityOrientation.DOWN },
+      { start: skeleton_blockAnimationStartFrame + skeleton_downLeftOrientationSpriteOffset,  end: skeleton_blockAnimationEndFrame + skeleton_downLeftOrientationSpriteOffset,  sheet: 'skeleton', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.BLOCK,
     frameRate: 8
   },
   death: {
     frames: [
-      { start: skeleton_0_hitAndDeathAnimationStartFrame + skeleton_0_leftOrientationSpriteOffset,      end: skeleton_0_hitAndDeathAnimationEndFrame + skeleton_0_leftOrientationSpriteOffset,      sheet: 'skeleton_0', orientation: EntityOrientation.LEFT },
-      { start: skeleton_0_hitAndDeathAnimationStartFrame + skeleton_0_upLeftOrientationSpriteOffset,    end: skeleton_0_hitAndDeathAnimationEndFrame + skeleton_0_upLeftOrientationSpriteOffset,    sheet: 'skeleton_0', orientation: EntityOrientation.UP_LEFT },
-      { start: skeleton_0_hitAndDeathAnimationStartFrame + skeleton_0_upOrientationSpriteOffset,        end: skeleton_0_hitAndDeathAnimationEndFrame + skeleton_0_upOrientationSpriteOffset,        sheet: 'skeleton_0', orientation: EntityOrientation.UP },
-      { start: skeleton_0_hitAndDeathAnimationStartFrame + skeleton_0_upRightOrientationSpriteOffset,   end: skeleton_0_hitAndDeathAnimationEndFrame + skeleton_0_upRightOrientationSpriteOffset,   sheet: 'skeleton_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: skeleton_0_hitAndDeathAnimationStartFrame + skeleton_0_rightOrientationSpriteOffset,     end: skeleton_0_hitAndDeathAnimationEndFrame + skeleton_0_rightOrientationSpriteOffset,     sheet: 'skeleton_0', orientation: EntityOrientation.RIGHT },
-      { start: skeleton_0_hitAndDeathAnimationStartFrame + skeleton_0_downRightOrientationSpriteOffset, end: skeleton_0_hitAndDeathAnimationEndFrame + skeleton_0_downRightOrientationSpriteOffset, sheet: 'skeleton_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: skeleton_0_hitAndDeathAnimationStartFrame + skeleton_0_downOrientationSpriteOffset,      end: skeleton_0_hitAndDeathAnimationEndFrame + skeleton_0_downOrientationSpriteOffset,      sheet: 'skeleton_0', orientation: EntityOrientation.DOWN },
-      { start: skeleton_0_hitAndDeathAnimationStartFrame + skeleton_0_downLeftOrientationSpriteOffset,  end: skeleton_0_hitAndDeathAnimationEndFrame + skeleton_0_downLeftOrientationSpriteOffset,  sheet: 'skeleton_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: skeleton_hitAndDeathAnimationStartFrame + skeleton_leftOrientationSpriteOffset,      end: skeleton_hitAndDeathAnimationEndFrame + skeleton_leftOrientationSpriteOffset,      sheet: 'skeleton', orientation: EntityOrientation.LEFT },
+      { start: skeleton_hitAndDeathAnimationStartFrame + skeleton_upLeftOrientationSpriteOffset,    end: skeleton_hitAndDeathAnimationEndFrame + skeleton_upLeftOrientationSpriteOffset,    sheet: 'skeleton', orientation: EntityOrientation.UP_LEFT },
+      { start: skeleton_hitAndDeathAnimationStartFrame + skeleton_upOrientationSpriteOffset,        end: skeleton_hitAndDeathAnimationEndFrame + skeleton_upOrientationSpriteOffset,        sheet: 'skeleton', orientation: EntityOrientation.UP },
+      { start: skeleton_hitAndDeathAnimationStartFrame + skeleton_upRightOrientationSpriteOffset,   end: skeleton_hitAndDeathAnimationEndFrame + skeleton_upRightOrientationSpriteOffset,   sheet: 'skeleton', orientation: EntityOrientation.UP_RIGHT },
+      { start: skeleton_hitAndDeathAnimationStartFrame + skeleton_rightOrientationSpriteOffset,     end: skeleton_hitAndDeathAnimationEndFrame + skeleton_rightOrientationSpriteOffset,     sheet: 'skeleton', orientation: EntityOrientation.RIGHT },
+      { start: skeleton_hitAndDeathAnimationStartFrame + skeleton_downRightOrientationSpriteOffset, end: skeleton_hitAndDeathAnimationEndFrame + skeleton_downRightOrientationSpriteOffset, sheet: 'skeleton', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: skeleton_hitAndDeathAnimationStartFrame + skeleton_downOrientationSpriteOffset,      end: skeleton_hitAndDeathAnimationEndFrame + skeleton_downOrientationSpriteOffset,      sheet: 'skeleton', orientation: EntityOrientation.DOWN },
+      { start: skeleton_hitAndDeathAnimationStartFrame + skeleton_downLeftOrientationSpriteOffset,  end: skeleton_hitAndDeathAnimationEndFrame + skeleton_downLeftOrientationSpriteOffset,  sheet: 'skeleton', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.DEATH,
     frameRate: 8
   }
 };
 
-export const goblin_0_AnimationConfig = {
+export const goblin_AnimationConfig = {
   idle: {
     frames: [
-      { start: goblin_0_idleAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_idleAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
-      { start: goblin_0_idleAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_idleAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
-      { start: goblin_0_idleAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_idleAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
-      { start: goblin_0_idleAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_idleAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: goblin_0_idleAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_idleAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
-      { start: goblin_0_idleAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_idleAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: goblin_0_idleAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_idleAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
-      { start: goblin_0_idleAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_idleAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: goblin_idleAnimationStartFrame + goblin_leftOrientationSpriteOffset,      end: goblin_idleAnimationEndFrame + goblin_leftOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.LEFT },
+      { start: goblin_idleAnimationStartFrame + goblin_upLeftOrientationSpriteOffset,    end: goblin_idleAnimationEndFrame + goblin_upLeftOrientationSpriteOffset,    sheet: 'goblin', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_idleAnimationStartFrame + goblin_upOrientationSpriteOffset,        end: goblin_idleAnimationEndFrame + goblin_upOrientationSpriteOffset,        sheet: 'goblin', orientation: EntityOrientation.UP },
+      { start: goblin_idleAnimationStartFrame + goblin_upRightOrientationSpriteOffset,   end: goblin_idleAnimationEndFrame + goblin_upRightOrientationSpriteOffset,   sheet: 'goblin', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_idleAnimationStartFrame + goblin_rightOrientationSpriteOffset,     end: goblin_idleAnimationEndFrame + goblin_rightOrientationSpriteOffset,     sheet: 'goblin', orientation: EntityOrientation.RIGHT },
+      { start: goblin_idleAnimationStartFrame + goblin_downRightOrientationSpriteOffset, end: goblin_idleAnimationEndFrame + goblin_downRightOrientationSpriteOffset, sheet: 'goblin', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_idleAnimationStartFrame + goblin_downOrientationSpriteOffset,      end: goblin_idleAnimationEndFrame + goblin_downOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.DOWN },
+      { start: goblin_idleAnimationStartFrame + goblin_downLeftOrientationSpriteOffset,  end: goblin_idleAnimationEndFrame + goblin_downLeftOrientationSpriteOffset,  sheet: 'goblin', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.IDLE,
     frameRate: 6
   },
   jump: {
     frames: [
-      { start: goblin_0_jumpAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_jumpAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
-      { start: goblin_0_jumpAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_jumpAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
-      { start: goblin_0_jumpAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_jumpAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
-      { start: goblin_0_jumpAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_jumpAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: goblin_0_jumpAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_jumpAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
-      { start: goblin_0_jumpAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_jumpAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: goblin_0_jumpAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_jumpAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
-      { start: goblin_0_jumpAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_jumpAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: goblin_jumpAnimationStartFrame + goblin_leftOrientationSpriteOffset,      end: goblin_jumpAnimationEndFrame + goblin_leftOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.LEFT },
+      { start: goblin_jumpAnimationStartFrame + goblin_upLeftOrientationSpriteOffset,    end: goblin_jumpAnimationEndFrame + goblin_upLeftOrientationSpriteOffset,    sheet: 'goblin', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_jumpAnimationStartFrame + goblin_upOrientationSpriteOffset,        end: goblin_jumpAnimationEndFrame + goblin_upOrientationSpriteOffset,        sheet: 'goblin', orientation: EntityOrientation.UP },
+      { start: goblin_jumpAnimationStartFrame + goblin_upRightOrientationSpriteOffset,   end: goblin_jumpAnimationEndFrame + goblin_upRightOrientationSpriteOffset,   sheet: 'goblin', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_jumpAnimationStartFrame + goblin_rightOrientationSpriteOffset,     end: goblin_jumpAnimationEndFrame + goblin_rightOrientationSpriteOffset,     sheet: 'goblin', orientation: EntityOrientation.RIGHT },
+      { start: goblin_jumpAnimationStartFrame + goblin_downRightOrientationSpriteOffset, end: goblin_jumpAnimationEndFrame + goblin_downRightOrientationSpriteOffset, sheet: 'goblin', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_jumpAnimationStartFrame + goblin_downOrientationSpriteOffset,      end: goblin_jumpAnimationEndFrame + goblin_downOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.DOWN },
+      { start: goblin_jumpAnimationStartFrame + goblin_downLeftOrientationSpriteOffset,  end: goblin_jumpAnimationEndFrame + goblin_downLeftOrientationSpriteOffset,  sheet: 'goblin', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.IDLE,
     frameRate: 6
   },
   run: {
     frames: [
-      { start: goblin_0_runAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_runAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
-      { start: goblin_0_runAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_runAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
-      { start: goblin_0_runAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_runAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
-      { start: goblin_0_runAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_runAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: goblin_0_runAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_runAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
-      { start: goblin_0_runAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_runAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: goblin_0_runAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_runAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
-      { start: goblin_0_runAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_runAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: goblin_runAnimationStartFrame + goblin_leftOrientationSpriteOffset,      end: goblin_runAnimationEndFrame + goblin_leftOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.LEFT },
+      { start: goblin_runAnimationStartFrame + goblin_upLeftOrientationSpriteOffset,    end: goblin_runAnimationEndFrame + goblin_upLeftOrientationSpriteOffset,    sheet: 'goblin', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_runAnimationStartFrame + goblin_upOrientationSpriteOffset,        end: goblin_runAnimationEndFrame + goblin_upOrientationSpriteOffset,        sheet: 'goblin', orientation: EntityOrientation.UP },
+      { start: goblin_runAnimationStartFrame + goblin_upRightOrientationSpriteOffset,   end: goblin_runAnimationEndFrame + goblin_upRightOrientationSpriteOffset,   sheet: 'goblin', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_runAnimationStartFrame + goblin_rightOrientationSpriteOffset,     end: goblin_runAnimationEndFrame + goblin_rightOrientationSpriteOffset,     sheet: 'goblin', orientation: EntityOrientation.RIGHT },
+      { start: goblin_runAnimationStartFrame + goblin_downRightOrientationSpriteOffset, end: goblin_runAnimationEndFrame + goblin_downRightOrientationSpriteOffset, sheet: 'goblin', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_runAnimationStartFrame + goblin_downOrientationSpriteOffset,      end: goblin_runAnimationEndFrame + goblin_downOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.DOWN },
+      { start: goblin_runAnimationStartFrame + goblin_downLeftOrientationSpriteOffset,  end: goblin_runAnimationEndFrame + goblin_downLeftOrientationSpriteOffset,  sheet: 'goblin', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.RUN,
     frameRate: 8
   },
   meleeAttack: {
     frames: [
-      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
-      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
-      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
-      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
-      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
-      { start: goblin_0_meleeAttackAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_meleeAttackAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: goblin_meleeAttackAnimationStartFrame + goblin_leftOrientationSpriteOffset,      end: goblin_meleeAttackAnimationEndFrame + goblin_leftOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.LEFT },
+      { start: goblin_meleeAttackAnimationStartFrame + goblin_upLeftOrientationSpriteOffset,    end: goblin_meleeAttackAnimationEndFrame + goblin_upLeftOrientationSpriteOffset,    sheet: 'goblin', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_meleeAttackAnimationStartFrame + goblin_upOrientationSpriteOffset,        end: goblin_meleeAttackAnimationEndFrame + goblin_upOrientationSpriteOffset,        sheet: 'goblin', orientation: EntityOrientation.UP },
+      { start: goblin_meleeAttackAnimationStartFrame + goblin_upRightOrientationSpriteOffset,   end: goblin_meleeAttackAnimationEndFrame + goblin_upRightOrientationSpriteOffset,   sheet: 'goblin', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_meleeAttackAnimationStartFrame + goblin_rightOrientationSpriteOffset,     end: goblin_meleeAttackAnimationEndFrame + goblin_rightOrientationSpriteOffset,     sheet: 'goblin', orientation: EntityOrientation.RIGHT },
+      { start: goblin_meleeAttackAnimationStartFrame + goblin_downRightOrientationSpriteOffset, end: goblin_meleeAttackAnimationEndFrame + goblin_downRightOrientationSpriteOffset, sheet: 'goblin', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_meleeAttackAnimationStartFrame + goblin_downOrientationSpriteOffset,      end: goblin_meleeAttackAnimationEndFrame + goblin_downOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.DOWN },
+      { start: goblin_meleeAttackAnimationStartFrame + goblin_downLeftOrientationSpriteOffset,  end: goblin_meleeAttackAnimationEndFrame + goblin_downLeftOrientationSpriteOffset,  sheet: 'goblin', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.MELEEATTACK,
     frameRate: 16
   },
   rangedAttack: {
     frames: [
-      { start: goblin_0_throwAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_throwAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
-      { start: goblin_0_throwAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_throwAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
-      { start: goblin_0_throwAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_throwAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
-      { start: goblin_0_throwAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_throwAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: goblin_0_throwAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_throwAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
-      { start: goblin_0_throwAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_throwAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: goblin_0_throwAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_throwAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
-      { start: goblin_0_throwAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_throwAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: goblin_throwAnimationStartFrame + goblin_leftOrientationSpriteOffset,      end: goblin_throwAnimationEndFrame + goblin_leftOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.LEFT },
+      { start: goblin_throwAnimationStartFrame + goblin_upLeftOrientationSpriteOffset,    end: goblin_throwAnimationEndFrame + goblin_upLeftOrientationSpriteOffset,    sheet: 'goblin', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_throwAnimationStartFrame + goblin_upOrientationSpriteOffset,        end: goblin_throwAnimationEndFrame + goblin_upOrientationSpriteOffset,        sheet: 'goblin', orientation: EntityOrientation.UP },
+      { start: goblin_throwAnimationStartFrame + goblin_upRightOrientationSpriteOffset,   end: goblin_throwAnimationEndFrame + goblin_upRightOrientationSpriteOffset,   sheet: 'goblin', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_throwAnimationStartFrame + goblin_rightOrientationSpriteOffset,     end: goblin_throwAnimationEndFrame + goblin_rightOrientationSpriteOffset,     sheet: 'goblin', orientation: EntityOrientation.RIGHT },
+      { start: goblin_throwAnimationStartFrame + goblin_downRightOrientationSpriteOffset, end: goblin_throwAnimationEndFrame + goblin_downRightOrientationSpriteOffset, sheet: 'goblin', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_throwAnimationStartFrame + goblin_downOrientationSpriteOffset,      end: goblin_throwAnimationEndFrame + goblin_downOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.DOWN },
+      { start: goblin_throwAnimationStartFrame + goblin_downLeftOrientationSpriteOffset,  end: goblin_throwAnimationEndFrame + goblin_downLeftOrientationSpriteOffset,  sheet: 'goblin', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.RANGEDATTACK,
     frameRate: 8
   },
   block: {
     frames: [
-      { start: goblin_0_blockAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_blockAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
-      { start: goblin_0_blockAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_blockAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
-      { start: goblin_0_blockAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_blockAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
-      { start: goblin_0_blockAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_blockAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: goblin_0_blockAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_blockAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
-      { start: goblin_0_blockAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_blockAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: goblin_0_blockAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_blockAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
-      { start: goblin_0_blockAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_blockAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: goblin_blockAnimationStartFrame + goblin_leftOrientationSpriteOffset,      end: goblin_blockAnimationEndFrame + goblin_leftOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.LEFT },
+      { start: goblin_blockAnimationStartFrame + goblin_upLeftOrientationSpriteOffset,    end: goblin_blockAnimationEndFrame + goblin_upLeftOrientationSpriteOffset,    sheet: 'goblin', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_blockAnimationStartFrame + goblin_upOrientationSpriteOffset,        end: goblin_blockAnimationEndFrame + goblin_upOrientationSpriteOffset,        sheet: 'goblin', orientation: EntityOrientation.UP },
+      { start: goblin_blockAnimationStartFrame + goblin_upRightOrientationSpriteOffset,   end: goblin_blockAnimationEndFrame + goblin_upRightOrientationSpriteOffset,   sheet: 'goblin', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_blockAnimationStartFrame + goblin_rightOrientationSpriteOffset,     end: goblin_blockAnimationEndFrame + goblin_rightOrientationSpriteOffset,     sheet: 'goblin', orientation: EntityOrientation.RIGHT },
+      { start: goblin_blockAnimationStartFrame + goblin_downRightOrientationSpriteOffset, end: goblin_blockAnimationEndFrame + goblin_downRightOrientationSpriteOffset, sheet: 'goblin', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_blockAnimationStartFrame + goblin_downOrientationSpriteOffset,      end: goblin_blockAnimationEndFrame + goblin_downOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.DOWN },
+      { start: goblin_blockAnimationStartFrame + goblin_downLeftOrientationSpriteOffset,  end: goblin_blockAnimationEndFrame + goblin_downLeftOrientationSpriteOffset,  sheet: 'goblin', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.BLOCK,
     frameRate: 8
   },
   hit: {
     frames: [
-      { start: goblin_0_hitAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_hitAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
-      { start: goblin_0_hitAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_hitAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
-      { start: goblin_0_hitAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_hitAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
-      { start: goblin_0_hitAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_hitAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: goblin_0_hitAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_hitAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
-      { start: goblin_0_hitAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_hitAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: goblin_0_hitAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_hitAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
-      { start: goblin_0_hitAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_hitAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: goblin_hitAnimationStartFrame + goblin_leftOrientationSpriteOffset,      end: goblin_hitAnimationEndFrame + goblin_leftOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.LEFT },
+      { start: goblin_hitAnimationStartFrame + goblin_upLeftOrientationSpriteOffset,    end: goblin_hitAnimationEndFrame + goblin_upLeftOrientationSpriteOffset,    sheet: 'goblin', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_hitAnimationStartFrame + goblin_upOrientationSpriteOffset,        end: goblin_hitAnimationEndFrame + goblin_upOrientationSpriteOffset,        sheet: 'goblin', orientation: EntityOrientation.UP },
+      { start: goblin_hitAnimationStartFrame + goblin_upRightOrientationSpriteOffset,   end: goblin_hitAnimationEndFrame + goblin_upRightOrientationSpriteOffset,   sheet: 'goblin', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_hitAnimationStartFrame + goblin_rightOrientationSpriteOffset,     end: goblin_hitAnimationEndFrame + goblin_rightOrientationSpriteOffset,     sheet: 'goblin', orientation: EntityOrientation.RIGHT },
+      { start: goblin_hitAnimationStartFrame + goblin_downRightOrientationSpriteOffset, end: goblin_hitAnimationEndFrame + goblin_downRightOrientationSpriteOffset, sheet: 'goblin', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_hitAnimationStartFrame + goblin_downOrientationSpriteOffset,      end: goblin_hitAnimationEndFrame + goblin_downOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.DOWN },
+      { start: goblin_hitAnimationStartFrame + goblin_downLeftOrientationSpriteOffset,  end: goblin_hitAnimationEndFrame + goblin_downLeftOrientationSpriteOffset,  sheet: 'goblin', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.HIT,
     frameRate: 8
   },
   death: {
     frames: [
-      { start: goblin_0_deathAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_deathAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
-      { start: goblin_0_deathAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_deathAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
-      { start: goblin_0_deathAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_deathAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
-      { start: goblin_0_deathAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_deathAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: goblin_0_deathAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_deathAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
-      { start: goblin_0_deathAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_deathAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: goblin_0_deathAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_deathAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
-      { start: goblin_0_deathAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_deathAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: goblin_deathAnimationStartFrame + goblin_leftOrientationSpriteOffset,      end: goblin_deathAnimationEndFrame + goblin_leftOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.LEFT },
+      { start: goblin_deathAnimationStartFrame + goblin_upLeftOrientationSpriteOffset,    end: goblin_deathAnimationEndFrame + goblin_upLeftOrientationSpriteOffset,    sheet: 'goblin', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_deathAnimationStartFrame + goblin_upOrientationSpriteOffset,        end: goblin_deathAnimationEndFrame + goblin_upOrientationSpriteOffset,        sheet: 'goblin', orientation: EntityOrientation.UP },
+      { start: goblin_deathAnimationStartFrame + goblin_upRightOrientationSpriteOffset,   end: goblin_deathAnimationEndFrame + goblin_upRightOrientationSpriteOffset,   sheet: 'goblin', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_deathAnimationStartFrame + goblin_rightOrientationSpriteOffset,     end: goblin_deathAnimationEndFrame + goblin_rightOrientationSpriteOffset,     sheet: 'goblin', orientation: EntityOrientation.RIGHT },
+      { start: goblin_deathAnimationStartFrame + goblin_downRightOrientationSpriteOffset, end: goblin_deathAnimationEndFrame + goblin_downRightOrientationSpriteOffset, sheet: 'goblin', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_deathAnimationStartFrame + goblin_downOrientationSpriteOffset,      end: goblin_deathAnimationEndFrame + goblin_downOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.DOWN },
+      { start: goblin_deathAnimationStartFrame + goblin_downLeftOrientationSpriteOffset,  end: goblin_deathAnimationEndFrame + goblin_downLeftOrientationSpriteOffset,  sheet: 'goblin', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.DEATH,
     frameRate: 8
   },
   criticalDeath: {
     frames: [
-      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_leftOrientationSpriteOffset,      end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_leftOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.LEFT },
-      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_upLeftOrientationSpriteOffset,    end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_upLeftOrientationSpriteOffset,    sheet: 'goblin_0', orientation: EntityOrientation.UP_LEFT },
-      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_upOrientationSpriteOffset,        end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_upOrientationSpriteOffset,        sheet: 'goblin_0', orientation: EntityOrientation.UP },
-      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_upRightOrientationSpriteOffset,   end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_upRightOrientationSpriteOffset,   sheet: 'goblin_0', orientation: EntityOrientation.UP_RIGHT },
-      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_rightOrientationSpriteOffset,     end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_rightOrientationSpriteOffset,     sheet: 'goblin_0', orientation: EntityOrientation.RIGHT },
-      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_downRightOrientationSpriteOffset, end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_downRightOrientationSpriteOffset, sheet: 'goblin_0', orientation: EntityOrientation.DOWN_RIGHT },
-      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_downOrientationSpriteOffset,      end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_downOrientationSpriteOffset,      sheet: 'goblin_0', orientation: EntityOrientation.DOWN },
-      { start: goblin_0_criticalDeathAnimationStartFrame + goblin_0_downLeftOrientationSpriteOffset,  end: goblin_0_criticalDeathAnimationEndFrame + goblin_0_downLeftOrientationSpriteOffset,  sheet: 'goblin_0', orientation: EntityOrientation.DOWN_LEFT }    
+      { start: goblin_criticalDeathAnimationStartFrame + goblin_leftOrientationSpriteOffset,      end: goblin_criticalDeathAnimationEndFrame + goblin_leftOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.LEFT },
+      { start: goblin_criticalDeathAnimationStartFrame + goblin_upLeftOrientationSpriteOffset,    end: goblin_criticalDeathAnimationEndFrame + goblin_upLeftOrientationSpriteOffset,    sheet: 'goblin', orientation: EntityOrientation.UP_LEFT },
+      { start: goblin_criticalDeathAnimationStartFrame + goblin_upOrientationSpriteOffset,        end: goblin_criticalDeathAnimationEndFrame + goblin_upOrientationSpriteOffset,        sheet: 'goblin', orientation: EntityOrientation.UP },
+      { start: goblin_criticalDeathAnimationStartFrame + goblin_upRightOrientationSpriteOffset,   end: goblin_criticalDeathAnimationEndFrame + goblin_upRightOrientationSpriteOffset,   sheet: 'goblin', orientation: EntityOrientation.UP_RIGHT },
+      { start: goblin_criticalDeathAnimationStartFrame + goblin_rightOrientationSpriteOffset,     end: goblin_criticalDeathAnimationEndFrame + goblin_rightOrientationSpriteOffset,     sheet: 'goblin', orientation: EntityOrientation.RIGHT },
+      { start: goblin_criticalDeathAnimationStartFrame + goblin_downRightOrientationSpriteOffset, end: goblin_criticalDeathAnimationEndFrame + goblin_downRightOrientationSpriteOffset, sheet: 'goblin', orientation: EntityOrientation.DOWN_RIGHT },
+      { start: goblin_criticalDeathAnimationStartFrame + goblin_downOrientationSpriteOffset,      end: goblin_criticalDeathAnimationEndFrame + goblin_downOrientationSpriteOffset,      sheet: 'goblin', orientation: EntityOrientation.DOWN },
+      { start: goblin_criticalDeathAnimationStartFrame + goblin_downLeftOrientationSpriteOffset,  end: goblin_criticalDeathAnimationEndFrame + goblin_downLeftOrientationSpriteOffset,  sheet: 'goblin', orientation: EntityOrientation.DOWN_LEFT }    
     ],
     state: ActiveEntityAnimationState.State.DEATH,
     frameRate: 8
@@ -2041,10 +2041,10 @@ export const aura_AnimationConfig = {
 
 export const animationConfigKeys = {
   "player_AnimationConfig": player_AnimationConfig,
-  "zombie_0_AnimationConfig": zombie_0_AnimationConfig,
-  "minotaur_0_AnimationConfig": minotaur_0_AnimationConfig,
-  "skeleton_0_AnimationConfig": skeleton_0_AnimationConfig,
-  "goblin_0_AnimationConfig": goblin_0_AnimationConfig,
+  "zombie_AnimationConfig": zombie_AnimationConfig,
+  "minotaur_AnimationConfig": minotaur_AnimationConfig,
+  "skeleton_AnimationConfig": skeleton_AnimationConfig,
+  "goblin_AnimationConfig": goblin_AnimationConfig,
   "goblin_lumberjack_black_AnimationConfig": goblin_lumberjack_black_AnimationConfig,
   "wyvern_composite_AnimationConfig": wyvern_composite_AnimationConfig,
   "wandering_trader_128_AnimationConfig": wandering_trader_128_AnimationConfig

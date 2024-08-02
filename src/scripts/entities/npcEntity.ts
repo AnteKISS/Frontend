@@ -48,7 +48,7 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
       scene.plugins.get('rexGlowFilterPipeline').remove(this.baseSprite);
     });
     this.baseSprite.on('pointerdown', (pointer, localX, localY, event) => {
-      if (MathModule.scaledDistanceBetween(this.positionX, this.positionY, EntityManager.instance.getPlayers()[0].positionX, EntityManager.instance.getPlayers()[0].positionY) > 150) {
+      if (MathModule.scaledDistanceBetweenPositions(this.positionX, this.positionY, EntityManager.instance.getPlayers()[0].positionX, EntityManager.instance.getPlayers()[0].positionY) > 150) {
         return;
       }
       event.stopPropagation();
@@ -76,13 +76,16 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
     option2.quest = new KillQuest(10, "goblin_lumberjack_black", 15000);
     const option3 = new QuestDialogueOption(this.scene, this.dialogue);
     option3.setText('Zombie quest');
-    option3.quest = new KillQuest(5, "zombie_0", 250);
+    option3.quest = new KillQuest(5, "zombie", 250);
     const option4 = new SpawnMonsterDialogueOption(this.scene, this.dialogue);
     option4.setText('Hello this is Bill from Microsoft');
+    const option5 = new SpawnMonsterDialogueOption(this.scene, this.dialogue, true);
+    option5.setText('Get a 500$ Google Play gift card');
     this.dialogue.addDialogueOption(option1);
     this.dialogue.addDialogueOption(option2);
     this.dialogue.addDialogueOption(option3);
     this.dialogue.addDialogueOption(option4);
+    this.dialogue.addDialogueOption(option5);
   }
 
   // Getters/Setters
@@ -91,7 +94,7 @@ export class NpcEntity extends ActiveEntity implements ITalkable {
   // Methods
   public update(time: number, deltaTime: number): void {
     this.dialogue.update(time, deltaTime);
-    if (MathModule.scaledDistanceBetween(this.positionX, this.positionY, EntityManager.instance.getPlayers()[0].positionX, EntityManager.instance.getPlayers()[0].positionY) > 150) {
+    if (MathModule.scaledDistanceBetweenPositions(this.positionX, this.positionY, EntityManager.instance.getPlayers()[0].positionX, EntityManager.instance.getPlayers()[0].positionY) > 150) {
       this.dialogue.hideDialogue();
       return;
     }

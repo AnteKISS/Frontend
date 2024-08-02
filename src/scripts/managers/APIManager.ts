@@ -3,6 +3,8 @@ import axios from "axios";
 import Item from "../inventory/item";
 import ActiveEntityModifierStats from "../entities/activeEntityModifierStats";
 import StatModule from "../entities/statModule";
+import { MonsterData, MonsterEntityMapper } from "../mappers/MonsterEntityMapper";
+import { ActiveEntityFactory } from "../factories/activeEntityFactory";
 
 class ItemInfo {
   code: number;
@@ -16,6 +18,7 @@ class ItemInfo {
 }
 
 export default class APIManager {
+  private static monsterDatas: Map<string, MonsterData>;
   private static itemCodeRegistry: Map<number, ItemInfo>;
   private static itemNameRegistry: Map<string, ItemInfo>;
 
@@ -171,5 +174,30 @@ export default class APIManager {
       case "DEFENSE": stats.defense += value; break;
       case "MOV_SPEED_MOD": stats.movementSpeed += value; break;
     }
+  }
+
+  public static async loadMonsters(): Promise<void> {
+    console.log("Starting to load monsters from 'localhost:8082/Monster/GetAll'...");
+
+    const response = await axios.get("http://localhost:8082/Monster/GetAll");
+    const monsters = response.data;
+
+    APIManager.monsterDatas = new Map<string, MonsterData>();
+
+    for (const monster of monsters) {
+      let monsterData: MonsterData = new MonsterData();
+      try {
+        monsterData = MonsterEntityMapper.mapMonsterData(monster);
+      } catch (error) {
+        console.error("Error while trying to map monster data.", error);
+      }
+      if (!APIManager.monsterDatas.has(monsterData.uuid)) {
+        APIManager.monsterDatas.set(monsterData.uuid, monsterData);
+      }
+      if (!ActiveEntityFactory.loadedMonsters.has(monsterData.uuid)) {
+        ActiveEntityFactory.loadedMonsters.set(monsterData.uuid, monsterData);
+      }
+    }
+    console.log("Monster load finished:", APIManager.monsterDatas);
   }
 }

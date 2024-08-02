@@ -1,4 +1,6 @@
 import { ActiveEntity } from "../entities/activeEntity";
+import { MonsterEntity } from "../entities/monsterEntity";
+import { MONSTER_RARITY_BOSS_COLOR, MONSTER_RARITY_ELITE_COLOR, MONSTER_RARITY_NORMAL_COLOR, MONSTER_RARITY_RARE_COLOR, MONSTER_RARITY_SUPERUNIQUE_COLOR, MONSTER_RARITY_UNIQUE_COLOR, MonsterRarity } from "../enums/monsterRarity";
 
 export class EntityHealthBar extends Phaser.GameObjects.GameObject {
   public scene: Phaser.Scene;
@@ -36,10 +38,10 @@ export class EntityHealthBar extends Phaser.GameObjects.GameObject {
     this.y = EntityHealthBar.HEALTH_BAR_OFFSET_Y;
     this.health_perc = 0;
     this.graphics = this.scene.add.graphics();
-    this.lblEntityName = new Phaser.GameObjects.Text(this.scene, this.x + (this.width * 0.5), this.y + (this.height * 0.5), '', { color: '#ffffff', align: 'center', fontSize: '16px' });
+    this.lblEntityName = new Phaser.GameObjects.Text(this.scene, this.x + (this.width * 0.5), this.y + (this.height * 0.5) - (this.height + 10), '', { color: '#ffffff', align: 'center', fontSize: '16px', fontStyle: 'bold' });
     this.lblEntityName.setOrigin(0.5);
     this.lblEntityName.width = this.width;
-    this.lblEntityDescription = new Phaser.GameObjects.Text(this.scene, this.x + (this.width * 0.5), this.y + (this.height * 0.5) + (this.height) + 5, '', { fontSize: '12px' });
+    this.lblEntityDescription = new Phaser.GameObjects.Text(this.scene, this.x + (this.width * 0.5), this.y + (this.height * 0.5) + (this.height) + 10, '', { fontSize: '12px' });
     this.lblEntityDescription.setOrigin(0.5);
     this.lblEntityDescription.width = this.width;
     this.graphics.visible = true;
@@ -113,10 +115,53 @@ export class EntityHealthBar extends Phaser.GameObjects.GameObject {
   }
 
   private drawEntityName(): void {
+    if (this.lblEntityName.text === this.entity.name) {
+      return;
+    }
+    if (this.entity instanceof MonsterEntity) {
+      switch (this.entity.quality) {
+        case MonsterRarity.NORMAL:
+          this.lblEntityName.setColor(MONSTER_RARITY_NORMAL_COLOR);
+          break;
+        case MonsterRarity.Elite:
+          this.lblEntityName.setColor(MONSTER_RARITY_ELITE_COLOR);
+          break;
+        case MonsterRarity.RARE:
+          this.lblEntityName.setColor(MONSTER_RARITY_RARE_COLOR);
+          break;
+        case MonsterRarity.UNIQUE:
+          this.lblEntityName.setColor(MONSTER_RARITY_UNIQUE_COLOR);
+          break;
+        case MonsterRarity.SUPERUNIQUE:
+          this.lblEntityName.setColor(MONSTER_RARITY_SUPERUNIQUE_COLOR);
+          break;
+        case MonsterRarity.BOSS:
+          this.lblEntityName.setColor(MONSTER_RARITY_BOSS_COLOR);
+          break;
+      }
+    }
     this.lblEntityName.setText(this.entity.name);
   }
 
   private drawEntityDescription(): void {
-    this.lblEntityDescription.setText(this.entity.code);
+    if (this.entity instanceof MonsterEntity && this.entity.appliedModifiers.length > 0) {
+      let modifierDescription = '';
+      let modifierCount = 0;
+      this.entity.appliedModifiers.forEach((modifier) => {
+        modifierDescription += modifier;
+        if (modifierCount % 3 == 0) {
+          modifierDescription += '\n';
+        } else {
+          modifierDescription += ' ';
+        }
+        modifierCount++;
+      });
+      this.lblEntityDescription.setText(modifierDescription);
+      return;
+    }
+    if (this.lblEntityDescription.text === this.entity.code) {
+      return;
+    }
+    this.lblEntityDescription.setText("");
   }
 }

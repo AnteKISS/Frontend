@@ -69,7 +69,7 @@ export class SpawnMonsterDialogueOption extends DialogueOption {
 
   private isMonsterCodeSpecified: boolean;
 
-  constructor(scene, dialog: Dialogue, monsterCode?: string) {
+  constructor(scene, dialog: Dialogue, isMonsterPack?: boolean, monsterCode?: string) {
     super(scene, dialog);
     if (monsterCode) {
       this.monsterCode = monsterCode;
@@ -78,7 +78,11 @@ export class SpawnMonsterDialogueOption extends DialogueOption {
       this.isMonsterCodeSpecified = false;
     }
     this.on('pointerdown', (pointer, localX, localY, event) => {
-      this.spawnMonsters();
+      if (isMonsterPack) {
+        this.spawnMonterPack();
+      } else {
+        this.spawnMonsters();
+      }
     });
   }
 
@@ -94,6 +98,29 @@ export class SpawnMonsterDialogueOption extends DialogueOption {
       const yTileOffset = MathModule.getRandomInt(-3, 3 + 1);
       const pos = TileModule.getUnitPosFromTilePos(0 + xTileOffset, 0 + yTileOffset);
 
+      entity.positionX = pos.x;
+      entity.positionY = pos.y;
+      entity.area = CampaignManager.getInstance().getCampaign().currentArea();
+    }
+  }
+
+  private spawnMonterPack(): void {
+    let monsterCode: string;
+    if (this.isMonsterCodeSpecified) {
+      monsterCode = this.monsterCode!;
+    } else {
+      monsterCode = this.getRandomMonsterCode();
+    }
+
+    let entities: MonsterEntity[] = 
+      EntityManager.instance.createMonsterWithMinions(CampaignManager.getInstance().getScene(), monsterCode);
+    for (let entity of entities) {
+      if (entity.monsterPack.isLeader(entity)) {
+        continue;
+      }
+      const xTileOffset = MathModule.getRandomInt(-3, 3 + 1);
+      const yTileOffset = MathModule.getRandomInt(-3, 3 + 1);
+      const pos = TileModule.getUnitPosFromTilePos(0 + xTileOffset, 0 + yTileOffset);
       entity.positionX = pos.x;
       entity.positionY = pos.y;
       entity.area = CampaignManager.getInstance().getCampaign().currentArea();
