@@ -54,10 +54,10 @@ export class PlayerEntity extends ActiveEntity implements IFightable, IObserver 
   public attributeAllocation: AttributeAllocation;
   private manaRegenEvent: Phaser.Time.TimerEvent;
   private healthRegenEvent: Phaser.Time.TimerEvent;
-  private realStrenght: number;
-  private realDexterity: number;
-  private realIntelligence: number;
-  private realVitality: number;
+  public realStrenght: number;
+  public realDexterity: number;
+  public realIntelligence: number;
+  public realVitality: number;
 
   constructor(scene) {
     super(scene);

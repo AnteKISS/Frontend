@@ -28,7 +28,7 @@ export class CharacterStatsUI extends Phaser.GameObjects.Container
     {
         super(scene);
         this.player = player;
-        this.depth = 100000;
+        this.setDepth(10);
 
         this.background = new Phaser.GameObjects.Sprite(scene, 1112, 350, 'black_rock_background').setInteractive();
         this.background.setScale(0.5);
@@ -98,25 +98,25 @@ export class CharacterStatsUI extends Phaser.GameObjects.Container
         });
         this.def.setPosition(this.background.x - this.background.displayWidth/2 + 20, this.background.y + this.background.displayHeight/18 * 0);
 
-        this.vit = new Phaser.GameObjects.Text(scene, 0, 0, "Vitality: " + this.player.totalModifierStats.vitality, {
+        this.vit = new Phaser.GameObjects.Text(scene, 0, 0, "Vitality: " + this.player.realVitality, {
             fontSize: '14px',
             color: '#ffffff'
         });
         this.vit.setPosition(this.background.x - this.background.displayWidth/2 + 20, this.background.y + this.background.displayHeight/18 * 2);
 
-        this.str = new Phaser.GameObjects.Text(scene, 0, 0, "Strenght: " + this.player.totalModifierStats.strength, {
+        this.str = new Phaser.GameObjects.Text(scene, 0, 0, "Strenght: " + this.player.realStrenght, {
             fontSize: '14px',
             color: '#ffffff'
         });
         this.str.setPosition(this.background.x - this.background.displayWidth/2 + 20, this.background.y + this.background.displayHeight/18 * 3);
 
-        this.dex = new Phaser.GameObjects.Text(scene, 0, 0, "Dexterity: " + this.player.totalModifierStats.dexterity, {
+        this.dex = new Phaser.GameObjects.Text(scene, 0, 0, "Dexterity: " + this.player.realDexterity, {
             fontSize: '14px',
             color: '#ffffff'
         });
         this.dex.setPosition(this.background.x - this.background.displayWidth/2 + 20, this.background.y + this.background.displayHeight/18 * 4);
 
-        this.int = new Phaser.GameObjects.Text(scene, 0, 0, "Intelligence: " + this.player.totalModifierStats.intelligence, {
+        this.int = new Phaser.GameObjects.Text(scene, 0, 0, "Intelligence: " + this.player.realIntelligence, {
             fontSize: '14px',
             color: '#ffffff'
         });
@@ -187,9 +187,9 @@ export class CharacterStatsUI extends Phaser.GameObjects.Container
         this.mag.setText("Base Magical Damage: " + this.player.totalModifierStats.baseMagicalDamage);
         this.ms.setText("Movement Speed: " + this.player.totalModifierStats.movementSpeed);
         this.def.setText("Defense: " + this.player.totalModifierStats.defense);
-        this.str.setText("Vitality: " + this.player.totalModifierStats.vitality);
-        this.dex.setText("Strenght: " + this.player.totalModifierStats.strength);
-        this.vit.setText("Dexterity: " + this.player.totalModifierStats.dexterity);
-        this.int.setText("Intelligence: " + this.player.totalModifierStats.intelligence);
+        this.str.setText("Vitality: " + this.player.realStrenght);
+        this.dex.setText("Strenght: " + this.player.realDexterity);
+        this.vit.setText("Dexterity: " + this.player.realVitality);
+        this.int.setText("Intelligence: " + this.player.realIntelligence);
     }
 }
